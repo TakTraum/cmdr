@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="cmdr.Editor.Views.TsiFileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             xmlns:views="clr-namespace:cmdr.Editor.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600" MinWidth="600">
+    <ad:DockingManager x:Name="dockingManager">
+        
+        <ad:LayoutRoot>
+            
+            <ad:LayoutPanel Orientation="Horizontal">
+                <ad:LayoutDocumentPane>
+                    <ad:LayoutAnchorable x:Name="docMappings" Title="Mappings" ContentId="Mappings" 
+                                         CanHide="False" CanClose="False" CanAutoHide="False">
+                        <views:MappingListView DataContext="{Binding SelectedDevice, Mode=OneWay}">
+                            <views:MappingListView.Style>
+                                <Style TargetType="{x:Type views:MappingListView}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </views:MappingListView.Style>
+                        </views:MappingListView>
+                    </ad:LayoutAnchorable>
+                </ad:LayoutDocumentPane>
+            </ad:LayoutPanel>
+            
+            <ad:LayoutRoot.LeftSide>
+                <ad:LayoutAnchorSide>
+                    <ad:LayoutAnchorGroup>
+                        <ad:LayoutAnchorable x:Name="anchDevices" Title="Devices" ContentId="Devices"
+                                             CanHide="False" CanClose="False" CanAutoHide="True"
+                                             AutoHideMinWidth="150" AutoHideWidth="150" FloatingWidth="150">
+                                    <views:DeviceListView />
+                        </ad:LayoutAnchorable>
+
+                        <ad:LayoutAnchorable x:Name="anchDevEditor" Title="Device Editor" ContentId="Device Editor"
+                                             CanHide="False" CanClose="False" CanAutoHide="True"
+                                             AutoHideMinWidth="150" AutoHideWidth="150" FloatingWidth="150">
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <views:DeviceEditorView DataContext="{Binding SelectedDevice, Mode=OneWay}">
+                                    <views:DeviceEditorView.Style>
+                                        <Style TargetType="{x:Type views:DeviceEditorView}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </views:DeviceEditorView.Style>
+                                </views:DeviceEditorView>
+                            </ScrollViewer>
+                        </ad:LayoutAnchorable>
+                    </ad:LayoutAnchorGroup>
+                </ad:LayoutAnchorSide>
+            </ad:LayoutRoot.LeftSide>
+
+            <ad:LayoutRoot.RightSide>
+                <ad:LayoutAnchorSide>
+                    <ad:LayoutAnchorGroup>
+                        <ad:LayoutAnchorable x:Name="anchDetails" Title="Details" ContentId="Details"
+                                             CanHide="False" CanClose="False" CanAutoHide="True"
+                                             AutoHideMinWidth="250"  AutoHideWidth="250" FloatingWidth="250">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <Grid DataContext="{Binding SelectedDevice}">
+                                    <Grid.Style>
+                                        <Style TargetType="{x:Type Grid}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <views:MappingEditor DataContext="{Binding MappingEditorViewModel, Mode=OneWay}"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </ad:LayoutAnchorable>
+                    </ad:LayoutAnchorGroup>
+                </ad:LayoutAnchorSide>
+            </ad:LayoutRoot.RightSide>
+
+        </ad:LayoutRoot>
+
+    </ad:DockingManager>
+</UserControl>

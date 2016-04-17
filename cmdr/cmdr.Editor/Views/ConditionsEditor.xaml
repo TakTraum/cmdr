@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="cmdr.Editor.Views.ConditionsEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:cmdr.Editor.Views.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary Source="../Styles/ContextMenuStyle.xaml"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Row="0" Grid.Column="0" x:Name="btnCondition1" Content="1" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Left" Command="{Binding ShowConditionsCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding ConditionsMenu, Mode=OneTime}" Margin="0,5,0,0"/>
+        <controls:ConditionControl  Grid.Row="0" Grid.Column="1" DataContext="{Binding Condition1}">
+            <controls:ConditionControl.Style>
+                <Style TargetType="{x:Type controls:ConditionControl}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Condition}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:ConditionControl.Style>
+        </controls:ConditionControl>
+
+        <Button Grid.Row="2" Grid.Column="0" x:Name="btnCondition2" Content="2" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Left" Command="{Binding ShowConditionsCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding ConditionsMenu, Mode=OneTime}" Margin="0,5,0,0"/>
+        <controls:ConditionControl  Grid.Row="2" Grid.Column="1" DataContext="{Binding Condition2}">
+            <controls:ConditionControl.Style>
+                <Style TargetType="{x:Type controls:ConditionControl}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Condition}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:ConditionControl.Style>
+        </controls:ConditionControl>
+    </Grid>
+</UserControl>

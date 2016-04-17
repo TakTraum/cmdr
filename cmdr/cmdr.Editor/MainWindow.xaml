@@ -1,0 +1,84 @@
+﻿<Window x:Class="cmdr.Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
+        xmlns:views="clr-namespace:cmdr.Editor.Views"
+        xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+        mc:Ignorable="d"
+        Height="Auto" Width="Auto" MinWidth="800" Title="{Binding AppTitle, Mode=OneWay}"
+    >
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewCommand, Mode=OneTime}"/>
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand, Mode=OneTime}"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand, Mode=OneTime}"/>
+        <KeyBinding Key="S" Modifiers="Control+Shift" Command="{Binding SaveAsCommand, Mode=OneTime}"/>
+        <KeyBinding Key="W" Modifiers="Control" Command="{Binding CloseCommand, Mode=OneTime}"/>
+        <KeyBinding Key="X" Modifiers="Control" Command="{Binding CutCommand, Mode=OneTime}" />
+        <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopyCommand, Mode=OneTime}"/>
+        <KeyBinding Key="V" Modifiers="Control" Command="{Binding PasteCommand, Mode=OneTime}"/>
+        <KeyBinding Key="Delete" Command="{Binding RemoveCommand, Mode=OneTime}"/>
+        <KeyBinding Key="L" Modifiers="Control" Command="{Binding LearnCommand, Mode=OneTime}"/>
+        <KeyBinding Key="F1" Command="{Binding HelpCommand, Mode=OneTime}"/>
+    </Window.InputBindings>
+    <DockPanel>
+        <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="Transparent">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New..." Command="{Binding NewCommand, Mode=OneTime}" InputGestureText="Ctrl+N"/>
+                <Separator />
+                <MenuItem Header="_Open..." Command="{Binding OpenCommand, Mode=OneTime}" InputGestureText="Ctrl+O"/>
+                <Separator />
+                <MenuItem Header="_Save" Command="{Binding SaveCommand, Mode=OneTime}" InputGestureText="Ctrl+S"/>
+                <MenuItem Header="_Save As..." Command="{Binding SaveAsCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+S"/>
+                <Separator />
+                <MenuItem Header="_Close" Command="{Binding CloseCommand, Mode=OneTime}" InputGestureText="Ctrl+W"/>
+                <Separator />
+                <MenuItem Header="_Exit" Command="{Binding ExitCommand, Mode=OneTime}" InputGestureText="Alt+F4"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Cut" Command="{Binding CutCommand, Mode=OneTime}" InputGestureText="Ctrl+X" >
+                    <!--<MenuItem.Icon>
+                        <Image Source="Images/cut.png" />
+                    </MenuItem.Icon>-->
+                </MenuItem>
+                <MenuItem Header="_Copy" Command="{Binding CopyCommand, Mode=OneTime}" InputGestureText="Ctrl+C" >
+                    <!--<MenuItem.Icon>
+                        <Image Source="Images/copy.png" />
+                    </MenuItem.Icon>-->
+                </MenuItem>
+                <MenuItem Header="_Paste" Command="{Binding PasteCommand, Mode=OneTime}" InputGestureText="Ctrl+V" >
+                    <!--<MenuItem.Icon>
+                        <Image Source="Images/paste.png" />
+                    </MenuItem.Icon>-->
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Remove" Command="{Binding RemoveCommand, Mode=OneTime}" InputGestureText="Delete" >
+                    <!--<MenuItem.Icon>
+                        <Image Source="Images/delete.png" />
+                    </MenuItem.Icon>-->
+                </MenuItem>
+                <MenuItem Header="_Learn" Command="{Binding LearnCommand, Mode=OneTime}" InputGestureText="Ctrl+L" >
+                    <!--<MenuItem.Icon>
+                        <Image Source="Images/learn.png" />
+                    </MenuItem.Icon>-->
+                </MenuItem>
+            </MenuItem>
+            <!--<MenuItem Header="_View" />
+            <MenuItem Header="_Window" />-->
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Show Help" Command="{Binding HelpCommand, Mode=OneTime}" InputGestureText="F1" />
+                <MenuItem Header="_About" Command="{Binding AboutCommand, Mode=OneTime}" />
+            </MenuItem>
+        </Menu>
+
+        <avalonDock:DockingManager x:Name="dockingManager" Margin="10" DockPanel.Dock="Bottom">
+            <avalonDock:LayoutRoot>
+                <avalonDock:LayoutPanel Orientation="Horizontal">
+                    <avalonDock:LayoutDocumentPane />
+                </avalonDock:LayoutPanel>
+            </avalonDock:LayoutRoot>
+        </avalonDock:DockingManager>
+    </DockPanel>
+</Window>
