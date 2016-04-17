@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="cmdr.Editor.Views.DeviceListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:cmdr.Editor.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <ListBox Grid.Row="0" 
+                 x:Name="lbDevices" 
+                 HorizontalAlignment="Stretch"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ItemsSource="{Binding Devices, Mode=OneWay}" 
+                 SelectedItem="{Binding SelectedDevice}"
+                 >
+            <i:Interaction.Behaviors>
+                <behaviors:ListBoxScrollIntoViewBehavior/>
+            </i:Interaction.Behaviors>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <StackPanel>
+                                    <Separator x:Name="Separator"/>
+                                    <ContentPresenter/>
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid x:Name="lbiGrid">
+                        <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Name, Mode=OneWay}" />
+                    </Grid>
+
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True">
+                            <Setter TargetName="lbiGrid" Property="Background" Value="Silver" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="+" Height="20" Width="20" Command="{Binding AddDeviceCommand, Mode=OneTime}" />
+            <Button Content="-" Height="20" Width="20" Command="{Binding RemoveDeviceCommand, Mode=OneTime}" />
+        </StackPanel>
+    </Grid>
+
+</UserControl>

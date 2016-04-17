@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:cmdr.Editor.Styles">
+    <Style x:Key="ResizeStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                        <Control x:Name="resizer">
+                            <Control.Style>
+                                <Style TargetType="{x:Type Control}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Control}">
+                                                <local:ResizeThumb VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,1,1">
+                                                    <local:ResizeThumb.Style>
+                                                        <Style TargetType="{x:Type local:ResizeThumb}" BasedOn="{x:Null}">
+                                                            <Style.Setters>
+                                                                <Setter Property="Cursor" Value="SizeNWSE"/>
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate>
+                                                                            <Grid x:Name="resizeVisual" DockPanel.Dock="Right" VerticalAlignment="Bottom" Background="Transparent" >
+                                                                                <Line X1="6" Y1="18" X2="18" Y2="6" Stroke="DarkGray" StrokeThickness="1.5"/>
+                                                                                <!--smallest/right|bottom most -->
+                                                                                <Line X1="10" Y1="18" X2="18" Y2="10" Stroke="DarkGray" StrokeThickness="1.5"/>
+                                                                                <Line X1="14" Y1="18" X2="18" Y2="14" Stroke="DarkGray" StrokeThickness="1.5"/>
+                                                                                <!--longers/left|top most-->
+                                                                            </Grid>
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style.Setters>
+                                                        </Style>
+                                                    </local:ResizeThumb.Style>
+                                                </local:ResizeThumb>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Control.Style>
+                        </Control>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

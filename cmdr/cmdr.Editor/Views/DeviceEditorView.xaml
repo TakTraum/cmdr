@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="cmdr.Editor.Views.DeviceEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock>
+            <Run Text="{Binding Type, Mode=OneWay}"/>  
+            <Run Text="{Binding Revision, Mode=OneWay, StringFormat='[Rev {0}]'}"/>
+        </TextBlock>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Stretch">
+            <StackPanel>
+                <Label><Bold>Comment (Name):</Bold></Label>
+                <TextBox Text="{Binding Comment}" Height="40" TextWrapping="Wrap" Margin="5,0,5,0"/>
+            </StackPanel>
+
+            <Grid Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <DockPanel VerticalAlignment="Bottom" Grid.Row="0">
+                    <Label DockPanel.Dock="Left"><Bold>Ports:</Bold></Label>
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Left"  Command="{Binding RefreshPortsCommand, Mode=OneTime}" Content="Refresh" Width="50" Height="20"/>
+                </DockPanel>
+                <StackPanel Grid.Row="1" Margin="5,0">
+                    <Label>In-Port:</Label>
+                    <ComboBox SelectedItem="{Binding InPort}" ItemsSource="{Binding InPorts, Mode=OneWay}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Margin="5,0">
+                    <Label>Out-Port:</Label>
+                    <ComboBox SelectedItem="{Binding OutPort}" ItemsSource="{Binding OutPorts, Mode=OneWay}"/>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Margin="0,10,0,0">
+                <Label><Bold>Target:</Bold></Label>
+                <ComboBox SelectedItem="{Binding Target}" ItemsSource="{Binding Targets, Mode=OneWay}" Margin="5,0"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

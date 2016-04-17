@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="cmdr.Editor.Views.Controls.SearchControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:tms="clr-namespace:TMS.Controls;assembly=TMS.Controls.SearchTextBox"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="200">
+    <!-- Using SearchBox from https://mahowling.wordpress.com/2014/07/31/wpf-search-text-box-for-mvvm -->
+    <Grid>
+        <Popup x:Name="popup" IsOpen="False" StaysOpen="False" Placement="Top" VerticalOffset="-3" PopupAnimation="Fade" AllowsTransparency="True">
+            <TextBlock Text="End of list" Background="Transparent" Foreground="Red" FontWeight="Bold"/>
+        </Popup>
+        <tms:SearchTextBox SearchMode="Delayed" Command="{Binding SearchCommand, Mode=OneTime}" PreviewKeyDown="SearchTextBox_PreviewKeyDown" Text="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</UserControl>

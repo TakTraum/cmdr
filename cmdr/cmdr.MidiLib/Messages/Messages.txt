@@ -1,0 +1,40 @@
+﻿CHANNEL MESSAGES
+================
+
+Message					Status		Data 1				Data 2
+-----------------------------------------------------------------------
+Note off				8n			Note number			Velocity
+Note on					9n			Note number			Velocity
+Polyphonic aftertouch	An			Note number			Pressure
+Control change			Bn			Controller number	Data
+Program change			Cn			Program number		-
+Channel aftertouch		Dn			Pressure			-
+Pitch wheel/Pitch Bend	En			LSbyte				MSbyte
+
+
+
+SYSTEM MESSAGES
+================
+
+Message					Status		Data 1				Data 2
+-----------------------------------------------------------------------
+# System exclusive
+-----------------------------------------------------------------------
+System exclusive start	F0			Manufacturer ID		Data … (Data)
+End of system exclusive F7			-					-
+-----------------------------------------------------------------------
+# System common
+-----------------------------------------------------------------------
+Quarter frame (MTC)		F1			Data
+Song pointer			F2			LSbyte				MSbyte
+Song select				F3			Song number			-
+Tune request			F6			-
+-----------------------------------------------------------------------
+# System Real-time
+-----------------------------------------------------------------------
+Timing clock			F8			-					-
+Start					FA			-					-
+Continue				FB			-					-
+Stop					FC			-					-
+Active Sensing			FE			-					-
+Reset					FF			-					-

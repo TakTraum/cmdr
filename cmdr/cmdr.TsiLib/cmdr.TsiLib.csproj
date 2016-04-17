@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{45D11C68-D2F6-4E04-9BD9-85BB3537A317}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>cmdr.TsiLib</RootNamespace>
+    <AssemblyName>cmdr.TsiLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Categories.cs" />
+    <Compile Include="Commands\All.cs" />
+    <Compile Include="Commands\Base\ACommand.cs" />
+    <Compile Include="Commands\Base\ANumericValueInCommand.cs" />
+    <Compile Include="Commands\Base\ANumericValueOutCommand.cs" />
+    <Compile Include="Commands\Base\AValueCommand.cs" />
+    <Compile Include="Commands\Base\AValueInCommand.cs" />
+    <Compile Include="Commands\Base\AValueOutCommand.cs" />
+    <Compile Include="Commands\CommandProxy.cs" />
+    <Compile Include="Commands\Effects.cs" />
+    <Compile Include="Commands\Interpretation\CommandDescription.cs" />
+    <Compile Include="Commands\Interpretation\KnownCommands.cs" />
+    <Compile Include="Commands\In\EffectSelectorInCommand.cs" />
+    <Compile Include="Commands\In\EnumInCommand.cs" />
+    <Compile Include="Commands\In\FloatInCommand.cs" />
+    <Compile Include="Commands\In\HoldEnumInCommand.cs" />
+    <Compile Include="Commands\In\HoldInCommand.cs" />
+    <Compile Include="Commands\In\IntInCommand.cs" />
+    <Compile Include="Commands\In\OnOffInCommand.cs" />
+    <Compile Include="Commands\In\TriggerInCommand.cs" />
+    <Compile Include="Commands\In\UnknownInCommand.cs" />
+    <Compile Include="Commands\Out\EffectSelectorOutCommand.cs" />
+    <Compile Include="Commands\Out\EnumOutCommand.cs" />
+    <Compile Include="Commands\Out\FloatOutCommand.cs" />
+    <Compile Include="Commands\Out\IntOutCommand.cs" />
+    <Compile Include="Commands\Out\TriggerOutCommand.cs" />
+    <Compile Include="Commands\Out\UnknownOutCommand.cs" />
+    <Compile Include="Conditions\All.cs" />
+    <Compile Include="Conditions\Base\ACondition.cs" />
+    <Compile Include="Conditions\Base\AValueCondition.cs" />
+    <Compile Include="Conditions\ConditionNumber.cs" />
+    <Compile Include="Conditions\ConditionProxy.cs" />
+    <Compile Include="Conditions\EnumCondition.cs" />
+    <Compile Include="Conditions\IntCondition.cs" />
+    <Compile Include="Conditions\Interpretation\ConditionDescription.cs" />
+    <Compile Include="Conditions\Interpretation\KnownConditions.cs" />
+    <Compile Include="Controls\AControl.cs" />
+    <Compile Include="Controls\All.cs" />
+    <Compile Include="Controls\Button\AButtonControl.cs" />
+    <Compile Include="Controls\Button\ADecIncButtonControl.cs" />
+    <Compile Include="Controls\Button\DirectButtonControl.cs" />
+    <Compile Include="Controls\Button\FloatDecIncButtonControl.cs" />
+    <Compile Include="Controls\Button\HoldButtonControl.cs" />
+    <Compile Include="Controls\Button\IntDecIncButtonControl.cs" />
+    <Compile Include="Controls\Button\ToggleButtonControl.cs" />
+    <Compile Include="Controls\Button\TriggerButtonControl.cs" />
+    <Compile Include="Controls\Encoder\EncoderControl.cs" />
+    <Compile Include="Controls\FaderOrKnob\DirectFaderOrKnobControl.cs" />
+    <Compile Include="Controls\FaderOrKnob\FaderOrKnobControl.cs" />
+    <Compile Include="Controls\FaderOrKnob\RelativeFaderOrKnobControl.cs" />
+    <Compile Include="Controls\LED\LedControl.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="EffectList.cs" />
+    <Compile Include="Enums\AdvancedPanelTab.cs" />
+    <Compile Include="Enums\CaptureSource.cs" />
+    <Compile Include="Enums\CuePointOrLoopMoveSize.cs" />
+    <Compile Include="Enums\CueType.cs" />
+    <Compile Include="Enums\Deck.cs" />
+    <Compile Include="Enums\DeckFlavor.cs" />
+    <Compile Include="Enums\DeckSize.cs" />
+    <Compile Include="Enums\DeviceTarget.cs" />
+    <Compile Include="Enums\DeviceType.cs" />
+    <Compile Include="Enums\ExpandCollapse.cs" />
+    <Compile Include="Enums\Favorite.cs" />
+    <Compile Include="Enums\FreezeSliceCount.cs" />
+    <Compile Include="Enums\FreezeSliceSize.cs" />
+    <Compile Include="Enums\FXRouting.cs" />
+    <Compile Include="Enums\FXUnitMode.cs" />
+    <Compile Include="Enums\Hotcue.cs" />
+    <Compile Include="Enums\HotcueType.cs" />
+    <Compile Include="Enums\IntExt.cs" />
+    <Compile Include="Enums\JumpDirection.cs" />
+    <Compile Include="Enums\Layout.cs" />
+    <Compile Include="Enums\ListNavigation.cs" />
+    <Compile Include="Enums\ListOffset.cs" />
+    <Compile Include="Enums\LoopRecorderSize.cs" />
+    <Compile Include="Enums\LoopSize.cs" />
+    <Compile Include="Enums\MappingControlType.cs" />
+    <Compile Include="Enums\MappingInteractionMode.cs" />
+    <Compile Include="Enums\MappingResolution.cs" />
+    <Compile Include="Enums\MappingTargetDeck.cs" />
+    <Compile Include="Enums\MappingType.cs" />
+    <Compile Include="Enums\MidiControlType.cs" />
+    <Compile Include="Enums\MidiEncoderMode.cs" />
+    <Compile Include="Enums\ModifierValue.cs" />
+    <Compile Include="Enums\MoveDirection.cs" />
+    <Compile Include="Enums\MoveMode.cs" />
+    <Compile Include="Enums\MoveSize.cs" />
+    <Compile Include="Enums\OnOff.cs" />
+    <Compile Include="Enums\PlatterScopeView.cs" />
+    <Compile Include="Enums\PlaybackMode.cs" />
+    <Compile Include="Enums\PlayMode.cs" />
+    <Compile Include="Enums\Proprietary_Controller_DeviceType.cs" />
+    <Compile Include="Enums\QuantizeSize.cs" />
+    <Compile Include="Enums\SamplePage.cs" />
+    <Compile Include="Enums\ScratchControl.cs" />
+    <Compile Include="Enums\SlotCell.cs" />
+    <Compile Include="Enums\SlotCellState.cs" />
+    <Compile Include="Enums\SlotSize.cs" />
+    <Compile Include="Enums\SlotState.cs" />
+    <Compile Include="Enums\SlotTriggerType.cs" />
+    <Compile Include="Enums\TargetType.cs" />
+    <Compile Include="Enums\TempoRange.cs" />
+    <Compile Include="Enums\TempoSource.cs" />
+    <Compile Include="Enums\TopBottom.cs" />
+    <Compile Include="Enums\TreeNavigation.cs" />
+    <Compile Include="Enums\UpDown.cs" />
+    <Compile Include="Enums\ValueUIType.cs" />
+    <Compile Include="Format\AMidiDefinitions.cs" />
+    <Compile Include="Format\Device.cs" />
+    <Compile Include="Format\DeviceData.cs" />
+    <Compile Include="Format\DeviceMappingsContainer.cs" />
+    <Compile Include="Format\DevicePorts.cs" />
+    <Compile Include="Format\DevicesList.cs" />
+    <Compile Include="Format\DeviceTargetInfo.cs" />
+    <Compile Include="Format\DIOI.cs" />
+    <Compile Include="Format\DVST.cs" />
+    <Compile Include="Format\Frame.cs" />
+    <Compile Include="Format\Mapping.cs" />
+    <Compile Include="Format\MappingFileComment.cs" />
+    <Compile Include="Format\MappingsContainer.cs" />
+    <Compile Include="Format\MappingSettings.cs" />
+    <Compile Include="Format\MappingsList.cs" />
+    <Compile Include="Format\MidiDefinition.cs" />
+    <Compile Include="Format\MidiDefinitionsContainer.cs" />
+    <Compile Include="Format\MidiInDefinitions.cs" />
+    <Compile Include="Format\MidiNoteBinding.cs" />
+    <Compile Include="Format\MidiNoteBindingList.cs" />
+    <Compile Include="Format\MidiOutDefinitions.cs" />
+    <Compile Include="Format\UnknownFrame.cs" />
+    <Compile Include="Format\VersionInfo.cs" />
+    <Compile Include="Mapping.cs" />
+    <Compile Include="MidiDefinitions\Base\AGenericMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\Base\AMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\Base\AProprietaryMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\GenericMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\MidiDefinitionFactory.cs" />
+    <Compile Include="MidiDefinitions\Proprietary\ButtonMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\Proprietary\EncoderMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\Proprietary\FaderOrKnobMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\Proprietary\JogMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\Proprietary\OutMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\Proprietary\PushEncoderMidiDefinition.cs" />
+    <Compile Include="Parsers\EnumParser.cs" />
+    <Compile Include="Parsers\FloatParser.cs" />
+    <Compile Include="Parsers\IntParser.cs" />
+    <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ranges\ARange.cs" />
+    <Compile Include="Ranges\FloatRange.cs" />
+    <Compile Include="Ranges\FloatRangeCentered.cs" />
+    <Compile Include="Ranges\FloatRangeCenteredHalf.cs" />
+    <Compile Include="Ranges\FloatRangeRelative.cs" />
+    <Compile Include="Ranges\IntRange.cs" />
+    <Compile Include="Ranges\IntRangeUnlimited.cs" />
+    <Compile Include="Resources\EmbeddedResource.cs" />
+    <Compile Include="TsiFile.cs" />
+    <Compile Include="Utils\EnumExtensions.cs" />
+    <Compile Include="Utils\IMenuProxy.cs" />
+    <Compile Include="Utils\KeyConverter.cs" />
+    <Compile Include="Utils\LinqExtensions.cs" />
+    <Compile Include="Utils\StreamExtensions.cs" />
+    <Compile Include="Utils\TypeExtensions.cs" />
+    <Compile Include="Utils\Writer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DVST_Trakor Kontrol F1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Template.tsi" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

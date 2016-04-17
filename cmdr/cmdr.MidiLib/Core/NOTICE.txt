@@ -1,0 +1,4 @@
+﻿This class library is a wrapper of the codeplex project "PureMidi" by Slawomir Cichon, 
+which can be found at https://puremidi.codeplex.com/.
+
+The namespace was renamed for consistency reasons and shall not conceal the origin of the used library project from "PureMidi".
