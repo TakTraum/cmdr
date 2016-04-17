@@ -5,9 +5,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--<ResourceDictionary 
-                  Source="Styles/Brushes.xaml">
-                </ResourceDictionary>-->
                 <ResourceDictionary 
                   Source="Styles/ResizeStyle.xaml">
                 </ResourceDictionary>
