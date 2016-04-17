@@ -80,12 +80,19 @@
             <DockPanel x:Uid="buttonArea">
                 <Button x:Name="okButton" x:Uid="okButton" Style="{StaticResource OkButtonStyle}" 
                         Content="OK" />
-                <Label x:Name="productLink" x:Uid="productLink" Style="{StaticResource LinkLabelStyle}" >
-                    <Hyperlink x:Name="hyperlink" x:Uid="hyperlink" NavigateUri="{Binding Mode=OneTime, Path=LinkUri}"  Style="{StaticResource LinkLabelStyle}"
+                <StackPanel Orientation="Horizontal">
+                    <Label x:Name="productLink" x:Uid="productLink" Style="{StaticResource LinkLabelStyle}" >
+                        <Hyperlink x:Name="hyperlink" x:Uid="hyperlink" NavigateUri="{Binding Mode=OneTime, Path=LinkUri}"  Style="{StaticResource LinkLabelStyle}"
                                Hyperlink.RequestNavigate="hyperlink_RequestNavigate">
-                        <TextBlock Text="{Binding Mode=OneTime, Path=LinkText}" />
-                    </Hyperlink>
-                </Label>
+                            <TextBlock Text="{Binding Mode=OneTime, Path=LinkText}" />
+                        </Hyperlink>
+                    </Label>
+                    <Label x:Uid="donationLink" Padding="5">
+                        <Hyperlink TextDecorations="{x:Null}" NavigateUri="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=9BNNTDQF4X782" Hyperlink.RequestNavigate="hyperlink_RequestNavigate">
+                            <Image Source="../Assets/donate_pp.png" Height="20"/>
+                        </Hyperlink>
+                    </Label>
+                </StackPanel>
             </DockPanel>
         </StackPanel>
     </StackPanel>
