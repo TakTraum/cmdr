@@ -125,7 +125,7 @@ namespace cmdr.TsiLib
             }
             else
             {
-                changed = (Condition1 != condition);
+                changed = (Condition2 != condition);
                 if (changed)
                     Condition2 = condition;
             }
