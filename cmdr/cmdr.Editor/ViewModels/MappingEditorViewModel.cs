@@ -181,6 +181,8 @@ namespace cmdr.Editor.ViewModels
             _isConditionsEnabled = _conditionsEditor != null;
 
             var count = _mappingViewModels.Count();
+            _isAny = count > 0;
+            _isMulti = count > 1;
             if (count == 1)
             {
                 var mvm = _mappingViewModels.Single();
