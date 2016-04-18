@@ -1,14 +1,11 @@
-﻿using ChangeTracking;
-using cmdr.Editor.Utils;
+﻿using cmdr.Editor.Utils;
+using cmdr.Editor.ViewModels.Conditions;
 using cmdr.Editor.ViewModels.MidiBinding;
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
-using SettingControlLibrary.SettingTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -54,164 +51,8 @@ namespace cmdr.Editor.ViewModels
             set { _isConditionsEnabled = value; raisePropertyChanged("IsConditionsEnabled"); }
         }
 
-        private ConditionViewModel _condition1;
-        public ConditionViewModel Condition1
-        {
-            get { return _condition1; }
-            private set
-            {
-                _condition1 = value;
-                raisePropertyChanged("Condition1");
-                onConditionChanged(ConditionNumber.One, _condition1);
-                _condition1.DirtyStateChanged += (s, e) => { if (e)onConditionChanged(ConditionNumber.One, _condition1); };
-            }
-        }
-
-        private ConditionViewModel _condition2;
-        public ConditionViewModel Condition2
-        {
-            get { return _condition2; }
-            private set
-            {
-                _condition2 = value; 
-                raisePropertyChanged("Condition2");
-                onConditionChanged(ConditionNumber.Two, _condition2);
-                _condition2.DirtyStateChanged += (s, e) => { if (e) onConditionChanged(ConditionNumber.Two, _condition2); };
-            }
-        }
-
-        private ContextMenu _conditionsMenu;
-        public ContextMenu ConditionsMenu
-        {
-            get { return _conditionsMenu ?? (_conditionsMenu = generateConditionsContextMenu()); }
-        }
-
-        private ACondition getCondition(ConditionNumber number)
-        {
-            if (_mappingViewModels.Any(m => ((number == ConditionNumber.One) ? m.Condition1 : m.Condition2) == null))
-                return null;
-
-            if (_isMulti)
-            {
-                var conditions = _mappingViewModels.Select(m => ((number == ConditionNumber.One) ? m.Condition1 : m.Condition2));
-                var conditionIds = conditions.Select(c => c.Id).Distinct();
-                if (conditionIds.Count() == 1)
-                {
-                    var condition = conditions.First().Copy(number);
-
-                    var assignments = conditions.Select(c => c.Assignment).Distinct();
-                    if (assignments.Count() == 1)
-                        condition.Assignment = assignments.Single();
-                    else
-                        return null;
-
-                    var values = conditions.Select(c => c.GetValue()).Distinct();
-                    if (values.Count() == 1)
-                        condition.SetValue(values.Single());
-                    else
-                        return null;
-                    return condition;
-                }
-            }
-            else if (_isAny)
-                return ((number == ConditionNumber.One) ? _mappingViewModels.Single().Condition1 : _mappingViewModels.Single().Condition2);
-
-            return null;
-        }
-
-        private ContextMenu generateConditionsContextMenu()
-        {
-            var all = cmdr.TsiLib.Conditions.All.KnownConditions.Select(kv => kv.Value);
-            var menu = ContextMenuBuilder<ConditionProxy>.Build(all, setCondition);
-            menu.Items.Add(new MenuItem { Header = "None", Command = new CommandHandler(clearCondition) });
-            return menu;
-        }
-
-        private void showConditions(Button button)
-        {
-            ConditionsMenu.PlacementTarget = button;
-            ConditionsMenu.IsOpen = true;
-            ConditionsMenu.Tag = button.Name;
-        }
-
-        private void setCondition(ConditionProxy proxy)
-        {
-            var number = (ConditionsMenu.Tag.ToString() == "btnCondition1") ? ConditionNumber.One : ConditionNumber.Two;
-
-            if (_isMulti)
-            {
-                foreach (var mvm in _mappingViewModels)
-                    mvm.SetCondition(number, proxy);
-
-                if (number == ConditionNumber.One)
-                {
-                    var conditionVM = new ConditionViewModel(_mappingViewModels.First().Condition1.Copy(number));
-                    Condition1 = conditionVM;
-                }
-                else
-                {
-                    var conditionVM = new ConditionViewModel(_mappingViewModels.First().Condition2.Copy(number));
-                    Condition2 = conditionVM;
-                }
-            }
-            else if (_isAny)
-            {
-                var mvm = _mappingViewModels.Single();
-                mvm.SetCondition(number, proxy);
-
-                if (number == ConditionNumber.One)
-                {
-                    var conditionVM = new ConditionViewModel(mvm.Condition1);
-                    Condition1 = conditionVM;
-                }
-                else
-                {
-                    var conditionVM = new ConditionViewModel(mvm.Condition2);
-                    Condition2 = conditionVM;
-                }
-            }
-        }
-
-        private void clearCondition()
-        {
-            if (ConditionsMenu.Tag.ToString() == "btnCondition1")
-                Condition1 = new ConditionViewModel(null);
-            else
-                Condition2 = new ConditionViewModel(null);
-        }
-
-        private void onConditionChanged(ConditionNumber number, ConditionViewModel cvm)
-        {
-            cvm.AcceptChanges();
-
-            foreach (var vm in _mappingViewModels)
-            {
-                if (cvm.Condition == null)
-                {
-                    vm.SetCondition(number, null);
-                    continue;
-                }
-
-                if (number == ConditionNumber.One)
-                {
-                    vm.Condition1.Assignment = cvm.Condition.Assignment;
-                    vm.Condition1.SetValue(cvm.Condition.GetValue());
-                }
-                else
-                {
-                    vm.Condition2.Assignment = cvm.Condition.Assignment;
-                    vm.Condition2.SetValue(cvm.Condition.GetValue());
-                }
-                
-                vm.UpdateConditions();
-            }
-        }
-
-        private ICommand _showConditionsCommand;
-        public ICommand ShowConditionsCommand
-        {
-            get { return _showConditionsCommand ?? (_showConditionsCommand = new CommandHandler<Button>(showConditions)); }
-        }
+        private ConditionsEditorViewModel _conditionsEditor;
+        public ConditionsEditorViewModel ConditionsEditor { get { return _conditionsEditor; } }
 
         #endregion
 
@@ -336,23 +177,11 @@ namespace cmdr.Editor.ViewModels
 
             _mappingViewModels = mappingViewModels ?? new List<MappingViewModel>();
 
+            _conditionsEditor = new ConditionsEditorViewModel(_mappingViewModels);
+            _isConditionsEnabled = _conditionsEditor != null;
+
             var count = _mappingViewModels.Count();
-            _isAny = count > 0;
-            _isMulti = count > 1;
-
-            if (_mappingViewModels.All(mvm => mvm.Condition1 != null))
-            {
-                _condition1 = new ConditionViewModel(getCondition(ConditionNumber.One));
-                _condition1.DirtyStateChanged += (s, e) => { if (e) onConditionChanged(ConditionNumber.One, _condition1); };
-            }
-
-            if (_mappingViewModels.All(mvm => mvm.Condition2 != null))
-            {
-                _condition2 = new ConditionViewModel(getCondition(ConditionNumber.Two));
-                _condition2.DirtyStateChanged += (s, e) => { if (e) onConditionChanged(ConditionNumber.Two, _condition2); };
-            }
-
-            if (_isAny && !_isMulti)
+            if (count == 1)
             {
                 var mvm = _mappingViewModels.Single();
                 _command = new CommandViewModel(mvm);

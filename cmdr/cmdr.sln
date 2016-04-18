@@ -15,15 +15,15 @@ Global
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs40
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = cmdr.Editor\\cmdr.Editor.csproj
-		SccProjectName1 = cmdr.Editor
-		SccLocalPath1 = cmdr.Editor
-		SccProjectUniqueName2 = cmdr.MidiLib\\cmdr.MidiLib.csproj
-		SccProjectName2 = cmdr.MidiLib
-		SccLocalPath2 = cmdr.MidiLib
-		SccProjectUniqueName3 = cmdr.TsiLib\\cmdr.TsiLib.csproj
-		SccProjectName3 = cmdr.TsiLib
-		SccLocalPath3 = cmdr.TsiLib
+		SccProjectUniqueName1 = cmdr.MidiLib\\cmdr.MidiLib.csproj
+		SccProjectName1 = cmdr.MidiLib
+		SccLocalPath1 = cmdr.MidiLib
+		SccProjectUniqueName2 = cmdr.TsiLib\\cmdr.TsiLib.csproj
+		SccProjectName2 = cmdr.TsiLib
+		SccLocalPath2 = cmdr.TsiLib
+		SccProjectUniqueName3 = cmdr.Editor\\cmdr.Editor.csproj
+		SccProjectName3 = cmdr.Editor
+		SccLocalPath3 = cmdr.Editor
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

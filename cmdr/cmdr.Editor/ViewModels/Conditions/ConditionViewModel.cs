@@ -2,10 +2,11 @@
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace cmdr.Editor.ViewModels
+namespace cmdr.Editor.ViewModels.Conditions
 {
     public class ConditionAssignment
     {
@@ -29,8 +30,13 @@ namespace cmdr.Editor.ViewModels
         }
     }
 
-    public class ConditionViewModel : AReversible
+
+    public class ConditionViewModel : ViewModelBase
     {
+        private readonly IEnumerable<MappingViewModel> _mappings;
+        private readonly ConditionNumber _number;
+
+
         private ACondition _condition;
         public ACondition Condition
         {
@@ -53,7 +59,7 @@ namespace cmdr.Editor.ViewModels
         public ConditionAssignment Assignment
         {
             get { return _assignment;}
-            set { _assignment = value; raisePropertyChanged("Assignment"); updateCondition(); IsChanged = true; }
+            set { _assignment = value; raisePropertyChanged("Assignment"); updateCondition(); }
         }
 
         private ObservableCollection<ConditionValue> _valueOptions;
@@ -66,7 +72,7 @@ namespace cmdr.Editor.ViewModels
         public ConditionValue Value
         {
             get { return _value; }
-            set { _value = value; raisePropertyChanged("Value"); updateCondition(); IsChanged = true; }
+            set { _value = value; raisePropertyChanged("Value"); updateCondition(); }
         }
 
         public bool IsNotGlobal
@@ -75,8 +81,10 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-        public ConditionViewModel(ACondition condition)
+        public ConditionViewModel(IEnumerable<MappingViewModel> mappings, ConditionNumber number, ACondition condition)
         {
+            _mappings = mappings;
+            _number = number;
             _condition = condition;
 
             if (_condition != null)
@@ -93,19 +101,6 @@ namespace cmdr.Editor.ViewModels
                 _valueOptions = new ObservableCollection<ConditionValue>(enumDict.Select(e => new ConditionValue { Value = e.Key, Description = e.Value }));
                 _value = ValueOptions.SingleOrDefault(v => v.Value != null && v.Value.Equals(_condition.GetValue()));
             }
-
-            AcceptChanges();
-        }
-
-
-        protected override void Accept()
-        {
-            
-        }
-
-        protected override void Revert()
-        {
-
         }
 
 
@@ -116,6 +111,9 @@ namespace cmdr.Editor.ViewModels
                 _condition.Assignment = Assignment.Target;
                 _condition.SetValue(Value.Value);
             }
+
+            foreach (var vm in _mappings)
+                vm.SetCondition(_number, Condition);
         }
     }
 }

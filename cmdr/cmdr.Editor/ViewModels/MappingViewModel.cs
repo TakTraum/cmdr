@@ -100,6 +100,20 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
+        public void SetCondition(ConditionNumber number, ACondition condition)
+        {
+            var changed = _mapping.SetCondition(number, condition);
+            if (changed)
+            {
+                if (number == ConditionNumber.One)
+                    raisePropertyChanged("Condition1");
+                else
+                    raisePropertyChanged("Condition2");
+                raisePropertyChanged("ConditionExpression");
+                IsChanged = true;
+            }
+        }
+
         public Mapping Copy(bool includeMidiBinding)
         {
             return _mapping.Copy(includeMidiBinding);
@@ -112,12 +126,6 @@ namespace cmdr.Editor.ViewModels
             IsChanged = true;
         }
 
-        public void UpdateConditions()
-        {
-            raisePropertyChanged("Condition1");
-            raisePropertyChanged("Condition2");
-            raisePropertyChanged("ConditionExpression");
-        }
 
         private string getTraktorCommand()
         {
