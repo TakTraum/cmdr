@@ -90,7 +90,8 @@
     <Compile Include="Utils\ContextMenuBuilder.cs" />
     <Compile Include="ViewModels\CommandViewModel.cs" />
     <Compile Include="ViewModels\ConditionDescriptions.cs" />
-    <Compile Include="ViewModels\ConditionViewModel.cs" />
+    <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />
+    <Compile Include="ViewModels\Conditions\ConditionViewModel.cs" />
     <Compile Include="ViewModels\ControlViewModel.cs" />
     <Compile Include="ViewModels\DeviceViewModel.cs" />
     <Compile Include="ViewModels\MappingEditorViewModel.cs" />
@@ -293,6 +294,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>REM xcopy "$(TargetDir)*.*" "$(SolutionDir)Releases\$(TargetName)\" /E /Y /C</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>REM rd /s /q "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

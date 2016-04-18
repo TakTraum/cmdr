@@ -31,7 +31,7 @@
             <Label>
                 <Bold>Conditions:</Bold>
             </Label>
-            <views:ConditionsEditor Margin="5,-3,5,10" />
+            <views:ConditionsEditor DataContext="{Binding ConditionsEditor, Mode=OneWay}" Margin="5,-3,5,10" />
         </StackPanel>
 
         <StackPanel Grid.Row="2" Visibility="{Binding IsAssignmentEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">

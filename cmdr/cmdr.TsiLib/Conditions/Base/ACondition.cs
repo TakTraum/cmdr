@@ -99,12 +99,13 @@ namespace cmdr.TsiLib.Conditions
             if (other == null)
                 throw new ArgumentException();
 
-            return Id.Equals(other.Id);
+            return Id.Equals(other.Id) && Assignment.Equals(other.Assignment) && GetValue().Equals(other.GetValue());
         }
 
         public override int GetHashCode()
         {
-            return Id;
+            var val = GetValue();
+            return new { Id, Assignment, val }.GetHashCode();
         }
 
 

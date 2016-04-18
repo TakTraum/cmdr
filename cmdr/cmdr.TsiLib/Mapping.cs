@@ -107,7 +107,7 @@ namespace cmdr.TsiLib
 
 
         /// <summary>
-        /// Set condition.
+        /// Set condition by proxy.
         /// </summary>
         /// <param name="number">Number of condition</param>
         /// <param name="proxy">ConditionProxy or null to reset condition.</param>
@@ -115,21 +115,49 @@ namespace cmdr.TsiLib
         public bool SetCondition(ConditionNumber number, ConditionProxy proxy)
         {
             ACondition condition = (proxy != null) ? proxy.Create(RawMapping.Settings, number) : null;
-
-            bool changed = false;
-            if (number == ConditionNumber.One)
+            if (condition != null)
             {
-                changed = (Condition1 != condition);
-                if (changed)
-                    Condition1 = condition;
+                condition.Assignment = condition.AssignmentOptions.Keys.First();
+                condition.SetValue(condition.GetValueOptions().Keys.First());
             }
+            return setCondition(number, condition);
+        }
+
+        /// <summary>
+        /// Set condition by another condition.
+        /// </summary>
+        /// <param name="number">Number of condition</param>
+        /// <param name="condition">ACondition or null to reset condition.</param>
+        /// <returns>True if condition was changed.</returns>
+        public bool SetCondition(ConditionNumber number, ACondition condition)
+        {
+            if (condition == null)
+                return setCondition(number, condition);
             else
             {
-                changed = (Condition2 != condition);
-                if (changed)
-                    Condition2 = condition;
-            }
-            return changed;
+                bool changed = false;
+
+                var targetCondition = (number == ConditionNumber.One) ? Condition1 : Condition2;
+
+                if (targetCondition == null || targetCondition.Id != condition.Id)
+                {
+                    changed = SetCondition(number, Conditions.All.GetConditionProxy(condition.Id));
+                    targetCondition = (number == ConditionNumber.One) ? Condition1 : Condition2; // needed?
+                }
+
+                // set assignment
+                if (!changed)
+                    changed |= targetCondition.Assignment != condition.Assignment;
+                targetCondition.Assignment = condition.Assignment;
+
+                // set value
+                var newValue = condition.GetValue();
+                if (!changed)
+                    changed |= targetCondition.GetValue() != newValue;
+                targetCondition.SetValue(newValue);
+            
+                return changed;
+            }        
         }
 
         /// <summary>
@@ -185,7 +213,7 @@ namespace cmdr.TsiLib
             }
 
             // set midi binding to mapping
-            bool changed = (MidiBinding != null) ? !MidiBinding.Equals(midi) : ((midi != null) ? !midi.Equals(MidiBinding) : false);
+            bool changed = (MidiBinding != null && !MidiBinding.Equals(midi)) || (midi != null && !midi.Equals(MidiBinding));
             if (changed)
                 MidiBinding = midi;
 
@@ -220,6 +248,26 @@ namespace cmdr.TsiLib
             CanOverrideFactoryMap = (device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI && device.ProprietaryControllerDeviceType == Proprietary_Controller_DeviceType.Default);
         }
 
+        /// This one is dumb and must not be called from other classes. RawMapping.Settings are ignored!
+        private bool setCondition(ConditionNumber number, ACondition condition)
+        {
+            bool changed = false;
+
+            if (number == ConditionNumber.One)
+            {
+                changed = (Condition1 != null  && !Condition1.Equals(condition)) || (condition != null && !condition.Equals(Condition1));
+                if (changed)
+                    Condition1 = condition;
+            }
+            else
+            {
+                changed = (Condition2 != null && !Condition2.Equals(condition)) || (condition != null && !condition.Equals(Condition2));
+                if (changed)
+                    Condition2 = condition;
+            }
+
+            return changed;
+        }
 
         private Format.MidiDefinition getMidiDefinition(Device device, MappingType type, int id)
         {
