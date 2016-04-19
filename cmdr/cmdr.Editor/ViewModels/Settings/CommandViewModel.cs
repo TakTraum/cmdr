@@ -11,7 +11,7 @@ using System.ComponentModel;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
 
-namespace cmdr.Editor.ViewModels
+namespace cmdr.Editor.ViewModels.Settings
 {
     public class CommandViewModel : ViewModelBase
     {

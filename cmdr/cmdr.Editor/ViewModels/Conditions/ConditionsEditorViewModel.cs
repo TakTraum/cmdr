@@ -100,7 +100,7 @@ namespace cmdr.Editor.ViewModels.Conditions
             var conditions = mappings.Select(m => ((number == ConditionNumber.One) ? m.Condition1 : m.Condition2)).Distinct();
             if (conditions.Count() > 1)
                 return null;
-            return conditions.Single();
+            return conditions.SingleOrDefault();
         }
 
     }

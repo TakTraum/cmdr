@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace cmdr.Editor.ViewModels
+namespace cmdr.Editor.ViewModels.Settings
 {
     public class ControlViewModel : AReversible
     {

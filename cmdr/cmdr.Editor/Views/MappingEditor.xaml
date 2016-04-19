@@ -36,10 +36,6 @@
             <Label>
                 <Bold>Settings:</Bold>
             </Label>
-            <StackPanel Margin="5,0,5,0" Visibility="{Binding CanOverrideFactoryMap, Converter={StaticResource boolToVisConverter}}" Orientation="Horizontal">
-                <CheckBox VerticalAlignment="Center" IsThreeState="True" IsChecked="{Binding OverrideFactoryMap}"/>
-                <Label VerticalAlignment="Center" Margin="3,0,0,0">Override Factory Map</Label>
-            </StackPanel>
             <views:CommandEditor Margin="5,0,5,10" />
         </StackPanel>
         <StackPanel Grid.Row="3" Visibility="{Binding IsBindingEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">

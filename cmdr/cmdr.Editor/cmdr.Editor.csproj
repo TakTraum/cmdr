@@ -88,12 +88,12 @@
     <Compile Include="Utils\Category.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Utils\ContextMenuBuilder.cs" />
-    <Compile Include="ViewModels\CommandViewModel.cs" />
+    <Compile Include="ViewModels\Settings\CommandViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\ConditionDescriptions.cs" />
     <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />
     <Compile Include="ViewModels\Conditions\ConditionViewModel.cs" />
-    <Compile Include="ViewModels\ControlViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ControlViewModel.cs" />
     <Compile Include="ViewModels\DeviceViewModel.cs" />
     <Compile Include="ViewModels\MappingEditorViewModel.cs" />
     <Compile Include="ViewModels\MappingViewModel.cs" />
