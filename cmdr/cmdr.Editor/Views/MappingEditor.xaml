@@ -22,12 +22,10 @@
             <Label>
                 <Bold>Comment:</Bold>
             </Label>
-            <ContentControl MinHeight="30" Height="30" Margin="5,0,5,10" Style="{StaticResource ResizeStyle}">
-                <TextBox TextWrapping="Wrap" Text="{Binding Comment}" />
-            </ContentControl>
+            <views:CommentEditorView DataContext="{Binding CommentEditor, Mode=OneWay}" Margin="5,0,5,10" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Visibility="{Binding IsConditionsEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
+        <StackPanel Grid.Row="1">
             <Label>
                 <Bold>Conditions:</Bold>
             </Label>

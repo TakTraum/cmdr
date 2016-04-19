@@ -89,6 +89,7 @@
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Utils\ContextMenuBuilder.cs" />
     <Compile Include="ViewModels\CommandViewModel.cs" />
+    <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\ConditionDescriptions.cs" />
     <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />
     <Compile Include="ViewModels\Conditions\ConditionViewModel.cs" />
@@ -121,6 +122,9 @@
     </Compile>
     <Compile Include="Views\CommandViews\FloatOutCommandView.xaml.cs">
       <DependentUpon>FloatOutCommandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CommentEditorView.xaml.cs">
+      <DependentUpon>CommentEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConditionDescriptionsEditor.xaml.cs">
       <DependentUpon>ConditionDescriptionsEditor.xaml</DependentUpon>
@@ -202,6 +206,10 @@
     <Page Include="Views\CommandViews\FloatOutCommandView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CommentEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConditionDescriptionsEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
