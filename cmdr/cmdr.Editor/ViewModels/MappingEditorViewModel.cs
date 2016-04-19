@@ -1,4 +1,5 @@
 ﻿using cmdr.Editor.Utils;
+using cmdr.Editor.ViewModels.Comment;
 using cmdr.Editor.ViewModels.Conditions;
 using cmdr.Editor.ViewModels.MidiBinding;
 using cmdr.TsiLib.Conditions;
@@ -13,48 +14,18 @@ namespace cmdr.Editor.ViewModels
 {
     public class MappingEditorViewModel : ViewModelBase
     {
-        private readonly IEnumerable<MappingViewModel> _mappingViewModels;
+        private readonly IEnumerable<MappingViewModel> _mappings;
         private readonly DeviceViewModel _device;
 
         private readonly bool _isMulti;
         private readonly bool _isAny;
 
-        public string Comment
-        {
-            get
-            {
-                if (_isMulti)
-                {
-                    var common = _mappingViewModels.Select(m => m.Comment).Distinct();
-                    if (common.Count() == 1)
-                        return common.Single();
-                }
-                else if (_isAny)
-                    return _mappingViewModels.First().Comment;
 
-                return String.Empty;
-            }
-            set
-            {
-                foreach (var mvm in _mappingViewModels)
-                    mvm.Comment = value;
-                raisePropertyChanged("Comment");
-            }
-        }
-        
-        #region Conditions
-
-        private bool _isConditionsEnabled = true;
-        public bool IsConditionsEnabled
-        {
-            get { return _isConditionsEnabled; }
-            set { _isConditionsEnabled = value; raisePropertyChanged("IsConditionsEnabled"); }
-        }
+        private CommentEditorViewModel _commentEditor;
+        public CommentEditorViewModel CommentEditor { get { return _commentEditor; } }
 
         private ConditionsEditorViewModel _conditionsEditor;
         public ConditionsEditorViewModel ConditionsEditor { get { return _conditionsEditor; } }
-
-        #endregion
 
         #region Assignment
 
@@ -63,7 +34,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 if (_isAny)
-                    return _mappingViewModels.First().Command.AssignmentOptions;
+                    return _mappings.First().Command.AssignmentOptions;
                 return new Dictionary<MappingTargetDeck, string>();
             }
         }
@@ -81,11 +52,11 @@ namespace cmdr.Editor.ViewModels
             {
                 if (_isMulti)
                 {
-                    var targetTypes = _mappingViewModels.Select(m => m.TargetType).Distinct();
+                    var targetTypes = _mappings.Select(m => m.TargetType).Distinct();
                     if (targetTypes.Count() == 1)
                     {
                         IsAssignmentEnabled = true;
-                        var common = _mappingViewModels.Select(m => m.Assignment).Distinct();
+                        var common = _mappings.Select(m => m.Assignment).Distinct();
                         if (common.Count() == 1)
                             return common.Single();
                     }
@@ -95,14 +66,14 @@ namespace cmdr.Editor.ViewModels
                 else if (_isAny)
                 {
                     IsAssignmentEnabled = true;
-                    return _mappingViewModels.First().Assignment;
+                    return _mappings.First().Assignment;
                 }
 
                 return (MappingTargetDeck)(-1);
             }
             set
             {
-                foreach (var mvm in _mappingViewModels)
+                foreach (var mvm in _mappings)
                     mvm.Assignment = value;
                 raisePropertyChanged("Assignment");
             }
@@ -126,7 +97,7 @@ namespace cmdr.Editor.ViewModels
 
         public bool CanOverrideFactoryMap
         {
-            get { return _mappingViewModels.Any(m => m.CanOverrideFactoryMap); }
+            get { return _mappings.Any(m => m.CanOverrideFactoryMap); }
         }
 
         public bool? OverrideFactoryMap
@@ -135,20 +106,20 @@ namespace cmdr.Editor.ViewModels
             {
                 if (_isMulti)
                 {
-                    var common = _mappingViewModels.Select(m => m.OverrideFactoryMap).Distinct();
+                    var common = _mappings.Select(m => m.OverrideFactoryMap).Distinct();
                     if (common.Count() == 1)
                         return common.Single();
                     else
                         return null;
                 }
                 else if (_isAny)
-                    return _mappingViewModels.First().OverrideFactoryMap;
+                    return _mappings.First().OverrideFactoryMap;
 
                 return false;
             }
             set
             {
-                foreach (var mvm in _mappingViewModels)
+                foreach (var mvm in _mappings)
                     mvm.OverrideFactoryMap = value.HasValue ? value.Value : false;
                 raisePropertyChanged("OverrideFactoryMap");
             }
@@ -171,25 +142,26 @@ namespace cmdr.Editor.ViewModels
         #endregion
 
 
-        public MappingEditorViewModel(DeviceViewModel device, IEnumerable<MappingViewModel> mappingViewModels)
+        public MappingEditorViewModel(DeviceViewModel device, IEnumerable<MappingViewModel> mappings)
         {
             _device = device;
 
-            _mappingViewModels = mappingViewModels ?? new List<MappingViewModel>();
+            _mappings = mappings ?? new List<MappingViewModel>();
 
-            _conditionsEditor = new ConditionsEditorViewModel(_mappingViewModels);
-            _isConditionsEnabled = _conditionsEditor != null;
+            _commentEditor = new CommentEditorViewModel(_mappings);
 
-            var count = _mappingViewModels.Count();
+            _conditionsEditor = new ConditionsEditorViewModel(_mappings);
+
+            var count = _mappings.Count();
             _isAny = count > 0;
             _isMulti = count > 1;
             if (count == 1)
             {
-                var mvm = _mappingViewModels.Single();
+                var mvm = _mappings.Single();
                 _command = new CommandViewModel(mvm);
             }
 
-            _midiBindingEditor = MidiBindingEditorViewModel.BuildEditor(_device, _mappingViewModels);
+            _midiBindingEditor = MidiBindingEditorViewModel.BuildEditor(_device, _mappings);
             _isBindingEnabled = _midiBindingEditor != null;
         }
     }
