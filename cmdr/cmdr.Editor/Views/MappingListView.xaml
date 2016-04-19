@@ -57,7 +57,6 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="Add In" Command="{Binding ShowInCommandsCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding InCommandsMenu, Mode=OneTime}"/>
                 <Button Content="Add Out" Command="{Binding ShowOutCommandsCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding OutCommandsMenu, Mode=OneTime}" Margin="10,0,0,0"/>
-                <Button Content="Remove" Command="{Binding RemoveMappingCommand, Mode=OneTime}" Margin="10,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Show Conditions" Command="{Binding ShowConditionDescriptionsEditorCommand, Mode=OneTime}" Margin="0,0,10,0"/>
