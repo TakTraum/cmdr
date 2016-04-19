@@ -38,6 +38,7 @@
             </Label>
             <views:CommandEditor Margin="5,0,5,10" />
         </StackPanel>
+        
         <StackPanel Grid.Row="3" Visibility="{Binding IsBindingEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
             <Label><Bold>Mapped To:</Bold></Label>
             <views:MidiEditor DataContext="{Binding MidiBindingEditor, Mode=OneWay}" Margin="5,0,5,10" />

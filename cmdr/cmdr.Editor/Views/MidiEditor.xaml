@@ -45,7 +45,9 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{Binding Note, Mode=OneWay}" Height="25" VerticalAlignment="Center" Padding="5,0,0,0" />
+                    <Border BorderThickness="1,1,0,1" BorderBrush="LightGray" Height="25">
+                        <TextBlock Text="{Binding Note, Mode=OneWay, FallbackValue=None}" FontStyle="Italic" VerticalAlignment="Center" Padding="5,0,0,0" />
+                    </Border>
                     <Button Grid.Column="1" Content="Select" Width="Auto" Command="{Binding SelectNoteCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding NotesMenu, Mode=OneTime}" />
                 </Grid>
             </StackPanel>
