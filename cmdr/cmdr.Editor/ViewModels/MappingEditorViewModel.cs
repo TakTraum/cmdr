@@ -2,6 +2,7 @@
 using cmdr.Editor.ViewModels.Comment;
 using cmdr.Editor.ViewModels.Conditions;
 using cmdr.Editor.ViewModels.MidiBinding;
+using cmdr.Editor.ViewModels.Settings;
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using System;
@@ -90,40 +91,6 @@ namespace cmdr.Editor.ViewModels
 
         private CommandViewModel _command;
         public CommandViewModel Command { get { return _command; } }
-
-        #endregion
-
-        #region Override Factory Map
-
-        public bool CanOverrideFactoryMap
-        {
-            get { return _mappings.Any(m => m.CanOverrideFactoryMap); }
-        }
-
-        public bool? OverrideFactoryMap
-        {
-            get
-            {
-                if (_isMulti)
-                {
-                    var common = _mappings.Select(m => m.OverrideFactoryMap).Distinct();
-                    if (common.Count() == 1)
-                        return common.Single();
-                    else
-                        return null;
-                }
-                else if (_isAny)
-                    return _mappings.First().OverrideFactoryMap;
-
-                return false;
-            }
-            set
-            {
-                foreach (var mvm in _mappings)
-                    mvm.OverrideFactoryMap = value.HasValue ? value.Value : false;
-                raisePropertyChanged("OverrideFactoryMap");
-            }
-        }
 
         #endregion
 

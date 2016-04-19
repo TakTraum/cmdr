@@ -22,7 +22,29 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         private MidiLearner _midiLearner;
 
+
         public bool IsGenericMidi { get { return _device.IsGenericMidi; } }
+
+        private readonly bool _canOverrideFactoryMap;
+        public bool CanOverrideFactoryMap { get { return _canOverrideFactoryMap; } }
+
+        public bool? OverrideFactoryMap
+        {
+            get
+            {
+                var common = _mappings.Select(m => m.OverrideFactoryMap).Distinct();
+                if (common.Count() == 1)
+                    return common.Single();
+                else
+                    return null;
+            }
+            set
+            {
+                foreach (var mvm in _mappings)
+                    mvm.OverrideFactoryMap = value.HasValue ? value.Value : false;
+                raisePropertyChanged("OverrideFactoryMap");
+            }
+        }
 
         private bool _comboMode;
         public bool ComboMode
@@ -132,6 +154,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             }
             else
             {
+                _canOverrideFactoryMap = _mappings.Any(m => m.CanOverrideFactoryMap);
                 NotesMenu = generateProprietaryMenu();
                 if (binding != null)
                     _note = binding.Note;

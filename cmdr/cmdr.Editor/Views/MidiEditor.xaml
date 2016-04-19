@@ -5,12 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:converters="clr-namespace:cmdr.Editor.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="90" d:DesignWidth="300">
+             d:DesignHeight="120" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
-            <!--<ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/ContextMenuForDropdownButtonStyle.xaml" />
-            </ResourceDictionary.MergedDictionaries>-->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles/ContextMenuStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -21,13 +18,21 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" IsEnabled="{Binding LearnMode, Mode=OneWay, Converter={StaticResource invBoolConverter}}">
+        
+        <StackPanel Margin="5,0,5,0" Visibility="{Binding CanOverrideFactoryMap, Converter={StaticResource boolToVisConverter}}" Orientation="Horizontal">
+            <CheckBox VerticalAlignment="Center" IsThreeState="True" IsChecked="{Binding OverrideFactoryMap}"/>
+            <Label VerticalAlignment="Center" Margin="3,0,0,0">Override Factory Map</Label>
+        </StackPanel>
+        
+        <Grid Grid.Row="1" IsEnabled="{Binding LearnMode, Mode=OneWay, Converter={StaticResource invBoolConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            
             <StackPanel Grid.Column="0" Orientation="Vertical" Visibility="{Binding IsGenericMidi, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
                 <Label>Channel:</Label>
                 <ComboBox SelectedItem="{Binding Channel}" ItemsSource="{Binding Channels, Mode=OneWay}" Height="25" Width="55"/>
@@ -45,7 +50,8 @@
                 </Grid>
             </StackPanel>
         </Grid>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Height="30">
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Height="30">
             <StackPanel Orientation="Horizontal" Visibility="{Binding IsGenericMidi, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
                 <ToggleButton Content="Combo" IsChecked="{Binding ComboMode, Mode=OneWay}" Command="{Binding ComboCommand, Mode=OneTime}"
                               Height="20" Width="50" Margin="0,0,10,0">
