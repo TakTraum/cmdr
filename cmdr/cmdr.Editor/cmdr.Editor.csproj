@@ -77,6 +77,7 @@
     <Compile Include="AvalonDock\MdiChild.cs" />
     <Compile Include="AvalonDock\MdiContainer.cs" />
     <Compile Include="Behaviors\DataGridScrollIntoViewBehavior.cs" />
+    <Compile Include="Behaviors\AttachedBehaviors.cs" />
     <Compile Include="Behaviors\InputBindingBehavior.cs" />
     <Compile Include="Behaviors\ListBoxScrollIntoViewBehavior.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />

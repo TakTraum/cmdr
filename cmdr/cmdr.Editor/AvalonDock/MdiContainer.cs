@@ -67,7 +67,12 @@ namespace cmdr.Editor.AvalonDock
                     if (OnClosed != null)
                         OnClosed(child.ContentId);
                 }
-                child.Close();
+
+                try
+                {
+                    child.Close();
+                }
+                catch { }
             }
         }
 

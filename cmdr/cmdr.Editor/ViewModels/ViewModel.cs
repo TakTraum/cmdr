@@ -4,10 +4,12 @@ using cmdr.Editor.Views;
 using cmdr.TsiLib;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Xceed.Wpf.AvalonDock;
@@ -114,6 +116,12 @@ namespace cmdr.Editor.ViewModels
             get { return _aboutCommand ?? (_aboutCommand = new CommandHandler(about)); }
         }
 
+        private ICommand _dropCommand;
+        public ICommand DropCommand
+        {
+            get { return _dropCommand ?? (_dropCommand = new CommandHandler<IDataObject>(drop)); }
+        }
+
         #endregion
 
         private TsiFileViewModel _selectedTsiFileViewModel;
@@ -153,24 +161,26 @@ namespace cmdr.Editor.ViewModels
             }
 
             if (_openFileDialog.ShowDialog(App.Current.MainWindow) == true)
+                openFile(_openFileDialog.FileName);
+        }
+
+        private void openFile(string path)
+        {
+            var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
+            if (mdiChild == null)
             {
-                var path = _openFileDialog.FileName;
-                var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
-                if (mdiChild == null)
+                TsiFile loaded = TsiFile.Load(TRAKTOR_VERSION, path);
+                if (loaded != null)
                 {
-                    TsiFile loaded = TsiFile.Load(TRAKTOR_VERSION, path);
-                    if (loaded != null)
-                    {
-                        TsiFileViewModel vm = new TsiFileViewModel(loaded);
-                        _tsiFileViewModels.Add(vm);
-                        openTab(vm);
-                    }
-                    else
-                        MessageBox.Show("Cannot open file.");
+                    TsiFileViewModel vm = new TsiFileViewModel(loaded);
+                    _tsiFileViewModels.Add(vm);
+                    openTab(vm);
                 }
                 else
-                    _mdiContainer.SelectMdiChild(mdiChild.Id);
+                    MessageBox.Show("Cannot open file.");
             }
+            else
+                _mdiContainer.SelectMdiChild(mdiChild.Id);
         }
 
         private void save()
@@ -270,6 +280,34 @@ namespace cmdr.Editor.ViewModels
         }
 
         #endregion
+
+        private void drop(IDataObject dataObject)
+        {
+            if (dataObject == null)
+                return;
+
+            var fileDrop = dataObject.GetData(DataFormats.FileDrop, true);
+            var filesOrDirectories = fileDrop as String[];
+            if (filesOrDirectories != null && filesOrDirectories.Length > 0)
+            {
+                foreach (string fullPath in filesOrDirectories)
+                {
+                    if (Directory.Exists(fullPath))
+                    {
+                        IEnumerable<string> files = Directory.EnumerateFiles(fullPath, "*", SearchOption.AllDirectories)
+                                        .Where(file => file.ToLower().EndsWith(".tsi"));
+
+                        foreach (var file in files)
+                            openFile(file);
+                    } 
+                    else if (File.Exists(fullPath))
+                    {
+                        if (fullPath.ToLower().EndsWith(".tsi"))
+                            openFile(fullPath);
+                    }
+                }
+            }    
+        }
 
         private void configureFileDialog(FileDialog dlg)
         {

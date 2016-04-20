@@ -7,8 +7,11 @@
         xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
         xmlns:views="clr-namespace:cmdr.Editor.Views"
         xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:behaviors="clr-namespace:cmdr.Editor.Behaviors"
         mc:Ignorable="d"
         Height="Auto" Width="Auto" MinWidth="800" Title="{Binding AppTitle, Mode=OneWay}"
+        AllowDrop="True"
+        behaviors:AttachedBehaviors.DragDropBehaviour="{Binding DropCommand, Mode=OneTime}"
     >
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewCommand, Mode=OneTime}"/>
@@ -73,7 +76,7 @@
             </MenuItem>
         </Menu>
 
-        <avalonDock:DockingManager x:Name="dockingManager" Margin="10" DockPanel.Dock="Bottom">
+        <avalonDock:DockingManager x:Name="dockingManager" Margin="10" DockPanel.Dock="Bottom" >
             <avalonDock:LayoutRoot>
                 <avalonDock:LayoutPanel Orientation="Horizontal">
                     <avalonDock:LayoutDocumentPane />
