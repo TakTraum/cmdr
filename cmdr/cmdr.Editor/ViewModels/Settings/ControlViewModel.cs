@@ -1,6 +1,7 @@
 ﻿using ChangeTracking;
 using cmdr.Editor.Views;
 using cmdr.TsiLib.Controls;
+using cmdr.TsiLib.Enums;
 using SettingControlLibrary.SettingControls;
 using SettingControlLibrary.SettingTypes;
 using System;
@@ -47,14 +48,14 @@ namespace cmdr.Editor.ViewModels.Settings
         {
             _propertyDict = new Dictionary<Setting, System.Reflection.PropertyInfo>();
 
-            string[] ignored = { "Type" };
+            string[] ignored = { "Type", "AllowedInteractionModes" };
 
             var detailsSettings = new List<Setting>();
 
             Type t;
 
             t = _control.GetType();
-            var props = t.GetProperties();
+            var props = t.GetProperties().Where(p => !ignored.Contains(p.Name));
 
             int i = 0;
             Setting s = null;
@@ -62,29 +63,43 @@ namespace cmdr.Editor.ViewModels.Settings
             foreach (var p in props)
             {
                 Type targetType = p.PropertyType;
-                name = p.Name + ":";
+                name = p.Name;
 
-                if (targetType == null || ignored.Contains(p.Name))
-                    continue;
-                else if (targetType == typeof(string))
-                    s = new StringSetting(i++, name);
-                else if (targetType == typeof(int))
-                    s = new IntSetting(i++, name);
-                else if (targetType == typeof(bool))
-                    s = new BoolSetting(i++, name);
-                else if (targetType == typeof(Single))
-                    s = new SingleSetting(i++, name);
-                else if (targetType == typeof(object))
-                    s = new StringSetting(i++, name);
-                else if (targetType.IsEnum)
+                switch (name)
                 {
-                    var d1 = typeof(EnumSetting<>);
-                    Type[] typeArgs = { targetType };
-                    var makeme = d1.MakeGenericType(typeArgs);
-                    s = Activator.CreateInstance(makeme, i++, name) as Setting;
+                    case "Invert":
+                    case "Blend":
+                        s = new BoolSetting(i++, name + ":");
+                        break;
+                    case "SoftTakeOver":
+                        s = new BoolSetting(i++, "Soft Takeover:");
+                        break;
+                    case "AutoRepeat":
+                        s = new BoolSetting(i++, "Auto Repeat:");
+                        break;
+                    case "RotaryAcceleration":
+                        s = new IntSetting(i++, "Rotary Acceleration:", 0, 100);
+                        break;
+                    case "RotarySensitivity":
+                        s = new IntSetting(i++, "Rotary Sensitivity:", 0, 300);
+                        break;
+                    case "Mode":
+                        s = new EnumSetting<MidiEncoderMode>(i++, name + ":");
+                        break;
+                    case "MidiRangeMin":
+                        s = new IntSetting(i++, "MIDI Range Min:", 0, 127);
+                        break;
+                    case "MidiRangeMax":
+                        s = new IntSetting(i++, "MIDI Range Max:", 0, 127);
+                        break;
+                    case "Resolution":
+                        s = new EnumSetting<MappingResolution>(i++, name + ":");
+                        break;
+                    default:
+                        s = null;
+                        break;
                 }
-                else
-                    s = null;
+
 
                 if (s != null)
                 {

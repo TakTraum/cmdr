@@ -296,6 +296,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\donate_pp.png" />
+    <Content Include="lib\ChangeTracking.dll" />
+    <Content Include="lib\SettingControlLibrary.dll" />
+    <Content Include="lib\TMS.Controls.SearchTextBox.dll" />
     <Content Include="LICENCE.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

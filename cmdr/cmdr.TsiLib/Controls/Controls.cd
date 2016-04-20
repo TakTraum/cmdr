@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="cmdr.TsiLib.Controls.Button.AButtonControl">
+    <Position X="9" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Button\AButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Button.ADecIncButtonControl">
+    <Position X="6.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Controls\Button\ADecIncButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Button.DirectButtonControl">
+    <Position X="10.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Button\DirectButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Button.FloatDecIncButtonControl">
+    <Position X="8" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Button\FloatDecIncButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Button.HoldButtonControl">
+    <Position X="3.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Button\HoldButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Button.IntDecIncButtonControl">
+    <Position X="5.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Button\IntDecIncButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Button.ToggleButtonControl">
+    <Position X="12.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Button\ToggleButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Button.TriggerButtonControl">
+    <Position X="14.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Button\TriggerButtonControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.Encoder.EncoderControl">
+    <Position X="17" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAIAAAAAAAAAAACAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Controls\Encoder\EncoderControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.FaderOrKnob.DirectFaderOrKnobControl">
+    <Position X="21.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\FaderOrKnob\DirectFaderOrKnobControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.FaderOrKnob.FaderOrKnobControl">
+    <Position X="22.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Controls\FaderOrKnob\FaderOrKnobControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.FaderOrKnob.RelativeFaderOrKnobControl">
+    <Position X="23.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAACAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Controls\FaderOrKnob\RelativeFaderOrKnobControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.LED.LedControl&lt;T&gt;">
+    <Position X="19.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABCAAAAAAQEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\LED\LedControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cmdr.TsiLib.Controls.AControl">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAACAAAAAAAAAAAQAAABAAAAA=</HashCode>
+      <FileName>Controls\AControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
