@@ -20,7 +20,6 @@ namespace cmdr.Editor.ViewModels
     public class ViewModel : ViewModelBase
     {
         private static readonly string APPNAME = "cmdr";
-
         private static readonly string TRAKTOR_VERSION = "2.0.1 (R10169)";
 
         private MdiContainer<MdiChild<TsiFileView, TsiFileViewModel>, TsiFileView, TsiFileViewModel> _mdiContainer;
@@ -140,6 +139,11 @@ namespace cmdr.Editor.ViewModels
             _mdiContainer.OnClosed += onMdiChildClosed;
 
             App.Current.MainWindow.Closing += onClosing;
+
+            string pathToTraktorSettings = String.Empty;
+            var success = TraktorSettings.Initialize(pathToTraktorSettings);
+            if (!success)
+                MessageBox.Show("Could not initialize Traktor Settings. You won't be able to load and save useful effect selector commands.");
         }
 
 
@@ -299,7 +303,7 @@ namespace cmdr.Editor.ViewModels
 
                         foreach (var file in files)
                             openFile(file);
-                    } 
+                    }
                     else if (File.Exists(fullPath))
                     {
                         if (fullPath.ToLower().EndsWith(".tsi"))

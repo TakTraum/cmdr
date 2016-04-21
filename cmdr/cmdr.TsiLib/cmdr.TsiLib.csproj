@@ -52,7 +52,6 @@
     <Compile Include="Commands\Base\AValueInCommand.cs" />
     <Compile Include="Commands\Base\AValueOutCommand.cs" />
     <Compile Include="Commands\CommandProxy.cs" />
-    <Compile Include="Commands\Effects.cs" />
     <Compile Include="Commands\Interpretation\CommandDescription.cs" />
     <Compile Include="Commands\Interpretation\KnownCommands.cs" />
     <Compile Include="Commands\In\EffectSelectorInCommand.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="Controls\FaderOrKnob\RelativeFaderOrKnobControl.cs" />
     <Compile Include="Controls\LED\LedControl.cs" />
     <Compile Include="Device.cs" />
-    <Compile Include="EffectList.cs" />
     <Compile Include="Enums\AdvancedPanelTab.cs" />
     <Compile Include="Enums\CaptureSource.cs" />
     <Compile Include="Enums\CuePointOrLoopMoveSize.cs" />
@@ -105,6 +103,7 @@
     <Compile Include="Enums\DeckSize.cs" />
     <Compile Include="Enums\DeviceTarget.cs" />
     <Compile Include="Enums\DeviceType.cs" />
+    <Compile Include="Enums\Effect.cs" />
     <Compile Include="Enums\ExpandCollapse.cs" />
     <Compile Include="Enums\Favorite.cs" />
     <Compile Include="Enums\FreezeSliceCount.cs" />
@@ -186,6 +185,7 @@
     <Compile Include="MidiDefinitions\Proprietary\JogMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Proprietary\OutMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Proprietary\PushEncoderMidiDefinition.cs" />
+    <Compile Include="Parsers\EffectParser.cs" />
     <Compile Include="Parsers\EnumParser.cs" />
     <Compile Include="Parsers\FloatParser.cs" />
     <Compile Include="Parsers\IntParser.cs" />
@@ -199,6 +199,7 @@
     <Compile Include="Ranges\IntRange.cs" />
     <Compile Include="Ranges\IntRangeUnlimited.cs" />
     <Compile Include="Resources\EmbeddedResource.cs" />
+    <Compile Include="TraktorSettings.cs" />
     <Compile Include="TsiFile.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
     <Compile Include="Utils\IMenuProxy.cs" />
