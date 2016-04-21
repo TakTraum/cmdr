@@ -15,7 +15,9 @@ namespace cmdr.Editor.ViewModels.Settings
 {
     public class ControlViewModel : AReversible
     {
-        private AControl _control;
+        private readonly AControl _control;
+        
+        private Dictionary<Setting, System.Reflection.PropertyInfo> _propertyDict;
 
         public IEnumerable<BaseSettingControl> SettingControls { get; private set; }
 
@@ -42,7 +44,6 @@ namespace cmdr.Editor.ViewModels.Settings
             SettingsContent = new SettingsEditor(controls);
         }
 
-        private Dictionary<Setting, System.Reflection.PropertyInfo> _propertyDict;
 
         private List<Setting> getSettings()
         {
@@ -99,7 +100,6 @@ namespace cmdr.Editor.ViewModels.Settings
                         s = null;
                         break;
                 }
-
 
                 if (s != null)
                 {
