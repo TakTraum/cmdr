@@ -1,4 +1,5 @@
-﻿using cmdr.Editor.AvalonDock;
+﻿using cmdr.Editor.AppSettings;
+using cmdr.Editor.AvalonDock;
 using cmdr.Editor.Utils;
 using cmdr.Editor.Views;
 using cmdr.TsiLib;
@@ -10,6 +11,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Xceed.Wpf.AvalonDock;
@@ -20,7 +22,6 @@ namespace cmdr.Editor.ViewModels
     public class ViewModel : ViewModelBase
     {
         private static readonly string APPNAME = "cmdr";
-        private static readonly string TRAKTOR_VERSION = "2.0.1 (R10169)";
 
         private MdiContainer<MdiChild<TsiFileView, TsiFileViewModel>, TsiFileView, TsiFileViewModel> _mdiContainer;
         private ObservableCollection<TsiFileViewModel> _tsiFileViewModels = new ObservableCollection<TsiFileViewModel>();
@@ -121,6 +122,12 @@ namespace cmdr.Editor.ViewModels
             get { return _dropCommand ?? (_dropCommand = new CommandHandler<IDataObject>(drop)); }
         }
 
+        private ICommand _settingsCommand;
+        public ICommand SettingsCommand
+        {
+            get { return _settingsCommand ?? (_settingsCommand = new CommandHandler(showSettings)); }
+        }
+
         #endregion
 
         private TsiFileViewModel _selectedTsiFileViewModel;
@@ -140,10 +147,7 @@ namespace cmdr.Editor.ViewModels
 
             App.Current.MainWindow.Closing += onClosing;
 
-            string pathToTraktorSettings = String.Empty;
-            var success = TraktorSettings.Initialize(pathToTraktorSettings);
-            if (!success)
-                MessageBox.Show("Could not initialize Traktor Settings. You won't be able to load and save useful effect selector commands.");
+            App.Current.Dispatcher.BeginInvoke((Action)onLoaded);
         }
 
 
@@ -151,7 +155,7 @@ namespace cmdr.Editor.ViewModels
 
         private void @new()
         {
-            var vm = new TsiFileViewModel(new TsiFile(TRAKTOR_VERSION));
+            var vm = new TsiFileViewModel(new TsiFile(CmdrSettings.Instance.TraktorSection.SelectedVersion));
             _tsiFileViewModels.Add(vm);
             openTab(vm);
         }
@@ -173,7 +177,7 @@ namespace cmdr.Editor.ViewModels
             var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
             if (mdiChild == null)
             {
-                TsiFile loaded = TsiFile.Load(TRAKTOR_VERSION, path);
+                TsiFile loaded = TsiFile.Load(CmdrSettings.Instance.TraktorSection.SelectedVersion, path);
                 if (loaded != null)
                 {
                     TsiFileViewModel vm = new TsiFileViewModel(loaded);
@@ -279,8 +283,16 @@ namespace cmdr.Editor.ViewModels
 
         private void about()
         {
-            AboutWindow about = new AboutWindow(Application.Current.MainWindow);
-            about.ShowDialog();
+            new AboutWindow(Application.Current.MainWindow).ShowDialog();
+        }
+
+        #endregion
+
+        #region extras
+
+        private void showSettings()
+        {
+            new AppSettingsWindow().ShowDialog();
         }
 
         #endregion
@@ -319,6 +331,8 @@ namespace cmdr.Editor.ViewModels
             dlg.Filter = "TSI | *.tsi";
             dlg.CheckPathExists = true;
             dlg.ValidateNames = true;
+            if (CmdrSettings.Instance.DefaultWorkspace != null && Directory.Exists(CmdrSettings.Instance.DefaultWorkspace))
+                dlg.InitialDirectory = CmdrSettings.Instance.DefaultWorkspace;
         }
 
         private void openTab(TsiFileViewModel vm)
@@ -396,6 +410,30 @@ namespace cmdr.Editor.ViewModels
         }
 
         #region Events
+
+        void onLoaded()
+        {
+            // assert app settings are initialized
+            while (!CmdrSettings.Instance.Initialized)
+            {
+                MessageBoxHelper.ShowInfo(
+                    "Welcome to cmdr! Before you can map the sh** out of Traktor, please make a few settings." +
+                    "\n\nSet at least the targeted Traktor version for your mappings. You can take the default one, even if this means that you won't be able to load and save useful effect selector commands." +
+                    "\n\nIf you want the full functionality, you have to setup the \"Native Instruments\" folder and choose an installed Traktor version afterwards." + "\nDon't forget to save settings when you are done.");
+                showSettings();
+            }
+
+            if (CmdrSettings.Instance.TraktorSection.TraktorFolder != null)
+            {
+                string pathToTraktorSettings = Path.Combine(CmdrSettings.Instance.TraktorSection.TraktorFolder, "Traktor Settings.tsi");
+                var success = TraktorSettings.Initialize(pathToTraktorSettings);
+                if (success)
+                    return;
+            }
+
+            MessageBoxHelper.ShowWarning("Could not load \"Traktor Settings.tsi\"." +
+                "\n\nYou can use cmdr anyway, but in order to load and save useful effect selector commands, you need to setup the \"Native Instruments\" folder and choose an installed Traktor version afterwards.");
+        }
 
         void onClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {

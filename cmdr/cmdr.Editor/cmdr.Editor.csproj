@@ -45,10 +45,14 @@
     <Reference Include="ChangeTracking">
       <HintPath>lib\ChangeTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Ookii.Dialogs.Wpf">
+      <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="SettingControlLibrary">
       <HintPath>lib\SettingControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -74,6 +78,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppSettings\CmdrSettings.cs" />
+    <Compile Include="AppSettings\Base\ConfigElement.cs" />
+    <Compile Include="AppSettings\Base\ConfigElementCollection.cs" />
+    <Compile Include="AppSettings\Base\ConfigSection.cs" />
+    <Compile Include="AppSettings\Base\IConfigElementCollection.cs" />
+    <Compile Include="AppSettings\InstalledTraktorVersionConfigElement.cs" />
+    <Compile Include="AppSettings\ITraktorSection.cs" />
+    <Compile Include="AppSettings\TraktorSection.cs" />
     <Compile Include="AvalonDock\MdiChild.cs" />
     <Compile Include="AvalonDock\MdiContainer.cs" />
     <Compile Include="Behaviors\DataGridScrollIntoViewBehavior.cs" />
@@ -86,9 +98,12 @@
     </Compile>
     <Compile Include="Styles\NumberedTickBar.cs" />
     <Compile Include="Styles\ResizeThumb.cs" />
+    <Compile Include="Utils\BrowseDialogHelper.cs" />
     <Compile Include="Utils\Category.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Utils\ContextMenuBuilder.cs" />
+    <Compile Include="Utils\MessageBoxHelper.cs" />
+    <Compile Include="ViewModels\AppSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\CommandViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\ConditionDescriptions.cs" />
@@ -107,6 +122,9 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppSettingsWindow.xaml.cs">
+      <DependentUpon>AppSettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CommandEditor.xaml.cs">
       <DependentUpon>CommandEditor.xaml</DependentUpon>
@@ -185,6 +203,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AppSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

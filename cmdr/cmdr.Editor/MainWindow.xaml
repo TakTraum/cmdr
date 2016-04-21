@@ -70,6 +70,9 @@
             </MenuItem>
             <!--<MenuItem Header="_View" />
             <MenuItem Header="_Window" />-->
+            <MenuItem Header="E_xtras">
+                <MenuItem Header="_Settings" Command="{Binding SettingsCommand, Mode=OneTime}" />
+            </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_Show Help" Command="{Binding HelpCommand, Mode=OneTime}" InputGestureText="F1" />
                 <MenuItem Header="_About" Command="{Binding AboutCommand, Mode=OneTime}" />
