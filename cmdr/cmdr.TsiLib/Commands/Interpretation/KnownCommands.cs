@@ -939,7 +939,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.DeckCommon, "Unload (Deck Common)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         DeckCommon_Unload = 2178,
 
-        [CommandDescription(Categories.DeckCommon, "Unload (Preview Player)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.PreviewPlayer, "Unload (Preview Player)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         PreviewPlayer_Unload = 2179,
 
         [CommandDescription(Categories.DeckCommon, "Jog Touch On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
