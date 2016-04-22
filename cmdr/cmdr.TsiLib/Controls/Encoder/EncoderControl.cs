@@ -30,7 +30,7 @@ namespace cmdr.TsiLib.Controls.Encoder
 
         public override MappingInteractionMode[] AllowedInteractionModes
         {
-            get { return new[] { MappingInteractionMode.Direct, MappingInteractionMode.Relative }; }
+            get { return new[] { MappingInteractionMode.Relative, MappingInteractionMode.Direct }; }
         }
     }
 }

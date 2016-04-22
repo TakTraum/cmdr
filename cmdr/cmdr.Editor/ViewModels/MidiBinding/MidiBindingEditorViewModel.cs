@@ -1,15 +1,10 @@
-﻿using ChangeTracking;
-using cmdr.Editor.Utils;
+﻿using cmdr.Editor.Utils;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions;
 using cmdr.TsiLib.MidiDefinitions.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -391,7 +386,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return new MidiBindingEditorViewModel(device, mappings, mvm.MidiBinding);
             }
             return null;
-
         }
 
         private IEnumerable<AMidiDefinition> getProprietaryDefinitions(DeviceViewModel device, MappingType type)

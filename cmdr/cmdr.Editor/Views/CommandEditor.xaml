@@ -15,7 +15,7 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
+        <StackPanel Grid.Row="0" Visibility="{Binding IsAssignmentEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
             <Label>Assignment:</Label>
             <ComboBox ItemsSource="{Binding AssignmentOptions, Mode=OneWay}" SelectedValue="{Binding Assignment}" SelectedValuePath="Key" DisplayMemberPath="Value"/>
         </StackPanel>
@@ -26,14 +26,14 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <Label>Control:</Label>
-                <ComboBox ItemsSource="{Binding Command.ControlTypeOptions, Mode=OneWay}" SelectedValue="{Binding Command.ControlType}" SelectedValuePath="Key" DisplayMemberPath="Value" />
+                <ComboBox ItemsSource="{Binding ControlTypeOptions, Mode=OneWay}" SelectedValue="{Binding ControlType}" SelectedValuePath="Key" DisplayMemberPath="Value" />
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <Label>Interaction:</Label>
-                <ComboBox ItemsSource="{Binding Command.ControlInteractionOptions, Mode=OneWay}" SelectedValue="{Binding Command.InteractionMode}" SelectedValuePath="Key" DisplayMemberPath="Value" />
+                <ComboBox ItemsSource="{Binding ControlInteractionOptions, Mode=OneWay}" SelectedValue="{Binding  InteractionMode}" SelectedValuePath="Key" DisplayMemberPath="Value" />
             </StackPanel>
         </Grid>
-        <ContentPresenter Grid.Row="2" Content="{Binding Command.SettingsContent}"/>
-        <ContentPresenter Grid.Row="3" Margin="0,10,0,0" Content="{Binding Command.Control.SettingsContent}"/>
+        <ContentPresenter Grid.Row="2" Visibility="{Binding IsControlEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}" Content="{Binding SettingsContent}"/>
+        <ContentPresenter Grid.Row="3" Visibility="{Binding IsControlEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}" Margin="0,10,0,0" Content="{Binding ControlSettingsContent}"/>
     </Grid>
 </UserControl>
