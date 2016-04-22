@@ -119,6 +119,7 @@
     <Compile Include="Enums\ListNavigation.cs" />
     <Compile Include="Enums\ListOffset.cs" />
     <Compile Include="Enums\LoopRecorderSize.cs" />
+    <Compile Include="Enums\LoopRecorderState.cs" />
     <Compile Include="Enums\LoopSize.cs" />
     <Compile Include="Enums\MappingControlType.cs" />
     <Compile Include="Enums\MappingInteractionMode.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Enums\TempoSource.cs" />
     <Compile Include="Enums\TopBottom.cs" />
     <Compile Include="Enums\TreeNavigation.cs" />
+    <Compile Include="Enums\LoopRecorderUndoState.cs" />
     <Compile Include="Enums\UpDown.cs" />
     <Compile Include="Enums\ValueUIType.cs" />
     <Compile Include="Format\AMidiDefinitions.cs" />
