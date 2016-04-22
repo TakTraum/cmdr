@@ -96,6 +96,7 @@
     <Compile Include="Device.cs" />
     <Compile Include="Enums\AdvancedPanelTab.cs" />
     <Compile Include="Enums\CaptureSource.cs" />
+    <Compile Include="Enums\CueLoopMoveMode.cs" />
     <Compile Include="Enums\CuePointOrLoopMoveSize.cs" />
     <Compile Include="Enums\CueType.cs" />
     <Compile Include="Enums\Deck.cs" />
