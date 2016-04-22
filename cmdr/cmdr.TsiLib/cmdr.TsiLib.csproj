@@ -106,6 +106,7 @@
     <Compile Include="Enums\Effect.cs" />
     <Compile Include="Enums\ExpandCollapse.cs" />
     <Compile Include="Enums\Favorite.cs" />
+    <Compile Include="Enums\FluxState.cs" />
     <Compile Include="Enums\FreezeSliceCount.cs" />
     <Compile Include="Enums\FreezeSliceSize.cs" />
     <Compile Include="Enums\FXRouting.cs" />
