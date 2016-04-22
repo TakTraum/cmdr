@@ -1227,7 +1227,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.Global, "Save Traktor Settings", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Global_SaveTraktorSettings = 3072,
 
-        [CommandDescription(Categories.DeckCommon, "Load Selected (Deck Timecode)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.DeckCommon, "Load Selected (Deck Common)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         DeckCommon_LoadSelected = 3076,
 
         [CommandDescription(Categories.Browser_Tree, "Check Consistency", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
