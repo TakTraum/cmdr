@@ -247,8 +247,17 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.LoopRecorder, "Delete (Loop Recorder)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         LoopRecorder_Delete = 284,
 
+        [CommandDescription(Categories.LoopRecorder, "Playback Position (Loop Recorder)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        LoopRecorder_PlaybackPosition = 286,
+
         [CommandDescription(Categories.LoopRecorder, "Undo/Redo (Loop Recorder)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         LoopRecorder_UndoRedo = 287,
+
+        [CommandDescription(Categories.LoopRecorder, "Undo State (Loop Recorder)", TargetType.Global, null, typeof(EnumOutCommand<LoopRecorderUndoState>))]
+        LoopRecorder_UndoState = 288,
+
+        [CommandDescription(Categories.LoopRecorder, "State (Loop Recorder)", TargetType.Global, null, typeof(EnumOutCommand<LoopRecorderState>))]
+        LoopRecorder_State = 289,
 
         [CommandDescription(Categories.Mixer, "Microphone Gain Adjust", TargetType.Global, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         Mixer_MicrophoneGainAdjust = 295,
