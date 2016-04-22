@@ -51,6 +51,9 @@ namespace cmdr.TsiLib.Conditions.Interpretation
         [ConditionDescription(Categories.RemixDeck, "Slot State", TargetType.Slot, typeof(EnumCondition<SlotState>))]
         RemixDeck_SlotState = 247,
 
+        [ConditionDescription(Categories.RemixDeck, "Slot Play Mode", TargetType.Slot, typeof(EnumCondition<PlayMode>))]
+        RemixDeck_SlotPlayMode = 265,
+
         #region Slot Cell State Conditions (665 - 728)
 
         [ConditionDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 1 State", TargetType.Remix, typeof(EnumCondition<SlotCellState>))]
@@ -250,6 +253,11 @@ namespace cmdr.TsiLib.Conditions.Interpretation
         [ConditionDescription(Categories.RemixDeck, "Sample Page Selector", TargetType.Remix, typeof(EnumCondition<SamplePage>))]
         RemixDeck_SamplePageSelector = 733,
 
+        [ConditionDescription(Categories.RemixDeck, "Capture Source", TargetType.Remix, typeof(EnumCondition<CaptureSource>))]
+        RemixDeck_CaptureSource = 2002,
+
+        [ConditionDescription(Categories.RemixDeck, "Slot Trigger Type", TargetType.Slot, typeof(EnumCondition<SlotTriggerType>))]
+        RemixDeck_SlotTriggerType = 2003,
 
         [ConditionDescription(Categories.DeckCommon, "Scratch Control On", TargetType.Track, typeof(EnumCondition<OnOff>))]
         DeckCommon_Timecode_ScratchControlOn = 2288,
