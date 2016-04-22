@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace cmdr.Editor.Utils
@@ -20,6 +21,17 @@ namespace cmdr.Editor.Utils
             Name = String.Empty;
             Elements = new List<T>();
             Categories = new List<Category<T>>();
+        }
+
+        
+        public Category<T> this[string name]
+        {
+            get
+            {
+                if (!Categories.Any(c => c.Name == name))
+                    Categories.Add(new Category<T> { Name = name, Parent = this });
+                return Categories.Single(c => c.Name == name);
+            }
         }
 
         public override bool Equals(object obj)

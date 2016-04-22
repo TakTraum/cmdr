@@ -284,7 +284,8 @@ namespace cmdr.TsiLib.Conditions.Interpretation
         [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 8 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue8Type = 2340,
 
-
+        [ConditionDescription(Categories.TrackDeck_Cue, "Cue/Loop Move Mode", TargetType.Track, typeof(EnumCondition<CueLoopMoveMode>))]
+        TrackDeck_Cue_LoopMoveMode = 2391,
 
         [ConditionDescription(Categories.Modifier, "M1", Enums.TargetType.Global, typeof(EnumCondition<ModifierValue>))]
         Modifier_Modifier1 = 2548,
