@@ -104,12 +104,11 @@
     <Compile Include="Utils\ContextMenuBuilder.cs" />
     <Compile Include="Utils\MessageBoxHelper.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\CommandViewModel.cs" />
+    <Compile Include="ViewModels\Settings\CommandEditorViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\ConditionDescriptions.cs" />
     <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />
     <Compile Include="ViewModels\Conditions\ConditionViewModel.cs" />
-    <Compile Include="ViewModels\Settings\ControlViewModel.cs" />
     <Compile Include="ViewModels\DeviceViewModel.cs" />
     <Compile Include="ViewModels\MappingEditorViewModel.cs" />
     <Compile Include="ViewModels\MappingViewModel.cs" />
