@@ -1068,6 +1068,9 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 8 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
         TrackDeck_Cue_Hotcue8Type = 2340,
 
+        [CommandDescription(Categories.DeckCommon, "Flux State", TargetType.Track, null, typeof(EnumOutCommand<FluxState>))]
+        DeckCommon_FluxState = 2349,
+
         [CommandDescription(Categories.DeckCommon, "Flux Mode On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         DeckCommon_FluxModeOn = 2350,
 
