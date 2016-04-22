@@ -127,6 +127,9 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.DeckCommon, "Cue", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         DeckCommon_Cue = 206,
 
+        [CommandDescription(Categories.TrackDeck_Cue, "Jump to active Cue Point (quantized)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        TrackDeck_Cue_JumpToActiveCuePointQuantized = 209,
+
         [CommandDescription(Categories.PreviewPlayer, "Play/Pause (Preview Player)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         PreviewPlayer_PlayPause = 210,
 
