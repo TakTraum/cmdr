@@ -43,6 +43,8 @@ namespace cmdr.TsiLib.Enums
         [Description("-UltraFine")]
         Minus_UltraFine = -1,
 
+        None = 0,
+
         [Description("+UltraFine")]
         Plus_UltraFine = 1,
 

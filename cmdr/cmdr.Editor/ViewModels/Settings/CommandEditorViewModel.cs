@@ -157,15 +157,19 @@ namespace cmdr.Editor.ViewModels.Settings
             {
                 if (t.InheritsOrImplements(typeof(EnumInCommand<>)))
                     SettingsContent = new EnumCommandView(_command);
-                else if (t.InheritsOrImplements(typeof(ANumericValueInCommand<>)))
+                else if (t.InheritsOrImplements(typeof(FloatInCommand<>)))
                     SettingsContent = new FloatCommandView(_command);
+                else if (t.InheritsOrImplements(typeof(IntInCommand<>)))
+                    SettingsContent = new IntCommandView(_command);
             }
             else if (_command.ControlType == MappingControlType.LED)
             {
                 if (t.InheritsOrImplements(typeof(EnumOutCommand<>)))
                     SettingsContent = new EnumOutCommandView(_command);
-                else if (t.InheritsOrImplements(typeof(ANumericValueOutCommand<>)))
+                else if (t.InheritsOrImplements(typeof(FloatOutCommand<>)))
                     SettingsContent = new FloatOutCommandView(_command);
+                else if (t.InheritsOrImplements(typeof(IntOutCommand<>)))
+                    SettingsContent = new IntOutCommandView(_command);
             }
             else
                 SettingsContent = null;

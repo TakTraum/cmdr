@@ -135,11 +135,17 @@
     <Compile Include="Views\CommandViews\EnumOutCommandView.xaml.cs">
       <DependentUpon>EnumOutCommandView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CommandViews\FloatOutCommandView.xaml.cs">
+      <DependentUpon>FloatOutCommandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CommandViews\IntCommandView.xaml.cs">
+      <DependentUpon>IntCommandView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CommandViews\FloatCommandView.xaml.cs">
       <DependentUpon>FloatCommandView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CommandViews\FloatOutCommandView.xaml.cs">
-      <DependentUpon>FloatOutCommandView.xaml</DependentUpon>
+    <Compile Include="Views\CommandViews\IntOutCommandView.xaml.cs">
+      <DependentUpon>IntOutCommandView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CommentEditorView.xaml.cs">
       <DependentUpon>CommentEditorView.xaml</DependentUpon>
@@ -221,11 +227,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\CommandViews\FloatOutCommandView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CommandViews\IntCommandView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\CommandViews\FloatCommandView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\CommandViews\FloatOutCommandView.xaml">
+    <Page Include="Views\CommandViews\IntOutCommandView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
