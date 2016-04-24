@@ -4,6 +4,8 @@ namespace cmdr.TsiLib
 {
     public enum Categories
     {
+        Unknown, 
+
         [Description("Global")]
         Global,
 

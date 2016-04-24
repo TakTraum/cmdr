@@ -29,7 +29,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
             return new CommandDescription
             {
                 Id = (int)cmd,
-                Category = (Categories)(-1),
+                Category = Categories.Unknown,
                 Name = "Unknown Command " + cmd,
                 TargetType = (TargetType)(-1),
                 InCommandType = typeof(UnknownInCommand),
@@ -100,6 +100,9 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.DeckCommon, "Jog Turn", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         DeckCommon_JogTurn = 120,
 
+        [CommandDescription(Categories.DeckCommon, "Scratch (dug)", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        DeckCommon_Scratch = 121,
+
         [CommandDescription(Categories.DeckCommon, "Tempo Sync", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         DeckCommon_TempoSync = 122,
 
@@ -168,6 +171,9 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.DeckCommon_Submix, "Slot FX On", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         DeckCommon_Submix_SlotFXOn = 239,
+
+        [CommandDescription(Categories.RemixDeck, "Deck Play (Remix Deck) (dug)", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_DeckPlay = 241,
 
         [CommandDescription(Categories.RemixDeck_Legacy, "Play Mode All Slots", TargetType.Remix, typeof(EnumInCommand<PlayMode>), typeof(EnumOutCommand<PlayMode>))]
         RemixDeck_Legacy_PlayModeAllSlots = 242,
@@ -375,6 +381,9 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.TrackDeck, "Track End Warning", TargetType.Track, null, typeof(EnumOutCommand<OnOff>))]
         TrackDeck_TrackEndWarning = 520,
+
+        [CommandDescription(Categories.TrackDeck, "Post Fade-Out Marker (dug)", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        TrackDeck_PotFadeOutMarker = 522,
 
         #region Slot Cell Trigger Commands (601 - 664)
 
@@ -1422,7 +1431,10 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.TrackDeck, "Waveform Zoom Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         TrackDeck_WaveformZoomAdjust = 4162,
 
-        [CommandDescription(Categories.Layout, "Layout Selector", TargetType.Global, typeof(EnumInCommand<Enums.Layout>), typeof(EnumOutCommand<Enums.Layout>))]
+        [CommandDescription(Categories.TrackDeck, "DAW View", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        TrackDeck_DawView = 4163,
+
+        [CommandDescription(Categories.Layout, "Layout Selector", TargetType.Global, typeof(EnumInCommand<Layout>), typeof(EnumOutCommand<Layout>))]
         Layout_LayoutSelector = 4208,
 
         [CommandDescription(Categories.Layout, "Only Browser On", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
