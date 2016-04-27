@@ -24,7 +24,7 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
-        public bool Initialized { get { return !String.IsNullOrEmpty(TraktorSection.SelectedVersion); } }
+        public bool Initialized { get { return !String.IsNullOrEmpty(TraktorVersion); } }
 
         public string DefaultWorkspace
         {
@@ -32,16 +32,24 @@ namespace cmdr.Editor.AppSettings
             set { setSetting("DefaultWorkspace", value); }
         }
 
-        public string NativeInstrumentsFolder
+        public string PathToControllerDefaultMappings
         {
-            get { return getSetting("NativeInstrumentsFolder"); }
-            set { setSetting("NativeInstrumentsFolder", value); }
+            get { return getSetting("PathToControllerDefaultMappings"); }
+            set { setSetting("PathToControllerDefaultMappings", value); }
         }
 
-        public ITraktorSection TraktorSection
+        public string PathToTraktorSettings
         {
-            get { return getSection<TraktorSection>("TraktorSection"); }
+            get { return getSetting("PathToTraktorSettings"); }
+            set { setSetting("PathToTraktorSettings", value); }
         }
+
+        public string TraktorVersion
+        {
+            get { return getSetting("TraktorVersion"); }
+            set { setSetting("TraktorVersion", value); }
+        }
+
 
         private CmdrSettings()
         {
