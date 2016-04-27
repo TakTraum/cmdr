@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -189,6 +190,13 @@ namespace cmdr.Editor.ViewModels
 
         private static IList<Mapping> _mappingClipboard;
 
+        private static Dictionary<string, List<string>> _controllerDefaultSettings = new Dictionary<string, List<string>>();
+        public static IReadOnlyDictionary<string, List<string>> ControllerDefaultSettings
+        {
+            get { return _controllerDefaultSettings; }
+        }
+
+
 
         public DeviceViewModel(Device device)
         {
@@ -327,6 +335,20 @@ namespace cmdr.Editor.ViewModels
             raisePropertyChanged("InPort");
             raisePropertyChanged("OutPorts");
             raisePropertyChanged("OutPort");
+        }
+
+        private static void getControllerDefaultSettings(string rootPath)
+        {
+            DirectoryInfo di = new DirectoryInfo(rootPath);
+            _controllerDefaultSettings = di.EnumerateDirectories().Select(
+                d => new
+                {
+                    Manufacturer = d.Name,
+                    ControllerNames = d.EnumerateFiles()
+                        .Select(fi =>
+                            fi.Name.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries)
+                            .Last().Replace(".tsi", ""))
+                }).ToDictionary(e => e.Manufacturer, e => e.ControllerNames.ToList());
         }
 
         void MappingEditorViewModel_DirtyStateChanged(object sender, bool e)
