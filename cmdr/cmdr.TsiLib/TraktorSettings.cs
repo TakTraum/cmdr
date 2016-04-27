@@ -4,70 +4,71 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
 namespace cmdr.TsiLib
 {
-    public class TraktorSettings
+    public static class TraktorSettings
     {
-        private static readonly string XPATH_TO_EFFECTS = "/NIXML/TraktorSettings/Entry[@Name='Audio.FX.Selection']";
+        public static readonly string TRAKTOR_FALLBACK_VERSION = "2.0.1 (R10169)";
 
-        private static TraktorSettings _instance;
-        public static TraktorSettings Instance
+        private static string _pathToTraktorSettingsTsi = null;
+
+        public static bool Initialized { get { return _pathToTraktorSettingsTsi != null; } }
+
+        private static TsiFile _instance;
+        public static TsiFile Instance
         {
             get
             {
-                if (_instance == null)
+                if (!Initialized)
                     throw new InvalidOperationException("TraktorSettings not initialized! Call Initialize(string filePath) first.");
+
+                if (_instance == null)
+                {
+                    if (!load())
+                        throw new InvalidOperationException("TraktorSettings could not be loaded!");
+                }
                 return _instance;
             }
         }
 
-        public string Path { get; private set; }
-
-        private List<Effect> _effects = new List<Effect>();
-        public IReadOnlyCollection<Effect> Effects
+        
+        /// <summary>
+        /// Initialize Traktor Settings with given path.
+        /// </summary>
+        /// <param name="filePath">Path to "Traktor Settings.tsi". Usually: ...\Native Instruments\Traktor {Version}\Traktor Settings.tsi</param>
+        /// <returns>True on success, false otherwise.</returns>
+        public static bool Initialize(string filePath, bool load)
         {
-            get { return _effects.AsReadOnly(); }
-        }
+            if (String.IsNullOrEmpty(filePath))
+                return false;
 
-
-        private TraktorSettings(XDocument doc)
-        {
-            XElement element = doc.XPathSelectElement(XPATH_TO_EFFECTS);
-            string valueStr = element.Attribute("Value").Value;
-
-            string[] effectStrings = valueStr.Split(';');
-            _effects = effectStrings.Select(e => (Effect)int.Parse(e)).ToList();
-        }
-
-
-        public static bool Initialize(string filePath)
-        {
             try
             {
-                using (Stream source = getFileReadStream(filePath))
-                {
-                    XDocument doc = XDocument.Load(source);
-                    TraktorSettings result = new TraktorSettings(doc);
-                    result.Path = filePath;
-                    _instance = result;
-                    return true;
-                }
+                FileInfo fi = new FileInfo(filePath);
+                if (!fi.Exists || fi.Name != "Traktor Settings.tsi")
+                    return false;                
             }
             catch (Exception)
             {
                 return false;
             }
+
+            _pathToTraktorSettingsTsi = filePath;
+
+            if (load)
+                return TraktorSettings.load();
+            return true;
         }
 
-
-        private static Stream getFileReadStream(string filePath)
+        private static bool load()
         {
-            return File.Open(filePath, FileMode.Open, FileAccess.Read);
+            _instance = TsiFile.Load(TRAKTOR_FALLBACK_VERSION, _pathToTraktorSettingsTsi);
+            return (_instance != null);
         }
-
     }
 }

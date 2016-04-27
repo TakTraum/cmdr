@@ -133,7 +133,7 @@ namespace cmdr.Editor.ViewModels
 
             if (!MustOverrideTraktorVersion)
             {
-                var success = TraktorSettings.Initialize(PathToTraktorSettings);
+                var success = TraktorSettings.Initialize(PathToTraktorSettings, true);
                 if (success)
                 {
                     if (!OverrideTraktorVersion)
