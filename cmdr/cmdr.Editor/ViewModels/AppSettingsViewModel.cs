@@ -2,17 +2,8 @@
 using cmdr.Editor.AppSettings;
 using cmdr.Editor.Utils;
 using cmdr.TsiLib;
-using Microsoft.Win32;
-using Ookii.Dialogs.Wpf;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -20,15 +11,7 @@ namespace cmdr.Editor.ViewModels
 {
     public class AppSettingsViewModel : AReversible
     {
-        public struct InstalledTraktorVersion
-        {
-            public string Path { get; set; }
-            public Version Version { get; set; }
-        }
-
         private static readonly string WINDOW_TITLE = "cmdr Settings";
-        private static readonly Regex REGEX_TRAKTOR_FOLDER = new Regex(@"^Traktor ([0-9\.]+)$");
-        private static readonly string TRAKTOR_FALLBACK_VERSION = "2.0.1 (R10169)";
 
         private string _title = WINDOW_TITLE;
         public string Title
@@ -38,40 +21,59 @@ namespace cmdr.Editor.ViewModels
         }
 
         public Action CloseAction { get; set; }
+        public Window Window { get; set; }
 
+        private string _defaultWorkspace;
         public string DefaultWorkspace
         {
-            get { return CmdrSettings.Instance.DefaultWorkspace ?? String.Empty; }
-            set { CmdrSettings.Instance.DefaultWorkspace = value; IsChanged = true; }
+            get { return _defaultWorkspace; }
+            set { SetProperty("DefaultWorkspace", ref _defaultWorkspace, ref value); }
         }
 
-        public string NativeInstrumentsFolder
+        private string _pathToControllerDefaultMappings;
+        public string PathToControllerDefaultMappings
         {
-            get { return CmdrSettings.Instance.NativeInstrumentsFolder ?? String.Empty; }
-            set { CmdrSettings.Instance.NativeInstrumentsFolder = value; updateTraktorVersions(); IsChanged = true; }
+            get { return _pathToControllerDefaultMappings; }
+            set { SetProperty("PathToControllerDefaultMappings", ref _pathToControllerDefaultMappings, ref value); }
         }
 
-        private ObservableCollection<string> _traktorVersions = new ObservableCollection<string>();
-        public ObservableCollection<string> TraktorVersions
+        private string _pathToTraktorSettings;
+        public string PathToTraktorSettings
         {
-            get { return _traktorVersions; }
-            set { _traktorVersions = value; raisePropertyChanged("TraktorVersions"); }
+            get { return _pathToTraktorSettings; }
+            set
+            {
+                if (SetProperty("PathToTraktorSettings", ref _pathToTraktorSettings, ref value)) 
+                    updateTraktorVersion();
+            }
         }
 
-        private string _selectedTraktorVersion;
-        public string SelectedTraktorVersion
+        private string _traktorVersion;
+        public string TraktorVersion
         {
-            get { return _selectedTraktorVersion; }
-            set { _selectedTraktorVersion = value; raisePropertyChanged("SelectedTraktorVersion"); updateTraktorVersion(); }
+            get { return _traktorVersion; }
+            set { SetProperty("TraktorVersion", ref _traktorVersion, ref value); }
+        }
+
+        private bool _mustOverrideTraktorVersion;
+        public bool MustOverrideTraktorVersion
+        {
+            get { return _mustOverrideTraktorVersion; }
+            set { _mustOverrideTraktorVersion = value; raisePropertyChanged("MustOverrideTraktorVersion"); }
         }
 
         private bool _overrideTraktorVersion;
         public bool OverrideTraktorVersion
         {
             get { return _overrideTraktorVersion; }
-            set { _overrideTraktorVersion = value; raisePropertyChanged("OverrideTraktorVersion"); }
+            set
+            {
+                _overrideTraktorVersion = value; 
+                raisePropertyChanged("OverrideTraktorVersion"); 
+                if (!value) 
+                    restoreVersion();
+            }
         }
-
 
         #region Commands
 
@@ -93,6 +95,12 @@ namespace cmdr.Editor.ViewModels
             get { return _browseFolderCommand ?? (_browseFolderCommand = new CommandHandler<TextBlock>((tb) => browseFolder(tb))); }
         }
 
+        private ICommand _browseFileCommand;
+        public ICommand BrowseFileCommand
+        {
+            get { return _browseFileCommand ?? (_browseFileCommand = new CommandHandler<TextBlock>((tb) => browseFile(tb))); }
+        }
+
         #endregion
 
 
@@ -100,61 +108,60 @@ namespace cmdr.Editor.ViewModels
         {
             DirtyStateChanged += onDirtyStateChanged;
 
-            if (!CmdrSettings.Instance.TraktorSection.InstalledVersions.Any())
-                updateTraktorVersions();
-            else
-                _traktorVersions = new ObservableCollection<string>(CmdrSettings.Instance.TraktorSection.InstalledVersions.Select(v => v.Version));
+            _defaultWorkspace = CmdrSettings.Instance.DefaultWorkspace ?? String.Empty;
+            _pathToControllerDefaultMappings = CmdrSettings.Instance.PathToControllerDefaultMappings ?? String.Empty;
+            _pathToTraktorSettings = CmdrSettings.Instance.PathToTraktorSettings ?? String.Empty;
+            _traktorVersion = CmdrSettings.Instance.TraktorVersion ?? String.Empty;
 
-            if (!TraktorVersions.Any(v => v.Equals(CmdrSettings.Instance.TraktorSection.SelectedVersion)))
+            if (TraktorSettings.Initialized)
+                _overrideTraktorVersion = !_traktorVersion.Equals(TraktorSettings.Instance.TraktorVersion);
+
+            if (String.IsNullOrEmpty(CmdrSettings.Instance.PathToTraktorSettings))
+            {
+                _mustOverrideTraktorVersion = true;
                 _overrideTraktorVersion = true;
-            else if (!String.IsNullOrWhiteSpace(CmdrSettings.Instance.TraktorSection.SelectedVersion))
-                _selectedTraktorVersion = CmdrSettings.Instance.TraktorSection.SelectedVersion;
 
-            if (!CmdrSettings.Instance.Initialized)
-            {
-                _selectedTraktorVersion = TRAKTOR_FALLBACK_VERSION;
-                IsChanged = true;
-            }
-            else
-                _selectedTraktorVersion = CmdrSettings.Instance.TraktorSection.SelectedVersion;
-        }
-
-
-        private void updateTraktorVersions()
-        {
-            if (Directory.Exists(NativeInstrumentsFolder))
-            {
-                var traktorFolders = Directory.EnumerateDirectories(NativeInstrumentsFolder, "Traktor *")
-                    .Select(f => new DirectoryInfo(f));
-
-                var installedVersions = traktorFolders
-                    .Where(d => REGEX_TRAKTOR_FOLDER.IsMatch(d.Name))
-                    .Select(d => new InstalledTraktorVersion{ Path = d.FullName, Version = new Version(REGEX_TRAKTOR_FOLDER.Match(d.Name).Groups[1].Value) })
-                    .OrderByDescending(itv => itv.Version);
-
-                foreach (var tv in installedVersions)
-                {
-                    CmdrSettings.Instance.TraktorSection.InstalledVersions.Add(
-                        new InstalledTraktorVersionConfigElement
-                        {
-                            Version = tv.Version.ToString(),
-                            Path = tv.Path
-                        });
-                }
-
-                TraktorVersions = new ObservableCollection<string>(installedVersions.Select(v => v.Version.ToString()));
+                if (String.IsNullOrEmpty(CmdrSettings.Instance.TraktorVersion))
+                    TraktorVersion = TraktorSettings.TRAKTOR_FALLBACK_VERSION;
             }
         }
+
 
         private void updateTraktorVersion()
         {
-            CmdrSettings.Instance.TraktorSection.SelectedVersion = SelectedTraktorVersion;
-            initializeTraktorSettings();
+            MustOverrideTraktorVersion = String.IsNullOrEmpty(PathToTraktorSettings);
+
+            if (!MustOverrideTraktorVersion)
+            {
+                var success = TraktorSettings.Initialize(PathToTraktorSettings);
+                if (success)
+                {
+                    if (!OverrideTraktorVersion)
+                        TraktorVersion = TraktorSettings.Instance.TraktorVersion;
+                    else if (TraktorVersion.Equals(TraktorSettings.TRAKTOR_FALLBACK_VERSION))
+                        OverrideTraktorVersion = false;
+                }
+            }
+        }
+
+        private void restoreVersion()
+        {
+            if (TraktorSettings.Initialized)
+                TraktorVersion = TraktorSettings.Instance.TraktorVersion;
+            else if (!String.IsNullOrEmpty(PathToTraktorSettings))
+                updateTraktorVersion();
         }
 
         private void browseFolder(TextBlock textBlock)
         {
-            string folder = BrowseDialogHelper.BrowseFolder();
+            string folder = BrowseDialogHelper.BrowseFolder(Window);
+            if (folder != null)
+                textBlock.Text = folder;
+        }
+
+        private void browseFile(TextBlock textBlock)
+        {
+            string folder = BrowseDialogHelper.BrowseTsiFile(Window, false);
             if (folder != null)
                 textBlock.Text = folder;
         }
@@ -163,22 +170,15 @@ namespace cmdr.Editor.ViewModels
         {
             AcceptChanges();
 
-            if (!CmdrSettings.Instance.Initialized)
-                CmdrSettings.Instance.TraktorSection.SelectedVersion = _selectedTraktorVersion;
+            CmdrSettings.Instance.DefaultWorkspace = DefaultWorkspace;
+            CmdrSettings.Instance.PathToControllerDefaultMappings = PathToControllerDefaultMappings;
+            CmdrSettings.Instance.PathToTraktorSettings = PathToTraktorSettings;
+            CmdrSettings.Instance.TraktorVersion = TraktorVersion;
 
             CmdrSettings.Instance.Save();
 
             if (CloseAction != null)
                 CloseAction();
-        }
-
-        private void initializeTraktorSettings()
-        {
-            if (CmdrSettings.Instance.TraktorSection.TraktorFolder != null)
-            {
-                string pathToTraktorSettings = Path.Combine(CmdrSettings.Instance.TraktorSection.TraktorFolder, "Traktor Settings.tsi");
-                var success = TraktorSettings.Initialize(pathToTraktorSettings);
-            }
         }
 
         private void refreshAppTitle()
@@ -201,5 +201,6 @@ namespace cmdr.Editor.ViewModels
         {
 
         }
+
     }
 }

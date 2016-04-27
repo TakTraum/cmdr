@@ -30,8 +30,12 @@ namespace cmdr.Editor.Views
         {
             var vm = new AppSettingsViewModel();
             this.DataContext = vm;
+
             if (vm.CloseAction == null)
                 vm.CloseAction = new Action(Close);
+
+            if (vm.Window == null)
+                vm.Window = this;
         }
     }
 }
