@@ -3,7 +3,6 @@ using cmdr.Editor.AvalonDock;
 using cmdr.Editor.Utils;
 using cmdr.Editor.Views;
 using cmdr.TsiLib;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,7 +24,6 @@ namespace cmdr.Editor.ViewModels
 
         private MdiContainer<MdiChild<TsiFileView, TsiFileViewModel>, TsiFileView, TsiFileViewModel> _mdiContainer;
         private ObservableCollection<TsiFileViewModel> _tsiFileViewModels = new ObservableCollection<TsiFileViewModel>();
-        private OpenFileDialog _openFileDialog;
 
         private bool _isExiting;
 
@@ -47,7 +45,7 @@ namespace cmdr.Editor.ViewModels
         private ICommand _openCommand;
         public ICommand OpenCommand
         {
-            get { return _openCommand ?? (_openCommand = new CommandHandler(open)); }
+            get { return _openCommand ?? (_openCommand = new CommandHandler(() => open())); }
         }
 
         private ICommand _saveCommand;
@@ -155,40 +153,26 @@ namespace cmdr.Editor.ViewModels
 
         private void @new()
         {
-            var vm = new TsiFileViewModel(new TsiFile(CmdrSettings.Instance.TraktorSection.SelectedVersion));
+            var fxSettings = (TraktorSettings.Initialized) ? TraktorSettings.Instance.FxSettings : null;
+            var vm = new TsiFileViewModel(new TsiFile(CmdrSettings.Instance.TraktorVersion, fxSettings));
             _tsiFileViewModels.Add(vm);
             openTab(vm);
         }
 
-        private void open()
+        private bool open()
         {
-            if (_openFileDialog == null)
+            string initialDirectory = null;
+            if (!String.IsNullOrEmpty(CmdrSettings.Instance.DefaultWorkspace))
+                initialDirectory = CmdrSettings.Instance.DefaultWorkspace;
+            
+            string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, false, initialDirectory);
+            if (!String.IsNullOrEmpty(path))
             {
-                _openFileDialog = new OpenFileDialog();
-                configureFileDialog(_openFileDialog);
+                openFile(path);
+                return true;
             }
 
-            if (_openFileDialog.ShowDialog(App.Current.MainWindow) == true)
-                openFile(_openFileDialog.FileName);
-        }
-
-        private void openFile(string path)
-        {
-            var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
-            if (mdiChild == null)
-            {
-                TsiFile loaded = TsiFile.Load(CmdrSettings.Instance.TraktorSection.SelectedVersion, path);
-                if (loaded != null)
-                {
-                    TsiFileViewModel vm = new TsiFileViewModel(loaded);
-                    _tsiFileViewModels.Add(vm);
-                    openTab(vm);
-                }
-                else
-                    MessageBox.Show("Cannot open file.");
-            }
-            else
-                _mdiContainer.SelectMdiChild(mdiChild.Id);
+            return false;
         }
 
         private void save()
@@ -325,16 +309,6 @@ namespace cmdr.Editor.ViewModels
             }    
         }
 
-        private void configureFileDialog(FileDialog dlg)
-        {
-            dlg.DefaultExt = "tsi";
-            dlg.Filter = "TSI | *.tsi";
-            dlg.CheckPathExists = true;
-            dlg.ValidateNames = true;
-            if (CmdrSettings.Instance.DefaultWorkspace != null && Directory.Exists(CmdrSettings.Instance.DefaultWorkspace))
-                dlg.InitialDirectory = CmdrSettings.Instance.DefaultWorkspace;
-        }
-
         private void openTab(TsiFileViewModel vm)
         {
             var mdiChild = new MdiChild<TsiFileView, TsiFileViewModel>(new TsiFileView(), vm, vm.Title + (vm.IsChanged ? "*" : ""));
@@ -349,6 +323,30 @@ namespace cmdr.Editor.ViewModels
                 AppTitle = String.Format("{0} - {1}", APPNAME, _mdiContainer.SelectedMdiChild.Title);
             else
                 AppTitle = APPNAME;
+        }
+
+        private bool openFile(string path)
+        {
+            var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
+            if (mdiChild == null)
+            {
+                TsiFile loaded = TsiFile.Load(CmdrSettings.Instance.TraktorVersion, path);
+                if (loaded != null)
+                {
+                    TsiFileViewModel vm = new TsiFileViewModel(loaded);
+                    _tsiFileViewModels.Add(vm);
+                    openTab(vm);
+                }
+                else
+                {
+                    MessageBox.Show("Cannot open file.");
+                    return false;
+                }
+            }
+            else
+                _mdiContainer.SelectMdiChild(mdiChild.Id);
+
+            return true;
         }
 
         private void savePendingChanges(out bool cancel)
@@ -396,11 +394,17 @@ namespace cmdr.Editor.ViewModels
 
         private bool saveAs(TsiFileViewModel vm)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            configureFileDialog(sfd);
-            sfd.FileName = vm.Title;
-            if (sfd.ShowDialog(App.Current.MainWindow) == true)
-                return vm.Save(sfd.FileName);
+            string initialDirectory = null;
+            if (!String.IsNullOrEmpty(CmdrSettings.Instance.DefaultWorkspace))
+                initialDirectory = CmdrSettings.Instance.DefaultWorkspace;
+
+            string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, true, initialDirectory, vm.Title);
+            if (!String.IsNullOrEmpty(path))
+            {
+                vm.Save(path);
+                return true;
+            }
+
             return false;
         }
 
@@ -417,22 +421,23 @@ namespace cmdr.Editor.ViewModels
             while (!CmdrSettings.Instance.Initialized)
             {
                 MessageBoxHelper.ShowInfo(
-                    "Welcome to cmdr! Before you can map the sh** out of Traktor, please make a few settings." +
+                    "Welcome to cmdr! Before you can map the sh** out of your controllers, please make a few settings." +
                     "\n\nSet at least the targeted Traktor version for your mappings. You can take the default one, even if this means that you won't be able to load and save useful effect selector commands." +
-                    "\n\nIf you want the full functionality, you have to setup the \"Native Instruments\" folder and choose an installed Traktor version afterwards." + "\nDon't forget to save settings when you are done.");
+                    "\n\nIf you want the full functionality, you have to setup the path to your \"Traktor Settings.tsi\"." + "\nDon't forget to save settings when you are done.");
                 showSettings();
             }
 
-            if (CmdrSettings.Instance.TraktorSection.TraktorFolder != null)
+            // try to initialize TraktorSettings
+            if (!String.IsNullOrEmpty(CmdrSettings.Instance.PathToTraktorSettings) && !TraktorSettings.Initialized)
             {
-                string pathToTraktorSettings = Path.Combine(CmdrSettings.Instance.TraktorSection.TraktorFolder, "Traktor Settings.tsi");
-                var success = TraktorSettings.Initialize(pathToTraktorSettings);
+                var success = TraktorSettings.Initialize(CmdrSettings.Instance.PathToTraktorSettings, true);
                 if (success)
                     return;
             }
 
-            MessageBoxHelper.ShowWarning("Could not load \"Traktor Settings.tsi\"." +
-                "\n\nYou can use cmdr anyway, but in order to load and save useful effect selector commands, you need to setup the \"Native Instruments\" folder and choose an installed Traktor version afterwards.");
+            if (!TraktorSettings.Initialized)
+                MessageBoxHelper.ShowWarning("Could not load \"Traktor Settings.tsi\"." +
+                    "\n\nYou can use cmdr anyway, but in order to load and save useful effect selector commands, you need to setup the path to your \"Traktor Settings.tsi\".");
         }
 
         void onClosing(object sender, System.ComponentModel.CancelEventArgs e)
