@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<NIXML><TraktorSettings><Entry Name="DeviceIO.Config.Controller" Type="3" Value=""></Entry>
-<Entry Name="Flavour" Type="1" Value="-1"></Entry>
-<Entry Name="Version" Type="1" Value="0"></Entry>
-</TraktorSettings>
-</NIXML>

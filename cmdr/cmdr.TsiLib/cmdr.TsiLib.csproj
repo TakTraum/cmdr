@@ -154,6 +154,29 @@
     <Compile Include="Enums\LoopRecorderUndoState.cs" />
     <Compile Include="Enums\UpDown.cs" />
     <Compile Include="Enums\ValueUIType.cs" />
+    <Compile Include="FormatXml\Base\AListXmlEntry.cs" />
+    <Compile Include="FormatXml\Base\TsiXmlEntryType.cs" />
+    <Compile Include="FormatXml\BoolXmlEntry.cs" />
+    <Compile Include="FormatXml\Base\AValueXmlEntry.cs" />
+    <Compile Include="FormatXml\Base\AXmlEntry.cs" />
+    <Compile Include="FormatXml\EnumXmlEntry.cs" />
+    <Compile Include="FormatXml\FloatXmlEntry.cs" />
+    <Compile Include="FormatXml\Interpretation\BrowserDirRoot.cs" />
+    <Compile Include="FormatXml\Interpretation\DefaultButtonFx.cs" />
+    <Compile Include="FormatXml\Interpretation\DefaultParamFx.cs" />
+    <Compile Include="FormatXml\Interpretation\AudioFxSelection.cs" />
+    <Compile Include="FormatXml\Interpretation\DeviceIoConfigController.cs" />
+    <Compile Include="FormatXml\Interpretation\Flavour.cs" />
+    <Compile Include="FormatXml\Interpretation\Version.cs" />
+    <Compile Include="FormatXml\IntXmlEntry.cs" />
+    <Compile Include="FormatXml\ListOfBoolXmlEntry.cs" />
+    <Compile Include="FormatXml\ListOfEnumXmlEntry.cs" />
+    <Compile Include="FormatXml\ListOfFloatXmlEntry.cs" />
+    <Compile Include="FormatXml\ListOfIntegerXmlEntry.cs" />
+    <Compile Include="FormatXml\ListOfStringXmlEntry.cs" />
+    <Compile Include="FormatXml\StringXmlEntry.cs" />
+    <Compile Include="FormatXml\TsiXmlDocument.cs" />
+    <Compile Include="FormatXml\XDocumentExtensions\XElementSortExtension.cs" />
     <Compile Include="Format\AMidiDefinitions.cs" />
     <Compile Include="Format\Device.cs" />
     <Compile Include="Format\DeviceData.cs" />
@@ -177,6 +200,8 @@
     <Compile Include="Format\MidiOutDefinitions.cs" />
     <Compile Include="Format\UnknownFrame.cs" />
     <Compile Include="Format\VersionInfo.cs" />
+    <Compile Include="FxSnapshot.cs" />
+    <Compile Include="FxSettings.cs" />
     <Compile Include="Mapping.cs" />
     <Compile Include="MidiDefinitions\Base\AGenericMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Base\AMidiDefinition.cs" />
@@ -189,7 +214,6 @@
     <Compile Include="MidiDefinitions\Proprietary\JogMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Proprietary\OutMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Proprietary\PushEncoderMidiDefinition.cs" />
-    <Compile Include="Parsers\EffectParser.cs" />
     <Compile Include="Parsers\EnumParser.cs" />
     <Compile Include="Parsers\FloatParser.cs" />
     <Compile Include="Parsers\IntParser.cs" />
@@ -209,6 +233,7 @@
     <Compile Include="Utils\IMenuProxy.cs" />
     <Compile Include="Utils\KeyConverter.cs" />
     <Compile Include="Utils\LinqExtensions.cs" />
+    <Compile Include="Utils\ReadOnlyCollectionExtensions.cs" />
     <Compile Include="Utils\StreamExtensions.cs" />
     <Compile Include="Utils\TypeExtensions.cs" />
     <Compile Include="Utils\Writer.cs" />
@@ -217,11 +242,9 @@
     <EmbeddedResource Include="Resources\DVST_Trakor Kontrol F1.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Template.tsi" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Controls\Controls.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

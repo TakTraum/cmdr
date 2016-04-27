@@ -164,7 +164,9 @@ namespace cmdr.Editor.ViewModels.Settings
             }
             else if (_command.ControlType == MappingControlType.LED)
             {
-                if (t.InheritsOrImplements(typeof(EnumOutCommand<>)))
+                if (t.InheritsOrImplements(typeof(EffectSelectorOutCommand)))
+                    SettingsContent = new EffectSelectorOutCommandView(_command);
+                else if (t.InheritsOrImplements(typeof(EnumOutCommand<>)))
                     SettingsContent = new EnumOutCommandView(_command);
                 else if (t.InheritsOrImplements(typeof(FloatOutCommand<>)))
                     SettingsContent = new FloatOutCommandView(_command);
