@@ -28,5 +28,19 @@ namespace cmdr.Editor.Utils
         {
             return MessageBox.Show(App.Current.MainWindow, message, "Question", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
         }
+
+        public static bool? ShowCancellableQuestion(string message)
+        {
+            var result = MessageBox.Show(App.Current.MainWindow, message, "Question", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    return true;
+                case MessageBoxResult.No:
+                    return false;
+                default:
+                    return null;
+            }
+        }
     }
 }
