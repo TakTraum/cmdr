@@ -14,7 +14,10 @@ using System.Windows.Input;
 namespace cmdr.Editor.ViewModels
 {
     public class TsiFileViewModel : AReversible
-    {       
+    {
+        public bool IsTraktorSettings { get { return _tsiFile.IsTraktorSettings; } }
+
+
         private readonly TsiFile _tsiFile;
         private string defaultTitle
         {

@@ -154,6 +154,13 @@ namespace cmdr.Editor.ViewModels
                     sb.Append(" [Reset]");
                     break;
                 case MappingInteractionMode.Output:
+                    if (_mapping.Command is EffectSelectorOutCommand)
+                    {
+                        var efCo = _mapping.Command as EffectSelectorOutCommand;
+                        sb.AppendFormat(" [{0}]", efCo.AllEffects ? "All Effects" : efCo.ControllerRangeMin.ToDescriptionString());
+                        break;
+                    }
+
                     object min = _mapping.Command.GetType().GetProperty("ControllerRangeMin").GetValue(_mapping.Command);
                     object max = _mapping.Command.GetType().GetProperty("ControllerRangeMax").GetValue(_mapping.Command);
                     if (min.GetType().IsEnum)
