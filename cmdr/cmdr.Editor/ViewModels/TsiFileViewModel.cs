@@ -1,4 +1,5 @@
 ﻿using ChangeTracking;
+using cmdr.Editor.AppSettings;
 using cmdr.Editor.Utils;
 using cmdr.TsiLib;
 using System;
@@ -75,7 +76,7 @@ namespace cmdr.Editor.ViewModels
         #endregion
 
 
-        public TsiFileViewModel(TsiFile tsiFile)
+        private TsiFileViewModel(TsiFile tsiFile)
         {
             _tsiFile = tsiFile;
 
@@ -100,19 +101,39 @@ namespace cmdr.Editor.ViewModels
             Devices.CollectionChanged += Devices_CollectionChanged;
         }
 
+        public static TsiFileViewModel Create()
+        {
+            var fxSettings = (TraktorSettings.Initialized) ? TraktorSettings.Instance.FxSettings : null;
+            return new TsiFileViewModel(new TsiFile(CmdrSettings.Instance.TraktorVersion, fxSettings));
+        }
 
-        public bool Save(string filepath)
+        public static async Task<TsiFileViewModel> Load(string filePath)
+        {
+            TsiFileViewModel result = null;
+            App.SetStatus("Opening " + filePath + " ...");
+            var tsiFile = await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath));
+            if (tsiFile != null)
+                result = new TsiFileViewModel(tsiFile);
+            App.ResetStatus();
+            return result;
+        }
+
+
+        public async Task<bool> Save(string filepath)
         {
             AcceptChanges();
-            if (_tsiFile.Save(filepath))
+            App.SetStatus("Saving " + filepath + " ...");
+            bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath));
+
+            if (success)
             {
                 raisePropertyChanged("Path");
                 raisePropertyChanged("Title");
-                return true;
             }
             else
                 IsChanged = true;
-            return false;
+            App.ResetStatus();
+            return success;
         }
 
         protected override void Accept()

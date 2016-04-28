@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace cmdr.Editor
 {
@@ -14,13 +15,11 @@ namespace cmdr.Editor
     /// </summary>
     public partial class App : Application
     {
-        private static SynchronizationContext _syncContext;
         public static ViewModels.ViewModel MainViewModel;
 
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            _syncContext = SynchronizationContext.Current;
             MainWindow mainWindow = new MainWindow();
             MainViewModel = new ViewModels.ViewModel(mainWindow.dockingManager);
             mainWindow.DataContext = MainViewModel;
@@ -30,18 +29,18 @@ namespace cmdr.Editor
 
         public static void SetStatus(string status)
         {
-            _syncContext.Post(delegate
+            App.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 MainViewModel.StatusText = status;
-            }, null);
+            }), DispatcherPriority.Background);
         }
 
         public static void ResetStatus()
         {
-            _syncContext.Post(delegate
+            App.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 MainViewModel.StatusText = null;
-            }, null);
+            }), DispatcherPriority.Background);
         }
     }
 }
