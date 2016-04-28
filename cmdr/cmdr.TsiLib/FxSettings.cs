@@ -40,7 +40,7 @@ namespace cmdr.TsiLib
             List<Effect> effects = (fxSelection != null) ? fxSelection.Value : new List<Effect>();
 
             Dictionary<Effect, FxSnapshot> defaults = new Dictionary<Effect, FxSnapshot>();
-            var allEffects = Enum.GetValues(typeof(Effect)).Cast<Effect>().ToList();
+            var allEffects = Enum.GetValues(typeof(Effect)).Cast<Effect>().Except(new[] { Effect.NoEffect }).ToList();
             foreach (var effect in allEffects)
             {
                 var effDef = FxSnapshot.Load(effect, xml);
