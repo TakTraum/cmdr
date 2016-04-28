@@ -18,7 +18,7 @@ namespace cmdr.TsiLib
     {
         private static readonly Regex REGEX_TRAKTOR_FOLDER = new Regex(@"Traktor ([0-9\.]+)");
 
-        public bool IsTraktorSettings { get { return Path != null && Path.EndsWith("Traktor Settings.tsi"); } }
+        public bool IsTraktorSettings { get { return Path != null && new FileInfo(Path).Name == TraktorSettings.TRAKTOR_SETTINGS_FILENAME; } }
 
         public string TraktorVersion { get; private set; }
 

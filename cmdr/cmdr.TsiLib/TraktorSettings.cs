@@ -14,6 +14,7 @@ namespace cmdr.TsiLib
     public static class TraktorSettings
     {
         public static readonly string TRAKTOR_FALLBACK_VERSION = "2.0.1 (R10169)";
+        public static readonly string TRAKTOR_SETTINGS_FILENAME = "Traktor Settings.tsi";
 
         private static string _pathToTraktorSettingsTsi = null;
 
@@ -50,7 +51,7 @@ namespace cmdr.TsiLib
             try
             {
                 FileInfo fi = new FileInfo(filePath);
-                if (!fi.Exists || fi.Name != "Traktor Settings.tsi")
+                if (!fi.Exists || fi.Name != TRAKTOR_SETTINGS_FILENAME)
                     return false;                
             }
             catch (Exception)
