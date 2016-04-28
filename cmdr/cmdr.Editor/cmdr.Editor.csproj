@@ -89,6 +89,7 @@
     <Compile Include="Behaviors\AttachedBehaviors.cs" />
     <Compile Include="Behaviors\InputBindingBehavior.cs" />
     <Compile Include="Behaviors\ListBoxScrollIntoViewBehavior.cs" />
+    <Compile Include="Converters\EnumMatchToBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -101,6 +102,7 @@
     <Compile Include="Utils\ContextMenuBuilder.cs" />
     <Compile Include="Utils\MessageBoxHelper.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
+    <Compile Include="ViewModels\EffectIdentificationViewModel.cs" />
     <Compile Include="ViewModels\Settings\CommandEditorViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\ConditionDescriptions.cs" />
@@ -167,6 +169,9 @@
     </Compile>
     <Compile Include="Views\DeviceListView.xaml.cs">
       <DependentUpon>DeviceListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EffectIdentificationWindow.xaml.cs">
+      <DependentUpon>EffectIdentificationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MappingEditor.xaml.cs">
       <DependentUpon>MappingEditor.xaml</DependentUpon>
@@ -274,6 +279,10 @@
     <Page Include="Views\DeviceListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EffectIdentificationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MappingEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
