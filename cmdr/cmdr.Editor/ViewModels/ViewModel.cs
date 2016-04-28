@@ -163,13 +163,12 @@ namespace cmdr.Editor.ViewModels
 
         private void @new()
         {
-            var fxSettings = (TraktorSettings.Initialized) ? TraktorSettings.Instance.FxSettings : null;
-            var vm = new TsiFileViewModel(new TsiFile(CmdrSettings.Instance.TraktorVersion, fxSettings));
+            var vm = TsiFileViewModel.Create();
             _tsiFileViewModels.Add(vm);
             openTab(vm);
         }
 
-        private bool open()
+        private async void open()
         {
             string initialDirectory = null;
             if (!String.IsNullOrEmpty(CmdrSettings.Instance.DefaultWorkspace))
@@ -177,12 +176,7 @@ namespace cmdr.Editor.ViewModels
             
             string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, false, initialDirectory);
             if (!String.IsNullOrEmpty(path))
-            {
-                openFile(path);
-                return true;
-            }
-
-            return false;
+                await openFile(path);
         }
 
         private void save()
@@ -291,7 +285,7 @@ namespace cmdr.Editor.ViewModels
 
         #endregion
 
-        private void drop(IDataObject dataObject)
+        private async void drop(IDataObject dataObject)
         {
             if (dataObject == null)
                 return;
@@ -300,22 +294,21 @@ namespace cmdr.Editor.ViewModels
             var filesOrDirectories = fileDrop as String[];
             if (filesOrDirectories != null && filesOrDirectories.Length > 0)
             {
+                List<Task> tasks = new List<Task>();
+                
                 foreach (string fullPath in filesOrDirectories)
                 {
                     if (Directory.Exists(fullPath))
                     {
                         IEnumerable<string> files = Directory.EnumerateFiles(fullPath, "*", SearchOption.AllDirectories)
                                         .Where(file => file.ToLower().EndsWith(".tsi"));
-
-                        foreach (var file in files)
-                            openFile(file);
+                        tasks.AddRange(files.Select(f => openFile(f)));
                     }
-                    else if (File.Exists(fullPath))
-                    {
-                        if (fullPath.ToLower().EndsWith(".tsi"))
-                            openFile(fullPath);
-                    }
+                    else if (File.Exists(fullPath) && fullPath.ToLower().EndsWith(".tsi"))
+                        tasks.Add(openFile(fullPath));
                 }
+                
+                await Task.WhenAll(tasks);
             }    
         }
 
@@ -335,46 +328,34 @@ namespace cmdr.Editor.ViewModels
                 AppTitle = APPNAME;
         }
 
-        private async void openFile(string path)
+        private async Task openFile(string path)
         {
 
             var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
             if (mdiChild == null)
             {
-                await Task.Factory.StartNew(new Action(() =>
-                    {
-
-                        App.SetStatus("Opening " + path + " ...");
-                        TsiFile loaded = TsiFile.Load(CmdrSettings.Instance.TraktorVersion, path);
-                        if (loaded != null)
-                        {
-                            App.Current.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                TsiFileViewModel vm = new TsiFileViewModel(loaded);
-                                _tsiFileViewModels.Add(vm);
-                                openTab(vm);
-                            }));
-                        }
-                        else
-                        {
-                            MessageBox.Show("Cannot open file.");
-                        }
-                        App.ResetStatus();
-                    }));
+                TsiFileViewModel vm = await TsiFileViewModel.Load(path);
+                if (vm != null)
+                {
+                    _tsiFileViewModels.Add(vm);
+                    openTab(vm);
+                }
+                else
+                    MessageBox.Show("Cannot open file.");
             }
             else
                 _mdiContainer.SelectMdiChild(mdiChild.Id);
         }
 
-        private void savePendingChanges(out bool cancel)
+        private async Task<bool> savePendingChanges()
         {
-            cancel = false;
+            bool cancel = false;
             for (int i = _tsiFileViewModels.Count - 1; i >= 0; i--)
             {
                 var vm = _tsiFileViewModels[i];
 
                 if (savePendingChanges(vm, out cancel))
-                    if (!save(vm))
+                    if (! await save(vm))
                         break;
 
                 if (cancel)
@@ -383,6 +364,8 @@ namespace cmdr.Editor.ViewModels
                 if (_isExiting)
                     close(vm);
             }
+
+            return !cancel;
         }
 
         private bool savePendingChanges(TsiFileViewModel vm, out bool cancel)
@@ -401,15 +384,15 @@ namespace cmdr.Editor.ViewModels
             return false;
         }
 
-        private bool save(TsiFileViewModel vm)
+        private async Task<bool> save(TsiFileViewModel vm)
         {
             if (vm.Path == null)
-                return saveAs(vm);
+                return await saveAs(vm);
             else
-                return vm.Save(vm.Path);
+                return await vm.Save(vm.Path);
         }
 
-        private bool saveAs(TsiFileViewModel vm)
+        private async Task<bool> saveAs(TsiFileViewModel vm)
         {
             string initialDirectory = null;
             if (!String.IsNullOrEmpty(CmdrSettings.Instance.DefaultWorkspace))
@@ -417,10 +400,7 @@ namespace cmdr.Editor.ViewModels
 
             string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, true, initialDirectory, vm.Title);
             if (!String.IsNullOrEmpty(path))
-            {
-                vm.Save(path);
-                return true;
-            }
+                return await vm.Save(path);
 
             return false;
         }
@@ -466,11 +446,10 @@ namespace cmdr.Editor.ViewModels
             initialize();
         }
 
-        void onClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void onClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             _isExiting = true;
-            bool cancel;
-            savePendingChanges(out cancel);
+            bool cancel = !await savePendingChanges();
             e.Cancel = cancel;
             _isExiting = false;
         }
