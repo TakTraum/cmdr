@@ -280,7 +280,9 @@ namespace cmdr.Editor.ViewModels
 
         private void showSettings()
         {
-            new AppSettingsWindow().ShowDialog();
+            var asw = new AppSettingsWindow();
+            asw.Owner = App.Current.MainWindow;
+            asw.ShowDialog();
         }
 
         #endregion
@@ -342,7 +344,7 @@ namespace cmdr.Editor.ViewModels
                     openTab(vm);
                 }
                 else
-                    MessageBox.Show("Cannot open file.");
+                    MessageBoxHelper.ShowError("Cannot open file.");
             }
             else
                 _mdiContainer.SelectMdiChild(mdiChild.Id);
