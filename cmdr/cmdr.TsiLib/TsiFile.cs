@@ -126,69 +126,6 @@ namespace cmdr.TsiLib
             return true;
         }
 
-        private void prepareFxForSave(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
-        {
-            prepareFxSettings(effectSelectorInCommands, effectSelectorOutCommands);
-
-            // replace ids with indices
-            foreach (var e in effectSelectorInCommands)
-                if (e.Value != Effect.NoEffect)
-                    e.Value = (Effect)(FxSettings.Effects.IndexOf(e.Value) + 1);
-
-            foreach (var e in effectSelectorOutCommands)
-            {
-                if (e.ControllerRangeMin != Effect.NoEffect)
-                    e.ControllerRangeMin = (Effect)(FxSettings.Effects.IndexOf(e.ControllerRangeMin) + 1);
-                if (e.ControllerRangeMax != Effect.NoEffect)
-                    e.ControllerRangeMax = (Effect)(FxSettings.Effects.IndexOf(e.ControllerRangeMax) + 1);
-            }
-        }
-
-        private void prepareFxSettings(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
-        {
-            List<Effect> usedFxIn = effectSelectorInCommands.Select(e => e.Value).Distinct().ToList();
-            List<Effect> usedFxOut = effectSelectorOutCommands.Select(e => e.ControllerRangeMin).Distinct().ToList();
-            List<Effect> usedFx = usedFxIn.Union(usedFxOut).Distinct().Except(new[] { Effect.NoEffect }).OrderBy(e => e).ToList();
-
-            // Keep effects from Traktor settings as they are. Append new effects if necessary.
-            if (IsTraktorSettings)
-                usedFx = FxSettings.Effects.Union(usedFx).Distinct().ToList();
-
-            Dictionary<Effect, FxSnapshot> usedSnapshots = new Dictionary<Effect,FxSnapshot>();
-            foreach (var fx in usedFx)
-            {
-                FxSnapshot snapshot = null;
-                if (FxSettings.Snapshots.ContainsKey(fx))
-                    snapshot = FxSettings.Snapshots[fx];
-                else
-                {
-                    if (TraktorSettings.Initialized && TraktorSettings.Instance.FxSettings.Snapshots.ContainsKey(fx))
-                        snapshot = TraktorSettings.Instance.FxSettings.Snapshots[fx];
-                    else
-                        snapshot = new FxSnapshot(fx);
-                }
-                usedSnapshots.Add(fx, snapshot);
-            }
-
-            // Keep snapshots from Traktor settings as they are. Add new snapshots if necessary.
-            if (IsTraktorSettings)
-                usedSnapshots = FxSettings.Snapshots.Union(usedSnapshots).Distinct().ToDictionary(s => s.Key, s=> s.Value);
-            
-            FxSettings = new FxSettings(usedFx, usedSnapshots);
-        }
-
-        private void restoreEffectSelectorCommands(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
-        {
-            // replace indices with ids
-            foreach (var e in effectSelectorInCommands)
-                if (e.Value != Effect.NoEffect)
-                    e.Value = FxSettings.Effects[(int)e.Value - 1];
-
-            //foreach (var e in effectSelectorOutCommands)
-            //{
-
-            //}
-        }
 
         private void load(TsiXmlDocument xml)
         {
@@ -220,7 +157,6 @@ namespace cmdr.TsiLib
             }
         }
 
-
         private List<EffectSelectorInCommand> getCriticalEffectSelectorInCommands()
         {
             var effectCommands = Devices
@@ -233,8 +169,77 @@ namespace cmdr.TsiLib
         {
             var effectCommands = Devices
                 .SelectMany(d => d.Mappings.Select(m => m.Command))
-                .Where(c => c is EffectSelectorOutCommand);
-            return effectCommands.Cast<EffectSelectorOutCommand>().ToList();
+                .Where(c => c is EffectSelectorOutCommand)
+                .Cast<EffectSelectorOutCommand>()
+                .Where(e => !e.AllEffects);
+            return effectCommands.ToList();
+        }
+
+        private void prepareFxForSave(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
+        {
+            prepareFxSettings(effectSelectorInCommands, effectSelectorOutCommands);
+
+            // replace ids with indices
+            foreach (var e in effectSelectorInCommands)
+                if (e.Value != Effect.NoEffect)
+                    e.Value = (Effect)(FxSettings.Effects.IndexOf(e.Value) + 1);
+
+            foreach (var e in effectSelectorOutCommands)
+            {
+                if (e.ControllerRangeMin != Effect.NoEffect)
+                    e.ControllerRangeMin = (Effect)(FxSettings.Effects.IndexOf(e.ControllerRangeMin) + 1);
+                if (e.ControllerRangeMax != Effect.NoEffect)
+                    e.ControllerRangeMax = (Effect)(FxSettings.Effects.IndexOf(e.ControllerRangeMax) + 1);
+            }
+        }
+
+        private void prepareFxSettings(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
+        {
+            List<Effect> usedFxIn = effectSelectorInCommands.Select(e => e.Value).Distinct().ToList();
+            List<Effect> usedFxOut = effectSelectorOutCommands.Select(e => e.ControllerRangeMin).Distinct().ToList();
+            List<Effect> usedFx = usedFxIn.Union(usedFxOut).Distinct().Except(new[] { Effect.NoEffect }).OrderBy(e => e).ToList();
+
+            // Keep effects from Traktor settings as they are. Append new effects if necessary.
+            if (IsTraktorSettings)
+                usedFx = FxSettings.Effects.Union(usedFx).Distinct().ToList();
+
+            Dictionary<Effect, FxSnapshot> usedSnapshots = new Dictionary<Effect, FxSnapshot>();
+            foreach (var fx in usedFx)
+            {
+                FxSnapshot snapshot = null;
+                if (FxSettings.Snapshots.ContainsKey(fx))
+                    snapshot = FxSettings.Snapshots[fx];
+                else
+                {
+                    if (TraktorSettings.Initialized && TraktorSettings.Instance.FxSettings.Snapshots.ContainsKey(fx))
+                        snapshot = TraktorSettings.Instance.FxSettings.Snapshots[fx];
+                    else
+                        snapshot = new FxSnapshot(fx);
+                }
+                usedSnapshots.Add(fx, snapshot);
+            }
+
+            // Keep snapshots from Traktor settings as they are. Add new snapshots if necessary.
+            if (IsTraktorSettings)
+                usedSnapshots = FxSettings.Snapshots.Union(usedSnapshots).Distinct().ToDictionary(s => s.Key, s => s.Value);
+
+            FxSettings = new FxSettings(usedFx, usedSnapshots);
+        }
+
+        private void restoreEffectSelectorCommands(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
+        {
+            // replace indices with ids
+            foreach (var e in effectSelectorInCommands)
+                if (e.Value != Effect.NoEffect)
+                    e.Value = FxSettings.Effects[(int)e.Value - 1];
+
+            foreach (var e in effectSelectorOutCommands)
+            {
+                if (e.ControllerRangeMin != Effect.NoEffect)
+                    e.ControllerRangeMin = FxSettings.Effects[(int)e.ControllerRangeMin - 1];
+                if (e.ControllerRangeMax != Effect.NoEffect)
+                    e.ControllerRangeMax = FxSettings.Effects[(int)e.ControllerRangeMax - 1];
+            }
         }
 
         private string getDataAsBase64String()
