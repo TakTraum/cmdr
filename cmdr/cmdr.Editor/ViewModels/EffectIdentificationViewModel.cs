@@ -48,6 +48,18 @@ namespace cmdr.Editor.ViewModels
             get { return _browseFileCommand ?? (_browseFileCommand = new CommandHandler<TextBlock>((tb) => browseFile(tb))); }
         }
 
+        private ICommand _selectPreviousCommand;
+        public ICommand SelectPreviousCommand
+        {
+            get { return _selectPreviousCommand ?? (_selectPreviousCommand = new CommandHandler(selectPrevious)); }
+        }
+
+        private ICommand _selectNextCommand;
+        public ICommand SelectNextCommand
+        {
+            get { return _selectNextCommand ?? (_selectNextCommand = new CommandHandler(selectNext)); }
+        }
+
         #endregion
 
         public bool CanUseTraktorSettings { get { return TraktorSettings.Initialized; } }
@@ -75,6 +87,26 @@ namespace cmdr.Editor.ViewModels
             _currentOption = Options.Option3;
         }
 
+
+        private void selectPrevious()
+        {
+            int min = CanUseTraktorSettings ? 0 : 1;
+            int current = (int)CurrentOption;
+            if (current == min)
+                current--;
+            int previous = (3 + current - 1) % 3;
+            CurrentOption = (Options)previous;
+        }
+
+        private void selectNext()
+        {
+            int min = CanUseTraktorSettings ? 0 : 1;
+            int current = (int)CurrentOption;
+            int next = (current + 1) % 3;
+            if (next < min)
+                next = min;
+            CurrentOption = (Options)next;
+        }
 
         private void ok()
         {
