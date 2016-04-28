@@ -123,6 +123,7 @@ namespace cmdr.Editor.AvalonDock
             _internalMdiChildren.Add(mdiChild);
 
             mdiChild.IsSelected = true;
+            _dockingManager.UpdateLayout();
         }
     }
 
