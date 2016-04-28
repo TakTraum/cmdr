@@ -23,6 +23,8 @@ namespace cmdr.Editor
             MainWindow mainWindow = new MainWindow();
             MainViewModel = new ViewModels.ViewModel(mainWindow.dockingManager);
             mainWindow.DataContext = MainViewModel;
+            this.MainWindow = mainWindow;
+
             mainWindow.Show();
         }
 
