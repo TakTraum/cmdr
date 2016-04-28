@@ -419,8 +419,9 @@ namespace cmdr.Editor.ViewModels
                 App.SetStatus("Initializing App Settings ...");
                 MessageBoxHelper.ShowInfo(
                     "Welcome to cmdr! Before you can map the sh** out of your controllers, please make a few settings." +
-                    "\n\nSet at least the targeted Traktor version for your mappings. You can take the default one, even if this means that you won't be able to load and save useful effect selector commands." +
-                    "\n\nIf you want the full functionality, you have to setup the path to your \"Traktor Settings.tsi\"." + "\nDon't forget to save settings when you are done.");
+                    "\n\nSet at least the targeted Traktor version for your mappings. You can take the default one." +
+                    "\n\nIf you want the full functionality, please setup the paths to your \"Traktor Settings.tsi\" and your Controller Default Mappings." +
+                    "\n\nDon't forget to save settings when you are done.");
                 showSettings();
                 App.ResetStatus();
             }
