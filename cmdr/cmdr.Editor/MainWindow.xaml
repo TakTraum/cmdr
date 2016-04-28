@@ -26,8 +26,8 @@
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LearnCommand, Mode=OneTime}"/>
         <KeyBinding Key="F1" Command="{Binding HelpCommand, Mode=OneTime}"/>
     </Window.InputBindings>
-    <DockPanel>
-        <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="Transparent">
+    <DockPanel LastChildFill="True">
+        <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="Transparent" Padding="10,5">
             <MenuItem Header="_File">
                 <MenuItem Header="_New..." Command="{Binding NewCommand, Mode=OneTime}" InputGestureText="Ctrl+N"/>
                 <Separator />
@@ -79,7 +79,13 @@
             </MenuItem>
         </Menu>
 
-        <avalonDock:DockingManager x:Name="dockingManager" Margin="10" DockPanel.Dock="Bottom" >
+        <StatusBar DockPanel.Dock="Bottom" Background="Transparent" Margin="0" Padding="10,0" Height="25">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusText, UpdateSourceTrigger=PropertyChanged}"/>
+            </StatusBarItem>
+        </StatusBar>
+        
+        <avalonDock:DockingManager x:Name="dockingManager" Margin="10,0">
             <avalonDock:LayoutRoot>
                 <avalonDock:LayoutPanel Orientation="Horizontal">
                     <avalonDock:LayoutDocumentPane />

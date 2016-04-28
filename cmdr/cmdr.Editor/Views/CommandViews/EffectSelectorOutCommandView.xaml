@@ -20,13 +20,10 @@
             <ColumnDefinition Width="10"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.ColumnSpan="3">
-            <TextBlock>
-                <Run Text="Controller Range:  single or all"/>
-                <LineBreak/>
-                <Run FontSize="10" Text="For subranges, please use multiple commands."/>
-            </TextBlock>
-        </Label>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Margin="0,5,0,5">
+            <Label Padding="0">Controller Range: single or all</Label>
+            <Label Padding="0" FontSize="10">For subranges, please use multiple commands.</Label>
+        </StackPanel>
         <ComboBox Grid.Row="1" Grid.Column="0" SelectedValue="{Binding Effect}" SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding AllValues, Mode=OneWay}" IsEnabled="{Binding AllEffects, Mode=OneWay, Converter={StaticResource invBoolConverter}}"/>
         <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal"> 
             <CheckBox IsChecked="{Binding AllEffects}" VerticalAlignment="Center" />
