@@ -420,10 +420,11 @@ namespace cmdr.Editor.ViewModels
             {
                 App.SetStatus("Initializing App Settings ...");
                 MessageBoxHelper.ShowInfo(
-                    "Welcome to cmdr! Before you can map the sh** out of your controllers, please make a few settings." +
-                    "\n\nSet at least the targeted Traktor version for your mappings. You can take the default one." +
-                    "\n\nIf you want the full functionality, please setup the paths to your \"Traktor Settings.tsi\" and your Controller Default Mappings." +
-                    "\n\nDon't forget to save settings when you are done.");
+                    "Before you can map the sh** out of your controllers, please make a few settings. " +
+                    "Set at least the targeted Traktor version for your mappings. You can take the default one." +
+                    "\n\nIf you want the full functionality, please setup the paths to your \"Traktor Settings.tsi\" and " + 
+                    "your Controller Default Mappings." +
+                    "\n\nDon't forget to save settings when you are done.", "Welcome to cmdr!");
                 showSettings();
                 App.ResetStatus();
             }
