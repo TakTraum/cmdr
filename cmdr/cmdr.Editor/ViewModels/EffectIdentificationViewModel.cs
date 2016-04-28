@@ -92,9 +92,9 @@ namespace cmdr.Editor.ViewModels
         {
             int min = CanUseTraktorSettings ? 0 : 1;
             int current = (int)CurrentOption;
-            if (current == min)
-                current--;
             int previous = (3 + current - 1) % 3;
+            if (previous < min)
+                previous = 2;
             CurrentOption = (Options)previous;
         }
 
@@ -117,7 +117,10 @@ namespace cmdr.Editor.ViewModels
                     break;
                 case EffectIdentificationViewModel.Options.Option2:
                     if (String.IsNullOrEmpty(PathToTsi))
+                    {
                         MessageBoxHelper.ShowError("Please specify a path.");
+                        return;
+                    }
                     else
                     {
                         try
@@ -128,6 +131,7 @@ namespace cmdr.Editor.ViewModels
                         {
                             Debug.WriteLine(ex.Message);
                             MessageBoxHelper.ShowError("Could not load " + PathToTsi);
+                            return;
                         }
                     }
                     break;
