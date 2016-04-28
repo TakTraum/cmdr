@@ -296,6 +296,7 @@ namespace cmdr.Editor.ViewModels
             {
                 List<Task> tasks = new List<Task>();
                 
+                // collect tasks first
                 foreach (string fullPath in filesOrDirectories)
                 {
                     if (Directory.Exists(fullPath))
@@ -308,6 +309,7 @@ namespace cmdr.Editor.ViewModels
                         tasks.Add(openFile(fullPath));
                 }
                 
+                // now execute
                 await Task.WhenAll(tasks);
             }    
         }
@@ -431,11 +433,6 @@ namespace cmdr.Editor.ViewModels
                     TraktorSettings.Initialize(CmdrSettings.Instance.PathToTraktorSettings, true);
                     App.ResetStatus();
                 });
-
-
-            if (!TraktorSettings.Initialized)
-                MessageBoxHelper.ShowWarning("Could not load \"Traktor Settings.tsi\"." +
-                    "\n\nYou can use cmdr anyway, but in order to load and save useful effect selector commands, you need to setup the path to your \"Traktor Settings.tsi\".");
         }
 
         #region Events
