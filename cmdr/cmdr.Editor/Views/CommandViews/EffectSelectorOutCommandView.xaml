@@ -21,8 +21,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Margin="0,5,0,5">
-            <Label Padding="0">Controller Range: single or all</Label>
-            <Label Padding="0" FontSize="10">For subranges, please use multiple commands.</Label>
+            <Label Padding="0" Content="Controller Range: single or all"/>
+            <Label Padding="0" FontSize="10" Content="For subranges, please use multiple commands."/>
         </StackPanel>
         <ComboBox Grid.Row="1" Grid.Column="0" SelectedValue="{Binding Effect}" SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding AllValues, Mode=OneWay}" IsEnabled="{Binding AllEffects, Mode=OneWay, Converter={StaticResource invBoolConverter}}"/>
         <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal"> 
