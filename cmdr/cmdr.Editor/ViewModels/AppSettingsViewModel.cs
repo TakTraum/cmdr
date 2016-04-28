@@ -3,6 +3,7 @@ using cmdr.Editor.AppSettings;
 using cmdr.Editor.Utils;
 using cmdr.TsiLib;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +22,13 @@ namespace cmdr.Editor.ViewModels
         }
 
         public Action CloseAction { get; set; }
-        public Window Window { get; set; }
+
+        private Window _window;
+        public Window Window
+        {
+            get { return _window; }
+            set { _window = value; _window.Closing += (s, e) => e.Cancel = IsInitializingTraktorSettings; }
+        }
 
         private string _defaultWorkspace;
         public string DefaultWorkspace
@@ -75,18 +82,25 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
+        private bool _isInitializingTraktorSettings;
+        public bool IsInitializingTraktorSettings
+        {
+            get { return _isInitializingTraktorSettings; }
+            set { _isInitializingTraktorSettings = value; raisePropertyChanged("IsInitializingTraktorSettings"); }
+        }
+
         #region Commands
 
         private ICommand _closeCommand;
         public ICommand CloseCommand
         {
-            get { return _closeCommand ?? (_closeCommand = new CommandHandler(CloseAction)); }
+            get { return _closeCommand ?? (_closeCommand = new CommandHandler(CloseAction, () => !IsInitializingTraktorSettings)); }
         }
 
         private ICommand _saveCommand;
         public ICommand SaveCommand
         {
-            get { return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => IsChanged)); }
+            get { return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => IsChanged && !IsInitializingTraktorSettings)); }
         }
 
         private ICommand _browseFolderCommand;
@@ -127,20 +141,29 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-        private void updateTraktorVersion()
+        private async void updateTraktorVersion()
         {
             MustOverrideTraktorVersion = String.IsNullOrEmpty(PathToTraktorSettings);
 
             if (!MustOverrideTraktorVersion)
             {
-                var success = TraktorSettings.Initialize(PathToTraktorSettings, true);
-                if (success)
+                await Task.Factory.StartNew(() =>
                 {
-                    if (!OverrideTraktorVersion)
-                        TraktorVersion = TraktorSettings.Instance.TraktorVersion;
-                    else if (TraktorVersion.Equals(TraktorSettings.TRAKTOR_FALLBACK_VERSION))
-                        OverrideTraktorVersion = false;
-                }
+                    App.SetStatus("Initializing Traktor Settings ...");
+                    IsInitializingTraktorSettings = true;
+                    var success = TraktorSettings.Initialize(PathToTraktorSettings, true);
+                    if (success)
+                    {
+                        if (!OverrideTraktorVersion)
+                            TraktorVersion = TraktorSettings.Instance.TraktorVersion;
+                        else if (TraktorVersion.Equals(TraktorSettings.TRAKTOR_FALLBACK_VERSION))
+                            OverrideTraktorVersion = false;
+                    }
+                    IsInitializingTraktorSettings = false;
+                    (CloseCommand as CommandHandler).UpdateCanExecuteState();
+                    (SaveCommand as CommandHandler).UpdateCanExecuteState();
+                    App.ResetStatus();
+                });
             }
         }
 

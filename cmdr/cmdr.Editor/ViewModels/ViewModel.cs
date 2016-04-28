@@ -10,9 +10,11 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Xceed.Wpf.AvalonDock;
 
 
@@ -33,6 +35,14 @@ namespace cmdr.Editor.ViewModels
             get { return _appTitle; }
             set { _appTitle = value; raisePropertyChanged("AppTitle"); }
         }
+
+        private string _statusText = "Ready";
+        public string StatusText
+        {
+            get { return _statusText; }
+            set { if (value == null) value = "Ready"; _statusText = value; raisePropertyChanged("StatusText"); }
+        }
+
 
         #region Commands
 
@@ -325,28 +335,35 @@ namespace cmdr.Editor.ViewModels
                 AppTitle = APPNAME;
         }
 
-        private bool openFile(string path)
+        private async void openFile(string path)
         {
+
             var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
             if (mdiChild == null)
             {
-                TsiFile loaded = TsiFile.Load(CmdrSettings.Instance.TraktorVersion, path);
-                if (loaded != null)
-                {
-                    TsiFileViewModel vm = new TsiFileViewModel(loaded);
-                    _tsiFileViewModels.Add(vm);
-                    openTab(vm);
-                }
-                else
-                {
-                    MessageBox.Show("Cannot open file.");
-                    return false;
-                }
+                await Task.Factory.StartNew(new Action(() =>
+                    {
+
+                        App.SetStatus("Opening " + path + " ...");
+                        TsiFile loaded = TsiFile.Load(CmdrSettings.Instance.TraktorVersion, path);
+                        if (loaded != null)
+                        {
+                            App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                TsiFileViewModel vm = new TsiFileViewModel(loaded);
+                                _tsiFileViewModels.Add(vm);
+                                openTab(vm);
+                            }));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cannot open file.");
+                        }
+                        App.ResetStatus();
+                    }));
             }
             else
                 _mdiContainer.SelectMdiChild(mdiChild.Id);
-
-            return true;
         }
 
         private void savePendingChanges(out bool cancel)
@@ -413,31 +430,40 @@ namespace cmdr.Editor.ViewModels
             _mdiContainer.RemoveMdiChild(_mdiContainer.MdiChildren.Single(m => m.Value.ViewModel.Equals(vm)).Key, true);
         }
 
-        #region Events
-
-        void onLoaded()
+        private async void initialize()
         {
             // assert app settings are initialized
             while (!CmdrSettings.Instance.Initialized)
             {
+                App.SetStatus("Initializing App Settings ...");
                 MessageBoxHelper.ShowInfo(
                     "Welcome to cmdr! Before you can map the sh** out of your controllers, please make a few settings." +
                     "\n\nSet at least the targeted Traktor version for your mappings. You can take the default one, even if this means that you won't be able to load and save useful effect selector commands." +
                     "\n\nIf you want the full functionality, you have to setup the path to your \"Traktor Settings.tsi\"." + "\nDon't forget to save settings when you are done.");
                 showSettings();
+                App.ResetStatus();
             }
 
             // try to initialize TraktorSettings
             if (!String.IsNullOrEmpty(CmdrSettings.Instance.PathToTraktorSettings) && !TraktorSettings.Initialized)
-            {
-                var success = TraktorSettings.Initialize(CmdrSettings.Instance.PathToTraktorSettings, true);
-                if (success)
-                    return;
-            }
+                await Task.Factory.StartNew(() =>
+                {
+                    App.SetStatus("Initializing Traktor Settings ..."); 
+                    TraktorSettings.Initialize(CmdrSettings.Instance.PathToTraktorSettings, true);
+                    App.ResetStatus();
+                });
+
 
             if (!TraktorSettings.Initialized)
                 MessageBoxHelper.ShowWarning("Could not load \"Traktor Settings.tsi\"." +
                     "\n\nYou can use cmdr anyway, but in order to load and save useful effect selector commands, you need to setup the path to your \"Traktor Settings.tsi\".");
+        }
+
+        #region Events
+
+        void onLoaded()
+        {
+            initialize();
         }
 
         void onClosing(object sender, System.ComponentModel.CancelEventArgs e)
