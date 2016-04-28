@@ -1,7 +1,9 @@
 ﻿using ChangeTracking;
 using cmdr.Editor.AppSettings;
 using cmdr.Editor.Utils;
+using cmdr.Editor.Views;
 using cmdr.TsiLib;
+using cmdr.TsiLib.EventArgs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +22,7 @@ namespace cmdr.Editor.ViewModels
 
 
         private readonly TsiFile _tsiFile;
+
         private string defaultTitle
         {
             get
@@ -75,6 +78,11 @@ namespace cmdr.Editor.ViewModels
 
         #endregion
 
+        static TsiFileViewModel()
+        {
+            TsiFile.EffectIdentificationRequest += onEffectIdentificationRequest;
+        }
+
 
         private TsiFileViewModel(TsiFile tsiFile)
         {
@@ -101,10 +109,10 @@ namespace cmdr.Editor.ViewModels
             Devices.CollectionChanged += Devices_CollectionChanged;
         }
 
+
         public static TsiFileViewModel Create()
         {
-            var fxSettings = (TraktorSettings.Initialized) ? TraktorSettings.Instance.FxSettings : null;
-            return new TsiFileViewModel(new TsiFile(CmdrSettings.Instance.TraktorVersion, fxSettings));
+            return new TsiFileViewModel(TsiFile.Create(CmdrSettings.Instance.TraktorVersion));
         }
 
         public static async Task<TsiFileViewModel> LoadAsync(string filePath)
@@ -135,6 +143,7 @@ namespace cmdr.Editor.ViewModels
             App.ResetStatus();
             return success;
         }
+
 
         protected override void Accept()
         {
@@ -183,7 +192,20 @@ namespace cmdr.Editor.ViewModels
             return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
         }
 
+        private static void solveEffectIdentification(EffectIdentificationRequest request)
+        {
+            EffectIdentificationWindow eiw = new EffectIdentificationWindow(request);
+            eiw.Owner = App.Current.MainWindow;
+            eiw.ShowDialog();
+            request.Handled = true;
+        }
+
         #region Events
+
+        static void onEffectIdentificationRequest(object sender, EffectIdentificationRequest e)
+        {
+            App.Current.Dispatcher.BeginInvoke(new Action(() => solveEffectIdentification(e)));
+        }
 
         void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

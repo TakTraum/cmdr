@@ -154,6 +154,7 @@
     <Compile Include="Enums\LoopRecorderUndoState.cs" />
     <Compile Include="Enums\UpDown.cs" />
     <Compile Include="Enums\ValueUIType.cs" />
+    <Compile Include="EventArgs\EffectIdentificationRequest.cs" />
     <Compile Include="FormatXml\Base\AListXmlEntry.cs" />
     <Compile Include="FormatXml\Base\TsiXmlEntryType.cs" />
     <Compile Include="FormatXml\BoolXmlEntry.cs" />

@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using cmdr.TsiLib.Format;
 using cmdr.TsiLib.Utils;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.FormatXml;
 using cmdr.TsiLib.FormatXml.Interpretation;
+using cmdr.TsiLib.EventArgs;
+using System.Threading;
+using System.Diagnostics;
 
 namespace cmdr.TsiLib
 {
     public class TsiFile
     {
         private static readonly Regex REGEX_TRAKTOR_FOLDER = new Regex(@"Traktor ([0-9\.]+)");
+
+        public static event EventHandler<EffectIdentificationRequest> EffectIdentificationRequest;
+
 
         public bool IsTraktorSettings { get { return Path != null && new FileInfo(Path).Name == TraktorSettings.TRAKTOR_SETTINGS_FILENAME; } }
 
@@ -31,21 +35,26 @@ namespace cmdr.TsiLib
 
         public FxSettings FxSettings { get; private set; }
 
+        private bool _ignoreFx;
 
-        /// <summary>
-        /// Creates a new TSI File for specified Traktor Version.
-        /// </summary>
-        /// <param name="traktorVersion">The targeted Traktor Version.</param>
-        public TsiFile(string traktorVersion, FxSettings fxSettings = null)
+
+        private TsiFile(string traktorVersion)
         {
             TraktorVersion = traktorVersion;
 
             _devices = new List<Device>();
             _devicesContainer = new DeviceMappingsContainer();
-
-            FxSettings = fxSettings ?? new FxSettings(new List<Effect>(), new Dictionary<Effect,FxSnapshot>());
         }
 
+        /// <summary>
+        /// Creates a new TSI File for the specified version of Traktor.
+        /// </summary>
+        /// <param name="traktorVersion">The targeted Traktor version.</param>
+        public static TsiFile Create(string traktorVersion)
+        {
+            var tsi = new TsiFile(traktorVersion);
+            return tsi;
+        }
 
         /// <summary>
         /// Loads a TSI File.
@@ -94,31 +103,46 @@ namespace cmdr.TsiLib
             var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
             var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
 
-            prepareFxForSave(effectSelectorInCommands, effectSelectorOutCommands);
+            bool prepared = false;
 
+            if (!_ignoreFx && (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any()))
+            {
+                if (FxSettings == null)
+                    FxSettings = (TraktorSettings.Initialized) ? TraktorSettings.Instance.FxSettings : createDefaultFxSettings();
+
+                prepareFxForSave(effectSelectorInCommands, effectSelectorOutCommands);
+                prepared = true;
+            }
+
+            // build controller config (binary)
+            DeviceIoConfigController controllerConfig = null;
             try
             {
                 string tsiData = getDataAsBase64String();
+                controllerConfig = new DeviceIoConfigController();
+                controllerConfig.Value = tsiData;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error building controller config. Reason: " + ex.Message);
+                return false;
+            }
 
+            if (prepared)
                 restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
 
-                TsiXmlDocument xml;
-                if (Path != null)
-                    xml = new TsiXmlDocument(Path);
-                else
-                    xml = new TsiXmlDocument();
-
-                if (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any())
+            // build xml document
+            try
+            {
+                TsiXmlDocument xml = (Path != null) ? new TsiXmlDocument(Path) : new TsiXmlDocument();
+                if (FxSettings != null && (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any()))
                     FxSettings.Save(xml);
-
-                var controllerConfig = new DeviceIoConfigController();
-                controllerConfig.Value = tsiData;
                 xml.SaveEntry(controllerConfig);
-
                 xml.Save(filePath);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine("Error building xml document. Reason: " + ex.Message);
                 return false;
             }
 
@@ -129,16 +153,16 @@ namespace cmdr.TsiLib
 
         private void load(TsiXmlDocument xml)
         {
-            // get Traktor version (only for "Traktor Settings.tsi")
+            // Traktor version, optional (only for "Traktor Settings.tsi")
             var browserDirRoot = xml.GetEntry<BrowserDirRoot>();
             if (browserDirRoot != null)
             {
                 Match m = REGEX_TRAKTOR_FOLDER.Match(browserDirRoot.Value);
-                if (m.Success)
+                if (m.Success) // Overwrite version if possible
                     TraktorVersion = m.Groups[1].Value;
             }
 
-            // effects, optional
+            // effects, optional (FxSettings.Load may return null)
             FxSettings = FxSettings.Load(xml);
 
             // devices
@@ -150,11 +174,42 @@ namespace cmdr.TsiLib
                 int id = 0;
                 _devices = _devicesContainer.Devices.List.Select(d => new Device(id++, d)).ToList();
 
-                // replace effect indices with ids
                 var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
                 var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
-                restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
+                if (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any())
+                {
+                    // need FxSettings for interpretation but not provided by file itself?
+                    if (FxSettings == null)
+                    {
+                        // call for help
+                        string rId = new FileInfo(Path).Name;
+                        var request = new EffectIdentificationRequest(rId);
+                        var handler = EffectIdentificationRequest;
+                        if (handler != null)
+                        {
+                            handler(this, request);
+
+                            // wait for help
+                            while (!request.Handled)
+                                Thread.Sleep(100);
+
+                            if (request.FxSettings != null)
+                                FxSettings = request.FxSettings;
+                        }
+                    }
+
+                    // if possible, replace effect indices with ids
+                    if (FxSettings != null)
+                        restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
+                    else
+                        _ignoreFx = true;
+                }
             }
+        }
+
+        private FxSettings createDefaultFxSettings()
+        {
+            return new FxSettings(new List<Effect>(), new Dictionary<Effect, FxSnapshot>());
         }
 
         private List<EffectSelectorInCommand> getCriticalEffectSelectorInCommands()
