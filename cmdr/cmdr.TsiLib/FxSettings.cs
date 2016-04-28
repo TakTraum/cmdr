@@ -37,7 +37,8 @@ namespace cmdr.TsiLib
         internal static FxSettings Load(TsiXmlDocument xml)
         {
             var fxSelection = xml.GetEntry<AudioFxSelection>();
-            List<Effect> effects = (fxSelection != null) ? fxSelection.Value : new List<Effect>();
+            if (fxSelection == null)
+                return null;
 
             Dictionary<Effect, FxSnapshot> defaults = new Dictionary<Effect, FxSnapshot>();
             var allEffects = Enum.GetValues(typeof(Effect)).Cast<Effect>().Except(new[] { Effect.NoEffect }).ToList();
@@ -48,7 +49,7 @@ namespace cmdr.TsiLib
                     defaults.Add(effect, effDef);
             }
 
-            return new FxSettings(effects, defaults);
+            return new FxSettings(fxSelection.Value, defaults);
         }
 
         internal void Save(TsiXmlDocument xml)
