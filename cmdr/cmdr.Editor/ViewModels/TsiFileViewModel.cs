@@ -107,7 +107,7 @@ namespace cmdr.Editor.ViewModels
             return new TsiFileViewModel(new TsiFile(CmdrSettings.Instance.TraktorVersion, fxSettings));
         }
 
-        public static async Task<TsiFileViewModel> Load(string filePath)
+        public static async Task<TsiFileViewModel> LoadAsync(string filePath)
         {
             TsiFileViewModel result = null;
             App.SetStatus("Opening " + filePath + " ...");
@@ -119,7 +119,7 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-        public async Task<bool> Save(string filepath)
+        public async Task<bool> SaveAsync(string filepath)
         {
             AcceptChanges();
             App.SetStatus("Saving " + filepath + " ...");

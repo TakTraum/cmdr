@@ -179,14 +179,14 @@ namespace cmdr.Editor.ViewModels
                 await openFile(path);
         }
 
-        private void save()
+        private async void save()
         {
-            save(SelectedTsiFileModel);
+            await save(SelectedTsiFileModel);
         }
 
-        private void saveAs()
+        private async void saveAs()
         {
-            saveAs(SelectedTsiFileModel);
+            await saveAs(SelectedTsiFileModel);
         }
 
         private void close()
@@ -330,11 +330,10 @@ namespace cmdr.Editor.ViewModels
 
         private async Task openFile(string path)
         {
-
             var mdiChild = _mdiContainer.MdiChildren.Values.FirstOrDefault(c => c.ViewModel.Path == path);
             if (mdiChild == null)
             {
-                TsiFileViewModel vm = await TsiFileViewModel.Load(path);
+                TsiFileViewModel vm = await TsiFileViewModel.LoadAsync(path);
                 if (vm != null)
                 {
                     _tsiFileViewModels.Add(vm);
@@ -389,7 +388,7 @@ namespace cmdr.Editor.ViewModels
             if (vm.Path == null)
                 return await saveAs(vm);
             else
-                return await vm.Save(vm.Path);
+                return await vm.SaveAsync(vm.Path);
         }
 
         private async Task<bool> saveAs(TsiFileViewModel vm)
@@ -400,7 +399,7 @@ namespace cmdr.Editor.ViewModels
 
             string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, true, initialDirectory, vm.Title);
             if (!String.IsNullOrEmpty(path))
-                return await vm.Save(path);
+                return await vm.SaveAsync(path);
 
             return false;
         }
@@ -461,7 +460,7 @@ namespace cmdr.Editor.ViewModels
             refreshAppTitle();
         }
 
-        void onMdiChildClosing(string id, CancelEventArgs e)
+        private async void onMdiChildClosing(string id, CancelEventArgs e)
         {
             if (_isExiting)
                 return;
@@ -470,7 +469,7 @@ namespace cmdr.Editor.ViewModels
             var vm = mdiChild.ViewModel;
             bool cancel;
             if (savePendingChanges(vm, out cancel))
-                save(vm);
+                await save(vm);
             e.Cancel = cancel;
         }
 
