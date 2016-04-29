@@ -94,7 +94,6 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Styles\NumberedTickBar.cs" />
     <Compile Include="Styles\ResizeThumb.cs" />
     <Compile Include="Utils\BrowseDialogHelper.cs" />
     <Compile Include="Utils\Category.cs" />
@@ -341,6 +340,10 @@
     <ProjectReference Include="..\cmdr.TsiLib\cmdr.TsiLib.csproj">
       <Project>{45d11c68-d2f6-4e04-9bd9-85bb3537a317}</Project>
       <Name>cmdr.TsiLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cmdr.WpfControls\cmdr.WpfControls.csproj">
+      <Project>{13f24eab-ec73-45f1-b7d4-c9c8b8c81a55}</Project>
+      <Name>cmdr.WpfControls</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

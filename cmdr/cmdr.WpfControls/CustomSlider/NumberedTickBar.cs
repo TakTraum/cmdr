@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
-namespace cmdr.Editor.Styles
+namespace cmdr.WpfControls.CustomSlider
 {
-    public class NumberedTickBar : TickBar
+    internal class NumberedTickBar : TickBar
     {
         protected override void OnRender(DrawingContext dc)
         {
