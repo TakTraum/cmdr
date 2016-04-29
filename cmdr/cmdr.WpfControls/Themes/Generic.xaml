@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:customSlider ="clr-namespace:cmdr.WpfControls.CustomSlider">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/cmdr.WpfControls;component/CustomSlider/CustomSliderTemplate.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="{x:Type customSlider:CustomSlider}">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Style.Triggers>
+            <Trigger Property="Slider.Orientation" Value="Horizontal">
+                <Setter Property="MinWidth" Value="104" />
+                <Setter Property="MinHeight" Value="21" />
+                <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>
