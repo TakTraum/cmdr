@@ -4,9 +4,11 @@ using cmdr.Editor.Utils;
 using cmdr.Editor.Views;
 using cmdr.TsiLib;
 using cmdr.TsiLib.EventArgs;
+using cmdr.WpfControls.DropDownButton;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -62,12 +64,19 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
+        private static ObservableCollection<MenuItemViewModel> _addDeviceMenuItems;
+        public static ObservableCollection<MenuItemViewModel> AddDeviceMenuItems
+        {
+            get { return _addDeviceMenuItems ?? (_addDeviceMenuItems = new ObservableCollection<MenuItemViewModel>(generateAddDeviceMenuItems())); }
+        }
+
+
         #region Commands
 
         private ICommand _addDeviceCommand;
         public ICommand AddDeviceCommand
         {
-            get { return _addDeviceCommand ?? (_addDeviceCommand = new CommandHandler(addDevice, () => true)); }
+            get { return _addDeviceCommand ?? (_addDeviceCommand = new CommandHandler<MenuItemViewModel>(addDevice)); }
         }
 
         private ICommand _removeDeviceCommand;
@@ -77,11 +86,6 @@ namespace cmdr.Editor.ViewModels
         }
 
         #endregion
-
-        static TsiFileViewModel()
-        {
-            TsiFile.EffectIdentificationRequest += onEffectIdentificationRequest;
-        }
 
 
         private TsiFileViewModel(TsiFile tsiFile)
@@ -119,13 +123,14 @@ namespace cmdr.Editor.ViewModels
         {
             TsiFileViewModel result = null;
             App.SetStatus("Opening " + filePath + " ...");
-            var tsiFile = await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath));
+            TsiFile.EffectIdentificationRequest += onEffectIdentificationRequest;
+            var tsiFile = await loadTsiAsync(filePath);
             if (tsiFile != null)
                 result = new TsiFileViewModel(tsiFile);
+            TsiFile.EffectIdentificationRequest -= onEffectIdentificationRequest;
             App.ResetStatus();
             return result;
         }
-
 
         public async Task<bool> SaveAsync(string filepath)
         {
@@ -163,11 +168,62 @@ namespace cmdr.Editor.ViewModels
             IsChanged = Devices.Any(d => d.IsChanged);
         }
 
-        private void addDevice()
+        private static IEnumerable<MenuItemViewModel> generateAddDeviceMenuItems()
         {
-            var device = _tsiFile.CreateDevice(Device.TYPE_STRING_GENERIC_MIDI);
-            _tsiFile.AddDevice(device);
-            Devices.Add(new DeviceViewModel(device));
+            List<MenuItemViewModel> items = new List<MenuItemViewModel>
+            {
+                new MenuItemViewModel { MenuText = Device.TYPE_STRING_GENERIC_MIDI }
+            };
+
+            var groups = ControllerDefaultMappings.Instance.GroupBy(cdm => cdm.Manufacturer);
+            var defaults = groups.Select(g => new MenuItemViewModel
+            {
+                MenuText = g.Key,
+                Children = new ObservableCollection<MenuItemViewModel>(
+                    g.Select(c => new MenuItemViewModel { MenuText = c.Controller, Tag = c })
+                    )
+            });
+
+            return items.Union(defaults);
+        }
+
+        private async void addDevice(MenuItemViewModel item)
+        {
+            ControllerDefaultMappings.ControllerDefaultMappingFile defFile = item.Tag as ControllerDefaultMappings.ControllerDefaultMappingFile;
+
+            List<Device> devices = new List<Device>();
+
+            App.SetStatus("Loading defaults for " + item.MenuText + " ...");
+
+            if (item.MenuText.Equals(Device.TYPE_STRING_GENERIC_MIDI))
+                devices.Add(_tsiFile.CreateDevice(Device.TYPE_STRING_GENERIC_MIDI));
+            else if (defFile != null)
+            {
+                TsiFile tsi = defFile.TsiFile;
+                if (tsi == null)
+                    tsi = await defFile.LoadAsync();
+                if (tsi != null)
+                {
+                    bool includeMappings = MessageBoxHelper.ShowQuestion("Do you want to load the default mappings too?");
+                    foreach (var d in tsi.Devices)
+                    {
+                        var copy = d.Copy(includeMappings);
+                        if (copy.TypeStr.Equals(Device.TYPE_STRING_GENERIC_MIDI) && String.IsNullOrEmpty(copy.Comment))
+                            copy.Comment = item.MenuText;
+                        devices.Add(copy);
+                    }
+                }
+            }
+
+            foreach (var device in devices)
+            {
+                _tsiFile.AddDevice(device);
+                var dvm = new DeviceViewModel(device);
+                Devices.Add(dvm);
+            }
+
+            App.ResetStatus();
+
             SelectedDevice = Devices.Last();
         }
 
@@ -198,6 +254,11 @@ namespace cmdr.Editor.ViewModels
             eiw.Owner = App.Current.MainWindow;
             eiw.ShowDialog();
             request.Handled = true;
+        }
+
+        private static async Task<TsiFile> loadTsiAsync(string filePath)
+        {
+            return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath));
         }
 
         #region Events
