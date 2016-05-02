@@ -344,6 +344,21 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             return root;
         }
 
+        private IEnumerable<AMidiDefinition> getProprietaryDefinitions(DeviceViewModel device, MappingType type)
+        {
+            IEnumerable<KeyValuePair<string, AMidiDefinition>> definitions = null;
+
+            // get definitions from current tsi
+            definitions = ((type == MappingType.In) ? _device.MidiInDefinitions : _device.MidiOutDefinitions);
+
+            if (type == MappingType.In && device.DefaultMidiInDefinitions != null)
+                definitions = definitions.Union(device.DefaultMidiInDefinitions);
+            else if (type == MappingType.Out && device.DefaultMidiOutDefinitions != null)
+                definitions = definitions.Union(device.DefaultMidiOutDefinitions);
+
+            return definitions.DistinctBy(kv => kv.Key).Select(kv => kv.Value);
+        }
+
         private MenuItem createMenuItem(string caption, ICommand command = null, object commandParameter = null)
         {
             var item = new MenuItem { Header = caption };
@@ -386,22 +401,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return new MidiBindingEditorViewModel(device, mappings, mvm.MidiBinding);
             }
             return null;
-        }
-
-        private IEnumerable<AMidiDefinition> getProprietaryDefinitions(DeviceViewModel device, MappingType type)
-        {
-            Dictionary<string, AMidiDefinition> definitions = new Dictionary<string, AMidiDefinition>();
-
-            // get definitions from current tsi
-            definitions = ((type == MappingType.In) ? _device.MidiInDefinitions : _device.MidiOutDefinitions)
-                .ToDictionary(e => e.Key, e => e.Value);
-
-            // TODO: addd definitions for proprietary devices from another tsi file (e.g. NI's default mapping)
-            //string tsiDefinitionsFile = null;
-            //MidiDefinitionFactory.GetInDefinitionsFromTsi(tsiDefinitionsFile);
-            //MidiDefinitionFactory.GetOutDefinitionsFromTsi(tsiDefinitionsFile);
-
-            return definitions.Values;
         }
 
     }

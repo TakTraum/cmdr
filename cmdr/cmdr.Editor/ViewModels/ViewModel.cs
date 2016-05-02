@@ -437,6 +437,8 @@ namespace cmdr.Editor.ViewModels
                     TraktorSettings.Initialize(CmdrSettings.Instance.PathToTraktorSettings, true);
                     App.ResetStatus();
                 });
+
+            ControllerDefaultMappings.Instance.LoadAsync(CmdrSettings.Instance.PathToControllerDefaultMappings);
         }
 
         #region Events

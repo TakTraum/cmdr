@@ -9,8 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -190,12 +188,9 @@ namespace cmdr.Editor.ViewModels
 
         private static IList<Mapping> _mappingClipboard;
 
-        private static Dictionary<string, List<string>> _controllerDefaultSettings = new Dictionary<string, List<string>>();
-        public static IReadOnlyDictionary<string, List<string>> ControllerDefaultSettings
-        {
-            get { return _controllerDefaultSettings; }
-        }
 
+        public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
+        public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
 
 
         public DeviceViewModel(Device device)
@@ -216,8 +211,11 @@ namespace cmdr.Editor.ViewModels
             AcceptChanges();
 
             Mappings.CollectionChanged += Mappings_CollectionChanged;
-        }
 
+            if (!IsGenericMidi)
+                loadDefaultMidiDefinitionsAsync(device);
+        }
+       
 
         protected override void Accept()
         {
@@ -337,23 +335,20 @@ namespace cmdr.Editor.ViewModels
             raisePropertyChanged("OutPort");
         }
 
-        private static void getControllerDefaultSettings(string rootPath)
+        private async void loadDefaultMidiDefinitionsAsync(Device device)
         {
-            DirectoryInfo di = new DirectoryInfo(rootPath);
-            _controllerDefaultSettings = di.EnumerateDirectories().Select(
-                d => new
-                {
-                    Manufacturer = d.Name,
-                    ControllerNames = d.EnumerateFiles()
-                        .Select(fi =>
-                            fi.Name.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries)
-                            .Last().Replace(".tsi", ""))
-                }).ToDictionary(e => e.Manufacturer, e => e.ControllerNames.ToList());
-        }
+            var cdm = ControllerDefaultMappings.Instance[device.TypeStr];
+            if (cdm != null)
+            {
+                if (cdm.DefaultDevice == null)
+                    await cdm.LoadAsync();
 
-        void MappingEditorViewModel_DirtyStateChanged(object sender, bool e)
-        {
-            IsChanged = true;
+                if (cdm.DefaultDevice != null)
+                {
+                    DefaultMidiInDefinitions = cdm.DefaultDevice.MidiInDefinitions.ToDictionary(d => d.Key, d => d.Value);
+                    DefaultMidiOutDefinitions = cdm.DefaultDevice.MidiOutDefinitions.ToDictionary(d => d.Key, d => d.Value);
+                }
+            }
         }
 
         #region Events
