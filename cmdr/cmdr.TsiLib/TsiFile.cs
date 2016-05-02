@@ -86,6 +86,8 @@ namespace cmdr.TsiLib
 
         public void AddDevice(Device device)
         {
+            if (device.Id < 0)
+                device.Id = createNewId();
             _devices.Add(device);
             _devicesContainer.Devices.List.Add(device.RawDevice);
         }
