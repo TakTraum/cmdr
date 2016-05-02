@@ -149,6 +149,24 @@ namespace cmdr.TsiLib
         }
 
 
+        public Device Copy(bool includeMappings)
+        {
+            Format.Device rawDeviceCopy;
+            using (var copyStream = new System.IO.MemoryStream())
+            {
+                RawDevice.Write(new Utils.Writer(copyStream));
+                copyStream.Seek(0, System.IO.SeekOrigin.Begin);
+                rawDeviceCopy = new Format.Device(copyStream);
+            }
+
+            // reset revision
+            rawDeviceCopy.Data.Version.MappingFileRevision = 0;
+            if (!includeMappings)
+                rawDeviceCopy.Data.Mappings = new MappingsContainer();
+            var copy = new Device(-1, rawDeviceCopy);
+            return copy;
+        }
+
         /// <summary>
         /// removes a mapping and any corresponding binding
         /// </summary>
