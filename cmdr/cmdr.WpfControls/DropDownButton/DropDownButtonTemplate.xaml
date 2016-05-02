@@ -1,0 +1,48 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:cmdr.WpfControls.DropDownButton"
+                    xmlns:conv="clr-namespace:cmdr.WpfControls.Converters">
+
+    <ControlTemplate x:Key="dropDownButtonTemplate" TargetType="{x:Type local:DropDownButton}">
+        <ControlTemplate.Resources>
+            <conv:UriToImageConverter x:Key="iconConverter" />
+        </ControlTemplate.Resources>
+        <Button x:Name="button" Content="{TemplateBinding Content}" ContextMenuService.IsEnabled="False">
+            <Button.Resources>
+                <!-- bug in WPF, error only shown in designer -->
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="../Styles/ContextMenuStyle.xaml"/>
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Button.Resources>
+            <Button.ContextMenu>
+                <ContextMenu x:Name="menu" ItemsSource="{TemplateBinding ItemsSource}"
+                             Placement="{TemplateBinding MenuPlacement}">
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
+                            <Setter Property="Header" Value="{Binding MenuText}" />
+                            <Setter Property="Icon" Value="{Binding MenuIcon, Converter={StaticResource iconConverter}}" />
+                            <Setter Property="Command" Value="{Binding Command}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                            <Setter Property="Tag" Value="{Binding Tag}" />
+                            <Setter Property="ItemsSource" Value="{Binding Children}"/>
+                            <Setter Property="IsCheckable" Value="{Binding IsCheckable}" />
+                            <Setter Property="IsChecked" Value="{Binding IsChecked}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCheckable, RelativeSource={RelativeSource Self}}" Value="True">
+                                    <Setter Property="StaysOpenOnClick" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Command}" Value="{x:Null}">
+                                    <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.TemplatedParent.Command}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
+    </ControlTemplate>
+    
+</ResourceDictionary>
