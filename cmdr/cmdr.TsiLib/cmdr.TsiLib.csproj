@@ -231,7 +231,6 @@
     <Compile Include="TraktorSettings.cs" />
     <Compile Include="TsiFile.cs" />
     <Compile Include="Utils\EnumExtensions.cs" />
-    <Compile Include="Utils\IMenuProxy.cs" />
     <Compile Include="Utils\KeyConverter.cs" />
     <Compile Include="Utils\LinqExtensions.cs" />
     <Compile Include="Utils\ReadOnlyCollectionExtensions.cs" />

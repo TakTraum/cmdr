@@ -4,11 +4,10 @@ using System.Reflection;
 using cmdr.TsiLib.Commands.Interpretation;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Format;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Commands
 {
-    public class CommandProxy : IMenuProxy
+    public class CommandProxy
     {
         private static BindingFlags _flags = BindingFlags.NonPublic | BindingFlags.Instance;
         private static CultureInfo _culture = null; // use InvariantCulture or other if you prefer
