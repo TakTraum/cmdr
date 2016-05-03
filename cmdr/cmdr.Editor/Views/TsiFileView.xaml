@@ -71,7 +71,7 @@
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedMapping}" Value="{x:Null}">
                                                     <Setter Property="IsEnabled" Value="False"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
