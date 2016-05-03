@@ -22,8 +22,8 @@
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
-                            <Setter Property="Header" Value="{Binding MenuText}" />
-                            <Setter Property="Icon" Value="{Binding MenuIcon, Converter={StaticResource iconConverter}}" />
+                            <Setter Property="Header" Value="{Binding Text}" />
+                            <Setter Property="Icon" Value="{Binding IconUri, Converter={StaticResource iconConverter}}" />
                             <Setter Property="Command" Value="{Binding Command}" />
                             <Setter Property="CommandParameter" Value="{Binding}" />
                             <Setter Property="Tag" Value="{Binding Tag}" />
