@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Globalization;
 using System.Reflection;
 using cmdr.TsiLib.Conditions.Interpretation;
 using cmdr.TsiLib.Format;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Conditions
 {
-    public class ConditionProxy : IMenuProxy
+    public class ConditionProxy
     {
         private static BindingFlags _flags = BindingFlags.NonPublic | BindingFlags.Instance;
         private static CultureInfo _culture = CultureInfo.CurrentCulture;
