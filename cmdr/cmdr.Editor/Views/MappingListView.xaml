@@ -9,10 +9,11 @@
              xmlns:controls="clr-namespace:cmdr.Editor.Views.Controls"
              xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <DataGrid Grid.Row="0" x:Name="MappingsGrid"
@@ -51,7 +52,17 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" LastChildFill="True">
+
+        <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" LastChildFill="True">
+            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" FontSize="11">
+                <Run Text="{Binding Path=SelectedItems.Count, ElementName=MappingsGrid, Mode=OneWay}" />
+                <Run Text=" / " />
+                <Run Text="{Binding Path=Items.Count, ElementName=MappingsGrid, Mode=OneWay}" />
+                <Run Text=" selected" />
+            </TextBlock>
+        </DockPanel>
+
+        <DockPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" LastChildFill="True">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                 <ddButton:DropDownButton Content="Add In" MenuPlacement="Top"
                                          ItemsSource="{Binding InCommands}"

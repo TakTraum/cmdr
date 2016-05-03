@@ -7,6 +7,17 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/ResizeStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="Cmdr.HighlightColor">#98D2E6</Color>
+            <SolidColorBrush x:Key="Cmdr.HighlightBrushKey" Color="{StaticResource Cmdr.HighlightColor}"/>
+            
+            <Color x:Key="Cmdr.HighlightTextColor">Black</Color>
+            
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource Cmdr.HighlightColor}"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="{StaticResource Cmdr.HighlightTextColor}"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource Cmdr.HighlightColor}"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{StaticResource Cmdr.HighlightTextColor}"/>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
