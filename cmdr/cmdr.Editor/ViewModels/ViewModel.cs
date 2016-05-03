@@ -438,7 +438,7 @@ namespace cmdr.Editor.ViewModels
                     App.ResetStatus();
                 });
 
-            ControllerDefaultMappings.Instance.LoadAsync(CmdrSettings.Instance.PathToControllerDefaultMappings);
+            await ControllerDefaultMappings.Instance.LoadAsync(CmdrSettings.Instance.PathToControllerDefaultMappings);
         }
 
         #region Events

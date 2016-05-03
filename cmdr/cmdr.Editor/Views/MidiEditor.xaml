@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:converters="clr-namespace:cmdr.Editor.Converters"
+             xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
              mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="300">
     <UserControl.Resources>
@@ -48,7 +49,10 @@
                     <Border BorderThickness="1,1,0,1" BorderBrush="LightGray" Height="25">
                         <TextBlock Text="{Binding Note, Mode=OneWay, FallbackValue=None}" FontStyle="Italic" VerticalAlignment="Center" Padding="5,0,0,0" />
                     </Border>
-                    <Button Grid.Column="1" Content="Select" Width="Auto" Command="{Binding SelectNoteCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding NotesMenu, Mode=OneTime}" />
+                    <ddButton:DropDownButton Grid.Column="1" Content="Select" Width="Auto" 
+                                             MenuPlacement="Left"
+                                             Command="{Binding SelectNoteCommand, Mode=OneTime}" 
+                                             ItemsSource="{Binding NotesMenu, Mode=OneTime}" />
                 </Grid>
             </StackPanel>
         </Grid>

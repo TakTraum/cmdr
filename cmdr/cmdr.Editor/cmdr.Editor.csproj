@@ -97,9 +97,7 @@
     </Compile>
     <Compile Include="Styles\ResizeThumb.cs" />
     <Compile Include="Utils\BrowseDialogHelper.cs" />
-    <Compile Include="Utils\Category.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
-    <Compile Include="Utils\ContextMenuBuilder.cs" />
     <Compile Include="Utils\MessageBoxHelper.cs" />
     <Compile Include="Utils\SerializationHelper.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />

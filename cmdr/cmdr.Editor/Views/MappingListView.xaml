@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:cmdr.Editor.Views"        
              xmlns:behaviors="clr-namespace:cmdr.Editor.Behaviors"
              xmlns:controls="clr-namespace:cmdr.Editor.Views.Controls"
+             xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -44,22 +45,24 @@
                 <DataGridTextColumn Binding="{Binding TraktorCommand, Mode=OneWay}" Header="Command" Width="200" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding AssignmentExpression, Mode=OneWay}" Header="Assignment" Width="100" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ConditionExpression, Mode=OneWay}" Header="Condition" Width="150" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Interaction, Mode=OneWay}" Header="Interaction" Width="150" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Interaction, Mode=OneWay}" Header="Interaction" Width="100" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding MappedTo, Mode=OneWay}" Header="Mapped To" Width="100" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Comment}" Header="Comment" MinWidth="75" Width="*"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-            <DockPanel.Resources>
-                <ResourceDictionary Source="../Styles/ContextMenuStyle.xaml"/>
-            </DockPanel.Resources>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Add In" Command="{Binding ShowInCommandsCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding InCommandsMenu, Mode=OneTime}"/>
-                <Button Content="Add Out" Command="{Binding ShowOutCommandsCommand, Mode=OneTime}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" ContextMenu="{Binding OutCommandsMenu, Mode=OneTime}" Margin="10,0,0,0"/>
+        <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" LastChildFill="True">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                <ddButton:DropDownButton Content="Add In" MenuPlacement="Top"
+                                         ItemsSource="{Binding InCommands}"
+                                         Command="{Binding AddMappingCommand}"
+                                         Width="75" Margin="0,0,5,0"/>
+                <ddButton:DropDownButton Content="Add Out" MenuPlacement="Top"
+                                         ItemsSource="{Binding OutCommands}"
+                                         Command="{Binding AddMappingCommand}"
+                                         Width="75"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Show Conditions" Command="{Binding ShowConditionDescriptionsEditorCommand, Mode=OneTime}" Margin="0,0,10,0"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
                 <controls:SearchControl Width="100" DataContext="{Binding SearchViewModel, Mode=OneWay}" />
             </StackPanel>
         </DockPanel>

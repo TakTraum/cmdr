@@ -172,16 +172,14 @@ namespace cmdr.Editor.ViewModels
         {
             List<MenuItemViewModel> items = new List<MenuItemViewModel>
             {
-                new MenuItemViewModel { MenuText = Device.TYPE_STRING_GENERIC_MIDI }
+                new MenuItemViewModel { Text = Device.TYPE_STRING_GENERIC_MIDI }
             };
 
             var groups = ControllerDefaultMappings.Instance.GroupBy(cdm => cdm.Manufacturer);
             var defaults = groups.Select(g => new MenuItemViewModel
             {
-                MenuText = g.Key,
-                Children = new ObservableCollection<MenuItemViewModel>(
-                    g.Select(c => new MenuItemViewModel { MenuText = c.Controller, Tag = c })
-                    )
+                Text = g.Key,
+                Children = g.Select(c => new MenuItemViewModel { Text = c.Controller, Tag = c }).ToList()
             });
 
             return items.Union(defaults);
@@ -193,9 +191,9 @@ namespace cmdr.Editor.ViewModels
 
             List<Device> devices = new List<Device>();
 
-            App.SetStatus("Loading defaults for " + item.MenuText + " ...");
+            App.SetStatus("Loading defaults for " + item.Text + " ...");
 
-            if (item.MenuText.Equals(Device.TYPE_STRING_GENERIC_MIDI))
+            if (item.Text.Equals(Device.TYPE_STRING_GENERIC_MIDI))
                 devices.Add(_tsiFile.CreateDevice(Device.TYPE_STRING_GENERIC_MIDI));
             else if (defFile != null)
             {
@@ -209,7 +207,7 @@ namespace cmdr.Editor.ViewModels
                     {
                         var copy = d.Copy(includeMappings);
                         if (copy.TypeStr.Equals(Device.TYPE_STRING_GENERIC_MIDI) && String.IsNullOrEmpty(copy.Comment))
-                            copy.Comment = item.MenuText;
+                            copy.Comment = item.Text;
                         devices.Add(copy);
                     }
                 }
