@@ -6,8 +6,12 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:cmdr.Editor.Behaviors"
              xmlns:dropDownButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
+             xmlns:conv="clr-namespace:cmdr.Editor.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="300">
+    <UserControl.Resources>
+        <conv:PluralizationConverter x:Key="pluralizationConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -45,12 +49,21 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="lbiGrid">
-                        <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{Binding Name, Mode=OneWay}" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="15"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap">
+                            <Run Text="{Binding Name, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="10" TextAlignment="Right"
+                                   Text="{Binding Mappings.Count, Converter={StaticResource pluralizationConverter}, ConverterParameter=mapping, Mode=OneWay}"/>
                     </Grid>
 
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True">
-                            <Setter TargetName="lbiGrid" Property="Background" Value="Silver" />
+                            <Setter TargetName="lbiGrid" Property="Background" Value="{StaticResource Cmdr.HighlightBrushKey}" />
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>

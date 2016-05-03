@@ -31,7 +31,7 @@ namespace cmdr.Editor.ViewModels
             {
                 if (Devices.Count() == 1 && !String.IsNullOrWhiteSpace(Devices.Single().Comment))
                     return makeValidFileName(Devices.Single().Comment);
-                return "New Mapping";
+                return "Untitled";
             }
         }
 
@@ -221,8 +221,8 @@ namespace cmdr.Editor.ViewModels
             }
 
             App.ResetStatus();
-
-            SelectedDevice = Devices.Last();
+            if (devices.Any())
+                SelectedDevice = Devices.LastOrDefault();
         }
 
         private void removeDevice()
