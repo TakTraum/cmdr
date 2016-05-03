@@ -4,7 +4,10 @@ using cmdr.MidiLib;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
+using cmdr.TsiLib.MidiDefinitions;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.WpfControls.DropDownButton;
+using cmdr.WpfControls.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -143,16 +146,10 @@ namespace cmdr.Editor.ViewModels
             get { return _pasteCommand ?? (_pasteCommand = new CommandHandler(paste, () => _mappingClipboard != null && _mappingClipboard.Any())); }
         }
 
-        private ICommand _showInCommandsCommand;
-        public ICommand ShowInCommandsCommand
+        private ICommand _addMappingCommand;
+        public ICommand AddMappingCommand
         {
-            get { return _showInCommandsCommand ?? (_showInCommandsCommand = new CommandHandler<Button>((b) => showCommands(InCommandsMenu, b))); }
-        }
-
-        private ICommand _showOutCommandsCommand;
-        public ICommand ShowOutCommandsCommand
-        {
-            get { return _showOutCommandsCommand ?? (_showOutCommandsCommand = new CommandHandler<Button>((b) => showCommands(OutCommandsMenu, b))); }
+            get { return _addMappingCommand ?? (_addMappingCommand = new CommandHandler<MenuItemViewModel>(addMapping)); }
         }
 
         private ICommand _removeMappingCommand;
@@ -183,15 +180,14 @@ namespace cmdr.Editor.ViewModels
         #endregion
 
 
-        public ContextMenu InCommandsMenu { get; set; }
-        public ContextMenu OutCommandsMenu { get; set; }
-
         private static IList<Mapping> _mappingClipboard;
 
+        public ObservableCollection<MenuItemViewModel> InCommands { get; set; }
+        public ObservableCollection<MenuItemViewModel> OutCommands { get; set; }
 
         public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
         public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
-
+        
 
         public DeviceViewModel(Device device)
         {
@@ -212,8 +208,7 @@ namespace cmdr.Editor.ViewModels
 
             Mappings.CollectionChanged += Mappings_CollectionChanged;
 
-            if (!IsGenericMidi)
-                loadDefaultMidiDefinitionsAsync(device);
+            loadDefaultMidiDefinitionsAsync();
         }
        
 
@@ -278,16 +273,24 @@ namespace cmdr.Editor.ViewModels
 
         private void generateAddMappingContextMenus()
         {
+            var builder = new MenuBuilder<CommandProxy>();
+            var itemBuilder = new Func<CommandProxy, MenuItemViewModel>(p => new MenuItemViewModel
+                {
+                    Text = p.Name,
+                    Tag = p
+                });
+
             var allIn = All.KnownInCommands.Select(kv => kv.Value);
-            InCommandsMenu = ContextMenuBuilder<CommandProxy>.Build(allIn, addMapping);
+            InCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allIn, itemBuilder, a => a.Category.ToDescriptionString(), "->", false));
 
             var allOut = All.KnownOutCommands.Select(kv => kv.Value);
-            OutCommandsMenu = ContextMenuBuilder<CommandProxy>.Build(allOut, addMapping);
+            OutCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allOut, itemBuilder, a => a.Category.ToDescriptionString(), "->", false));
         }
 
-        private void addMapping(CommandProxy generator)
+        private void addMapping(MenuItemViewModel item)
         {
-            var m = _device.CreateMapping(generator);
+            var proxy = item.Tag as CommandProxy;
+            var m = _device.CreateMapping(proxy);
             _device.AddMapping(m);
             var mvm = new MappingViewModel(_device, m);
             _mappings.Add(mvm);
@@ -301,13 +304,6 @@ namespace cmdr.Editor.ViewModels
                 _mappings.Remove(mvm);
                 _device.RemoveMapping(mvm.Id);
             }
-        }
-
-        private void showCommands(ContextMenu contextMenu, Button button)
-        {
-            contextMenu.PlacementTarget = button;
-            contextMenu.IsOpen = true;
-            contextMenu.Tag = button.Name;
         }
 
         private void updatePorts(Device device)
@@ -335,18 +331,21 @@ namespace cmdr.Editor.ViewModels
             raisePropertyChanged("OutPort");
         }
 
-        private async void loadDefaultMidiDefinitionsAsync(Device device)
+        private async void loadDefaultMidiDefinitionsAsync()
         {
-            var cdm = ControllerDefaultMappings.Instance[device.TypeStr];
-            if (cdm != null)
+            if (_device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI)
             {
-                if (cdm.DefaultDevice == null)
-                    await cdm.LoadAsync();
-
-                if (cdm.DefaultDevice != null)
+                var cdm = ControllerDefaultMappings.Instance[_device.TypeStr];
+                if (cdm != null)
                 {
-                    DefaultMidiInDefinitions = cdm.DefaultDevice.MidiInDefinitions.ToDictionary(d => d.Key, d => d.Value);
-                    DefaultMidiOutDefinitions = cdm.DefaultDevice.MidiOutDefinitions.ToDictionary(d => d.Key, d => d.Value);
+                    if (cdm.DefaultDevice == null)
+                        await cdm.LoadAsync();
+
+                    if (cdm.DefaultDevice != null)
+                    {
+                        DefaultMidiInDefinitions = cdm.DefaultDevice.MidiInDefinitions.ToDictionary(d => d.Key, d => d.Value);
+                        DefaultMidiOutDefinitions = cdm.DefaultDevice.MidiOutDefinitions.ToDictionary(d => d.Key, d => d.Value);
+                    }
                 }
             }
         }
@@ -383,6 +382,7 @@ namespace cmdr.Editor.ViewModels
         }
 
         #endregion
+
 
     }
 }

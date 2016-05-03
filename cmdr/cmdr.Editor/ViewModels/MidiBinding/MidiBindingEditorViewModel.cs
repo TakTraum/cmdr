@@ -2,8 +2,12 @@
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.TsiLib.Utils;
+using cmdr.WpfControls.DropDownButton;
+using cmdr.WpfControls.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -86,7 +90,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             }
         }
 
-        public ContextMenu NotesMenu { get; private set; }
+        public ObservableCollection<MenuItemViewModel> NotesMenu { get; private set; }
 
 
         #region Commands
@@ -94,7 +98,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         private ICommand _selectNoteCommand;
         public ICommand SelectNoteCommand
         {
-            get { return _selectNoteCommand ?? (_selectNoteCommand = new CommandHandler<Button>(showNotesMenu)); }
+            get { return _selectNoteCommand ?? (_selectNoteCommand = new CommandHandler<MenuItemViewModel>(selectNote)); }
         }
 
         private ICommand _learnCommand;
@@ -228,82 +232,45 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         #region ContextMenu Notes
 
-        private void showNotesMenu(Button button)
+        private void selectNote(MenuItemViewModel item)
         {
-            NotesMenu.PlacementTarget = button;
-            NotesMenu.IsOpen = true;
+            var definition = item.Tag as AMidiDefinition;
+            if (definition != null) // proprietary
+            {
+                updateBinding(definition);
+                // it's ok to set a reference here, as there should be a single definition per note anyway
+                Note = definition.Note;
+            }
+            else // Generic Midi
+                Note = item.Tag.ToString();
         }
 
-        private ContextMenu generateProprietaryMenu()
+        private ObservableCollection<MenuItemViewModel> generateProprietaryMenu()
         {
-            Action<AMidiDefinition> proprietaryAction = new Action<AMidiDefinition>((definition) =>
+            MappingType mType = _mappings.First().Command.MappingType;
+            var defs = getProprietaryDefinitions(_device, mType).DistinctBy(d => d.Note);
+
+            var builder = new MenuBuilder<AMidiDefinition>();
+            var itemBuilder = new Func<AMidiDefinition, MenuItemViewModel>(d => new MenuItemViewModel
             {
-                // it's ok to set a reference here, as there should be a single definition per note anyway
-                updateBinding(definition);
-                Note = definition.Note;
+                Text = d.Note.Split('.').Last(),
+                Tag = d
             });
 
-            ContextMenu root = new ContextMenu();
-
-            MenuItem menuItemL1 = null;
-            MenuItem menuItemL2 = null;
-            MenuItem menuItemL3 = null;
-
-            MappingType mType = _mappings.First().Command.MappingType;
-
-            List<AMidiDefinition> defs = getProprietaryDefinitions(_device, mType).OrderBy(d => d.Note).ToList();
-
-            string note;
-            foreach (var def in defs)
-            {
-                note = def.Note;
-
-                var parts = note.Split('.');
-
-                var h1 = parts[0].Trim();
-                if (menuItemL1 == null || menuItemL1.Header.ToString() != h1)
-                {
-                    menuItemL1 = createMenuItem(h1);
-                    root.Items.Add(menuItemL1);
-                }
-                if (parts.Length > 1)
-                {
-                    var h2 = parts[1].Trim();
-                    if (menuItemL2 == null || menuItemL2.Header.ToString() != h2)
-                    {
-                        menuItemL2 = createMenuItem(h2);
-                        menuItemL1.Items.Add(menuItemL2);
-                    }
-                    if (parts.Length > 2)
-                    {
-                        var h3 = parts[2].Trim();
-                        if (menuItemL3 == null || menuItemL3.Header.ToString() != h3)
-                        {
-                            menuItemL3 = createMenuItem(h3, new CommandHandler(() => proprietaryAction(def)));
-                            menuItemL2.Items.Add(menuItemL3);
-                        }
-                    }
-                    else
-                        menuItemL2.Command = new CommandHandler(() => proprietaryAction(def));
-                }
-                else
-                    menuItemL1.Command = new CommandHandler(() => proprietaryAction(def));
-            }
-
-            return root;
+            var items = builder.BuildTree(defs, itemBuilder, d => d.Note, ".", true);
+            return new ObservableCollection<MenuItemViewModel>(items);      
         }
 
-        private ContextMenu generateGenericMidiMenu()
+        private ObservableCollection<MenuItemViewModel> generateGenericMidiMenu()
         {
-            Action<string> genericAction = new Action<string>((n) => { Note = n; });
-
-            ContextMenu root = new ContextMenu();
+            MappingType mType = _mappings.First().Command.MappingType;
+            MenuItemViewModel root = new MenuItemViewModel();
 
             #region CC
 
-            MenuItem ccMenu = createMenuItem("CC");
-            root.Items.Add(ccMenu);
-            MenuItem rangeMenu = null;
+            var ccMenu = new MenuItemViewModel { Text = "CC" };
+            root.Children.Add(ccMenu);
+            MenuItemViewModel rangeMenu = null;
             int num = 128;
             int parts = 4;
             int part = 0;
@@ -315,10 +282,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 {
                     part++;
                     limit = num / parts * part;
-                    rangeMenu = createMenuItem(String.Format("{0} - {1}", i, limit-1));
-                    ccMenu.Items.Add(rangeMenu);
+                    rangeMenu = new MenuItemViewModel { Text = String.Format("{0} - {1}", i, limit - 1) };
+                    ccMenu.Children.Add(rangeMenu);
                 }
-                rangeMenu.Items.Add(createMenuItem(String.Format("{0:000}", i), new CommandHandler<string>(genericAction), String.Format("CC.{0:000}", i)));
+                rangeMenu.Children.Add(new MenuItemViewModel { Text = String.Format("{0:000}", i), Tag = String.Format("CC.{0:000}", i) });
             }
 
             #endregion
@@ -326,22 +293,22 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             #region Notes
 
             List<string> notes = new List<string> { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
-            MenuItem notesMenu = createMenuItem("Note");
-            root.Items.Add(notesMenu);
-            MenuItem noteMenu = null;
+            var notesMenu = new MenuItemViewModel { Text = "Note" };
+            root.Children.Add(notesMenu);
+            MenuItemViewModel noteMenu = null;
             foreach (var note in notes)
             {
-                noteMenu = createMenuItem(note);
-                notesMenu.Items.Add(noteMenu);
+                noteMenu = new MenuItemViewModel { Text = note };
+                notesMenu.Children.Add(noteMenu);
                 for (int i = -1; i < 10; i++)
-                    noteMenu.Items.Add(createMenuItem(i.ToString(), new CommandHandler<string>(genericAction), String.Format("Note.{0}", note + i)));
+                    noteMenu.Children.Add(new MenuItemViewModel { Text = i.ToString(), Tag = String.Format("Note.{0}", note + i) });
             }
             #endregion
 
             // PitchBend
-            root.Items.Add(createMenuItem("PitchBend", new CommandHandler<string>(genericAction), "PitchBend"));
-            
-            return root;
+            root.Children.Add(new MenuItemViewModel { Text = "PitchBend", Tag = "PitchBend" });
+
+            return new ObservableCollection<MenuItemViewModel>(root.Children);
         }
 
         private IEnumerable<AMidiDefinition> getProprietaryDefinitions(DeviceViewModel device, MappingType type)
@@ -357,16 +324,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 definitions = definitions.Union(device.DefaultMidiOutDefinitions);
 
             return definitions.DistinctBy(kv => kv.Key).Select(kv => kv.Value);
-        }
-
-        private MenuItem createMenuItem(string caption, ICommand command = null, object commandParameter = null)
-        {
-            var item = new MenuItem { Header = caption };
-            if (command != null)
-                item.Command = command;
-            if (commandParameter != null)
-                item.CommandParameter = commandParameter;
-            return item;
         }
 
         #endregion
@@ -402,6 +359,5 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             }
             return null;
         }
-
     }
 }
