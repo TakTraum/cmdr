@@ -30,23 +30,33 @@ namespace cmdr.WpfControls.Utils
                 parts = parts.Take(pathIncludesLeafs ? len - 1 : len);
 
                 MenuItemViewModel target = root;
-                MenuItemViewModel parent = target;
                 foreach (var c in parts)
                 {
                     if (!target.Children.Any(ch => ch.Text == c))
-                    {
                         target.Children.Add(new MenuItemViewModel { Text = c });
-                        parent.Children.Sort();
-                    }
-                    parent = target;
                     target = target.Children.Single(ch => ch.Text == c);
                 }
 
                 target.Children.AddRange(BuildList(proxies.Where(i => pathSelector(i) == p), proxyConverter));
-                target.Children.Sort();
-                parent.Children.Sort();
             }
+
+            sortTree(root);
             return root.Children;
+        }
+
+
+        private void sortTree(MenuItemViewModel tree)
+        {
+            var queue = new Queue<MenuItemViewModel>();
+            queue.Enqueue(tree);
+
+            while(queue.Any())
+            {
+                var el = queue.Dequeue();
+                el.Children.Sort();
+                el.Children.ForEach(c => queue.Enqueue(c));
+            }
+
         }
     }
 }
