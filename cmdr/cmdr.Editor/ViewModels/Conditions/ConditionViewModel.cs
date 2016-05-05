@@ -21,7 +21,7 @@ namespace cmdr.Editor.ViewModels.Conditions
 
     public class ConditionValue
     {
-        public Enum Value { get; set; }
+        public object Value { get; set; }
         public string Description { get; set; }
 
         public override string ToString()

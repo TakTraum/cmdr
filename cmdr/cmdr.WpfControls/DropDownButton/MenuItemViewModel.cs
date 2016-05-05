@@ -12,6 +12,15 @@ namespace cmdr.WpfControls.DropDownButton
 {
     public class MenuItemViewModel : ViewModelBase, IComparable
     {
+        public static MenuItemViewModel Separator = new MenuItemViewModel { _isSeparator = true  };
+
+        private bool _isSeparator;
+        public bool IsSeparator
+        {
+            get { return _isSeparator; }
+        } 
+
+
         private bool _isEnabled = true;
         public bool IsEnabled
         {

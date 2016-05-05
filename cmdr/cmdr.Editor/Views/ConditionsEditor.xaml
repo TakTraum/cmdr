@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:cmdr.Editor.Views.Controls"
              xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
+             xmlns:cond="clr-namespace:cmdr.TsiLib.Conditions;assembly=cmdr.TsiLib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
@@ -18,10 +19,14 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <ddButton:DropDownButton Grid.Row="0" Grid.Column="0" Content="1" Height="30" Width="30" 
+        <ddButton:DropDownButton Grid.Row="0" Grid.Column="0" Height="30" Width="30" 
                                  VerticalAlignment="Center" HorizontalAlignment="Left"
                                  MenuPlacement="Right" ItemsSource="{Binding Conditions, Mode=OneTime}"
-                                 Command="{Binding SetCondition1Command, Mode=OneTime}" Margin="0,5,0,0"/>
+                                 Command="{Binding SetCondition1Command, Mode=OneTime}" Margin="0,5,0,0">
+            <Button.Content>
+                <Image Source="../Assets/flaticons/number-one-in-a-circle.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+            </Button.Content>
+        </ddButton:DropDownButton>
         <controls:ConditionControl  Grid.Row="0" Grid.Column="1" DataContext="{Binding Condition1}">
             <controls:ConditionControl.Style>
                 <Style TargetType="{x:Type controls:ConditionControl}">
@@ -34,10 +39,14 @@
             </controls:ConditionControl.Style>
         </controls:ConditionControl>
 
-        <ddButton:DropDownButton Grid.Row="2" Grid.Column="0" Content="2" Height="30" Width="30" 
+        <ddButton:DropDownButton Grid.Row="2" Grid.Column="0" Height="30" Width="30" 
                                  VerticalAlignment="Center" HorizontalAlignment="Left"
                                  MenuPlacement="Right" ItemsSource="{Binding Conditions, Mode=OneTime}"
-                                 Command="{Binding SetCondition2Command, Mode=OneTime}" Margin="0,5,0,0"/>
+                                 Command="{Binding SetCondition2Command, Mode=OneTime}" Margin="0,5,0,0">
+            <Button.Content>
+                <Image Source="../Assets/flaticons/number-two-in-a-circle.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+            </Button.Content>
+        </ddButton:DropDownButton>
         <controls:ConditionControl  Grid.Row="2" Grid.Column="1" DataContext="{Binding Condition2}">
             <controls:ConditionControl.Style>
                 <Style TargetType="{x:Type controls:ConditionControl}">
