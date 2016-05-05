@@ -197,7 +197,7 @@ namespace cmdr.Editor.ViewModels
         private string getConditionExpression()
         {
             var conditions = new[] { Condition1, Condition2 }.Where(c => c != null);
-            var expression = String.Join(" AND ", conditions.Select(c => conditionToString(c)));
+            var expression = String.Join(" AND ", conditions.Select(c => c.ToString()));
 
             var description = ConditionDescriptions.Dict.SingleOrDefault(d => d.Condition == expression);
             if (description != null)
@@ -205,16 +205,6 @@ namespace cmdr.Editor.ViewModels
 
             return expression;
         }
-
-        private string conditionToString(ACondition condition)
-        {
-            var val = condition.GetType().GetProperty("Value").GetValue(condition);
-            return String.Format("{0}{1}={2}",
-                condition.Name,
-                (condition.Target != TargetType.Global) ? " [" + condition.AssignmentOptions[condition.Assignment] + "]" : String.Empty,
-                (val is Enum) ? ((Enum)val).ToDescriptionString() : val.ToString());
-        }
-
 
         protected override void Accept()
         {
