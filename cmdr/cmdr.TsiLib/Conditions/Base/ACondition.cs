@@ -8,6 +8,7 @@ namespace cmdr.TsiLib.Conditions
 {
     public abstract class ACondition
     {
+        private readonly System.Reflection.PropertyInfo _valueProperty;
         protected readonly ConditionNumber _number;
         internal readonly Format.MappingSettings RawSettings;
         
@@ -43,43 +44,49 @@ namespace cmdr.TsiLib.Conditions
             Name = name;
             Target = target;
 
+            _valueProperty = GetType().GetProperty("Value");
+
             updateAssignmentOptions();
             syncSettings();
         }
 
 
-        public Dictionary<Enum, string> GetValueOptions()
+        public Dictionary<object, string> GetValueOptions()
         {
-            var enumDict = new Dictionary<Enum, string>();
+            var valueDict = new Dictionary<object, string>();
             Type t = GetType();
             while (!t.IsGenericType && t.BaseType != typeof(object))
                 t = t.BaseType;
             if (t.IsGenericType)
             {
-                var enumType = t.GenericTypeArguments.First();
-                if (enumType.IsEnum)
+                var genericArgumentType = t.GenericTypeArguments.First();
+                if (genericArgumentType.IsEnum)
                 {
-                    var allVals = Enum.GetValues(enumType).Cast<Enum>();
+                    var allVals = Enum.GetValues(genericArgumentType).Cast<Enum>();
                     foreach (var val in allVals)
-                        enumDict.Add(val, val.ToDescriptionString());
+                        valueDict.Add(val, val.ToDescriptionString());
+                }
+                else if (genericArgumentType == typeof(int))
+                {
+                    var val = GetValue();
+                    if (val != null)
+                        valueDict.Add(val, val.ToString());
                 }
             }
-            return enumDict;
+            return valueDict;
         }
 
-        public Enum GetValue()
+        public object GetValue()
         {
-            var valProp = GetType().GetProperty("Value");
-            if (valProp != null)
-                return valProp.GetValue(this) as Enum;
+            if (_valueProperty != null)
+                return _valueProperty.GetValue(this);
             return null;
         }
 
-        public void SetValue(Enum value)
+        public void SetValue(object value)
         {
-            var valProp = GetType().GetProperty("Value");
-            if (valProp != null)
-                valProp.SetValue(this, value);
+            if (_valueProperty != null)
+                _valueProperty.SetValue(this, value);
         }
 
         public ACondition Copy(ConditionNumber number)
@@ -99,13 +106,29 @@ namespace cmdr.TsiLib.Conditions
             if (other == null)
                 throw new ArgumentException();
 
-            return Id.Equals(other.Id) && Assignment.Equals(other.Assignment) && GetValue().Equals(other.GetValue());
+            var val = GetValue();
+            var valOther = other.GetValue();
+
+            bool equal = Id.Equals(other.Id) && Assignment.Equals(other.Assignment);
+            if (val != null)
+                equal &= val.Equals(valOther);
+
+            return equal;
         }
 
         public override int GetHashCode()
         {
             var val = GetValue();
             return new { Id, Assignment, val }.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            var val = GetValue();
+            return String.Format("{0}{1}", 
+                Name, 
+                (Target != TargetType.Global) ? " [" + AssignmentOptions[Assignment] + "]" : String.Empty
+                );
         }
 
 
@@ -209,6 +232,5 @@ namespace cmdr.TsiLib.Conditions
             }
             AssignmentOptions = options;
         }
-
     }
 }

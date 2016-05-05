@@ -1,5 +1,6 @@
 ﻿using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Parsers;
+using System;
 
 namespace cmdr.TsiLib.Conditions
 {
@@ -24,6 +25,15 @@ namespace cmdr.TsiLib.Conditions
             : base(id, name, target, rawSettings, number)
         {
 
+        }
+
+
+        public override string ToString()
+        {
+            return String.Format("{0}={1}",
+                base.ToString(),
+                (Value != null) ? Value.ToString() : "?"
+                );
         }
 
 

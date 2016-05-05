@@ -22,6 +22,16 @@ namespace cmdr.TsiLib.Conditions
         }
 
 
+        public override string ToString()
+        {
+            var val = GetValue();
+            return String.Format("{0}{1}={2}",
+                Name,
+                (Target != TargetType.Global) ? " [" + AssignmentOptions[Assignment] + "]" : String.Empty,
+                (Value as Enum).ToDescriptionString()
+                );
+        }
+
         protected override T getDefaultValue()
         {
             return EnumParser<T>.AllValues.Min();
