@@ -56,11 +56,7 @@ namespace cmdr.Editor.ViewModels
 
                 // Set selection if possible
                 if (_selectedDevice != null)
-                {
                     _selectedDevice.SelectedMapping = _selectedDevice.Mappings.FirstOrDefault();
-                    if (_selectedDevice.SelectedMapping != null)
-                        _selectedDevice.SelectItemsCommand.Execute(new[] { _selectedDevice.SelectedMapping });
-                }
             }
         }
 

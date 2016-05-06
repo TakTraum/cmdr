@@ -2,11 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ddbutton="clr-namespace:cmdr.WpfControls.DropDownButton"
-    xmlns:customSlider ="clr-namespace:cmdr.WpfControls.CustomSlider">
+    xmlns:customSlider="clr-namespace:cmdr.WpfControls.CustomSlider"
+    xmlns:customDataGrid="clr-namespace:cmdr.WpfControls.CustomDataGrid">
     
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/cmdr.WpfControls;component/CustomSlider/CustomSliderTemplate.xaml"/>
         <ResourceDictionary Source="/cmdr.WpfControls;component/DropDownButton/DropDownButtonTemplate.xaml"/>
+        <ResourceDictionary Source="/cmdr.WpfControls;component/CustomDataGrid/CustomDataGridTemplate.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type customSlider:CustomSlider}">
@@ -23,5 +25,38 @@
     <Style TargetType="{x:Type ddbutton:DropDownButton}">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Template" Value="{StaticResource dropDownButtonTemplate}"/>
+    </Style>
+
+    <Style TargetType="{x:Type customDataGrid:CustomDataGrid}">
+        <Style.Resources>
+            <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
+            <Color x:Key="BorderDarkColor">#FF444444</Color>
+        </Style.Resources>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="Foreground" Value="{StaticResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="{StaticResource BorderLightColor}" Offset="0" />
+                    <GradientStop Color="{StaticResource BorderDarkColor}" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="HorizontalGridLinesBrush" Value="#a0B7AFA3"/>
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource ColumnHeaderStyle}"/>
+        <Setter Property="Template" Value="{StaticResource customDataGridTemplate}"/>
+        <Style.Triggers>
+            <Trigger Property="IsGrouping" Value="true">
+                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
