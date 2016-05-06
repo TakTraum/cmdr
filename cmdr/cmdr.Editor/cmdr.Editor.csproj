@@ -87,7 +87,6 @@
     <Compile Include="AppSettings\Base\IConfigElementCollection.cs" />
     <Compile Include="AvalonDock\MdiChild.cs" />
     <Compile Include="AvalonDock\MdiContainer.cs" />
-    <Compile Include="Behaviors\DataGridScrollIntoViewBehavior.cs" />
     <Compile Include="Behaviors\AttachedBehaviors.cs" />
     <Compile Include="Behaviors\InputBindingBehavior.cs" />
     <Compile Include="Behaviors\ListBoxScrollIntoViewBehavior.cs" />
@@ -339,6 +338,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\donate_pp.png" />
+    <Resource Include="Assets\CREDITS.txt" />
+    <Resource Include="Assets\flaticons\number-one-in-a-circle.png" />
+    <Resource Include="Assets\flaticons\number-two-in-a-circle.png" />
     <Content Include="lib\ChangeTracking.dll" />
     <Content Include="lib\SettingControlLibrary.dll" />
     <Content Include="lib\TMS.Controls.SearchTextBox.dll" />

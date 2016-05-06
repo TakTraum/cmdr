@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -51,6 +52,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CustomDataGrid\CustomDataGridTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomDataGrid\CellTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomDataGrid\RowTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomSlider\CustomSliderTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,7 +82,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomTextBlock\AutoToolTipTextBlock.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />
+    <Compile Include="CustomDataGrid\CustomDataGrid.cs" />
+    <Compile Include="CustomDataGrid\CustomDataGridTextColumn.cs" />
+    <Compile Include="CustomDataGrid\DataGridFrozenGrid.cs" />
     <Compile Include="CustomSlider\CustomSlider.cs" />
     <Compile Include="CustomSlider\NumberedTickBar.cs" />
     <Compile Include="DropDownButton\DropDownButton.cs" />

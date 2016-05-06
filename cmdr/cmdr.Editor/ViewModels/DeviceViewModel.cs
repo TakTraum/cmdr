@@ -111,6 +111,22 @@ namespace cmdr.Editor.ViewModels
         }
 
         private IList<MappingViewModel> _selectedMappings;
+        private IList _selectedMappingsInner;
+        public IList SelectedMappings
+        {
+            get { return _selectedMappingsInner; }
+            set
+            {
+                _selectedMappingsInner = value; 
+                raisePropertyChanged("SelectedMappings");
+                if (value != null)
+                {
+                    _selectedMappings = value.Cast<MappingViewModel>().ToList();
+                    if (_selectedMappings != null)
+                        MappingEditorViewModel = new MappingEditorViewModel(this, _selectedMappings.ToArray());
+                }
+            }
+        }
         
         private MappingEditorViewModel _mappingEditorViewModel;
         public MappingEditorViewModel MappingEditorViewModel
@@ -156,12 +172,6 @@ namespace cmdr.Editor.ViewModels
         public ICommand RemoveMappingCommand
         {
             get { return _removeMappingCommand ?? (_removeMappingCommand = new CommandHandler(removeMappings, () => _selectedMappings != null && _selectedMappings.Any())); }
-        }
-
-        private ICommand _selectItemsCommand;
-        public ICommand SelectItemsCommand
-        {
-            get { return _selectItemsCommand ?? (_selectItemsCommand = new CommandHandler<IList>(getSelection)); }
         }
 
         private ICommand _showConditionDescriptionsEditorCommand;
@@ -228,13 +238,6 @@ namespace cmdr.Editor.ViewModels
         {
             foreach (var mapping in Mappings)
                 mapping.RevertChanges();
-        }
-
-
-        private void getSelection(IList selectedItems)
-        {
-            _selectedMappings = selectedItems.Cast<MappingViewModel>().ToList();
-            MappingEditorViewModel = new MappingEditorViewModel(this, _selectedMappings.ToArray());
         }
 
         private void updateMapsChanged()
