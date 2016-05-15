@@ -47,11 +47,16 @@
         <Setter Property="HeadersVisibility" Value="Column"/>
         <Setter Property="GridLinesVisibility" Value="None"/>
         <Setter Property="SelectionUnit" Value="FullRow"/>
-        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-        <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="SelectionMode" Value="Extended"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="CanUserSortColumns" Value="True"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="HorizontalGridLinesBrush" Value="#a0B7AFA3"/>
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource ColumnHeaderStyle}"/>
+        <Setter Property="customDataGrid:DraggableRowsBehavior.IsEnabled" Value="True"/>
         <Setter Property="Template" Value="{StaticResource customDataGridTemplate}"/>
         <Style.Triggers>
             <Trigger Property="IsGrouping" Value="true">
