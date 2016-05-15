@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cmdr.Editor.ViewModels.Comment
 {
@@ -34,6 +33,25 @@ namespace cmdr.Editor.ViewModels.Comment
                 _comment = common.Single();
             else
                 _comment = String.Empty;
+
+            // workaround for inline editing in mapping list
+            var first = _mappings.FirstOrDefault();
+            if (first != null)
+                first.PropertyChanged += onCommentChangedInline;
+        }
+
+
+        private void onCommentChangedInline(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Comment":
+                    _comment = (sender as MappingViewModel).Comment;
+                    raisePropertyChanged("Comment");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
