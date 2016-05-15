@@ -82,6 +82,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomDataGrid\IListItemConverter.cs" />
+    <Compile Include="CustomDataGrid\DraggableRowsBehavior.cs" />
+    <Compile Include="CustomDataGrid\InsertAdorner.cs" />
+    <Compile Include="CustomDataGrid\MultiSelectorBehavior.cs" />
+    <Compile Include="CustomDataGrid\RowItemViewModel.cs" />
+    <Compile Include="CustomDataGrid\TwoListSynchronizer.cs" />
     <Compile Include="CustomTextBlock\AutoToolTipTextBlock.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />
     <Compile Include="CustomDataGrid\CustomDataGrid.cs" />

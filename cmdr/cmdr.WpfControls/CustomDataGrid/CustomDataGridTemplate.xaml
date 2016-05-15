@@ -147,11 +147,61 @@
         </Setter>
     </Style>
 
+
     <ControlTemplate x:Key="customDataGridTemplate" TargetType="DataGrid">
         <ControlTemplate.Resources>
+            
+            <!--Virtualised ItemsControl-->
+            <Style x:Key="ItemsControlVirtialisedStyle" TargetType="ItemsControl">
+                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ItemsControl">
+                            <Border
+                    BorderThickness="{TemplateBinding Border.BorderThickness}"
+                    Padding="{TemplateBinding Control.Padding}"
+                    BorderBrush="{TemplateBinding Border.BorderBrush}"
+                    Background="{TemplateBinding Panel.Background}"
+                    SnapsToDevicePixels="True">
+                                <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False">
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <!--Style and template for the DataGridCell.-->
             <Style TargetType="{x:Type DataGridCell}">
                 <Setter Property="Template" Value="{StaticResource CellTemplate}"/>
+                <Setter Property="FocusVisualStyle">
+                    <Setter.Value>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle Margin="-2" StrokeThickness="1" Stroke="#F7747B"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                        <Setter Property="IsSelected" Value="True"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <!--Style and template for the DataGridRow.-->
@@ -166,6 +216,11 @@
                     </Setter.Value>
                 </Setter>
                 <Setter Property="Template" Value="{StaticResource RowTemplate}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource Cmdr.HighlightLevel2BrushKey}"/>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
         </ControlTemplate.Resources>
 
@@ -191,8 +246,10 @@
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
             <ScrollViewer x:Name="DG_ScrollViewer"
-                        Focusable="false"
-                        Background="Black">
+                          Focusable="False"
+                          Background="Black"
+                          CanContentScroll="True"
+                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                 <ScrollViewer.Template>
                     <ControlTemplate TargetType="{x:Type ScrollViewer}">
                         <Grid>

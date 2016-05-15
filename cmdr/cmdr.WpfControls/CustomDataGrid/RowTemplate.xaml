@@ -12,13 +12,13 @@
 
     <ControlTemplate x:Key="RowTemplate" TargetType="{x:Type DataGridRow}">
         <Border x:Name="DGR_Border"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="True">
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="True">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Transparent" Offset="0" />
-                    <GradientStop Color="{StaticResource ControlLightColor}" Offset="1" />
+                    <GradientStop Color="White" Offset="0" />
+                    <GradientStop Color="{Binding Background.Color, RelativeSource={RelativeSource TemplatedParent}, FallbackValue={StaticResource ControlLightColor}}" Offset="0" />
                 </LinearGradientBrush>
             </Border.Background>
             <VisualStateManager.VisualStateGroups>
@@ -49,6 +49,7 @@
                                                           Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
                                 <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource Cmdr.HighlightColor}" />
                             </ColorAnimationUsingKeyFrames>
+   
                         </Storyboard>
                     </VisualState>
 
