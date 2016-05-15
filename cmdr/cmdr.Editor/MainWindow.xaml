@@ -11,7 +11,8 @@
         mc:Ignorable="d"
         Height="Auto" Width="Auto" MinWidth="800" Title="{Binding AppTitle, Mode=OneWay}"
         AllowDrop="True"
-        behaviors:AttachedBehaviors.DragDropBehaviour="{Binding DropCommand, Mode=OneTime}"
+        behaviors:AttachedBehaviors.DropBehaviour="{Binding DropCommand, Mode=OneTime}"
+        Background="White"
     >
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewCommand, Mode=OneTime}"/>
