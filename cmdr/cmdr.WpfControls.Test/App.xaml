@@ -1,0 +1,14 @@
+﻿<Application x:Class="cmdr.WpfControls.Test.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Color x:Key="Cmdr.HighlightColor">#ACD1E9</Color>
+        <SolidColorBrush x:Key="Cmdr.HighlightBrushKey" Color="{StaticResource Cmdr.HighlightColor}"/>
+
+        <Color x:Key="Cmdr.HighlightLevel2Color">#F0F5FF</Color>
+        <SolidColorBrush x:Key="Cmdr.HighlightLevel2BrushKey" Color="{StaticResource Cmdr.HighlightLevel2Color}"/>
+
+        <Color x:Key="Cmdr.HighlightTextColor">Black</Color>
+    </Application.Resources>
+</Application>

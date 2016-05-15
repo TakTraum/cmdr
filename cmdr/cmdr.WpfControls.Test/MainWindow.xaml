@@ -1,0 +1,24 @@
+﻿<Window x:Class="cmdr.WpfControls.Test.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:cmdr.WpfControls.Test"
+        xmlns:dg="clr-namespace:cmdr.WpfControls.CustomDataGrid;assembly=cmdr.WpfControls"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <dg:CustomDataGrid AutoGenerateColumns="False" IsReadOnly="True"
+                           ItemsSource="{Binding Things}" dg:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedThings, Mode=OneWayToSource}">
+            <DataGrid.Columns>
+                <dg:CustomDataGridTextColumn Header="Number" Binding="{Binding Item.Number}"/>
+                <dg:CustomDataGridTextColumn Header="Name" Binding="{Binding Item.Name}" Width="*"/>
+            </DataGrid.Columns>
+        </dg:CustomDataGrid>
+        <Button Grid.Row="1" Content="Duplicate" Height="30" Click="Button_Click"/>
+    </Grid>
+</Window>
