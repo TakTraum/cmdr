@@ -8,6 +8,9 @@
              xmlns:cond="clr-namespace:cmdr.TsiLib.Conditions;assembly=cmdr.TsiLib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -38,6 +41,7 @@
                 </Style>
             </controls:ConditionControl.Style>
         </controls:ConditionControl>
+        <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="Various Conditions" Visibility="{Binding Condition1Various, Converter={StaticResource boolToVisConverter}}"/>
 
         <ddButton:DropDownButton Grid.Row="2" Grid.Column="0" Height="30" Width="30" 
                                  VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -58,5 +62,6 @@
                 </Style>
             </controls:ConditionControl.Style>
         </controls:ConditionControl>
+        <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Text="Various Conditions" Visibility="{Binding Condition2Various, Converter={StaticResource boolToVisConverter}}"/>
     </Grid>
 </UserControl>
