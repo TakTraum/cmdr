@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using cmdr.Editor.AvalonDock;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Xceed.Wpf.AvalonDock.Layout;
@@ -11,12 +12,13 @@ namespace cmdr.Editor.Views
     /// </summary>
     public partial class TsiFileView : UserControl
     {
-        private readonly string LAYOUT_PATH = "Layout.xml";
+        private readonly LayoutManager _layoutManager;
 
 
         public TsiFileView()
         {
             InitializeComponent();
+            _layoutManager = new LayoutManager(dockingManager);
 
             Loaded += TsiFileView_Loaded;
             Unloaded += TsiFileView_Unloaded;
@@ -25,25 +27,25 @@ namespace cmdr.Editor.Views
 
         void TsiFileView_Unloaded(object sender, RoutedEventArgs e)
         {
-            saveLayout();
+            _layoutManager.SaveLayout();
         }
 
         void TsiFileView_Loaded(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(LAYOUT_PATH))
-                loadLayout();
+            if (_layoutManager.DefaultLayoutAvailable)
+                _layoutManager.LoadLayout();
             else
                 initLayout();
         }
 
         private void initLayout()
         {
-            initLayoutAnchorable(anchDevices);
-            initLayoutAnchorable(anchDevEditor);
-            initLayoutAnchorable(anchDetails);
+            initLayout(anchDevices);
+            initLayout(anchDevEditor);
+            initLayout(anchDetails);
         }
 
-        private void initLayoutAnchorable(LayoutAnchorable la)
+        private void initLayout(LayoutAnchorable la)
         {
             if (la.IsAutoHidden)
                 la.ToggleAutoHide();
@@ -51,20 +53,6 @@ namespace cmdr.Editor.Views
             var parent = la.Parent as LayoutAnchorablePane;
             if (parent != null)
                 parent.DockWidth = new GridLength(la.AutoHideMinWidth);
-        }
-
-        private void saveLayout()
-        {
-            var serializer = new XmlLayoutSerializer(dockingManager);
-            using (var stream = new StreamWriter(LAYOUT_PATH))
-                serializer.Serialize(stream);
-        }
-
-        private void loadLayout()
-        {
-            var serializer = new XmlLayoutSerializer(dockingManager);
-            using (var stream = new StreamReader(LAYOUT_PATH))
-                serializer.Deserialize(stream);
         }
     }
 }
