@@ -18,23 +18,27 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <cdg:CustomDataGrid Grid.Row="0" x:Name="MappingsGrid"
-                  AutoGenerateColumns="False"
-                  ItemsSource="{Binding Mappings, Mode=OneWay}"
-                  CanUserSortColumns="True"
-                  CanUserResizeRows="False"
-                  SelectionMode="Extended"
-                  SelectedItem="{Binding SelectedMapping}"
-                  SelectedItemsList="{Binding SelectedMappings, Mode=OneWayToSource}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                            AutoGenerateColumns="False"
+                            ItemsSource="{Binding Mappings, Mode=OneWay}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                            cdg:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedMappings}"
+                            cdg:DraggableRowsBehavior.DropAction="{Binding DropCommand, Mode=OneTime}"
+                            >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand, Mode=OneTime}" 
+                                           CommandParameter="{Binding ElementName=MappingsGrid, Path=SelectedItems}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <DataGrid.Columns>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Id, Mode=OneTime}" Header="Id" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Type, Mode=OneTime}" Header="I/O" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding TraktorCommand, Mode=OneWay}" Header="Command" Width="200" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding AssignmentExpression, Mode=OneWay}" Header="Assignment" Width="100" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding ConditionExpression, Mode=OneWay}" Header="Condition" Width="150" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Interaction, Mode=OneWay}" Header="Interaction" Width="100" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding MappedTo, Mode=OneWay}" Header="Mapped To" Width="100" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Comment}" Header="Comment" MinWidth="75" Width="*"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Id, Mode=OneTime}" Header="Id" Width="75" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Type, Mode=OneTime}" Header="I/O" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.TraktorCommand, Mode=OneWay}" Header="Command" Width="200" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.AssignmentExpression, Mode=OneWay}" Header="Assignment" Width="100" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.ConditionExpression, Mode=OneWay}" Header="Condition" Width="150" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Interaction, Mode=OneWay}" Header="Interaction" Width="100" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.MappedTo, Mode=OneWay}" Header="Mapped To" Width="100" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Comment, UpdateSourceTrigger=PropertyChanged}" Header="Comment" MinWidth="75" Width="*"/>
             </DataGrid.Columns>
             <DataGrid.InputBindings>
                 <KeyBinding Key="C" Modifiers="Ctrl" Command="ApplicationCommands.NotACommand"/>

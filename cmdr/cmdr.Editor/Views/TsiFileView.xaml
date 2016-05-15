@@ -6,7 +6,7 @@
              xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:views="clr-namespace:cmdr.Editor.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="600" MinWidth="600">
+             d:DesignHeight="400" d:DesignWidth="600" MinWidth="600" Background="White">
     <ad:DockingManager x:Name="dockingManager">
         
         <ad:LayoutRoot>
@@ -71,7 +71,7 @@
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SelectedMapping}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedMappings}" Value="{x:Null}">
                                                     <Setter Property="IsEnabled" Value="False"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
