@@ -11,21 +11,23 @@ namespace cmdr.Editor.Behaviors
 {
     public static class AttachedBehaviors
     {
-        public static readonly DependencyProperty DragDropBehaviourProperty =
-            DependencyProperty.RegisterAttached("DragDropBehaviour", typeof(ICommand), typeof(AttachedBehaviors),
+        public static readonly DependencyProperty DropBehaviourProperty =
+            DependencyProperty.RegisterAttached("DropBehaviour", typeof(ICommand), typeof(AttachedBehaviors),
                 new FrameworkPropertyMetadata(null,
                     FrameworkPropertyMetadataOptions.None,
                     OnDragDropBehaviourChanged));
 
-        public static ICommand GetDragDropBehaviour(DependencyObject d)
+        public static ICommand GetDropBehaviour(DependencyObject d)
         {
-            return (ICommand)d.GetValue(DragDropBehaviourProperty);
+            return (ICommand)d.GetValue(DropBehaviourProperty);
         }
 
-        public static void SetDragDropBehaviour(DependencyObject d, ICommand value)
+        public static void SetDropBehaviour(DependencyObject d, ICommand value)
         {
-            d.SetValue(DragDropBehaviourProperty, value);
+            d.SetValue(DropBehaviourProperty, value);
         }
+
+
 
         private static void OnDragDropBehaviourChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -34,7 +36,7 @@ namespace cmdr.Editor.Behaviors
             {
                 g.Drop += (s, a) =>
                 {
-                    ICommand iCommand = GetDragDropBehaviour(d);
+                    ICommand iCommand = GetDropBehaviour(d);
                     if (iCommand != null)
                     {
                         if (iCommand.CanExecute(a.Data))
