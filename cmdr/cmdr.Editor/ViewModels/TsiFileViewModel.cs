@@ -49,15 +49,7 @@ namespace cmdr.Editor.ViewModels
         public DeviceViewModel SelectedDevice
         {
             get { return _selectedDevice; }
-            set
-            {
-                _selectedDevice = value; 
-                raisePropertyChanged("SelectedDevice");
-
-                // Set selection if possible
-                if (_selectedDevice != null)
-                    _selectedDevice.SelectedMapping = _selectedDevice.Mappings.FirstOrDefault();
-            }
+            set { _selectedDevice = value; raisePropertyChanged("SelectedDevice"); }
         }
 
         private static ObservableCollection<MenuItemViewModel> _addDeviceMenuItems;
