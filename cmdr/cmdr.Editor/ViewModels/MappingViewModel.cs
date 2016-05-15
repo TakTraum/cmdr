@@ -215,5 +215,19 @@ namespace cmdr.Editor.ViewModels
         {
 
         }
+
+
+        public override bool Equals(object obj)
+        {
+            MappingViewModel other = obj as MappingViewModel;
+            if (other == null)
+                return false;
+            return _mapping.Equals(other._mapping);
+        }
+
+        public override int GetHashCode()
+        {
+            return _mapping.GetHashCode();
+        }
     }
 }
