@@ -326,7 +326,7 @@ namespace cmdr.Editor.ViewModels
 
         private void refreshAppTitle()
         {
-            if (SelectedTsiFileModel != null)
+            if (SelectedTsiFileModel != null && _mdiContainer.SelectedMdiChild != null)
                 AppTitle = String.Format("{0} - {1}", APPNAME, _mdiContainer.SelectedMdiChild.Title);
             else
                 AppTitle = APPNAME;
