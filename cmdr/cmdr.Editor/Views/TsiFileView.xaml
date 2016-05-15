@@ -72,6 +72,9 @@
                                         <Style TargetType="{x:Type Grid}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding SelectedMappings}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding SelectedMappings.Count}" Value="0">
                                                     <Setter Property="IsEnabled" Value="False"/>
                                                 </DataTrigger>
                                             </Style.Triggers>

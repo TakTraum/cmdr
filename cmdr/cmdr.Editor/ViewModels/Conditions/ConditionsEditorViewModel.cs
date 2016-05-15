@@ -32,6 +32,13 @@ namespace cmdr.Editor.ViewModels.Conditions
             private set { _condition1 = value; raisePropertyChanged("Condition1"); }
         }
 
+        private bool _condition1Various;
+        public bool Condition1Various
+        {
+            get { return _condition1Various; }
+            set { _condition1Various = value; raisePropertyChanged("Condition1Various"); }
+        }
+
         private ConditionViewModel _condition2;
         public ConditionViewModel Condition2
         {
@@ -39,6 +46,12 @@ namespace cmdr.Editor.ViewModels.Conditions
             private set { _condition2 = value; raisePropertyChanged("Condition2"); }
         }
 
+        private bool _condition2Various;
+        public bool Condition2Various
+        {
+            get { return _condition2Various; }
+            set { _condition2Various = value; raisePropertyChanged("Condition2Various"); }
+        }
 
         #region Commands
 
@@ -79,9 +92,11 @@ namespace cmdr.Editor.ViewModels.Conditions
         {
             var c1 = getCommonCondition(_selectedC1Conditions);
             Condition1 = new ConditionViewModel(_mappings, ConditionNumber.One, c1);
+            Condition1Various = _selectedC1Conditions.Where(c => c != null).Any() && c1 == null;
 
             var c2 = getCommonCondition(_selectedC2Conditions);
             Condition2 = new ConditionViewModel(_mappings, ConditionNumber.Two, c2);
+            Condition2Various = _selectedC2Conditions.Where(c => c != null).Any() && c2 == null;
 
             updateConditionsMenu(
                 _selectedC1Conditions.Where(c => c != null && !c.Equals(c1)),
