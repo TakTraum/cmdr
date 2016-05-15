@@ -119,6 +119,13 @@ namespace cmdr.Editor.AvalonDock
                         OnSelected(c.ContentId);
                 };
 
+            mdiChild.IsActiveChanged += (s, e) =>
+                {
+                    var c = s as LayoutDocument;
+                    if (c.IsActive && OnSelected != null)
+                        OnSelected(c.ContentId);
+                };
+
             _mdiChildren.Add(child.Id, child);
             _internalMdiChildren.Add(mdiChild);
 
