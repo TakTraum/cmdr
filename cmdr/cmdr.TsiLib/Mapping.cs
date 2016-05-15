@@ -242,11 +242,26 @@ namespace cmdr.TsiLib
             return copy;
         }
 
+        public override bool Equals(object obj)
+        {
+            Mapping other = obj as Mapping;
+            if (other == null)
+                return false;
+
+            return Id.Equals(other.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
 
         internal void Attach(Device device)
         {
             CanOverrideFactoryMap = (device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI && device.ProprietaryControllerDeviceType == Proprietary_Controller_DeviceType.Default);
         }
+
 
         /// This one is dumb and must not be called from other classes. RawMapping.Settings are ignored!
         private bool setCondition(ConditionNumber number, ACondition condition)
