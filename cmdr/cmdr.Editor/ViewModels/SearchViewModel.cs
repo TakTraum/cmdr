@@ -1,4 +1,5 @@
 ﻿using cmdr.Editor.Utils;
+using cmdr.WpfControls.CustomDataGrid;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,7 +35,11 @@ namespace cmdr.Editor.ViewModels
          {
              int count = _lastSearchResult.Count();
              if (count > _lastSearchPos)
-                 _dvm.SelectedMapping = _lastSearchResult.ElementAt(_lastSearchPos++);
+             {
+                 var select = _dvm.Mappings.Single(m => m.Item == _lastSearchResult.ElementAt(_lastSearchPos));
+                 highlight(select);
+                 _lastSearchPos++;
+             }
              bool hasNext = (count > _lastSearchPos);
              if (!hasNext)
                  _lastSearchPos = 0;
@@ -48,14 +53,22 @@ namespace cmdr.Editor.ViewModels
 
              var comparer = CultureInfo.CurrentCulture.CompareInfo;
              // TODO: Sorting!
-             _lastSearchResult = _dvm.Mappings
+             _lastSearchResult = _dvm.Mappings.Select(m => m.Item as MappingViewModel)
                  .Where(m => comparer.IndexOf(m.Command.Name.ToLower(), SearchText.ToLower(), CompareOptions.IgnoreCase) >= 0);
 
              if (_lastSearchResult.Any())
              {
                  _lastSearchPos = 1;
-                 _dvm.SelectedMapping = _lastSearchResult.First();
+                 var select = _dvm.Mappings.Single(m => m.Item == _lastSearchResult.First());
+                 highlight(select);
              }
+         }
+
+         private void highlight(RowItemViewModel item)
+         {
+             item.BringIntoView();
+             _dvm.SelectedMappings.Clear();
+             _dvm.SelectedMappings.Add(item);
          }
     }
 }
