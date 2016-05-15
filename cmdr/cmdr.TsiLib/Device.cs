@@ -116,28 +116,25 @@ namespace cmdr.TsiLib
 
         public void AddMapping(Mapping mapping)
         {
-            if (RawDevice.Data.Mappings == null)
-                RawDevice.Data.Mappings = new Format.MappingsContainer();
+            InsertMapping(Mappings.Count, mapping);
+        }
 
-            mapping.Attach(this);
+        public void InsertMapping(int index, Mapping mapping)
+        {
+            insertMapping(index, mapping, false);
+        }
 
-            //mapping.RawMapping.Settings.DeviceType = Type;
-            mapping.RawMapping.MidiNoteBindingId = createNewId(); // set correct id no matter if mapping is newly created or not
-
-            // keep midi binding
-            if (mapping.MidiBinding != null)
-                mapping.SetBinding(this, mapping.MidiBinding);
-
-            RawDevice.Data.Mappings.List.Mappings.Add(mapping.RawMapping);
-
-            _mappings.Add(mapping);
+        public void MoveMapping(int oldIndex, int newIndex)
+        {
+            var temp = _mappings[oldIndex];
+            removeMapping(temp, true);
+            insertMapping(newIndex, temp, true);
         }
 
         public void RemoveMapping(int id)
         {
             var old = _mappings.Single(m => m.Id == id);
-            _mappings.Remove(old);
-            removeMapping(old.RawMapping);
+            removeMapping(old, false);
         }
 
         /// <summary>
@@ -167,15 +164,51 @@ namespace cmdr.TsiLib
             return copy;
         }
 
+        private void insertMapping(int index, Mapping mapping, bool asIs)
+        {
+            if (RawDevice.Data.Mappings == null)
+                RawDevice.Data.Mappings = new Format.MappingsContainer();
+
+            if (!asIs)
+            {
+                mapping.Attach(this);
+
+                //mapping.RawMapping.Settings.DeviceType = Type;
+                mapping.RawMapping.MidiNoteBindingId = createNewId(); // set correct id no matter if mapping is newly created or not
+
+                // keep midi binding
+                if (mapping.MidiBinding != null)
+                    mapping.SetBinding(this, mapping.MidiBinding);
+            }
+
+            if (index == Mappings.Count)
+            {
+                RawDevice.Data.Mappings.List.Mappings.Add(mapping.RawMapping);
+                _mappings.Add(mapping);
+            }
+            else
+            {
+                RawDevice.Data.Mappings.List.Mappings.Insert(index, mapping.RawMapping);
+                _mappings.Insert(index, mapping);
+            }
+        }
+
+        public void removeMapping(int index, bool keepBinding)
+        {
+            removeMapping(_mappings[index], keepBinding);
+        }
+
         /// <summary>
-        /// removes a mapping and any corresponding binding
+        /// removes a mapping and optionally corresponding binding
         /// </summary>
         /// <param name="mapping"></param>
-        private void removeMapping(Format.Mapping mapping)
+        private void removeMapping(Mapping mapping, bool keepBinding)
         {
+            _mappings.Remove(mapping);
             var rawMappings = RawDevice.Data.Mappings.List.Mappings;
-            rawMappings.Remove(mapping);
-            removeBinding(mapping.MidiNoteBindingId);
+            rawMappings.Remove(mapping.RawMapping);
+            if (!keepBinding)
+                removeBinding(mapping.RawMapping.MidiNoteBindingId);
         }
 
         /// <summary>
