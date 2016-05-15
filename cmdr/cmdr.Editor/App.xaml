@@ -11,7 +11,7 @@
             <Color x:Key="Cmdr.HighlightColor">#ACD1E9</Color>
             <SolidColorBrush x:Key="Cmdr.HighlightBrushKey" Color="{StaticResource Cmdr.HighlightColor}"/>
 
-            <Color x:Key="Cmdr.HighlightLevel2Color">#F5FAFA</Color>
+            <Color x:Key="Cmdr.HighlightLevel2Color">#F0F5FF</Color>
             <SolidColorBrush x:Key="Cmdr.HighlightLevel2BrushKey" Color="{StaticResource Cmdr.HighlightLevel2Color}"/>
 
             <Color x:Key="Cmdr.HighlightTextColor">Black</Color>

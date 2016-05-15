@@ -85,6 +85,7 @@
     <Compile Include="AppSettings\Base\ConfigElementCollection.cs" />
     <Compile Include="AppSettings\Base\ConfigSection.cs" />
     <Compile Include="AppSettings\Base\IConfigElementCollection.cs" />
+    <Compile Include="AvalonDock\LayoutManager.cs" />
     <Compile Include="AvalonDock\MdiChild.cs" />
     <Compile Include="AvalonDock\MdiContainer.cs" />
     <Compile Include="Behaviors\AttachedBehaviors.cs" />

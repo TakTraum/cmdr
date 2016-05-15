@@ -4,8 +4,8 @@ using cmdr.MidiLib;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
-using cmdr.TsiLib.MidiDefinitions;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.WpfControls.CustomDataGrid;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
 using System;
@@ -13,7 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Controls;
+using System.Windows;
 using System.Windows.Input;
 
 namespace cmdr.Editor.ViewModels
@@ -21,6 +21,9 @@ namespace cmdr.Editor.ViewModels
     public class DeviceViewModel : AReversible
     {
         public static readonly string ALL_PORTS = "All Ports";
+
+        private static readonly List<MappingViewModel> _mappingClipboard = new List<MappingViewModel>();
+
 
         private Device _device;
 
@@ -94,44 +97,25 @@ namespace cmdr.Editor.ViewModels
             set { _device.Target = value; raisePropertyChanged("Target"); IsChanged = true; }
         }
 
-        private ObservableCollection<MappingViewModel> _mappings;
-        public ObservableCollection<MappingViewModel> Mappings
+        private ObservableCollection<RowItemViewModel> _mappings = new ObservableCollection<RowItemViewModel>();
+        public ObservableCollection<RowItemViewModel> Mappings
         {
-            get { return _mappings ?? (_mappings = new ObservableCollection<MappingViewModel>()); }
+            get { return _mappings; }
         }
 
         public IReadOnlyDictionary<string, AMidiDefinition> MidiInDefinitions { get { return _device.MidiInDefinitions; } }
         public IReadOnlyDictionary<string, AMidiDefinition> MidiOutDefinitions { get { return _device.MidiOutDefinitions; } }
 
-        private MappingViewModel _selectedMapping;
-        public MappingViewModel SelectedMapping
+        private ObservableCollection<RowItemViewModel> _selectedMappings = new ObservableCollection<RowItemViewModel>();
+        public ObservableCollection<RowItemViewModel> SelectedMappings
         {
-            get { return _selectedMapping; }
-            set { _selectedMapping = value; raisePropertyChanged("SelectedMapping"); }
-        }
-
-        private IList<MappingViewModel> _selectedMappings;
-        private IList _selectedMappingsInner;
-        public IList SelectedMappings
-        {
-            get { return _selectedMappingsInner; }
-            set
-            {
-                _selectedMappingsInner = value; 
-                raisePropertyChanged("SelectedMappings");
-                if (value != null)
-                {
-                    _selectedMappings = value.Cast<MappingViewModel>().ToList();
-                    if (_selectedMappings != null)
-                        MappingEditorViewModel = new MappingEditorViewModel(this, _selectedMappings.ToArray());
-                }
-            }
+            get { return _selectedMappings; }
         }
         
         private MappingEditorViewModel _mappingEditorViewModel;
         public MappingEditorViewModel MappingEditorViewModel
         {
-            get { return _mappingEditorViewModel; }
+            get { return _mappingEditorViewModel ?? (_mappingEditorViewModel = new MappingEditorViewModel(this, _selectedMappings.Select(r => r.Item as MappingViewModel))); }
             set { _mappingEditorViewModel = value; raisePropertyChanged("MappingEditorViewModel"); }
         }
 
@@ -142,18 +126,25 @@ namespace cmdr.Editor.ViewModels
             set { _searchViewModel = value; raisePropertyChanged("SearchViewModel"); }
         }
 
+        public ObservableCollection<MenuItemViewModel> InCommands { get; set; }
+        public ObservableCollection<MenuItemViewModel> OutCommands { get; set; }
+
+        public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
+        public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
+
+
         #region Commands
 
         private ICommand _copyCommand;
         public ICommand CopyCommand
         {
-            get { return _copyCommand ?? (_copyCommand = new CommandHandler(copy, () => _selectedMappings != null && _selectedMappings.Any())); }
+            get { return _copyCommand ?? (_copyCommand = new CommandHandler(copy, () => _selectedMappings.Any())); }
         }
 
         private ICommand _cutCommand;
         public ICommand CutCommand
         {
-            get { return _cutCommand ?? (_cutCommand = new CommandHandler(cut, () => _selectedMappings != null && _selectedMappings.Any())); }
+            get { return _cutCommand ?? (_cutCommand = new CommandHandler(cut, () => _selectedMappings.Any())); }
         }
 
         private ICommand _pasteCommand;
@@ -171,7 +162,11 @@ namespace cmdr.Editor.ViewModels
         private ICommand _removeMappingCommand;
         public ICommand RemoveMappingCommand
         {
-            get { return _removeMappingCommand ?? (_removeMappingCommand = new CommandHandler(removeMappings, () => _selectedMappings != null && _selectedMappings.Any())); }
+            get
+            {
+                return _removeMappingCommand ??
+                    (_removeMappingCommand = new CommandHandler(() => removeMappings(_selectedMappings), _selectedMappings.Any));
+            }
         }
 
         private ICommand _showConditionDescriptionsEditorCommand;
@@ -186,17 +181,19 @@ namespace cmdr.Editor.ViewModels
             get { return _refreshPortsCommand ?? (_refreshPortsCommand = new CommandHandler(refreshPorts)); }
         }
 
+        private ICommand _dropCommand;
+        public ICommand DropCommand
+        {
+            get { return _dropCommand ?? (_dropCommand = new CommandHandler<IDataObject>(drop)); }
+        }
+
+        private ICommand _selectionChangedCommand;
+        public ICommand SelectionChangedCommand
+        {
+            get { return _selectionChangedCommand ?? (_selectionChangedCommand = new CommandHandler<IList>(updateEditor)); }
+        }
 
         #endregion
-
-
-        private static IList<Mapping> _mappingClipboard;
-
-        public ObservableCollection<MenuItemViewModel> InCommands { get; set; }
-        public ObservableCollection<MenuItemViewModel> OutCommands { get; set; }
-
-        public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
-        public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
         
 
         public DeviceViewModel(Device device)
@@ -207,10 +204,12 @@ namespace cmdr.Editor.ViewModels
 
             generateAddMappingContextMenus();
 
+            loadDefaultMidiDefinitionsAsync();
+
             foreach (var mapping in _device.Mappings)
             {
                 var mvm = new MappingViewModel(_device, mapping);
-                Mappings.Add(mvm);
+                Mappings.Add(new RowItemViewModel(mvm));
                 mvm.DirtyStateChanged += (s, e) => updateMapsChanged();
             }
 
@@ -218,7 +217,9 @@ namespace cmdr.Editor.ViewModels
 
             Mappings.CollectionChanged += Mappings_CollectionChanged;
 
-            loadDefaultMidiDefinitionsAsync();
+            // set selection if possible
+            if (Mappings.Any())
+                SelectedMappings.Add(Mappings.First());
         }
        
 
@@ -231,47 +232,121 @@ namespace cmdr.Editor.ViewModels
             }
             
             foreach (var mapping in Mappings)
-                mapping.AcceptChanges();
+                (mapping.Item as MappingViewModel).AcceptChanges();
         }
 
         protected override void Revert()
         {
             foreach (var mapping in Mappings)
-                mapping.RevertChanges();
+                (mapping.Item as MappingViewModel).RevertChanges();
+        }
+
+        private void drop(IDataObject dataObject)
+        {
+            if (dataObject == null)
+                return;
+
+            var data = dataObject.GetData(typeof(DraggableRowsBehavior.Data)) as DraggableRowsBehavior.Data;
+            if (data == null)
+                return;
+
+            if (data.TargetIndex < 0 && Mappings.Any()) // // don't allow invalid targets, but allow drop on an empty grid 
+                return;
+
+            DeviceViewModel srcDevice = data.SenderDataContext as DeviceViewModel;
+            if (srcDevice == null)
+                return;
+
+            // copy and sort selected items
+            List<RowItemViewModel> selected = new List<RowItemViewModel>(
+                data.SelectedItems
+                .Cast<RowItemViewModel>()
+                .OrderBy(s => srcDevice._mappings.IndexOf(s))
+                );
+
+            int newIndex = Math.Max(0, data.TargetIndex);
+
+            if (srcDevice != this || !data.IsMove)
+            {
+                if (data.IsMove)
+                    srcDevice.removeMappings(selected);
+
+                SelectedMappings.Clear();
+
+                foreach (var row in selected)
+                {
+                    var rawMapping = (row.Item as MappingViewModel).Copy(true);
+                    insertMapping(newIndex++, rawMapping);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < selected.Count; i++)
+                {
+                    var oldIndex = _mappings.IndexOf(selected[i]);
+
+                    if (oldIndex < newIndex || newIndex == Mappings.Count)
+                        newIndex--;
+
+                    if (i > 0)
+                    {
+                        newIndex = _mappings.IndexOf(selected[i - 1]);
+                        if (oldIndex > newIndex) // if drag is upwards
+                            newIndex++;
+                    }
+
+                    if (oldIndex == newIndex)
+                        continue;
+
+                    _device.MoveMapping(oldIndex, newIndex);
+                    _mappings.Move(oldIndex, newIndex);
+                }
+            }
+
+            if (selected.Any())
+                selected.Last().BringIntoView();
         }
 
         private void updateMapsChanged()
         {
-            IsChanged = Mappings.Any(m => m.IsChanged);
+            IsChanged = Mappings.Any(m => (m.Item as MappingViewModel).IsChanged);
         }
 
         private void showConditionDescriptionsEditor()
         {
-            ConditionDescriptions.Generate(Mappings);
+            ConditionDescriptions.Generate(Mappings.Select(m => m.Item as MappingViewModel));
             ConditionDescriptions.Edit();
         }
 
         private void cut()
         {
             copy();
-            removeMappings();
+            removeMappings(_selectedMappings);
         }
 
         private void copy()
         {
-            _mappingClipboard = _selectedMappings.Select(mvm => mvm.Copy(true)).ToList();
+            var sorted = _selectedMappings.OrderBy(s => _mappings.IndexOf(s));
+
+            _mappingClipboard.Clear();
+            _mappingClipboard.AddRange(sorted.Select(mvm => mvm.Item as MappingViewModel));
         }
 
         private void paste()
         {
-            foreach (var mapping in _mappingClipboard)
+            var sorted = _selectedMappings.OrderBy(s => _mappings.IndexOf(s));
+            
+            int index = _mappings.Count;
+            if (_selectedMappings.Count > 0)
             {
-                _device.AddMapping(mapping);
-                var mvm = new MappingViewModel(_device, mapping);
-                _mappings.Add(mvm);
+                index = _mappings.IndexOf(sorted.Last()) + 1;
+                SelectedMappings.Clear();
             }
-            SelectedMapping = _mappings.Last();
-            _mappingClipboard = _mappingClipboard.Select(m => m.Copy(true)).ToList();
+
+            foreach (var mapping in _mappingClipboard)
+                insertMapping(index++, mapping.Copy(true));
+
+            _selectedMappings.Last().BringIntoView();
         }
 
         private void generateAddMappingContextMenus()
@@ -290,22 +365,47 @@ namespace cmdr.Editor.ViewModels
             OutCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allOut, itemBuilder, a => a.Category.ToDescriptionString(), "->", false));
         }
 
-        private void addMapping(MenuItemViewModel item)
+        private void insertMapping(int index, Mapping rawMapping)
         {
-            var proxy = item.Tag as CommandProxy;
-            var m = _device.CreateMapping(proxy);
-            _device.AddMapping(m);
-            var mvm = new MappingViewModel(_device, m);
-            _mappings.Add(mvm);
-            SelectedMapping = mvm;
+            _device.InsertMapping(index, rawMapping);
+            var mvm = new MappingViewModel(_device, rawMapping);
+            var row = new RowItemViewModel(mvm);
+            _mappings.Insert(index, row);
+
+            SelectedMappings.Add(row);
         }
 
-        private void removeMappings()
+        private void addMapping(MenuItemViewModel item)
         {
-            foreach (var mvm in _selectedMappings)
+            int index = _mappings.Count;
+            if (_selectedMappings.Count > 0)
+                index = _mappings.IndexOf(_selectedMappings.Last()) + 1;
+
+            var proxy = item.Tag as CommandProxy;
+            var m = _device.CreateMapping(proxy);
+            _device.InsertMapping(index, m);
+
+            var mvm = new MappingViewModel(_device, m);
+            var row = new RowItemViewModel(mvm);
+            _mappings.Insert(index, row);
+
+            selectExclusive(row);
+            row.BringIntoView();
+        }
+
+        private void selectExclusive(RowItemViewModel row)
+        {
+            SelectedMappings.Clear();
+            SelectedMappings.Add(row);
+        }
+
+        private void removeMappings(IEnumerable<RowItemViewModel> mappings)
+        {
+            var selected = new List<RowItemViewModel>(mappings);
+            foreach (var m in selected)
             {
-                _mappings.Remove(mvm);
-                _device.RemoveMapping(mvm.Id);
+                _mappings.Remove(m);
+                _device.RemoveMapping((m.Item as MappingViewModel).Id);
             }
         }
 
@@ -353,6 +453,18 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
+        private void updateEditor(IList selection)
+        {
+            // do not call on CollectionChanged of SelectedMappings! 
+            // otherwise it's called too often because e.g. "select all" builds collection of selected items incrementally
+            // should be called when selection is complete and not changing anymore. 
+            // therefore it's better to use an EventTrigger on DataGrid's SelectionChanged
+
+            var selectedMappingViewModels = selection.Cast<RowItemViewModel>().Select(m => m.Item as MappingViewModel);
+            MappingEditorViewModel = new MappingEditorViewModel(this, selectedMappingViewModels);
+        }
+
+
         #region Events
 
         void Mappings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -360,20 +472,20 @@ namespace cmdr.Editor.ViewModels
             switch (e.Action)
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    foreach (MappingViewModel mvm in e.NewItems)
-                        mvm.DirtyStateChanged += (s, a) => updateMapsChanged();
+                    foreach (RowItemViewModel row in e.NewItems)
+                        (row.Item as MappingViewModel).DirtyStateChanged += (s, a) => updateMapsChanged();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    foreach (MappingViewModel mvm in e.OldItems)
-                        mvm.DirtyStateChanged -= (s, a) => updateMapsChanged();
+                    foreach (RowItemViewModel row in e.OldItems)
+                        (row.Item as MappingViewModel).DirtyStateChanged -= (s, a) => updateMapsChanged();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    foreach (MappingViewModel mvm in e.OldItems)
-                        mvm.DirtyStateChanged -= (s, a) => updateMapsChanged();
-                    foreach (MappingViewModel mvm in e.NewItems)
-                        mvm.DirtyStateChanged += (s, a) => updateMapsChanged();
+                    foreach (RowItemViewModel row in e.OldItems)
+                        (row.Item as MappingViewModel).DirtyStateChanged -= (s, a) => updateMapsChanged();
+                    foreach (RowItemViewModel row in e.NewItems)
+                        (row.Item as MappingViewModel).DirtyStateChanged += (s, a) => updateMapsChanged();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     break;
@@ -385,7 +497,5 @@ namespace cmdr.Editor.ViewModels
         }
 
         #endregion
-
-
     }
 }
