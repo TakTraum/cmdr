@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
@@ -178,7 +179,7 @@ namespace cmdr.WpfControls.CustomDataGrid
                     var data = new Data
                     {
                         SenderDataContext = dataGrid.DataContext,
-                        SelectedItems = dataGrid.SelectedItems,
+                        SelectedItems = dataGrid.SelectedItems.Cast<RowItemViewModel>().ToList(),
                         TargetIndex = -1
                     };
 

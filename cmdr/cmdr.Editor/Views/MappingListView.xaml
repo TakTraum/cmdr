@@ -17,11 +17,12 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
+        <!-- Make sure ItemsSource is bound later than SynchronizedSelectedItems, because changing the ItemsSource will reset any selection! -->
         <cdg:CustomDataGrid Grid.Row="0" x:Name="MappingsGrid"
                             AutoGenerateColumns="False"
-                            ItemsSource="{Binding Mappings, Mode=OneWay}"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                             cdg:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedMappings}"
+                            ItemsSource="{Binding Mappings, Mode=OneWay}"
                             cdg:DraggableRowsBehavior.DropAction="{Binding DropCommand, Mode=OneTime}"
                             >
             <i:Interaction.Triggers>
