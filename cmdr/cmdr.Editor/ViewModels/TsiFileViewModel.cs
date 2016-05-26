@@ -6,19 +6,16 @@ using cmdr.TsiLib;
 using cmdr.TsiLib.EventArgs;
 using cmdr.WpfControls.CustomDataGrid;
 using cmdr.WpfControls.DropDownButton;
+using cmdr.WpfControls.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace cmdr.Editor.ViewModels
 {
@@ -99,7 +96,7 @@ namespace cmdr.Editor.ViewModels
                 {
                     var dvm = new DeviceViewModel(device);
                     Devices.Add(dvm);
-                    dvm.DirtyStateChanged += (s, a) => updateDevsChanged();
+                    dvm.DirtyStateChanged += (s, a) => onDeviceChanged();
                 }
 
                 // Set selection if possible
@@ -171,7 +168,7 @@ namespace cmdr.Editor.ViewModels
             if (data == null)
                 return;
 
-            var lbItem = WpfControls.Utils.VisualHelpers.FindAncestor<ListBoxItem>(e.OriginalSource);
+            var lbItem = VisualHelpers.FindAncestor<ListBoxItem>(e.OriginalSource);
             if (lbItem != null)
                 lbItem.IsSelected = true;
 
@@ -184,7 +181,7 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
-        private void updateDevsChanged()
+        private void onDeviceChanged()
         {
             IsChanged = Devices.Any(d => d.IsChanged);
         }
@@ -206,13 +203,6 @@ namespace cmdr.Editor.ViewModels
             return items.Union(defaults);
         }
 
-
-        private void addDevice(Device rawDevice)
-        {
-            _tsiFile.AddDevice(rawDevice);
-            var dvm = new DeviceViewModel(rawDevice);
-            Devices.Add(dvm);
-        }
 
         private async void addDevice(MenuItemViewModel item)
         {
@@ -243,6 +233,13 @@ namespace cmdr.Editor.ViewModels
             App.ResetStatus();
             if (Devices.Any())
                 SelectedDevice = Devices.LastOrDefault();
+        }
+
+        private void addDevice(Device rawDevice)
+        {
+            _tsiFile.AddDevice(rawDevice);
+            var dvm = new DeviceViewModel(rawDevice);
+            Devices.Add(dvm);
         }
 
         private void removeDevice()
@@ -292,19 +289,19 @@ namespace cmdr.Editor.ViewModels
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                     foreach (DeviceViewModel dvm in e.NewItems)
-                        dvm.DirtyStateChanged += (s, a) => updateDevsChanged();
+                        dvm.DirtyStateChanged += (s, a) => onDeviceChanged();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     foreach (DeviceViewModel dvm in e.OldItems)
-                        dvm.DirtyStateChanged -= (s, a) => updateDevsChanged();
+                        dvm.DirtyStateChanged -= (s, a) => onDeviceChanged();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     foreach (DeviceViewModel dvm in e.OldItems)
-                        dvm.DirtyStateChanged -= (s, a) => updateDevsChanged();
+                        dvm.DirtyStateChanged -= (s, a) => onDeviceChanged();
                     foreach (DeviceViewModel dvm in e.NewItems)
-                        dvm.DirtyStateChanged += (s, a) => updateDevsChanged();
+                        dvm.DirtyStateChanged += (s, a) => onDeviceChanged();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     break;

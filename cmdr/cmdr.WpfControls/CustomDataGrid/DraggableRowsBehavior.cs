@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using cmdr.WpfControls.Utils;
 
 namespace cmdr.WpfControls.CustomDataGrid
 {
@@ -105,7 +106,7 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         private static void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var row = findAncestor<DataGridRow>(e.OriginalSource);
+            var row = VisualHelpers.FindAncestor<DataGridRow>(e.OriginalSource);
             if (row == null || row.IsEditing)
                 return;
 
@@ -142,7 +143,7 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             if (wasClickOnSelectedItem)
             {
-                var row = findAncestor<DataGridRow>(e.OriginalSource);
+                var row = VisualHelpers.FindAncestor<DataGridRow>(e.OriginalSource);
                 if (row != null && !row.IsEditing)
                 {
                     var itemUnderMouse = row.Item;
@@ -204,13 +205,13 @@ namespace cmdr.WpfControls.CustomDataGrid
             // update drag visuals
             var hoveredControl = e.OriginalSource as DependencyObject;
             
-            var row = findAncestor<DataGridRow>(hoveredControl);
+            var row = VisualHelpers.FindAncestor<DataGridRow>(hoveredControl);
             if (row != null)
                 showInsertLine(row, e.GetPosition(row).Y < row.ActualHeight/4);
             else
                 hideInsertLine();
 
-            var header = findAncestor<DataGridColumnHeader>(hoveredControl);
+            var header = VisualHelpers.FindAncestor<DataGridColumnHeader>(hoveredControl);
             if (header != null)
                 e.Effects = DragDropEffects.None;
             else
@@ -219,7 +220,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             DataGrid dataGrid = sender as DataGrid;
             double verticalPos = e.GetPosition(dataGrid).Y;
             
-            ScrollViewer sv = findChild<ScrollViewer>(dataGrid);
+            ScrollViewer sv = VisualHelpers.FindChild<ScrollViewer>(dataGrid);
             if (verticalPos < DRAG_SCROLL_TOLERANCE) // Top of visible list?
                 sv.ScrollToVerticalOffset(sv.VerticalOffset - DRAG_SCROLL_OFFSET); //Scroll up.
             else if (verticalPos > dataGrid.ActualHeight - DRAG_SCROLL_TOLERANCE) //Bottom of visible list?
@@ -238,10 +239,10 @@ namespace cmdr.WpfControls.CustomDataGrid
                 var data = _dropData.GetData(typeof(Data)) as Data;
 
                 var hoveredControl = e.OriginalSource as DependencyObject;
-                var grid = findAncestor<DataGrid>(hoveredControl);
+                var grid = VisualHelpers.FindAncestor<DataGrid>(hoveredControl);
                 if (grid != null)
                 {
-                    var row = findAncestor<DataGridRow>(hoveredControl);
+                    var row = VisualHelpers.FindAncestor<DataGridRow>(hoveredControl);
                     if (row != null)
                     {
                         data.TargetIndex = grid.Items.IndexOf(row.Item);
@@ -263,7 +264,7 @@ namespace cmdr.WpfControls.CustomDataGrid
         private static void OnWindowDragOver(object sender, DragEventArgs e)
         {
             // forbid other targets than DataGrids
-            var grid = findAncestor<DataGrid>(e.OriginalSource as DependencyObject);
+            var grid = VisualHelpers.FindAncestor<DataGrid>(e.OriginalSource as DependencyObject);
             if (grid == null && _dropData != null)
             {
                 e.Effects = DragDropEffects.None;
@@ -330,39 +331,6 @@ namespace cmdr.WpfControls.CustomDataGrid
         private static bool isCtrlKeyPressed()
         {
             return Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-        }
-
-        private static T findAncestor<T>(object current) where T : DependencyObject
-        {
-            if (current == null || !(current is Visual))
-                return null;
-            do
-            {
-                if (current is T)
-                    return (T)current;
-                current = VisualTreeHelper.GetParent(current as DependencyObject);
-            }
-            while (current != null);
-
-            return null;
-        }
-
-        private static T findChild<T>(DependencyObject obj) where T : DependencyObject
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child != null && child is T)
-                    return (T)child;
-                else
-                {
-                    T childOfChild = findChild<T>(child);
-                    if (childOfChild != null)
-                        return childOfChild;
-                }
-            }
-
-            return null;
         }
     }
 }
