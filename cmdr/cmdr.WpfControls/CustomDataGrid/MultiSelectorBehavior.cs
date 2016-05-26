@@ -11,6 +11,7 @@ namespace cmdr.WpfControls.CustomDataGrid
 
     /// <summary>
     /// A sync behaviour for a multiselector.
+    /// Make sure ItemsSource is bound later than SynchronizedSelectedItems, because changing the ItemsSource will reset any selection!
     /// </summary>
     public static class MultiSelectorBehaviours
     {

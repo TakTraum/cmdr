@@ -58,10 +58,9 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             // Update the Target list from the Master list
             if (PREFER_TARGETLIST)
-                SetListValuesFromSource(_targetList, _masterList, ConvertFromMasterToTarget);
+                SetListValuesFromSource(_targetList, _masterList, ConvertFromTargetToMaster);
             else
                 SetListValuesFromSource(_masterList, _targetList, ConvertFromMasterToTarget);
-
 
             // In some cases the target list might have its own view on which items should included:
             // so update the master list from the target list
@@ -69,7 +68,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             if (!TargetAndMasterCollectionsAreEqual())
             {
                 if (!PREFER_TARGETLIST)
-                    SetListValuesFromSource(_targetList, _masterList, ConvertFromMasterToTarget);
+                    SetListValuesFromSource(_targetList, _masterList, ConvertFromTargetToMaster);
                 else
                     SetListValuesFromSource(_masterList, _targetList, ConvertFromMasterToTarget);
             }
