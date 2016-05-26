@@ -7,6 +7,7 @@
              xmlns:behaviors="clr-namespace:cmdr.Editor.Behaviors"
              xmlns:dropDownButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
              xmlns:conv="clr-namespace:cmdr.Editor.Converters"
+             xmlns:customListBox="clr-namespace:cmdr.WpfControls.CustomListBox;assembly=cmdr.WpfControls"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="300">
     <UserControl.Resources>
@@ -17,35 +18,11 @@
             <RowDefinition />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <ListBox Grid.Row="0" 
-                 x:Name="lbDevices" 
-                 HorizontalAlignment="Stretch"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ItemsSource="{Binding Devices, Mode=OneWay}" 
-                 SelectedItem="{Binding SelectedDevice}"
-                 >
-            <i:Interaction.Behaviors>
-                <behaviors:ListBoxScrollIntoViewBehavior/>
-            </i:Interaction.Behaviors>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <StackPanel>
-                                    <Separator x:Name="Separator"/>
-                                    <ContentPresenter/>
-                                </StackPanel>
-                                <ControlTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                        <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
+        <customListBox:CustomListBox Grid.Row="0" 
+                                     x:Name="lbDevices" 
+                                     ItemsSource="{Binding Devices, Mode=OneWay}" 
+                                     SelectedItem="{Binding SelectedDevice}"
+                                     >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="lbiGrid">
@@ -53,23 +30,15 @@
                             <RowDefinition/>
                             <RowDefinition Height="15"/>
                         </Grid.RowDefinitions>
-                        
-                        <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap">
-                            <Run Text="{Binding Name, Mode=OneWay}"/>
-                        </TextBlock>
+                        <TextBlock Grid.Row="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" 
+                                   Text="{Binding Name, Mode=OneWay}"/>
                         <TextBlock Grid.Row="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" FontSize="10" TextAlignment="Right"
                                    Text="{Binding Mappings.Count, Converter={StaticResource pluralizationConverter}, ConverterParameter=mapping, Mode=OneWay}"/>
                     </Grid>
-
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True">
-                            <Setter TargetName="lbiGrid" Property="Background" Value="{StaticResource Cmdr.HighlightBrushKey}" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
-        </ListBox>
+        </customListBox:CustomListBox>
+        
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
             <dropDownButton:DropDownButton Content="+" Height="20" Width="20" MenuPlacement="Right" 
                                            ItemsSource="{Binding AddDeviceMenuItems, Mode=OneTime}"
