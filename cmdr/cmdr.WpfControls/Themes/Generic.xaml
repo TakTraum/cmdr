@@ -3,12 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ddbutton="clr-namespace:cmdr.WpfControls.DropDownButton"
     xmlns:customSlider="clr-namespace:cmdr.WpfControls.CustomSlider"
-    xmlns:customDataGrid="clr-namespace:cmdr.WpfControls.CustomDataGrid">
+    xmlns:customDataGrid="clr-namespace:cmdr.WpfControls.CustomDataGrid"
+    xmlns:customListBox="clr-namespace:cmdr.WpfControls.CustomListBox">
     
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/cmdr.WpfControls;component/CustomSlider/CustomSliderTemplate.xaml"/>
         <ResourceDictionary Source="/cmdr.WpfControls;component/DropDownButton/DropDownButtonTemplate.xaml"/>
         <ResourceDictionary Source="/cmdr.WpfControls;component/CustomDataGrid/CustomDataGridTemplate.xaml"/>
+        <ResourceDictionary Source="/cmdr.WpfControls;component/CustomListBox/CustomListBoxTemplate.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type customSlider:CustomSlider}">
@@ -63,5 +65,13 @@
                 <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type customListBox:CustomListBox}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource customListBoxItemContainerStyle}"/>
+        <Setter Property="Template" Value="{StaticResource customListBoxTemplate}"/>
     </Style>
 </ResourceDictionary>
