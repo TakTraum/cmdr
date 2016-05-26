@@ -90,7 +90,6 @@
     <Compile Include="AvalonDock\MdiContainer.cs" />
     <Compile Include="Behaviors\AttachedBehaviors.cs" />
     <Compile Include="Behaviors\InputBindingBehavior.cs" />
-    <Compile Include="Behaviors\ListBoxScrollIntoViewBehavior.cs" />
     <Compile Include="Converters\EnumMatchToBooleanConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\PluralizationConverter.cs" />

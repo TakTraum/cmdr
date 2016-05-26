@@ -15,7 +15,7 @@ namespace cmdr.Editor.Behaviors
             DependencyProperty.RegisterAttached("DropBehaviour", typeof(ICommand), typeof(AttachedBehaviors),
                 new FrameworkPropertyMetadata(null,
                     FrameworkPropertyMetadataOptions.None,
-                    OnDragDropBehaviourChanged));
+                    OnDropBehaviourChanged));
 
         public static ICommand GetDropBehaviour(DependencyObject d)
         {
@@ -28,8 +28,24 @@ namespace cmdr.Editor.Behaviors
         }
 
 
+        public static readonly DependencyProperty DragOverBehaviourProperty =
+            DependencyProperty.RegisterAttached("DragOverBehaviour", typeof(ICommand), typeof(AttachedBehaviors),
+                new FrameworkPropertyMetadata(null,
+                    FrameworkPropertyMetadataOptions.None,
+                    OnDragOverBehaviourChanged));
 
-        private static void OnDragDropBehaviourChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static ICommand GetDragOverBehaviour(DependencyObject d)
+        {
+            return (ICommand)d.GetValue(DragOverBehaviourProperty);
+        }
+
+        public static void SetDragOverBehaviour(DependencyObject d, ICommand value)
+        {
+            d.SetValue(DragOverBehaviourProperty, value);
+        }
+
+
+        private static void OnDropBehaviourChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             UIElement g = d as UIElement;
             if (g != null)
@@ -38,18 +54,29 @@ namespace cmdr.Editor.Behaviors
                 {
                     ICommand iCommand = GetDropBehaviour(d);
                     if (iCommand != null)
-                    {
                         if (iCommand.CanExecute(a.Data))
-                        {
                             iCommand.Execute(a.Data);
-                        }
-                    }
                 };
             }
             else
-            {
                 throw new ApplicationException("Non UIElement");
+        }
+
+        private static void OnDragOverBehaviourChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            UIElement g = d as UIElement;
+            if (g != null)
+            {
+                g.DragOver += (s, a) =>
+                {
+                    ICommand iCommand = GetDragOverBehaviour(d);
+                    if (iCommand != null)
+                        if (iCommand.CanExecute(a))
+                            iCommand.Execute(a);
+                };
             }
+            else
+                throw new ApplicationException("Non UIElement");
         }
     }
 }

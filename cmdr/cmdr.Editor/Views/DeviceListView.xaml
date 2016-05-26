@@ -22,6 +22,7 @@
                                      x:Name="lbDevices" 
                                      ItemsSource="{Binding Devices, Mode=OneWay}" 
                                      SelectedItem="{Binding SelectedDevice}"
+                                     behaviors:AttachedBehaviors.DragOverBehaviour="{Binding DragOverCommand, Mode=OneTime}"
                                      >
             <ListBox.ItemTemplate>
                 <DataTemplate>

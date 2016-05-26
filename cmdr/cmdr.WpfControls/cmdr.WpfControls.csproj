@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Utils\MenuBuilder.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />
+    <Compile Include="Utils\VisualHelpers.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
