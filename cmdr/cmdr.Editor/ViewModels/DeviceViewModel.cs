@@ -221,7 +221,14 @@ namespace cmdr.Editor.ViewModels
             if (Mappings.Any())
                 SelectedMappings.Add(Mappings.First());
         }
-       
+
+
+        public Device Copy(bool includeMappings)
+        {
+            var copy = _device.Copy(includeMappings);
+            copy.Comment = "";
+            return copy;
+        }
 
         protected override void Accept()
         {

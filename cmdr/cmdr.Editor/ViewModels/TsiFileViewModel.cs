@@ -4,6 +4,7 @@ using cmdr.Editor.Utils;
 using cmdr.Editor.Views;
 using cmdr.TsiLib;
 using cmdr.TsiLib.EventArgs;
+using cmdr.WpfControls.CustomDataGrid;
 using cmdr.WpfControls.DropDownButton;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace cmdr.Editor.ViewModels
 {
@@ -71,6 +75,12 @@ namespace cmdr.Editor.ViewModels
         public ICommand RemoveDeviceCommand
         {
             get { return _removeDeviceCommand ?? (_removeDeviceCommand = new CommandHandler(removeDevice, () => SelectedDevice != null)); }
+        }
+
+        private ICommand _dragOverCommand;
+        public ICommand DragOverCommand
+        {
+            get { return _dragOverCommand ?? (_dragOverCommand = new CommandHandler<DragEventArgs>(dragOver)); }
         }
 
         #endregion
@@ -151,6 +161,29 @@ namespace cmdr.Editor.ViewModels
         }
 
 
+        private void dragOver(DragEventArgs e)
+        {
+            IDataObject dataObject = e.Data;
+            if (dataObject == null)
+                return;
+
+            var data = dataObject.GetData(typeof(DraggableRowsBehavior.Data)) as DraggableRowsBehavior.Data;
+            if (data == null)
+                return;
+
+            var lbItem = WpfControls.Utils.VisualHelpers.FindAncestor<ListBoxItem>(e.OriginalSource);
+            if (lbItem != null)
+                lbItem.IsSelected = true;
+
+            // add appropriate device for mappings, if file is empty
+            if (!Devices.Any())
+            {
+                var copy = (data.SenderDataContext as DeviceViewModel).Copy(false);
+                addDevice(copy);
+                SelectedDevice = Devices.First();
+            }
+        }
+
         private void updateDevsChanged()
         {
             IsChanged = Devices.Any(d => d.IsChanged);
@@ -173,16 +206,22 @@ namespace cmdr.Editor.ViewModels
             return items.Union(defaults);
         }
 
+
+        private void addDevice(Device rawDevice)
+        {
+            _tsiFile.AddDevice(rawDevice);
+            var dvm = new DeviceViewModel(rawDevice);
+            Devices.Add(dvm);
+        }
+
         private async void addDevice(MenuItemViewModel item)
         {
             ControllerDefaultMappings.ControllerDefaultMappingFile defFile = item.Tag as ControllerDefaultMappings.ControllerDefaultMappingFile;
 
-            List<Device> devices = new List<Device>();
-
             App.SetStatus("Loading defaults for " + item.Text + " ...");
 
             if (item.Text.Equals(Device.TYPE_STRING_GENERIC_MIDI))
-                devices.Add(_tsiFile.CreateDevice(Device.TYPE_STRING_GENERIC_MIDI));
+                addDevice(_tsiFile.CreateDevice(Device.TYPE_STRING_GENERIC_MIDI));
             else if (defFile != null)
             {
                 TsiFile tsi = defFile.TsiFile;
@@ -196,20 +235,13 @@ namespace cmdr.Editor.ViewModels
                         var copy = d.Copy(includeMappings);
                         if (copy.TypeStr.Equals(Device.TYPE_STRING_GENERIC_MIDI) && String.IsNullOrEmpty(copy.Comment))
                             copy.Comment = item.Text;
-                        devices.Add(copy);
+                        addDevice(copy);
                     }
                 }
             }
 
-            foreach (var device in devices)
-            {
-                _tsiFile.AddDevice(device);
-                var dvm = new DeviceViewModel(device);
-                Devices.Add(dvm);
-            }
-
             App.ResetStatus();
-            if (devices.Any())
+            if (Devices.Any())
                 SelectedDevice = Devices.LastOrDefault();
         }
 
