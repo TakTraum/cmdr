@@ -6,7 +6,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Proprietary
     public class JogMidiDefinition : AProprietaryMidiDefinition
     {
         public JogMidiDefinition(string deviceTypeStr, string midiNote, int controlId)
-            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.Jog, -16f, 16f, MidiEncoderMode.Unknown, controlId)
+            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.Jog, -16f, 16f, controlId)
         {
 
         }

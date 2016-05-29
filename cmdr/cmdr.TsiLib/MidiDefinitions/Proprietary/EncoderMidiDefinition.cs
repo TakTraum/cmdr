@@ -5,14 +5,8 @@ namespace cmdr.TsiLib.MidiDefinitions.Proprietary
 {
     public class EncoderMidiDefinition : AProprietaryMidiDefinition
     {
-        public MidiEncoderMode EncoderMode
-        {
-            get { return RawDefinition.EncoderMode; }
-        }
-
-
-        public EncoderMidiDefinition(string deviceTypeStr, string midiNote, float minValue, float maxValue, MidiEncoderMode encoderMode, int controlId)
-            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.Encoder, minValue, maxValue, encoderMode, controlId)
+        public EncoderMidiDefinition(string deviceTypeStr, string midiNote, float minValue, float maxValue, int controlId)
+            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.Encoder, minValue, maxValue, controlId)
         {
 
         }

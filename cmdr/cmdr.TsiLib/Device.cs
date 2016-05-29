@@ -5,6 +5,7 @@ using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Format;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.TsiLib.Controls.Encoder;
 
 namespace cmdr.TsiLib
 {
@@ -88,6 +89,17 @@ namespace cmdr.TsiLib
         private Dictionary<string, AMidiDefinition> _midiOutDefinitions = new Dictionary<string, AMidiDefinition>();
         public IReadOnlyDictionary<string, AMidiDefinition> MidiOutDefinitions { get { return _midiOutDefinitions; } }
 
+        // In Controller Manager, the encoder mode is shown among elements of MappingSettings, but not stored with them. Instead, it's stored in the MidiDefinition.
+        // As the encoder mode is the same for all encoders of a controller, it should be handled by the device.
+        /// <summary>
+        /// Encoder mode, specific to a controller and uniform for all of its encoders. Either 3Fh/41h or 7Fh/01h. Only used for generic midi devices.
+        /// </summary>
+        private MidiEncoderMode _encoderMode;
+        public MidiEncoderMode EncoderMode
+        {
+            get { return _encoderMode; }
+            set { _encoderMode = value; setEncoderModes(); }
+        }
 
 
         internal Device(int id, string deviceTypeStr, string traktorVersion)
@@ -106,6 +118,8 @@ namespace cmdr.TsiLib
 
             if (RawDevice.Data.Mappings != null)
                 _mappings = RawDevice.Data.Mappings.List.Mappings.Select(m => new Mapping(this, m)).ToList();
+
+            updateEncoderMode();
         }
 
 
@@ -145,7 +159,6 @@ namespace cmdr.TsiLib
             RawDevice.Data.Version.MappingFileRevision = (RawDevice.Data.Version.MappingFileRevision + 1) % int.MaxValue;
         }
 
-
         public Device Copy(bool includeMappings)
         {
             Format.Device rawDeviceCopy;
@@ -158,11 +171,15 @@ namespace cmdr.TsiLib
 
             // reset revision
             rawDeviceCopy.Data.Version.MappingFileRevision = 0;
+            
             if (!includeMappings)
                 rawDeviceCopy.Data.Mappings = new MappingsContainer();
+
             var copy = new Device(-1, rawDeviceCopy);
+            copy.EncoderMode = EncoderMode; // encoder mode is not stored in Format.Device
             return copy;
         }
+
 
         private void insertMapping(int index, Mapping mapping, bool asIs)
         {
@@ -193,7 +210,7 @@ namespace cmdr.TsiLib
             }
         }
 
-        public void removeMapping(int index, bool keepBinding)
+        private void removeMapping(int index, bool keepBinding)
         {
             removeMapping(_mappings[index], keepBinding);
         }
@@ -287,5 +304,24 @@ namespace cmdr.TsiLib
             }
         }
 
+        private void updateEncoderMode()
+        {
+            if (TypeStr != TYPE_STRING_GENERIC_MIDI)
+                return;
+
+            _encoderMode = _mappings
+                .Where(m => m.Command.Control is EncoderControl)
+                .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
+                .FirstOrDefault();
+        }
+
+        private void setEncoderModes()
+        {
+            if (TypeStr != TYPE_STRING_GENERIC_MIDI)
+                return;
+
+            foreach (var def in _midiInDefinitions.Values.Cast<AGenericMidiDefinition>())
+                def.MidiEncoderMode = EncoderMode;
+        }
     }
 }

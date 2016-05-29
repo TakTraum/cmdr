@@ -97,6 +97,27 @@ namespace cmdr.Editor.ViewModels
             set { _device.Target = value; raisePropertyChanged("Target"); IsChanged = true; }
         }
 
+        private static Dictionary<MidiEncoderMode, string> _encoderModes;
+        public static IReadOnlyDictionary<MidiEncoderMode, string> EncoderModes
+        {
+            get
+            {
+                if (_encoderModes == null)
+                    _encoderModes = Enum.GetValues(typeof(MidiEncoderMode))
+                        .Cast<MidiEncoderMode>()
+                        .ToDictionary(d => d, d => d.ToDescriptionString());
+                return _encoderModes;
+            }
+        }
+        /// <summary>
+        /// Encoder mode, specific to a controller and uniform for all of its encoders. Either 3Fh/41h or 7Fh/01h. Only used for generic midi devices.
+        /// </summary>
+        public MidiEncoderMode EncoderMode
+        {
+            get { return _device.EncoderMode; }
+            set { _device.EncoderMode = value; raisePropertyChanged("EncoderMode"); IsChanged = true; }
+        }
+
         private ObservableCollection<RowItemViewModel> _mappings = new ObservableCollection<RowItemViewModel>();
         public ObservableCollection<RowItemViewModel> Mappings
         {

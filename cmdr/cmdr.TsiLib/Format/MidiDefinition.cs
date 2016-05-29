@@ -13,7 +13,9 @@ namespace cmdr.TsiLib.Format
         public MidiControlType MidiControlType { get; private set; }
         public float MinValue { get; private set; }
         public float MaxValue { get; private set; }
-        public MidiEncoderMode EncoderMode { get; private set; }
+
+        // setter must be internal to allow adaptation to different generic midi devices
+        public EncoderMode EncoderMode { get; internal set; }
 
         /// <summary>
         /// In the case of Native Instruments devices seems to identify the 
@@ -23,7 +25,7 @@ namespace cmdr.TsiLib.Format
         public int ControlId { get; private set; }
 
 
-        public MidiDefinition(string midiNote, MidiControlType controlType, float minValue, float maxValue, MidiEncoderMode encoderMode, int controlId)
+        public MidiDefinition(string midiNote, MidiControlType controlType, float minValue, float maxValue, EncoderMode encoderMode, int controlId)
             : base("DCDT")
         {
             MidiNote = midiNote;
@@ -41,7 +43,7 @@ namespace cmdr.TsiLib.Format
             MidiControlType = (MidiControlType)stream.ReadInt32BigE();
             MinValue = stream.ReadFloatBigE();
             MaxValue = stream.ReadFloatBigE();
-            EncoderMode = (MidiEncoderMode) stream.ReadInt32BigE();
+            EncoderMode = (EncoderMode) stream.ReadInt32BigE();
             ControlId = stream.ReadInt32BigE();
         }
 

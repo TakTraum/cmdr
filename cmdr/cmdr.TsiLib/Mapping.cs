@@ -3,6 +3,7 @@ using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.TsiLib.MidiDefinitions;
 
 namespace cmdr.TsiLib
 {
@@ -206,7 +207,20 @@ namespace cmdr.TsiLib
                 // add midi definition to device, if it doesn't already exist
                 var matchingDefinitions = definitions.Where(d => d.MidiNote.Equals(midi.Note));
                 if (!matchingDefinitions.Any())
-                    definitions.Add(midi.RawDefinition);
+                {
+                    var definition = midi.RawDefinition;
+
+                    // adapt encoder mode to device, if necessary
+                    var genericDefinition = midi as AGenericMidiDefinition;
+                    if (genericDefinition != null && genericDefinition.MidiEncoderMode != device.EncoderMode)
+                    {
+                        genericDefinition = new GenericMidiDefinition(MappingType.In, midi.Note);
+                        genericDefinition.MidiEncoderMode = device.EncoderMode;
+                        definition = genericDefinition.RawDefinition;
+                    }
+
+                    definitions.Add(definition);
+                }
 
                 // add midi binding to device
                 bindings.Add(new Format.MidiNoteBinding(Id, midi.Note));

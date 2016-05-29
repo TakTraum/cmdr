@@ -7,11 +7,6 @@ namespace cmdr.TsiLib.Controls.Encoder
     public class EncoderControl : AControl
     {
         /// <summary>
-        /// Corresponds to MidiDefinition. Not stored in MappingSettings.
-        /// </summary>
-        public MidiEncoderMode Mode { get; set; }
-
-        /// <summary>
         /// Rotary Sensitivity in percent. 0% to 300%.
         /// </summary>
         public int RotarySensitivity { get { return (int)Math.Round(_command.RawSettings.RotarySensitivity * 20f); } set { _command.RawSettings.RotarySensitivity = value / 20f; } }
@@ -27,6 +22,7 @@ namespace cmdr.TsiLib.Controls.Encoder
         {
 
         }
+
 
         public override MappingInteractionMode[] AllowedInteractionModes
         {
