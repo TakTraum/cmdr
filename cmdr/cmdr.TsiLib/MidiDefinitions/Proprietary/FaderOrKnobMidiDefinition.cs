@@ -6,7 +6,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Proprietary
     public class FaderOrKnobMidiDefinition : AProprietaryMidiDefinition
     {
         public FaderOrKnobMidiDefinition(string deviceTypeStr, string midiNote, int controlId)
-            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.FaderOrKnob, 0f, 1f, MidiEncoderMode.Unknown, controlId)
+            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.FaderOrKnob, 0f, 1f, controlId)
         {
 
         }

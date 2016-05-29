@@ -6,7 +6,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Proprietary
     public class OutMidiDefinition : AProprietaryMidiDefinition
     {
         public OutMidiDefinition(string deviceTypeStr, string midiNote, int controlId)
-            : base(deviceTypeStr, MappingType.Out, midiNote, MidiControlType.Out, 0f, 1f, MidiEncoderMode.Unknown, controlId)
+            : base(deviceTypeStr, MappingType.Out, midiNote, MidiControlType.Out, 0f, 1f, controlId)
         {
 
         }

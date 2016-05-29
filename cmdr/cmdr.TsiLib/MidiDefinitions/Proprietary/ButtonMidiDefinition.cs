@@ -6,7 +6,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Proprietary
     public class ButtonMidiDefinition : AProprietaryMidiDefinition
     {
         public ButtonMidiDefinition(string deviceTypeStr, string midiNote, float minValue, float maxValue, int controlId)
-            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.Button, minValue, maxValue, MidiEncoderMode.Unknown, controlId)
+            : base(deviceTypeStr, MappingType.In, midiNote, MidiControlType.Button, minValue, maxValue, controlId)
         {
 
         }

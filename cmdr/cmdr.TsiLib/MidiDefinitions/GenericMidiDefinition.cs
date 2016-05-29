@@ -6,7 +6,7 @@ namespace cmdr.TsiLib.MidiDefinitions
     public class GenericMidiDefinition : AGenericMidiDefinition
     {
         public GenericMidiDefinition(MappingType type, string midiNote)
-            : base(type, midiNote, 0f,(midiNote.EndsWith("PitchBend") ? 16383f : 127f))
+            : base(type, midiNote, 0f, (midiNote.EndsWith("PitchBend") ? 16383f : 127f))
         {
 
         }
@@ -14,7 +14,7 @@ namespace cmdr.TsiLib.MidiDefinitions
         internal GenericMidiDefinition(MappingType type, Format.MidiDefinition definition)
             : base(type, definition)
         {
-            
+
         }
     }
 }
