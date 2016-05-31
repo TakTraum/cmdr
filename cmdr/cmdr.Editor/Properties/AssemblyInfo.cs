@@ -8,7 +8,7 @@ using System.Windows;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 [assembly: AssemblyTitle("cmdr - Controller Manager done right")]
-[assembly: AssemblyDescription("This is an unofficial TSI editor for Native Instruments' Traktor Pro. It is free software, and you are welcome to redistribute it under certain conditions. See LICENCE.TXT for more details.\n\nThis software is still under active development, comes with ABSOLUTELY NO WARRANTY and may contain bugs. If you find one please create an issue on https://cmdr.codeplex.com/workitem/list/basic.")]
+[assembly: AssemblyDescription("This is an unofficial TSI editor for Native Instruments' Traktor Pro. It is free software, and you are welcome to redistribute it under certain conditions. See LICENCE.TXT for more details.\n\nThis software is still under active development, comes with ABSOLUTELY NO WARRANTY and may contain bugs. If you find one please create an issue on https://cmdr.codeplex.com/workitem/list/basic.\n\nSpecial Credit goes to my colleague and friend Acid Buddha for his valuable feature requests, testing and support.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("cmdr - Controller Manager done right")]

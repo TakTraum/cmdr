@@ -76,7 +76,7 @@
             <Label x:Name="info" x:Uid="info" Style="{StaticResource ParagraphSeparator}" 
                    Content="Product details:" />
             <TextBox x:Name="description" x:Uid="description" Text="{Binding Mode=OneTime, Path=Description}"
-                     Style="{StaticResource ReadOnlyDescStyle}" />
+                     Style="{StaticResource ReadOnlyDescStyle}" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="200" />
             <DockPanel x:Uid="buttonArea">
                 <Button x:Name="okButton" x:Uid="okButton" Style="{StaticResource OkButtonStyle}" 
                         Content="OK" />
