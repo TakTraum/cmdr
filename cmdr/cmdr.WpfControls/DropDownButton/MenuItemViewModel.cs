@@ -91,7 +91,8 @@ namespace cmdr.WpfControls.DropDownButton
             else if (!other.Children.Any() && Children.Any())
                 return -1;
 
-            return Text.CompareTo(other.Text);
+            // simple byte comparison, independent of language
+            return StringComparer.OrdinalIgnoreCase.Compare(Text, other.Text);
         }
     }
 }

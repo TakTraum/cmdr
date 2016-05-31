@@ -33,7 +33,21 @@
             
             <StackPanel Grid.Column="0" Orientation="Vertical" Visibility="{Binding IsGenericMidi, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
                 <Label>Channel:</Label>
-                <ComboBox SelectedItem="{Binding Channel}" ItemsSource="{Binding Channels, Mode=OneWay}" Height="25" Width="55"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border BorderThickness="1,1,0,1" BorderBrush="LightGray" Height="25" Width="55">
+                        <TextBlock Text="{Binding ChannelString, Mode=OneWay}" FontStyle="Italic" VerticalAlignment="Center" Padding="5,0,0,0" />
+                    </Border>
+
+                    <ddButton:DropDownButton Grid.Column="1" Content="Select" Width="Auto" 
+                                             MenuPlacement="Left"
+                                             Command="{Binding SelectChannelCommand, Mode=OneTime}" 
+                                             ItemsSource="{Binding ChannelsMenu, Mode=OneTime}" />
+                </Grid>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Vertical" Margin="5,0,0,0">
@@ -44,7 +58,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Border BorderThickness="1,1,0,1" BorderBrush="LightGray" Height="25">
-                        <TextBlock Text="{Binding Note, Mode=OneWay, FallbackValue=None}" FontStyle="Italic" VerticalAlignment="Center" Padding="5,0,0,0" />
+                        <TextBlock Text="{Binding NoteString, Mode=OneWay}" FontStyle="Italic" VerticalAlignment="Center" Padding="5,0,0,0" />
                     </Border>
                     <ddButton:DropDownButton Grid.Column="1" Content="Select" Width="Auto" 
                                              MenuPlacement="Left"

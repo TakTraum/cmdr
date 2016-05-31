@@ -2,24 +2,24 @@
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions;
 using cmdr.TsiLib.MidiDefinitions.Base;
-using cmdr.TsiLib.Utils;
 using cmdr.WpfControls.DropDownButton;
-using cmdr.WpfControls.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Controls;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace cmdr.Editor.ViewModels.MidiBinding
 {
     public class MidiBindingEditorViewModel : ViewModelBase
     {
+        private static readonly MenuItemViewModel SEPARATOR = MenuItemViewModel.Separator;
+
         private readonly DeviceViewModel _device;
         private readonly IEnumerable<MappingViewModel> _mappings;
-
-        private MidiLearner _midiLearner;
+        private readonly IEnumerable<AMidiDefinition> _proprietaryDefinitions;
+        private readonly MidiLearner _midiLearner;
 
 
         public bool IsGenericMidi { get { return _device.IsGenericMidi; } }
@@ -59,15 +59,34 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             set { _learnMode = value; raisePropertyChanged("LearnMode"); }
         }
 
-        private List<string> _channels;
-        public List<string> Channels { get { return _channels ?? (_channels = Enumerable.Range(1, 16).Select(i => String.Format("Ch{0:00}", i)).ToList()); } }
+        #region Channel
+
+        private List<string> _selectedChannels;
+        private MenuItemViewModel _selectedChannelsMenuItem = new MenuItemViewModel { Text = "Selected Channels" };
 
         private string _channel;
         public string Channel
         {
             get { return _channel; }
-            set { _channel = value; raisePropertyChanged("Channel"); updateBinding(); }
+            set { _channel = value; updateBinding(); raisePropertyChanged("ChannelString"); }
         }
+
+        public string ChannelString
+        {
+            get { return VariousChannels ? "Various" : String.IsNullOrEmpty(Channel) ? "None" : Channel; }
+        }
+
+        public ObservableCollection<MenuItemViewModel> ChannelsMenu { get; private set; }
+
+        private bool _variousChannels;
+        public bool VariousChannels { get { return _variousChannels; } }
+
+        #endregion
+
+        #region Note
+
+        private List<object> _selectedNotes;
+        private MenuItemViewModel _selectedNotesMenuItem = new MenuItemViewModel { Text = "Selected Notes" };
 
         private string _note;
         public string Note
@@ -83,15 +102,27 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 else
                     _note = value;
 
-                raisePropertyChanged("Note");
-
                 if (IsGenericMidi)
                     updateBinding();
+
+                raisePropertyChanged("NoteString");
             }
+        }
+
+        public string NoteString
+        {
+            get { return VariousNotes ? "Various" : String.IsNullOrEmpty(Note) ? "None" : Note; }
         }
 
         public ObservableCollection<MenuItemViewModel> NotesMenu { get; private set; }
 
+        private bool _variousNotes;
+        public bool VariousNotes
+        {
+            get { return _variousNotes; }
+        }
+
+        #endregion
 
         #region Commands
 
@@ -99,6 +130,12 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         public ICommand SelectNoteCommand
         {
             get { return _selectNoteCommand ?? (_selectNoteCommand = new CommandHandler<MenuItemViewModel>(selectNote)); }
+        }
+
+        private ICommand _selectChannelCommand;
+        public ICommand SelectChannelCommand
+        {
+            get { return _selectChannelCommand ?? (_selectChannelCommand = new CommandHandler<MenuItemViewModel>(selectChannel)); }
         }
 
         private ICommand _learnCommand;
@@ -122,67 +159,135 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         #endregion
 
 
-        private MidiBindingEditorViewModel(DeviceViewModel device, IEnumerable<MappingViewModel> mappings, AMidiDefinition binding)
+        private MidiBindingEditorViewModel(DeviceViewModel device, IEnumerable<MappingViewModel> mappings, IEnumerable<AMidiDefinition> proprietaryDefinitions = null)
         {
             _mappings = mappings;
             _device = device;
 
             if (IsGenericMidi)
             {
-                NotesMenu = generateGenericMidiMenu();
+                ChannelsMenu = new ObservableCollection<MenuItemViewModel>(generateChannelsMenu());
+                NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildGenericMidiMenu());
                 _midiLearner = new MidiLearner((signal) =>
                 {
                     toggleLearn();
 
-                    _channel = String.Format("Ch{0:00}", signal.Channel);
-                    raisePropertyChanged("Channel");
+                    setChannel(String.Format("Ch{0:00}", signal.Channel));
                     Note = signal.Note;
 
                     // workaround to refresh combo and reset button
                     (ComboCommand as CommandHandler).UpdateCanExecuteState();
                     (ResetCommand as CommandHandler).UpdateCanExecuteState();
                 });
-
-                if (binding != null)
-                {
-                    _channel = binding.Note.Substring(0, 4);
-                    _note = binding.Note.Replace(_channel + ".", "");
-                }
-                else
-                    _channel = Channels.First();
             }
             else
             {
                 _canOverrideFactoryMap = _mappings.Any(m => m.CanOverrideFactoryMap);
-                NotesMenu = generateProprietaryMenu();
-                if (binding != null)
-                    _note = binding.Note;
+                _proprietaryDefinitions = proprietaryDefinitions;
+                NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note)));
             }
+
+            updateCommonChannelAndNote();
         }
 
 
+        private void setChannel(string channel)
+        {
+            _channel = channel;
+            raisePropertyChanged("ChannelString");
+        }
+
+        private void setNote(string note)
+        {
+            _note = note;
+            raisePropertyChanged("NoteString");
+        }
+
         private void updateBinding(AMidiDefinition definition = null)
         {
-            if (definition == null)
+            string expression;
+            AMidiDefinition tmpDefinition;
+            foreach (var mapping in _mappings)
             {
-                if (!String.IsNullOrEmpty(_channel) && !String.IsNullOrEmpty(_note))
+                expression = null;
+                tmpDefinition = definition;
+
+                if (IsGenericMidi)
                 {
-                    string expression = _channel + "." + _note.Replace("+", "+" + _channel + ".");
-                    definition = new GenericMidiDefinition(_mappings.First().Command.MappingType, expression);
+                    if (!String.IsNullOrEmpty(_channel))
+                    {
+                        if (!String.IsNullOrEmpty(_note))
+                            expression = _channel + "." + _note.Replace("+", "+" + _channel + ".");
+                        else if (mapping.MidiBinding != null)
+                            expression = Regex.Replace(mapping.MidiBinding.Note, @"Ch\d+", _channel);
+                    }
+                    else if (!String.IsNullOrEmpty(_note))
+                    {
+                        if (mapping.MidiBinding != null)
+                        {
+                            var channel = mapping.MidiBinding.Note.Substring(0, 4);
+                            expression = channel + "." + _note.Replace("+", "+" + channel + ".");
+                        }
+                    }
+
+                    if (expression != null)
+                        tmpDefinition = new GenericMidiDefinition(mapping.Command.MappingType, expression);
                 }
+                else
+                {
+                    if (tmpDefinition != null && mapping.Command.MappingType != tmpDefinition.Type)
+                        tmpDefinition = _proprietaryDefinitions.First(p => p.Type == mapping.Command.MappingType && p.Note == tmpDefinition.Note);
+                }
+
+                mapping.SetBinding(tmpDefinition);
             }
 
-            foreach (var mapping in _mappings)
-                mapping.SetBinding(definition);
+            updateCommonChannelAndNote();
+        }
+
+        private void updateCommonChannelAndNote()
+        {
+            var bindings = _mappings.Select(mvm => mvm.MidiBinding).Distinct();
+            var notes = bindings.Select(b => (b != null) ? b.Note : null).Distinct();
+
+            if (IsGenericMidi)
+            {
+                var parts = notes.Select(n =>
+                {
+                    if (n == null)
+                        return null;
+                    var ch = n.Substring(0, 4);
+                    return new { Channel = ch, Note = n.Replace(ch + ".", "") };
+                });
+
+                var channels = parts.Select(p => (p != null) ? p.Channel : null).Distinct();
+
+                _selectedChannels = channels.Where(c => c != null).OrderBy(c => c).ToList();
+
+                _variousChannels = channels.Count() > 1;
+                if (!_variousChannels && String.IsNullOrEmpty(_channel))
+                    setChannel(channels.Single());
+
+                updateChannelsMenu(_selectedChannels);
+
+                notes = parts.Select(p => (p != null) ? p.Note : null).Distinct();
+
+                _selectedNotes = notes.Where(n => n != null).OrderBy(n => n).Cast<object>().ToList();
+            }
+            else
+                _selectedNotes = _proprietaryDefinitions.Where(n => notes.Contains(n.Note)).DistinctBy(d => d.Note).OrderBy(d => d.Note).Cast<object>().ToList();
+
+            _variousNotes = notes.Count() > 1;
+            if (!_variousNotes && String.IsNullOrEmpty(_note))
+                setNote(notes.Single());
+
+            updateNotesMenu(_selectedNotes);
         }
 
         private void reset()
         {
             if (IsGenericMidi)
-            {
-                _channel = Channels.First();
-                raisePropertyChanged("Channel");
-            }
+                setChannel(null);
             else
                 updateBinding();
             Note = String.Empty;
@@ -226,138 +331,149 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             if (!IsGenericMidi)
                 return false;
 
-            return !(String.IsNullOrEmpty(Note) || Note.Contains("+"));
+            return !(String.IsNullOrEmpty(Note) || Note.Contains("+") || VariousChannels);
         }
 
 
-        #region ContextMenu Notes
+        #region ContextMenus
+
+        #region Channels
+
+        private void selectChannel(MenuItemViewModel item)
+        {
+            Channel = item.Tag.ToString();
+        }
+
+        private List<MenuItemViewModel> generateChannelsMenu()
+        {
+            return Enumerable.Range(1, 16).Select(c =>
+            {
+                var str = String.Format("Ch{0:00}", c);
+                return new MenuItemViewModel { Text = str, Tag = str };
+            }).ToList();
+        }
+
+        private void updateChannelsMenu(IEnumerable<string> selectedChannels)
+        {
+            if (!_selectedChannels.Where(c => c != _channel).Any())
+            {
+                if (ChannelsMenu.Contains(_selectedChannelsMenuItem))
+                {
+                    ChannelsMenu.Remove(SEPARATOR);
+                    ChannelsMenu.Remove(_selectedChannelsMenuItem);
+                }
+                return;
+            }
+
+            _selectedChannelsMenuItem.Children = _selectedChannels.Select(c => new MenuItemViewModel { Text = c, Tag = c }).ToList();
+
+            if (!ChannelsMenu.Contains(_selectedChannelsMenuItem))
+            {
+                ChannelsMenu.Add(SEPARATOR);
+                ChannelsMenu.Add(_selectedChannelsMenuItem);
+            }
+        }
+
+        #endregion
+
+        #region Notes
 
         private void selectNote(MenuItemViewModel item)
         {
             var definition = item.Tag as AMidiDefinition;
             if (definition != null) // proprietary
             {
-                updateBinding(definition);
                 // it's ok to set a reference here, as there should be a single definition per note anyway
+                updateBinding(definition);
                 Note = definition.Note;
             }
-            else // Generic Midi
+            else // generic midi
                 Note = item.Tag.ToString();
         }
 
-        private ObservableCollection<MenuItemViewModel> generateProprietaryMenu()
+        private void updateNotesMenu(IEnumerable<object> selectedNotes)
         {
-            MappingType mType = _mappings.First().Command.MappingType;
-            var defs = getProprietaryDefinitions(_device, mType).DistinctBy(d => d.Note);
+            var hasVariousNotesUnequalNull = (IsGenericMidi && !_selectedNotes.Where(n => n.ToString() != _note).Any()) ||
+                (!IsGenericMidi && !_selectedNotes.Cast<AMidiDefinition>().Where(n => n.Note != _note).Any());
 
-            var builder = new MenuBuilder<AMidiDefinition>();
-            var itemBuilder = new Func<AMidiDefinition, MenuItemViewModel>(d => new MenuItemViewModel
+            if (hasVariousNotesUnequalNull)
             {
-                Text = d.Note.Split('.').Last(),
-                Tag = d
-            });
-
-            var items = builder.BuildTree(defs, itemBuilder, d => d.Note, ".", true);
-            return new ObservableCollection<MenuItemViewModel>(items);      
-        }
-
-        private ObservableCollection<MenuItemViewModel> generateGenericMidiMenu()
-        {
-            MappingType mType = _mappings.First().Command.MappingType;
-            MenuItemViewModel root = new MenuItemViewModel();
-
-            #region CC
-
-            var ccMenu = new MenuItemViewModel { Text = "CC" };
-            root.Children.Add(ccMenu);
-            MenuItemViewModel rangeMenu = null;
-            int num = 128;
-            int parts = 4;
-            int part = 0;
-            int limit = 0;
-
-            for (int i = 0; i < num; i++)
-            {
-                if (i == limit)
+                if (NotesMenu.Contains(_selectedNotesMenuItem))
                 {
-                    part++;
-                    limit = num / parts * part;
-                    rangeMenu = new MenuItemViewModel { Text = String.Format("{0} - {1}", i, limit - 1) };
-                    ccMenu.Children.Add(rangeMenu);
+                    NotesMenu.Remove(SEPARATOR);
+                    NotesMenu.Remove(_selectedNotesMenuItem);
                 }
-                rangeMenu.Children.Add(new MenuItemViewModel { Text = String.Format("{0:000}", i), Tag = String.Format("CC.{0:000}", i) });
+                return;
             }
 
-            #endregion
+            _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
 
-            #region Notes
-
-            List<string> notes = new List<string> { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
-            var notesMenu = new MenuItemViewModel { Text = "Note" };
-            root.Children.Add(notesMenu);
-            MenuItemViewModel noteMenu = null;
-            foreach (var note in notes)
+            if (!NotesMenu.Contains(_selectedNotesMenuItem))
             {
-                noteMenu = new MenuItemViewModel { Text = note };
-                notesMenu.Children.Add(noteMenu);
-                for (int i = -1; i < 10; i++)
-                    noteMenu.Children.Add(new MenuItemViewModel { Text = i.ToString(), Tag = String.Format("Note.{0}", note + i) });
+                NotesMenu.Add(SEPARATOR);
+                NotesMenu.Add(_selectedNotesMenuItem);
             }
-            #endregion
-
-            // PitchBend
-            root.Children.Add(new MenuItemViewModel { Text = "PitchBend", Tag = "PitchBend" });
-
-            return new ObservableCollection<MenuItemViewModel>(root.Children);
         }
 
-        private IEnumerable<AMidiDefinition> getProprietaryDefinitions(DeviceViewModel device, MappingType type)
-        {
-            IEnumerable<KeyValuePair<string, AMidiDefinition>> definitions = null;
-
-            // get definitions from current tsi
-            definitions = ((type == MappingType.In) ? _device.MidiInDefinitions : _device.MidiOutDefinitions);
-
-            if (type == MappingType.In && device.DefaultMidiInDefinitions != null)
-                definitions = definitions.Union(device.DefaultMidiInDefinitions);
-            else if (type == MappingType.Out && device.DefaultMidiOutDefinitions != null)
-                definitions = definitions.Union(device.DefaultMidiOutDefinitions);
-
-            return definitions.DistinctBy(kv => kv.Key).Select(kv => kv.Value);
-        }
+        #endregion
 
         #endregion
 
 
         public static MidiBindingEditorViewModel BuildEditor(DeviceViewModel device, IEnumerable<MappingViewModel> mappings)
         {
-            var count = mappings.Count();
-            bool isAny = count > 0;
-            bool isMulti = count > 1;
-
-            if (isMulti)
+            if (mappings.Any())
             {
-                var sameMappingType = mappings.Select(mvm => mvm.Command.MappingType).Distinct();
-                if (sameMappingType.Count() == 1)
+                if (!device.IsGenericMidi)
                 {
-                    if (mappings.Any(mvm => mvm.MidiBinding == null))
-                        return new MidiBindingEditorViewModel(device, mappings, null);
-                    else
-                    {
-                        var sameNote = mappings.Select(mvm => mvm.MidiBinding).Distinct();
-                        if (sameNote.Count() == 1)
-                            return new MidiBindingEditorViewModel(device, mappings, sameNote.First());
-                        else
-                            return new MidiBindingEditorViewModel(device, mappings, null);
-                    }
+                    var propDefs = getProprietaryDefinitions(device, mappings);
+                    if (propDefs.Any())
+                        return new MidiBindingEditorViewModel(device, mappings, propDefs);
                 }
+                else
+                    return new MidiBindingEditorViewModel(device, mappings);
             }
-            else if (isAny)
+
+            return null; // either no mapping selected or no (valid) definitions available
+        }
+
+
+        private static IEnumerable<AMidiDefinition> getProprietaryDefinitions(DeviceViewModel device, IEnumerable<MappingViewModel> mappings)
+        {
+            IEnumerable<KeyValuePair<string, AMidiDefinition>> inDefinitions = null, outDefinitions = null;
+
+            // get definitions from current tsi file as well as default definitions (if available)
+
+            bool hasInMappings = mappings.Any(m => m.Command.MappingType == MappingType.In);
+            if (hasInMappings)
             {
-                var mvm = mappings.Single();
-                return new MidiBindingEditorViewModel(device, mappings, mvm.MidiBinding);
+                inDefinitions = device.MidiInDefinitions;
+                if (device.DefaultMidiInDefinitions != null)
+                    inDefinitions = inDefinitions.Union(device.DefaultMidiInDefinitions);
             }
-            return null;
+
+            bool hasOutMappings = mappings.Any(m => m.Command.MappingType == MappingType.Out);
+            if (hasOutMappings)
+            {
+                outDefinitions = device.MidiOutDefinitions;
+                if (device.DefaultMidiOutDefinitions != null)
+                    outDefinitions = outDefinitions.Union(device.DefaultMidiOutDefinitions);
+            }
+
+            if (hasInMappings && hasOutMappings) // get intersection of In and Out definitions
+                return (from inDef in inDefinitions
+                        join outDef in outDefinitions on inDef.Key equals outDef.Key
+                        where (!isDefault(outDef))
+                        select new[] { inDef.Value, outDef.Value }).SelectMany(d => d);
+            else if (hasInMappings)
+                return inDefinitions.Select(kv => kv.Value);
+            else
+                return outDefinitions.Select(kv => kv.Value);
+        }
+
+        private static bool isDefault<T>(T value) where T : struct
+        {
+            return value.Equals(default(T));
         }
     }
 }
