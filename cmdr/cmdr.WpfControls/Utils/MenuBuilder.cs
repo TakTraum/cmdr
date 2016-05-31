@@ -56,7 +56,6 @@ namespace cmdr.WpfControls.Utils
                 el.Children.Sort();
                 el.Children.ForEach(c => queue.Enqueue(c));
             }
-
         }
     }
 }
