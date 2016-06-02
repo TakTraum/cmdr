@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace cmdr.WpfControls.CustomDataGrid
+namespace cmdr.WpfControls.Utils
 {
     // taken from http://blog.functionalfun.net/2009/02/how-to-databind-to-selecteditems.html
     // Author: Samuel Jack, 2009 Creative Commons Attribution 2.0

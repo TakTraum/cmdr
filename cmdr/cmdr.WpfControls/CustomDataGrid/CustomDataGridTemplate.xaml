@@ -150,36 +150,6 @@
 
     <ControlTemplate x:Key="customDataGridTemplate" TargetType="DataGrid">
         <ControlTemplate.Resources>
-            
-            <!--Virtualised ItemsControl-->
-            <Style x:Key="ItemsControlVirtialisedStyle" TargetType="ItemsControl">
-                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
-                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-                <Setter Property="ItemsPanel">
-                    <Setter.Value>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ItemsControl">
-                            <Border
-                    BorderThickness="{TemplateBinding Border.BorderThickness}"
-                    Padding="{TemplateBinding Control.Padding}"
-                    BorderBrush="{TemplateBinding Border.BorderBrush}"
-                    Background="{TemplateBinding Panel.Background}"
-                    SnapsToDevicePixels="True">
-                                <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False">
-                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-                                </ScrollViewer>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
             <!--Style and template for the DataGridCell.-->
             <Style TargetType="{x:Type DataGridCell}">
                 <Setter Property="Template" Value="{StaticResource CellTemplate}"/>
@@ -247,7 +217,6 @@
             </VisualStateManager.VisualStateGroups>
             <ScrollViewer x:Name="DG_ScrollViewer"
                           Focusable="False"
-                          Background="Black"
                           CanContentScroll="True"
                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                 <ScrollViewer.Template>
@@ -301,7 +270,7 @@
                         </Grid>
                     </ControlTemplate>
                 </ScrollViewer.Template>
-                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
             </ScrollViewer>
         </Border>
     </ControlTemplate>

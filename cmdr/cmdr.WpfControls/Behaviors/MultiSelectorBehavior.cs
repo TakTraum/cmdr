@@ -3,23 +3,24 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
+using cmdr.WpfControls.Utils;
 
-namespace cmdr.WpfControls.CustomDataGrid
+namespace cmdr.WpfControls.Behaviors
 {
     // taken from http://blog.functionalfun.net/2009/02/how-to-databind-to-selecteditems.html
     // Author: Samuel Jack, 2009 Creative Commons Attribution 2.0
 
     /// <summary>
-    /// A sync behaviour for a multiselector.
+    /// A sync behavior for a multiselector.
     /// Make sure ItemsSource is bound later than SynchronizedSelectedItems, because changing the ItemsSource will reset any selection!
     /// </summary>
-    public static class MultiSelectorBehaviours
+    public static class MultiSelectorBehavior
     {
         public static readonly DependencyProperty SynchronizedSelectedItems = DependencyProperty.RegisterAttached(
-            "SynchronizedSelectedItems", typeof(IList), typeof(MultiSelectorBehaviours), new PropertyMetadata(null, OnSynchronizedSelectedItemsChanged));
+            "SynchronizedSelectedItems", typeof(IList), typeof(MultiSelectorBehavior), new PropertyMetadata(null, OnSynchronizedSelectedItemsChanged));
 
         private static readonly DependencyProperty SynchronizationManagerProperty = DependencyProperty.RegisterAttached(
-            "SynchronizationManager", typeof(SynchronizationManager), typeof(MultiSelectorBehaviours), new PropertyMetadata(null));
+            "SynchronizationManager", typeof(SynchronizationManager), typeof(MultiSelectorBehavior), new PropertyMetadata(null));
 
         /// <summary>
         /// Gets the synchronized selected items.
@@ -120,19 +121,12 @@ namespace cmdr.WpfControls.CustomDataGrid
             public static IList GetSelectedItemsCollection(Selector selector)
             {
                 if (selector is MultiSelector)
-                {
                     return (selector as MultiSelector).SelectedItems;
-                }
                 else if (selector is ListBox)
-                {
                     return (selector as ListBox).SelectedItems;
-                }
                 else
-                {
                     throw new InvalidOperationException("Target object has no SelectedItems property to bind.");
-                }
             }
-
         }
     }
 }

@@ -5,9 +5,10 @@ using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
-using cmdr.WpfControls.CustomDataGrid;
+using cmdr.WpfControls.Behaviors;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
+using cmdr.WpfControls.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -309,26 +310,12 @@ namespace cmdr.Editor.ViewModels
             }
             else
             {
-                for (int i = 0; i < selected.Count; i++)
-                {
-                    var oldIndex = _mappings.IndexOf(selected[i]);
-
-                    if (oldIndex < newIndex || newIndex == Mappings.Count)
-                        newIndex--;
-
-                    if (i > 0)
+                var movingAction = new Action<int, int>((oi, ni) =>
                     {
-                        newIndex = _mappings.IndexOf(selected[i - 1]);
-                        if (oldIndex > newIndex) // if drag is upwards
-                            newIndex++;
-                    }
-
-                    if (oldIndex == newIndex)
-                        continue;
-
-                    _device.MoveMapping(oldIndex, newIndex);
-                    _mappings.Move(oldIndex, newIndex);
-                }
+                        _device.MoveMapping(oi, ni);
+                        _mappings.Move(oi, ni);
+                    });
+                MovingLogicHelper.Move<RowItemViewModel>(_mappings, selected, newIndex, movingAction);
             }
 
             if (selected.Any())

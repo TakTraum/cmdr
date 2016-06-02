@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace cmdr.WpfControls.CustomDataGrid
+namespace cmdr.WpfControls.Adorners
 {
     class InsertAdorner : Adorner
     {
@@ -36,6 +31,5 @@ namespace cmdr.WpfControls.CustomDataGrid
             Rect adornedElementRect = new Rect(AdornedElement.RenderSize);
             drawingContext.DrawLine(PEN, _above ? adornedElementRect.TopLeft : adornedElementRect.BottomLeft, _above ? adornedElementRect.TopRight : adornedElementRect.BottomRight);
         }
-
     }
 }

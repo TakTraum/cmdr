@@ -1,19 +1,13 @@
 ﻿using cmdr.WpfControls.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Controls.Primitives;
 
-namespace cmdr.WpfControls.CustomDataGrid
+namespace cmdr.WpfControls.ViewModels
 {
     public class RowItemViewModel : ViewModelBase
     {
-        internal DataGrid ParentGrid;
+        internal Selector ParentSelector;
 
         private object _item;
         public object Item
@@ -43,8 +37,15 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         public void BringIntoView()
         {
-            if (ParentGrid != null)
-                ParentGrid.ScrollIntoView(this);
+            if (ParentSelector == null)
+                return;
+
+            if (ParentSelector is DataGrid)
+                (ParentSelector as DataGrid).ScrollIntoView(this);
+            else if (ParentSelector is ListBox)
+                (ParentSelector as ListBox).ScrollIntoView(this);
+            else
+                throw new InvalidOperationException("Target object has no ScrollIntoView method.");
         }
     }
 }

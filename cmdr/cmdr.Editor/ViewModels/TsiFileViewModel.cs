@@ -4,7 +4,7 @@ using cmdr.Editor.Utils;
 using cmdr.Editor.Views;
 using cmdr.TsiLib;
 using cmdr.TsiLib.EventArgs;
-using cmdr.WpfControls.CustomDataGrid;
+using cmdr.WpfControls.Behaviors;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
 using System;
@@ -78,6 +78,12 @@ namespace cmdr.Editor.ViewModels
         public ICommand DragOverCommand
         {
             get { return _dragOverCommand ?? (_dragOverCommand = new CommandHandler<DragEventArgs>(dragOver)); }
+        }
+
+        private ICommand _dropCommand;
+        public ICommand DropCommand
+        {
+            get { return _dropCommand ?? (_dropCommand = new CommandHandler<IDataObject>(drop)); }
         }
 
         #endregion
@@ -181,6 +187,47 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
+        private void drop(IDataObject dataObject)
+        {
+            if (dataObject == null)
+                return;
+
+            var data = dataObject.GetData(typeof(DraggableRowsBehavior.Data)) as DraggableRowsBehavior.Data;
+            if (data == null)
+                return;
+
+            if (data.TargetIndex < 0 && Devices.Any()) // // don't allow invalid targets, but allow drop on an empty grid 
+                return;
+
+            TsiFileViewModel srcFile = data.SenderDataContext as TsiFileViewModel;
+            if (srcFile == null)
+                return;
+
+            DeviceViewModel selected = data.SelectedItems[0] as DeviceViewModel;
+
+            int newIndex = Math.Max(0, data.TargetIndex);
+
+            if (srcFile != this || !data.IsMove)
+            {
+                if (data.IsMove)
+                    srcFile.removeDevice(selected);
+
+                var rawDevice = selected.Copy(true);
+                insertDevice(newIndex++, rawDevice);
+            }
+            else
+            {
+                var movingAction = new Action<int, int>((oi, ni) =>
+                {
+                    _tsiFile.MoveDevice(oi, ni);
+                    _devices.Move(oi, ni);
+                });
+                MovingLogicHelper.Move<DeviceViewModel>(_devices, new List<DeviceViewModel> { selected }, newIndex, movingAction);
+            }
+
+            SelectedDevice = selected;
+        }
+
         private void onDeviceChanged()
         {
             IsChanged = Devices.Any(d => d.IsChanged);
@@ -242,17 +289,32 @@ namespace cmdr.Editor.ViewModels
             Devices.Add(dvm);
         }
 
+        private void insertDevice(int index, Device rawDevice)
+        {
+            _tsiFile.InsertDevice(index, rawDevice);
+            var dvm = new DeviceViewModel(rawDevice);
+            Devices.Insert(index, dvm);
+        }
+
+
         private void removeDevice()
         {
-            int id = SelectedDevice.Id;
             int index = Devices.IndexOf(SelectedDevice);
-            Devices.Remove(SelectedDevice);
-            _tsiFile.RemoveDevice(id);
+
+            removeDevice(SelectedDevice);
+            
             int count = Devices.Count;
             if (count > 0)
                 SelectedDevice = Devices[(index < count) ? index : index - 1];
             else
                 SelectedDevice = null;
+        }
+
+        private void removeDevice(DeviceViewModel device)
+        {
+            int id = device.Id;
+            Devices.Remove(device);
+            _tsiFile.RemoveDevice(id);
         }
 
         private string makeValidFileName(string name)

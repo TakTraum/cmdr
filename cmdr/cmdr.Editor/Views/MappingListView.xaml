@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:views="clr-namespace:cmdr.Editor.Views"        
              xmlns:behaviors="clr-namespace:cmdr.Editor.Behaviors"
+             xmlns:behaviorsWpfControls="clr-namespace:cmdr.WpfControls.Behaviors;assembly=cmdr.WpfControls"
              xmlns:controls="clr-namespace:cmdr.Editor.Views.Controls"
              xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
              xmlns:cdg="clr-namespace:cmdr.WpfControls.CustomDataGrid;assembly=cmdr.WpfControls"
@@ -21,9 +22,9 @@
         <cdg:CustomDataGrid Grid.Row="0" x:Name="MappingsGrid"
                             AutoGenerateColumns="False"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                            cdg:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedMappings}"
+                            behaviorsWpfControls:MultiSelectorBehavior.SynchronizedSelectedItems="{Binding SelectedMappings}"
                             ItemsSource="{Binding Mappings, Mode=OneWay}"
-                            cdg:DraggableRowsBehavior.DropAction="{Binding DropCommand, Mode=OneTime}"
+                            behaviorsWpfControls:DraggableRowsBehavior.DropAction="{Binding DropCommand, Mode=OneTime}"
                             >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">

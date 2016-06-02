@@ -100,6 +100,7 @@
     <Compile Include="Utils\BrowseDialogHelper.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Utils\MessageBoxHelper.cs" />
+    <Compile Include="Utils\MovingLogicHelper.cs" />
     <Compile Include="Utils\SerializationHelper.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
     <Compile Include="ViewModels\ControllerDefaultMappings.cs" />

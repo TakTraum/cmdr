@@ -1,11 +1,8 @@
 ﻿using cmdr.Editor.Utils;
-using cmdr.WpfControls.CustomDataGrid;
-using System;
+using cmdr.WpfControls.ViewModels;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace cmdr.Editor.ViewModels
