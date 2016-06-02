@@ -1,4 +1,5 @@
 ﻿using cmdr.WpfControls.CustomDataGrid;
+using cmdr.WpfControls.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,7 +38,7 @@ namespace cmdr.WpfControls.Test
             {
                 var copy = (item.Item as cmdr.WpfControls.Test.ViewModel.Thing).Copy();
                 copy.Number *= 2;
-                vm.Things.Add(new CustomDataGrid.RowItemViewModel(copy));
+                vm.Things.Add(new RowItemViewModel(copy));
             }
         }
     }

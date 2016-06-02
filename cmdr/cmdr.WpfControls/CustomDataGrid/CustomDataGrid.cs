@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using cmdr.WpfControls.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace cmdr.WpfControls.CustomDataGrid
@@ -20,11 +21,11 @@ namespace cmdr.WpfControls.CustomDataGrid
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     foreach (RowItemViewModel item in e.NewItems)
-                        item.ParentGrid = this;
+                        item.ParentSelector = this;
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     foreach (RowItemViewModel item in Items)
-                        item.ParentGrid = this;
+                        item.ParentSelector = this;
                     break;
                 default:
                     break;

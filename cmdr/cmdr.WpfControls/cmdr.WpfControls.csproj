@@ -88,12 +88,15 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomDataGrid\IListItemConverter.cs" />
-    <Compile Include="CustomDataGrid\DraggableRowsBehavior.cs" />
-    <Compile Include="CustomDataGrid\InsertAdorner.cs" />
-    <Compile Include="CustomDataGrid\MultiSelectorBehavior.cs" />
-    <Compile Include="CustomDataGrid\RowItemViewModel.cs" />
-    <Compile Include="CustomDataGrid\TwoListSynchronizer.cs" />
+    <Compile Include="Behaviors\ASelectorAdapter.cs" />
+    <Compile Include="Behaviors\SelectorAdapters\DataGridAdapter.cs" />
+    <Compile Include="Behaviors\SelectorAdapters\ListBoxAdapter.cs" />
+    <Compile Include="Utils\IListItemConverter.cs" />
+    <Compile Include="Behaviors\DraggableRowsBehavior.cs" />
+    <Compile Include="Adorners\InsertAdorner.cs" />
+    <Compile Include="Behaviors\MultiSelectorBehavior.cs" />
+    <Compile Include="ViewModels\RowItemViewModel.cs" />
+    <Compile Include="Utils\TwoListSynchronizer.cs" />
     <Compile Include="CustomListBox\CustomListBox.cs" />
     <Compile Include="CustomTextBlock\AutoToolTipTextBlock.cs" />
     <Compile Include="Converters\UriToImageConverter.cs" />

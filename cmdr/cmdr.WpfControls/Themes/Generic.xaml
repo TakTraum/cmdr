@@ -1,6 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:cmdr.WpfControls.Behaviors"
     xmlns:ddbutton="clr-namespace:cmdr.WpfControls.DropDownButton"
     xmlns:customSlider="clr-namespace:cmdr.WpfControls.CustomSlider"
     xmlns:customDataGrid="clr-namespace:cmdr.WpfControls.CustomDataGrid"
@@ -58,7 +59,7 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="HorizontalGridLinesBrush" Value="#a0B7AFA3"/>
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource ColumnHeaderStyle}"/>
-        <Setter Property="customDataGrid:DraggableRowsBehavior.IsEnabled" Value="True"/>
+        <Setter Property="behaviors:DraggableRowsBehavior.IsEnabled" Value="True"/>
         <Setter Property="Template" Value="{StaticResource customDataGridTemplate}"/>
         <Style.Triggers>
             <Trigger Property="IsGrouping" Value="true">
@@ -72,6 +73,7 @@
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource customListBoxItemContainerStyle}"/>
+        <Setter Property="behaviors:DraggableRowsBehavior.IsEnabled" Value="True"/>
         <Setter Property="Template" Value="{StaticResource customListBoxTemplate}"/>
     </Style>
 </ResourceDictionary>

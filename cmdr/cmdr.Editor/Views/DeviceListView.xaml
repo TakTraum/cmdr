@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:cmdr.Editor.Behaviors"
+             xmlns:behaviorsWpfControls="clr-namespace:cmdr.WpfControls.Behaviors;assembly=cmdr.WpfControls"
              xmlns:dropDownButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
              xmlns:conv="clr-namespace:cmdr.Editor.Converters"
              xmlns:customListBox="clr-namespace:cmdr.WpfControls.CustomListBox;assembly=cmdr.WpfControls"
@@ -23,6 +24,7 @@
                                      ItemsSource="{Binding Devices, Mode=OneWay}" 
                                      SelectedItem="{Binding SelectedDevice}"
                                      behaviors:AttachedBehaviors.DragOverBehaviour="{Binding DragOverCommand, Mode=OneTime}"
+                                     behaviorsWpfControls:DraggableRowsBehavior.DropAction="{Binding DropCommand, Mode=OneTime}"
                                      >
             <ListBox.ItemTemplate>
                 <DataTemplate>

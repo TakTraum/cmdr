@@ -1,17 +1,17 @@
-﻿using System;
+﻿using cmdr.TsiLib.Commands;
+using cmdr.TsiLib.Enums;
+using cmdr.TsiLib.EventArgs;
+using cmdr.TsiLib.Format;
+using cmdr.TsiLib.FormatXml;
+using cmdr.TsiLib.FormatXml.Interpretation;
+using cmdr.TsiLib.Utils;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using cmdr.TsiLib.Format;
-using cmdr.TsiLib.Utils;
-using cmdr.TsiLib.Enums;
-using cmdr.TsiLib.Commands;
-using cmdr.TsiLib.FormatXml;
-using cmdr.TsiLib.FormatXml.Interpretation;
-using cmdr.TsiLib.EventArgs;
 using System.Threading;
-using System.Diagnostics;
 
 namespace cmdr.TsiLib
 {
@@ -86,10 +86,20 @@ namespace cmdr.TsiLib
 
         public void AddDevice(Device device)
         {
-            if (device.Id < 0)
-                device.Id = createNewId();
-            _devices.Add(device);
-            _devicesContainer.Devices.List.Add(device.RawDevice);
+            InsertDevice(Devices.Count, device);
+        }
+
+        public void InsertDevice(int index, Device device)
+        {
+            insertDevice(index, device, false);
+        }
+
+        public void MoveDevice(int oldIndex, int newIndex)
+        {
+            var temp = _devices[oldIndex];
+            RemoveDevice(temp.Id);
+            insertDevice(newIndex, temp, true);
+
         }
 
         public void RemoveDevice(int deviceId)
@@ -334,6 +344,23 @@ namespace cmdr.TsiLib
                 }
             }
             throw new Exception("Devices are full!");
+        }
+
+        private void insertDevice(int index, Device device, bool asIs)
+        {
+            if (device.Id < 0 || !asIs)
+                device.Id = createNewId();
+
+            if (index == Devices.Count)
+            {
+                _devices.Add(device);
+                _devicesContainer.Devices.List.Add(device.RawDevice);
+            }
+            else
+            {
+                _devices.Insert(index, device);
+                _devicesContainer.Devices.List.Insert(index, device.RawDevice);
+            }
         }
     }
 }
