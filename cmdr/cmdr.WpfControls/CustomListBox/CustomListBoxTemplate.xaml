@@ -53,7 +53,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border x:Name="outerBorder" Padding="2" SnapsToDevicePixels="true">
+                    <Border x:Name="outerBorder" SnapsToDevicePixels="true">
                         <Border.Background>
                             <SolidColorBrush Color="Transparent" />
                         </Border.Background>
@@ -81,7 +81,7 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <StackPanel>
-                            <Separator x:Name="Separator" Margin="0,0,0,4"/>
+                            <Separator x:Name="Separator" Margin="0" />
                             
                             <!-- Exclude separator from selection. -->
                             <Border x:Name="innerBorder" Padding="2" BorderThickness="0">
