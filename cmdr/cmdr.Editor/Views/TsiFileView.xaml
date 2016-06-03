@@ -63,7 +63,7 @@
             <ad:LayoutRoot.RightSide>
                 <ad:LayoutAnchorSide>
                     <ad:LayoutAnchorGroup>
-                        <ad:LayoutAnchorable x:Name="anchDetails" Title="Details" ContentId="Details"
+                        <ad:LayoutAnchorable x:Name="anchDetails" Title="Mapping Editor" ContentId="Mapping Editor"
                                              CanHide="False" CanClose="False" CanAutoHide="True"
                                              AutoHideMinWidth="250"  AutoHideWidth="250" FloatingWidth="250">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">

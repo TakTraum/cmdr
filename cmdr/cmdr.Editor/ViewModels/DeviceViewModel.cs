@@ -475,7 +475,7 @@ namespace cmdr.Editor.ViewModels
             // should be called when selection is complete and not changing anymore. 
             // therefore it's better to use an EventTrigger on DataGrid's SelectionChanged
 
-            var selectedMappingViewModels = selection.Cast<RowItemViewModel>().Select(m => m.Item as MappingViewModel);
+            var selectedMappingViewModels = _selectedMappings.Select(m => m.Item as MappingViewModel);
             MappingEditorViewModel = new MappingEditorViewModel(this, selectedMappingViewModels);
         }
 
