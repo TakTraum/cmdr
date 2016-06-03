@@ -41,13 +41,16 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </customListBox:CustomListBox>
-        
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
-            <dropDownButton:DropDownButton Content="+" Height="20" Width="20" MenuPlacement="Right" 
-                                           ItemsSource="{Binding AddDeviceMenuItems, Mode=OneTime}"
-                                           Command="{Binding AddDeviceCommand, Mode=OneTime}"/>
-            <Button Margin="5,0,0,0" Content="-" Height="20" Width="20" Command="{Binding RemoveDeviceCommand, Mode=OneTime}" />
-        </StackPanel>
+
+        <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" LastChildFill="True" Margin="0,5">
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                <dropDownButton:DropDownButton Content="+" Height="20" Width="20" MenuPlacement="Right" 
+                                               ItemsSource="{Binding AddDeviceMenuItems, Mode=OneTime}"
+                                               Command="{Binding AddDeviceCommand, Mode=OneTime}"/>
+                <Button Margin="5,0,0,0" Content="-" Height="20" Width="20" Command="{Binding RemoveDeviceCommand, Mode=OneTime}" />
+            </StackPanel>
+            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" FontSize="11" Text="{Binding Path=Items.Count, ElementName=lbDevices, Mode=OneWay, Converter={StaticResource pluralizationConverter}, ConverterParameter=device}" />
+        </DockPanel>
     </Grid>
 
 </UserControl>
