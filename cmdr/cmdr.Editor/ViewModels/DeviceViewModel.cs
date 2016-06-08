@@ -419,7 +419,10 @@ namespace cmdr.Editor.ViewModels
                             var mvm = new MappingViewModel(_device, m);
                             mvm.Assignment = selectedMapping.Assignment;
 
-                            if (MidiOutDefinitions.ContainsKey(selectedMapping.MidiBinding.Note))
+                            if (selectedMapping.CanOverrideFactoryMap)
+                                mvm.OverrideFactoryMap = selectedMapping.OverrideFactoryMap;
+
+                            if (selectedMapping.MidiBinding != null && MidiOutDefinitions.ContainsKey(selectedMapping.MidiBinding.Note))
                                 mvm.SetBinding(MidiOutDefinitions[selectedMapping.MidiBinding.Note]);
 
                             if (selectedMapping.Condition1 != null)
