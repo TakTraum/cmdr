@@ -1,11 +1,9 @@
+using cmdr.TsiLib.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Format
 {
@@ -49,11 +47,6 @@ namespace cmdr.TsiLib.Format
 
             var len = stream.ReadInt32BigE();
             Xml = stream.ReadASCIIString(len);
-
-            if (!String.IsNullOrWhiteSpace(Xml))
-            {
-
-            }
         }
 
 

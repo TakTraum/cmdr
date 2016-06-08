@@ -1,14 +1,12 @@
-using System;
+using cmdr.TsiLib.Utils;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Format
 {
     internal class MidiNoteBindingList : Frame
     {
-        public List<MidiNoteBinding> Bindings { get; set; }
+        public List<MidiNoteBinding> Bindings { get; private set; }
 
 
         public MidiNoteBindingList()
@@ -27,7 +25,9 @@ namespace cmdr.TsiLib.Format
         public override void Write(Writer writer)
         {
             writer.BeginFrame(FrameId);
+
             writer.WriteList(Bindings);
+            
             writer.EndFrame();
         }
     };

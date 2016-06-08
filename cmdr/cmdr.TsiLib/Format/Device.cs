@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using cmdr.TsiLib.Utils;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {
     internal class Device : Frame
     {
         public string DeviceType { get; set; }
-        public DeviceData Data { get; set; }
+        public DeviceData Data { get; private set; }
 
 
         public Device(string deviceType, string traktorVersion)

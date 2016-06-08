@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Utils;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {

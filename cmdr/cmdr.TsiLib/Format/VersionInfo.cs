@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using cmdr.TsiLib.Utils;
 using System.IO;
-using System.Linq;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Format
 {
@@ -32,7 +29,6 @@ namespace cmdr.TsiLib.Format
             writer.BeginFrame(FrameId);
 
             writer.WriteWideStringBigE(Version);
-
             writer.WriteBigE(MappingFileRevision);
 
             writer.EndFrame();

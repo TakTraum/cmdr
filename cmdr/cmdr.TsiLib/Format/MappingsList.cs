@@ -1,14 +1,12 @@
-using System;
+using cmdr.TsiLib.Utils;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Format
 {
     internal class MappingsList : Frame
     {
-        public List<Mapping> Mappings { get; set; }
+        public List<Mapping> Mappings { get; private set; }
 
 
         public MappingsList()
@@ -27,7 +25,9 @@ namespace cmdr.TsiLib.Format
         public override void Write(Writer writer)
         {
             writer.BeginFrame(FrameId);
+
             writer.WriteList<Mapping>(Mappings);
+            
             writer.EndFrame();
         }
     }

@@ -1,22 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using cmdr.TsiLib.Utils;
+using System;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {
     internal class DeviceData : Frame
     {
-        public DeviceTargetInfo Target { get; set; }
-        public VersionInfo Version { get; set; }
+        public DeviceTargetInfo Target { get; private set; }
+        public VersionInfo Version { get; private set; }
 
         /// <summary>
         /// Is optional.
         /// </summary>
         internal MappingFileComment Comment { get; set; }
         
-        public DevicePorts Ports { get; set; }
+        public DevicePorts Ports { get; private set; }
 
         /// <summary>
         /// Is optional.

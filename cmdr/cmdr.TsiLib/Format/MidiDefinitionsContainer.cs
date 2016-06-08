@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using cmdr.TsiLib.Utils;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {
     internal class MidiDefinitionsContainer : Frame
     {
-        public MidiInDefinitions In { get; set; }
-        public MidiOutDefinitions Out { get; set; }
+        public MidiInDefinitions In { get; private set; }
+        public MidiOutDefinitions Out { get; private set; }
 
 
         public MidiDefinitionsContainer()
@@ -24,23 +21,6 @@ namespace cmdr.TsiLib.Format
         {
             In = new MidiInDefinitions(stream);
             Out = new MidiOutDefinitions(stream);
-
-            var filter = In.Definitions.Where(d => d.MidiControlType == Enums.MidiControlType.GenericIn && d.MaxValue != 127f);
-            if (filter.Any())
-            {
-
-            }
-
-            filter = In.Definitions.Where(d => d.MidiControlType == Enums.MidiControlType.GenericIn && d.MidiNote.Contains("Note"));
-            if (filter.Any())
-            {
-
-            }
-
-            if (Out.Definitions.Any(d => d.MidiControlType != Enums.MidiControlType.Out))
-            {
-
-            }
         }
 
 

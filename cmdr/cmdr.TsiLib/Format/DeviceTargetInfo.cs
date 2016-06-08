@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Utils;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {
@@ -28,7 +25,9 @@ namespace cmdr.TsiLib.Format
         public override void Write(Writer writer)
         {
             writer.BeginFrame(FrameId);
+
             writer.WriteBigE((int)DeviceTarget);
+
             writer.EndFrame();
         }
     }
