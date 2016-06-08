@@ -46,14 +46,14 @@ namespace cmdr.TsiLib
             _devicesContainer = new DeviceMappingsContainer();
         }
 
+
         /// <summary>
         /// Creates a new TSI File for the specified version of Traktor.
         /// </summary>
         /// <param name="traktorVersion">The targeted Traktor version.</param>
         public static TsiFile Create(string traktorVersion)
         {
-            var tsi = new TsiFile(traktorVersion);
-            return tsi;
+            return new TsiFile(traktorVersion);
         }
 
         /// <summary>
@@ -99,7 +99,6 @@ namespace cmdr.TsiLib
             var temp = _devices[oldIndex];
             RemoveDevice(temp.Id);
             insertDevice(newIndex, temp, true);
-
         }
 
         public void RemoveDevice(int deviceId)
