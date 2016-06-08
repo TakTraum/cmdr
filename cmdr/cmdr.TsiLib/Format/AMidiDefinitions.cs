@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using cmdr.TsiLib.Utils;
+using System.Collections.Generic;
 using System.IO;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Format
 {
     internal abstract class AMidiDefinitions : Frame
     {
-        public List<MidiDefinition> Definitions { get; set; }
+        public List<MidiDefinition> Definitions { get; private set; }
 
 
         public AMidiDefinitions(string frameId)
@@ -25,7 +25,9 @@ namespace cmdr.TsiLib.Format
         public override void Write(Writer writer)
         {
             writer.BeginFrame(FrameId);
+
             writer.WriteList(Definitions);
+
             writer.EndFrame();
         }
     }

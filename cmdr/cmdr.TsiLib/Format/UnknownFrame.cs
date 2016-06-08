@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using cmdr.TsiLib.Utils;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cmdr.TsiLib.Format
 {
@@ -15,7 +11,8 @@ namespace cmdr.TsiLib.Format
 
         }
 
-        public override void Write(Utils.Writer writer)
+
+        public override void Write(Writer writer)
         {
             if (base.FrameSizeOnDisk.HasValue)
                 writer.WriteBigE(new byte[base.FrameSizeOnDisk.Value]);

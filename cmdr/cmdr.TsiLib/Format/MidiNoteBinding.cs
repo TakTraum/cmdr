@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using cmdr.TsiLib.Utils;
 using System.IO;
-using System.Linq;
-using cmdr.TsiLib.Utils;
 
 namespace cmdr.TsiLib.Format
 {

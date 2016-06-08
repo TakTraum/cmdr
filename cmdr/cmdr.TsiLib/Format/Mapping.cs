@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Utils;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {
@@ -14,9 +10,10 @@ namespace cmdr.TsiLib.Format
         /// Identifier of mapping. Used for midi bindings.
         /// </summary>
         public int MidiNoteBindingId { get; set; }
+
         public MappingType Type { get; set; }
         public int TraktorControlId { get; set; }
-        public MappingSettings Settings { get; set; }
+        public MappingSettings Settings { get; private set; }
 
 
         public Mapping(MappingType type, int traktorControlId)

@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Utils;
+using System;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {
@@ -195,6 +193,7 @@ namespace cmdr.TsiLib.Format
                 if (DeviceType == DeviceType.GenericMidi)
                     writer.WriteBigE(OverrideFactoryMap);
             }
+
             writer.EndFrame();
         }
     }

@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using cmdr.TsiLib.Utils;
+using System.IO;
 
 namespace cmdr.TsiLib.Format
 {
     internal class DeviceMappingsContainer : Frame
     {
-        public DIOI DIOI { get; set; }
-        public DevicesList Devices { get; set; }
+        public DIOI DIOI { get; private set; }
+        public DevicesList Devices { get; private set; }
 
 
         public DeviceMappingsContainer()
