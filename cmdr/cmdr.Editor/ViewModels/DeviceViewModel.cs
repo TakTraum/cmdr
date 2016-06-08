@@ -24,7 +24,7 @@ namespace cmdr.Editor.ViewModels
         public static readonly string ALL_PORTS = "All Ports";
 
         private static readonly List<MappingViewModel> _mappingClipboard = new List<MappingViewModel>();
-
+        private static readonly MenuItemViewModel _separator = MenuItemViewModel.Separator;
 
         private Device _device;
 
@@ -148,8 +148,8 @@ namespace cmdr.Editor.ViewModels
             set { _searchViewModel = value; raisePropertyChanged("SearchViewModel"); }
         }
 
-        public ObservableCollection<MenuItemViewModel> InCommands { get; set; }
-        public ObservableCollection<MenuItemViewModel> OutCommands { get; set; }
+        public ObservableCollection<MenuItemViewModel> InCommands { get; private set; }
+        public ObservableCollection<MenuItemViewModel> OutCommands { get; private set; }
 
         public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
         public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
@@ -241,7 +241,10 @@ namespace cmdr.Editor.ViewModels
 
             // set selection if possible
             if (Mappings.Any())
+            {
                 SelectedMappings.Add(Mappings.First());
+                updateAddMappingContextMenus();
+            }
         }
 
 
@@ -380,6 +383,62 @@ namespace cmdr.Editor.ViewModels
             OutCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allOut, itemBuilder, a => a.Category.ToDescriptionString(), "->", false));
         }
 
+        private void updateAddMappingContextMenus()
+        {
+            if (OutCommands.Contains(_separator))
+            {
+                OutCommands.Remove(_separator);
+                OutCommands.RemoveAt(OutCommands.Count - 1);
+            }
+            
+            MappingViewModel selectedMapping = null;
+
+            if (_selectedMappings.Count != 1 || (selectedMapping = _selectedMappings.Single().Item as MappingViewModel).Command.MappingType != MappingType.In)
+                return;
+
+            if (All.KnownOutCommands.ContainsKey(selectedMapping.Command.Id))
+            {
+                var commandProxy = All.KnownOutCommands[selectedMapping.Command.Id];
+                if (!OutCommands.Contains(_separator))
+                {
+                    OutCommands.Add(_separator);
+                    OutCommands.Add(new MenuItemViewModel
+                    {
+                        Text = commandProxy.Name + " (" + selectedMapping.AssignmentExpression + ")",
+                        Tag = commandProxy,
+                        Command = new CommandHandler<MenuItemViewModel>(i =>
+                        {
+                            int index = _mappings.Count;
+                            if (_selectedMappings.Count > 0)
+                                index = _mappings.IndexOf(_selectedMappings.Last()) + 1;
+
+                            var proxy = i.Tag as CommandProxy;
+                            var m = _device.CreateMapping(proxy);
+                            _device.InsertMapping(index, m);
+
+                            var mvm = new MappingViewModel(_device, m);
+                            mvm.Assignment = selectedMapping.Assignment;
+
+                            if (MidiOutDefinitions.ContainsKey(selectedMapping.MidiBinding.Note))
+                                mvm.SetBinding(MidiOutDefinitions[selectedMapping.MidiBinding.Note]);
+
+                            if (selectedMapping.Condition1 != null)
+                                mvm.SetCondition(TsiLib.Conditions.ConditionNumber.One, selectedMapping.Condition1);
+
+                            if (selectedMapping.Condition2 != null)
+                                mvm.SetCondition(TsiLib.Conditions.ConditionNumber.Two, selectedMapping.Condition2);
+
+                            var row = new RowItemViewModel(mvm);
+                            _mappings.Insert(index, row);
+
+                            selectExclusive(row);
+                            row.BringIntoView();
+                        })
+                    });
+                }
+            }
+        }
+
         private void insertMapping(int index, Mapping rawMapping)
         {
             _device.InsertMapping(index, rawMapping);
@@ -477,6 +536,8 @@ namespace cmdr.Editor.ViewModels
 
             var selectedMappingViewModels = _selectedMappings.Select(m => m.Item as MappingViewModel);
             MappingEditorViewModel = new MappingEditorViewModel(this, selectedMappingViewModels);
+
+            updateAddMappingContextMenus();
         }
 
 
