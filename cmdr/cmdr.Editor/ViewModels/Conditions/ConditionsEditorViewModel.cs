@@ -79,12 +79,17 @@ namespace cmdr.Editor.ViewModels.Conditions
 
             Conditions = new ObservableCollection<MenuItemViewModel>(_allConditions);
 
-            _selectedC1Conditions = mappings.Select(m => m.Condition1).Distinct().ToList();
-            _selectedC2Conditions = mappings.Select(m => m.Condition2).Distinct().ToList();
+            Refresh();
+        }
+
+
+        public void Refresh()
+        {
+            _selectedC1Conditions = _mappings.Select(m => m.Condition1).Distinct().ToList();
+            _selectedC2Conditions = _mappings.Select(m => m.Condition2).Distinct().ToList();
 
             update();
         }
-
 
         #region Update
 

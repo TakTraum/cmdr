@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SettingControlLibrary.SettingTypes;
-using System.Windows.Controls;
+﻿using cmdr.Editor.Views;
 using cmdr.Editor.Views.CommandViews;
-using ChangeTracking;
-using System.ComponentModel;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
-using cmdr.TsiLib.Controls;
-using SettingControlLibrary.SettingControls;
-using cmdr.Editor.Views;
+using SettingControlLibrary.SettingTypes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
 
 namespace cmdr.Editor.ViewModels.Settings
 {
@@ -48,10 +42,11 @@ namespace cmdr.Editor.ViewModels.Settings
             set
             {
                 _assignment = value;
-                raisePropertyChanged("Assignment");
 
                 foreach (var mvm in _mappings)
-                    mvm.Assignment = value;
+                    mvm.Assignment = _assignment;
+
+                raisePropertyChanged("Assignment");
             }
         }
 
