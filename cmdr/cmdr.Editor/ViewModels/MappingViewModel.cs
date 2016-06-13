@@ -4,14 +4,9 @@ using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
-using SettingControlLibrary.SettingTypes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 
 
 namespace cmdr.Editor.ViewModels
@@ -36,7 +31,7 @@ namespace cmdr.Editor.ViewModels
         public MappingTargetDeck Assignment
         {
             get { return Command.Assignment; }
-            set { Command.Assignment = value; raisePropertyChanged("AssignmentExpression"); IsChanged = true; }
+            set { Command.Assignment = value; raisePropertyChanged("Assignment"); raisePropertyChanged("AssignmentExpression"); IsChanged = true; }
         }        
 
         public string Interaction { get { return String.Format("{0} - {1}", Command.ControlType.ToDescriptionString(), Command.InteractionMode.ToDescriptionString()); } }
@@ -126,6 +121,24 @@ namespace cmdr.Editor.ViewModels
             IsChanged = true;
         }
 
+        public void ChangeAssignment(MappingTargetDeck assignment)
+        {
+            if (Condition1 != null && Condition1.Target == TargetType && Condition1.Assignment == Assignment)
+            {
+                Condition1.Assignment = assignment;
+                raisePropertyChanged("Condition1");
+                raisePropertyChanged("ConditionExpression");
+            }
+
+            if (Condition2 != null && Condition2.Target == TargetType && Condition2.Assignment == Assignment)
+            {
+                Condition2.Assignment = assignment;
+                raisePropertyChanged("Condition2");
+                raisePropertyChanged("ConditionExpression");
+            }
+        
+            Assignment = assignment;
+        }
 
         private string getTraktorCommand()
         {
