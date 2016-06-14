@@ -137,6 +137,11 @@ namespace cmdr.Editor.ViewModels
         {
             AcceptChanges();
             App.SetStatus("Saving " + filepath + " ...");
+
+            // save metadata
+            foreach (var dev in Devices)
+                dev.SaveMetadata();
+
             bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath));
 
             if (success)

@@ -1,4 +1,5 @@
 ﻿using ChangeTracking;
+using cmdr.Editor.Metadata;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
@@ -60,6 +61,13 @@ namespace cmdr.Editor.ViewModels
         {
             get { return _mapping.OverrideFactoryMap; }
             set { _mapping.OverrideFactoryMap = value; raisePropertyChanged("OverrideFactoryMap"); IsChanged = true; }
+        }
+
+        private MappingMetadata _metadata;
+        public MappingMetadata Metadata
+        {
+            get { return _metadata; }
+            set {  _metadata = value; raisePropertyChanged("Metadata"); }
         }
 
 
