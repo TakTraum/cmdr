@@ -1,4 +1,5 @@
 ﻿using ChangeTracking;
+using cmdr.Editor.Metadata;
 using cmdr.Editor.Utils;
 using cmdr.MidiLib;
 using cmdr.TsiLib;
@@ -27,6 +28,7 @@ namespace cmdr.Editor.ViewModels
         private static readonly MenuItemViewModel _separator = MenuItemViewModel.Separator;
 
         private Device _device;
+        private string _traktorVersion;
 
         public int Id { get { return _device.Id; } }
 
@@ -154,6 +156,13 @@ namespace cmdr.Editor.ViewModels
         public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
         public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
 
+        private Metadata.Metadata _metadata;
+        public Metadata.Metadata Metadata
+        {
+            get { return _metadata; }
+            private set { _metadata = value; raisePropertyChanged("Metadata"); }
+        }
+
 
         #region Commands
 
@@ -221,6 +230,7 @@ namespace cmdr.Editor.ViewModels
         public DeviceViewModel(Device device)
         {
             _device = device;
+            _traktorVersion = _device.TraktorVersion;
 
             updatePorts(device);
 
@@ -235,6 +245,8 @@ namespace cmdr.Editor.ViewModels
                 mvm.DirtyStateChanged += (s, e) => updateMapsChanged();
             }
 
+            loadMetadata();
+
             AcceptChanges();
 
             Mappings.CollectionChanged += Mappings_CollectionChanged;
@@ -247,6 +259,13 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
+
+        public void SaveMetadata()
+        {
+            Metadata.DeviceMetadata.MappingMetadata = Mappings.Select(m => m.Item as MappingViewModel).Where(m => m.Metadata != null).ToDictionary(m => m.Id, m => m.Metadata);
+
+            _device.TraktorVersion = _traktorVersion + "|" + cmdr.Editor.Metadata.JsonParser.ToJson(Metadata);
+        }
 
         public Device Copy(bool includeMappings)
         {
@@ -271,6 +290,33 @@ namespace cmdr.Editor.ViewModels
         {
             foreach (var mapping in Mappings)
                 (mapping.Item as MappingViewModel).RevertChanges();
+        }
+
+
+        private void loadMetadata()
+        {
+            if (_traktorVersion.Contains("|"))
+            {
+                var parts = _device.TraktorVersion.Split(new[] { '|' }, 2);
+                
+                _traktorVersion = parts[0];
+
+                try
+                {
+                    Metadata = cmdr.Editor.Metadata.JsonParser.FromJson(parts[1]);
+
+                    foreach (var mm in Metadata.DeviceMetadata.MappingMetadata)
+                    {
+                        var mapping = Mappings.Select(m => m.Item as MappingViewModel).FirstOrDefault(m => m.Id == mm.Key);
+                        if (mapping != null)
+                            mapping.Metadata = mm.Value;
+                    }
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         private void drop(IDataObject dataObject)

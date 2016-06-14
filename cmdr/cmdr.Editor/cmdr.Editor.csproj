@@ -45,6 +45,10 @@
     <Reference Include="ChangeTracking">
       <HintPath>lib\ChangeTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ookii.Dialogs.Wpf">
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
@@ -96,6 +100,10 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Metadata\DeviceMetadata.cs" />
+    <Compile Include="Metadata\MappingMetadata.cs" />
+    <Compile Include="Metadata\Metadata.cs" />
+    <Compile Include="Metadata\JsonParser.cs" />
     <Compile Include="Styles\ResizeThumb.cs" />
     <Compile Include="Utils\BrowseDialogHelper.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
