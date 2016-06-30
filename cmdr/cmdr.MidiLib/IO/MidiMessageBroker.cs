@@ -94,7 +94,8 @@ namespace cmdr.MidiLib.IO
                     message = new MidiPitchBendMessage(ev, type);
                     break;
                 default:
-                    throw new Exception("MidiMessageType is unknown");
+                    Console.WriteLine("MidiMessageType is unknown");
+                    break;
             }
 
             if (message != null && MessageReceived != null)

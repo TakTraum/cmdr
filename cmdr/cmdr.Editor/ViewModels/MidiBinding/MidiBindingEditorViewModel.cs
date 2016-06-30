@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace cmdr.Editor.ViewModels.MidiBinding
 {
@@ -172,12 +173,15 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 {
                     toggleLearn();
 
-                    setChannel(String.Format("Ch{0:00}", signal.Channel));
-                    Note = signal.Note;
+                    App.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        setChannel(String.Format("Ch{0:00}", signal.Channel));
+                        Note = signal.Note;
 
-                    // workaround to refresh combo and reset button
-                    (ComboCommand as CommandHandler).UpdateCanExecuteState();
-                    (ResetCommand as CommandHandler).UpdateCanExecuteState();
+                        // workaround to refresh combo and reset button
+                        (ComboCommand as CommandHandler).UpdateCanExecuteState();
+                        (ResetCommand as CommandHandler).UpdateCanExecuteState();
+                    }));
                 });
             }
             else
@@ -362,6 +366,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     ChannelsMenu.Remove(SEPARATOR);
                     ChannelsMenu.Remove(_selectedChannelsMenuItem);
                 }
+                
                 return;
             }
 
