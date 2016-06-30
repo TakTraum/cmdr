@@ -22,7 +22,10 @@ namespace cmdr.TsiLib.FormatXml.Base
 
         protected sealed override List<T> Decode(string value)
         {
-            return value.Split(';').Select(s => DecodeListItem(s)).ToList();
+            var ret = default(List<T>);
+            if (!string.IsNullOrEmpty(value))
+                ret = value.Split(';').Select(s => DecodeListItem(s)).ToList();
+            return ret;
         }
 
         protected sealed override string Encode(List<T> value)
