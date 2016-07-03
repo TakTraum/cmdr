@@ -4,12 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Width="600" Title="Condition Descriptions">
     <Grid>
-        <DataGrid ItemsSource="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Descriptions}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Condition" Binding="{Binding Condition, Mode=OneWay}" IsReadOnly="True" Width="0.5*" />
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="False" Width="0.5*" />
+                <DataGridTextColumn Header="Count" Binding="{Binding Frequency, Mode=OneWay}" IsReadOnly="True" Width="50" />
+                <DataGridTextColumn Header="Expression" Binding="{Binding Expression, Mode=OneWay}" IsReadOnly="True" Width="Auto" />
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="False" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -12,7 +12,7 @@ namespace cmdr.TsiLib
         private readonly Format.Mapping _rawMapping;
         internal Format.Mapping RawMapping { get { return _rawMapping; } }
 
-        public int Id { get { return RawMapping.MidiNoteBindingId; } }
+        public int Id { get { return _rawMapping.MidiNoteBindingId; } }
 
         public ACommand Command { get; private set; }
 
@@ -20,41 +20,20 @@ namespace cmdr.TsiLib
 
         public string Comment
         {
-            get { return RawMapping.Settings.Comment; }
-            set { RawMapping.Settings.Comment = value; }
+            get { return _rawMapping.Settings.Comment; }
+            set { _rawMapping.Settings.Comment = value; }
         }
 
-        private ACondition _condition1;
-        public ACondition Condition1
-        {
-            get { return _condition1; }
-            private set
-            {
-                if (value == null && _condition1 != null)
-                    _condition1.Reset();
-                _condition1 = value;
-            }
-        }
-
-        private ACondition _condition2;
-        public ACondition Condition2
-        {
-            get { return _condition2; }
-            private set
-            {
-                if (value == null && _condition2 != null)
-                    _condition2.Reset();
-                _condition2 = value;
-            }
-        }
+        private readonly ConditionTuple _conditions;
+        public ConditionTuple Conditions { get { return _conditions; } }
 
         // only for proprietary controllers and default mappings
         public bool CanOverrideFactoryMap { get; private set; }
 
         public bool OverrideFactoryMap
         {
-            get { return RawMapping.Settings.OverrideFactoryMap; }
-            set { RawMapping.Settings.OverrideFactoryMap = value; }
+            get { return _rawMapping.Settings.OverrideFactoryMap; }
+            set { _rawMapping.Settings.OverrideFactoryMap = value; }
         }
 
 
@@ -63,7 +42,8 @@ namespace cmdr.TsiLib
         internal Mapping(CommandProxy command)
         {
             _rawMapping = new Format.Mapping(command.MappingType, command.Description.Id);
-            Command = command.Create(RawMapping.Settings);
+            Command = command.Create(_rawMapping.Settings);
+            _conditions = new ConditionTuple();
         }
 
         internal Mapping(Device device, Format.Mapping rawMapping)
@@ -87,21 +67,23 @@ namespace cmdr.TsiLib
         {
             _rawMapping = rawMapping;
 
-            bool originalHasValueUI = RawMapping.Settings.HasValueUI;
+            bool originalHasValueUI = _rawMapping.Settings.HasValueUI;
 
-            Command = Commands.All.GetCommandProxy(rawMapping.TraktorControlId, RawMapping.Type).Create(RawMapping.Settings);
+            Command = Commands.All.GetCommandProxy(_rawMapping.TraktorControlId, _rawMapping.Type).Create(_rawMapping.Settings);
             if (Command == null)
             {
 
             }
 
-            if (originalHasValueUI != RawMapping.Settings.HasValueUI)
+            if (originalHasValueUI != _rawMapping.Settings.HasValueUI)
             {
                 // TODO: Something for the consolidation function
             }
 
-            Condition1 = (RawMapping.Settings.ConditionOneId > 0) ? Conditions.All.GetConditionProxy(RawMapping.Settings.ConditionOneId).Create(RawMapping.Settings, ConditionNumber.One) : null;
-            Condition2 = (RawMapping.Settings.ConditionTwoId > 0) ? Conditions.All.GetConditionProxy(RawMapping.Settings.ConditionTwoId).Create(RawMapping.Settings, ConditionNumber.Two) : null;
+            _conditions = new ConditionTuple(
+                (_rawMapping.Settings.ConditionOneId > 0) ? cmdr.TsiLib.Conditions.All.GetConditionProxy(_rawMapping.Settings.ConditionOneId).Create(_rawMapping.Settings, ConditionNumber.One) : null,
+                (_rawMapping.Settings.ConditionTwoId > 0) ? cmdr.TsiLib.Conditions.All.GetConditionProxy(_rawMapping.Settings.ConditionTwoId).Create(_rawMapping.Settings, ConditionNumber.Two) : null
+                );
         }
 
         #endregion
@@ -115,13 +97,7 @@ namespace cmdr.TsiLib
         /// <returns>True if condition was changed.</returns>
         public bool SetCondition(ConditionNumber number, ConditionProxy proxy)
         {
-            ACondition condition = (proxy != null) ? proxy.Create(RawMapping.Settings, number) : null;
-            if (condition != null)
-            {
-                condition.Assignment = condition.AssignmentOptions.Keys.First();
-                condition.SetValue(condition.GetValueOptions().Keys.First());
-            }
-            return setCondition(number, condition);
+            return _conditions.SetCondition(_rawMapping.Settings, number, proxy);
         }
 
         /// <summary>
@@ -132,33 +108,7 @@ namespace cmdr.TsiLib
         /// <returns>True if condition was changed.</returns>
         public bool SetCondition(ConditionNumber number, ACondition condition)
         {
-            if (condition == null)
-                return setCondition(number, condition);
-            else
-            {
-                bool changed = false;
-
-                var targetCondition = (number == ConditionNumber.One) ? Condition1 : Condition2;
-
-                if (targetCondition == null || targetCondition.Id != condition.Id)
-                {
-                    changed = SetCondition(number, Conditions.All.GetConditionProxy(condition.Id));
-                    targetCondition = (number == ConditionNumber.One) ? Condition1 : Condition2; // needed?
-                }
-
-                // set assignment
-                if (!changed)
-                    changed |= targetCondition.Assignment != condition.Assignment;
-                targetCondition.Assignment = condition.Assignment;
-
-                // set value
-                var newValue = condition.GetValue();
-                if (!changed)
-                    changed |= targetCondition.GetValue() != newValue;
-                targetCondition.SetValue(newValue);
-            
-                return changed;
-            }        
+            return _conditions.SetCondition(_rawMapping.Settings, number, condition);   
         }
 
         /// <summary>
@@ -244,7 +194,7 @@ namespace cmdr.TsiLib
             Format.Mapping rawMappingCopy;
             using (var copyStream = new System.IO.MemoryStream())
             {
-                RawMapping.Write(new Utils.Writer(copyStream));
+                _rawMapping.Write(new Utils.Writer(copyStream));
                 copyStream.Seek(0, System.IO.SeekOrigin.Begin);
                 rawMappingCopy = new Format.Mapping(copyStream);
             }
@@ -277,26 +227,7 @@ namespace cmdr.TsiLib
         }
 
 
-        /// This one is dumb and must not be called from other classes. RawMapping.Settings are ignored!
-        private bool setCondition(ConditionNumber number, ACondition condition)
-        {
-            bool changed = false;
 
-            if (number == ConditionNumber.One)
-            {
-                changed = (Condition1 != null  && !Condition1.Equals(condition)) || (condition != null && !condition.Equals(Condition1));
-                if (changed)
-                    Condition1 = condition;
-            }
-            else
-            {
-                changed = (Condition2 != null && !Condition2.Equals(condition)) || (condition != null && !condition.Equals(Condition2));
-                if (changed)
-                    Condition2 = condition;
-            }
-
-            return changed;
-        }
 
         private Format.MidiDefinition getMidiDefinition(Device device, MappingType type, int id)
         {

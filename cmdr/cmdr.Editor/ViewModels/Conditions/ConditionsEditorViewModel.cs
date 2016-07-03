@@ -85,8 +85,9 @@ namespace cmdr.Editor.ViewModels.Conditions
 
         public void Refresh()
         {
-            _selectedC1Conditions = _mappings.Select(m => m.Condition1).Distinct().ToList();
-            _selectedC2Conditions = _mappings.Select(m => m.Condition2).Distinct().ToList();
+            var conditions = _mappings.Select(m => m.Conditions).ToList();
+            _selectedC1Conditions = conditions.Select(c => c.Condition1).Distinct().ToList();
+            _selectedC2Conditions = conditions.Select(c => c.Condition2).Distinct().ToList();
 
             update();
         }
@@ -182,9 +183,9 @@ namespace cmdr.Editor.ViewModels.Conditions
             }
 
             if (number == ConditionNumber.One)
-                _selectedC1Conditions = new List<ACondition> { _mappings.First().Condition1 };
+                _selectedC1Conditions = new List<ACondition> { _mappings.First().Conditions.Condition1 };
             else
-                _selectedC2Conditions = new List<ACondition> { _mappings.First().Condition2 };
+                _selectedC2Conditions = new List<ACondition> { _mappings.First().Conditions.Condition2 };
 
             update();
         }

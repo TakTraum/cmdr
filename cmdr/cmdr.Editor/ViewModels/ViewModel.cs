@@ -9,12 +9,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Xceed.Wpf.AvalonDock;
 
 
@@ -134,6 +131,12 @@ namespace cmdr.Editor.ViewModels
         public ICommand SettingsCommand
         {
             get { return _settingsCommand ?? (_settingsCommand = new CommandHandler(showSettings)); }
+        }
+
+        private ICommand _showConditionsEditorCommand;
+        public ICommand ShowConditionsEditorCommand
+        {
+            get { return _showConditionsEditorCommand ?? (_showConditionsEditorCommand = new CommandHandler(showConditionsEditor,() => SelectedTsiFileModel != null && SelectedTsiFileModel.SelectedDevice != null)); }
         }
 
         #endregion
@@ -277,6 +280,11 @@ namespace cmdr.Editor.ViewModels
         #endregion
 
         #region extras
+
+        private void showConditionsEditor()
+        {
+            SelectedTsiFileModel.SelectedDevice.ShowConditionDescriptionsEditorCommand.Execute(null);
+        }
 
         private void showSettings()
         {

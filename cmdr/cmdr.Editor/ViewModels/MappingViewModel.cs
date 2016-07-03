@@ -1,5 +1,6 @@
 ﻿using ChangeTracking;
 using cmdr.Editor.Metadata;
+using cmdr.Editor.ViewModels.Conditions;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
@@ -37,7 +38,7 @@ namespace cmdr.Editor.ViewModels
 
         public string Interaction { get { return String.Format("{0} - {1}", Command.ControlType.ToDescriptionString(), Command.InteractionMode.ToDescriptionString()); } }
 
-        public string ConditionExpression { get { return getConditionExpression(); } }
+        public string ConditionExpression { get { return Conditions.Name ?? Conditions.ToString(); } }
 
         public string Comment
         {
@@ -45,9 +46,7 @@ namespace cmdr.Editor.ViewModels
             set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }
         }
 
-        public ACondition Condition1 { get { return _mapping.Condition1; } }
-
-        public ACondition Condition2 { get { return _mapping.Condition2; } }
+        public ConditionTuple Conditions { get { return _mapping.Conditions; } }
 
         public ACommand Command { get { return _mapping.Command; } }
 
@@ -67,7 +66,7 @@ namespace cmdr.Editor.ViewModels
         public MappingMetadata Metadata
         {
             get { return _metadata; }
-            set {  _metadata = value; raisePropertyChanged("Metadata"); }
+            set { _metadata = value; raisePropertyChanged("Metadata"); }
         }
 
 
@@ -131,17 +130,17 @@ namespace cmdr.Editor.ViewModels
 
         public void ChangeAssignment(MappingTargetDeck assignment)
         {
-            if (Condition1 != null && Condition1.Target == TargetType && Condition1.Assignment == Assignment)
+            if (Conditions.Condition1 != null && Conditions.Condition1.Target == TargetType && Conditions.Condition1.Assignment == Assignment)
             {
-                Condition1.Assignment = assignment;
-                raisePropertyChanged("Condition1");
+                Conditions.Condition1.Assignment = assignment;
+                raisePropertyChanged("Conditions");
                 raisePropertyChanged("ConditionExpression");
             }
 
-            if (Condition2 != null && Condition2.Target == TargetType && Condition2.Assignment == Assignment)
+            if (Conditions.Condition2 != null && Conditions.Condition2.Target == TargetType && Conditions.Condition2.Assignment == Assignment)
             {
-                Condition2.Assignment = assignment;
-                raisePropertyChanged("Condition2");
+                Conditions.Condition2.Assignment = assignment;
+                raisePropertyChanged("Conditions");
                 raisePropertyChanged("ConditionExpression");
             }
         
@@ -215,17 +214,6 @@ namespace cmdr.Editor.ViewModels
             return sb.ToString();
         }
 
-        private string getConditionExpression()
-        {
-            var conditions = new[] { Condition1, Condition2 }.Where(c => c != null);
-            var expression = String.Join(" AND ", conditions.Select(c => c.ToString()));
-
-            var description = ConditionDescriptions.Dict.SingleOrDefault(d => d.Condition == expression);
-            if (description != null)
-                expression = description.Description;
-
-            return expression;
-        }
 
         protected override void Accept()
         {
