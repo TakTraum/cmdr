@@ -74,6 +74,7 @@
     <Compile Include="Conditions\Base\AValueCondition.cs" />
     <Compile Include="Conditions\ConditionNumber.cs" />
     <Compile Include="Conditions\ConditionProxy.cs" />
+    <Compile Include="Conditions\ConditionTuple.cs" />
     <Compile Include="Conditions\EnumCondition.cs" />
     <Compile Include="Conditions\IntCondition.cs" />
     <Compile Include="Conditions\Interpretation\ConditionDescription.cs" />

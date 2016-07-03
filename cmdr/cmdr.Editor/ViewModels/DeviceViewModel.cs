@@ -1,6 +1,7 @@
 ﻿using ChangeTracking;
 using cmdr.Editor.Metadata;
 using cmdr.Editor.Utils;
+using cmdr.Editor.ViewModels.Conditions;
 using cmdr.MidiLib;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
@@ -262,7 +263,16 @@ namespace cmdr.Editor.ViewModels
 
         public void SaveMetadata()
         {
-            Metadata.DeviceMetadata.MappingMetadata = Mappings.Select(m => m.Item as MappingViewModel).Where(m => m.Metadata != null).ToDictionary(m => m.Id, m => m.Metadata);
+            Metadata.DeviceMetadata.MappingMetadata.Clear();
+            Metadata.DeviceMetadata.ConditionDescriptions.Clear();
+            foreach (var mapping in Mappings.Select(m => m.Item as MappingViewModel))
+            {
+                if (mapping.Metadata != null)
+                    Metadata.DeviceMetadata.MappingMetadata[mapping.Id] = mapping.Metadata;
+                
+                if (!String.IsNullOrWhiteSpace(mapping.Conditions.Name))
+                    Metadata.DeviceMetadata.ConditionDescriptions[mapping.Conditions] = mapping.Conditions.Name;
+            }
 
             _device.TraktorVersion = _traktorVersion + "|" + cmdr.Editor.Metadata.JsonParser.ToJson(Metadata);
         }
@@ -305,9 +315,17 @@ namespace cmdr.Editor.ViewModels
                 {
                     Metadata = cmdr.Editor.Metadata.JsonParser.FromJson(parts[1]);
 
-                    foreach (var mm in Metadata.DeviceMetadata.MappingMetadata)
+                    var mappings = Mappings.Select(m => m.Item as MappingViewModel);
+                    var conditionTuples = mappings.Select(m => m.Conditions);
+                    foreach (var ct in conditionTuples)
                     {
-                        var mapping = Mappings.Select(m => m.Item as MappingViewModel).FirstOrDefault(m => m.Id == mm.Key);
+                        if (Metadata.DeviceMetadata.ConditionDescriptions.ContainsKey(ct))
+                            ct.Name = Metadata.DeviceMetadata.ConditionDescriptions[ct];
+                    }
+
+                    foreach (KeyValuePair<int, MappingMetadata> mm in Metadata.DeviceMetadata.MappingMetadata)
+                    {
+                        var mapping = mappings.FirstOrDefault(m => m.Id == mm.Key);
                         if (mapping != null)
                             mapping.Metadata = mm.Value;
                     }
@@ -317,6 +335,9 @@ namespace cmdr.Editor.ViewModels
 
                 }
             }
+
+            if (Metadata == null)
+                Metadata = new Metadata.Metadata();
         }
 
         private void drop(IDataObject dataObject)
@@ -378,8 +399,11 @@ namespace cmdr.Editor.ViewModels
 
         private void showConditionDescriptionsEditor()
         {
-            ConditionDescriptions.Generate(Mappings.Select(m => m.Item as MappingViewModel));
-            ConditionDescriptions.Edit();
+            new Views.ConditionDescriptionsEditor
+            {
+                DataContext = new ConditionTuplesEditorViewModel(Mappings.Select(r => r.Item as MappingViewModel))
+            }
+            .ShowDialog();
         }
 
         private void cut()
@@ -471,11 +495,11 @@ namespace cmdr.Editor.ViewModels
                             if (selectedMapping.MidiBinding != null && MidiOutDefinitions.ContainsKey(selectedMapping.MidiBinding.Note))
                                 mvm.SetBinding(MidiOutDefinitions[selectedMapping.MidiBinding.Note]);
 
-                            if (selectedMapping.Condition1 != null)
-                                mvm.SetCondition(TsiLib.Conditions.ConditionNumber.One, selectedMapping.Condition1);
+                            if (selectedMapping.Conditions.Condition1 != null)
+                                mvm.SetCondition(TsiLib.Conditions.ConditionNumber.One, selectedMapping.Conditions.Condition1);
 
-                            if (selectedMapping.Condition2 != null)
-                                mvm.SetCondition(TsiLib.Conditions.ConditionNumber.Two, selectedMapping.Condition2);
+                            if (selectedMapping.Conditions.Condition2 != null)
+                                mvm.SetCondition(TsiLib.Conditions.ConditionNumber.Two, selectedMapping.Conditions.Condition2);
 
                             var row = new RowItemViewModel(mvm);
                             _mappings.Insert(index, row);

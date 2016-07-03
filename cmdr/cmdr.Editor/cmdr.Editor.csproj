@@ -111,12 +111,13 @@
     <Compile Include="Utils\MovingLogicHelper.cs" />
     <Compile Include="Utils\SerializationHelper.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Conditions\ConditionTuplesEditorViewModel.cs" />
+    <Compile Include="ViewModels\Conditions\ConditionTupleViewModel.cs" />
     <Compile Include="ViewModels\ControllerDefaultMappings.cs" />
     <Compile Include="ViewModels\EffectIdentificationViewModel.cs" />
     <Compile Include="ViewModels\MidiBinding\NotesMenuBuilder.cs" />
     <Compile Include="ViewModels\Settings\CommandEditorViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
-    <Compile Include="ViewModels\ConditionDescriptions.cs" />
     <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />
     <Compile Include="ViewModels\Conditions\ConditionViewModel.cs" />
     <Compile Include="ViewModels\DeviceViewModel.cs" />
