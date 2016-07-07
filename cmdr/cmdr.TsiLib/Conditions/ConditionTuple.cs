@@ -62,7 +62,7 @@ namespace cmdr.TsiLib.Conditions
 
         public override string ToString()
         {
-            var conditions = new[] { Condition1, Condition2 }.Where(i => i != null);
+            var conditions = new[] { Condition1, Condition2 }.Where(c => c != null).OrderBy(c => c.ToString());
             return String.Join(" AND ", conditions.Select(c => c.ToString()));
         } 
 

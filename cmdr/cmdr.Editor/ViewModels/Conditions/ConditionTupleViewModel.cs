@@ -1,42 +1,41 @@
-﻿using cmdr.TsiLib.Conditions;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cmdr.Editor.ViewModels.Conditions
 {
     public class ConditionTupleViewModel : ViewModelBase
     {
-        private readonly IEnumerable<ConditionTuple> _conditionTuples;
+        private readonly IEnumerable<MappingViewModel> _mappings;
 
 
         public int Frequency
         {
-            get { return _conditionTuples.Count(); }
+            get { return _mappings.Count(); }
         }
 
         public string Expression
         {
-            get { return _conditionTuples.First().ToString(); }
+            get { return _mappings.First().Conditions.ToString(); }
         }
 
         public string Description
         {
-            get { return _conditionTuples.First().Name; }
+            get { return _mappings.First().Conditions.Name; }
             set
             {
-                foreach (var ct in _conditionTuples)
-                    ct.Name = value;
+                foreach (var ct in _mappings)
+                {
+                    ct.Conditions.Name = value;
+                    ct.UpdateConditionExpression();
+                }
                 raisePropertyChanged("Description");
             }
         }
 
 
-        public ConditionTupleViewModel(IEnumerable<ConditionTuple> conditionTuples)
+        public ConditionTupleViewModel(IEnumerable<MappingViewModel> mappings)
         {
-            _conditionTuples = conditionTuples;
+            _mappings = mappings;
         }
     }
 }

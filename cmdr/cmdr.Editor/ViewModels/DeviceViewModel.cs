@@ -271,7 +271,7 @@ namespace cmdr.Editor.ViewModels
                     Metadata.DeviceMetadata.MappingMetadata[mapping.Id] = mapping.Metadata;
                 
                 if (!String.IsNullOrWhiteSpace(mapping.Conditions.Name))
-                    Metadata.DeviceMetadata.ConditionDescriptions[mapping.Conditions] = mapping.Conditions.Name;
+                    Metadata.DeviceMetadata.ConditionDescriptions[mapping.Conditions.ToString()] = mapping.Conditions.Name;
             }
 
             _device.TraktorVersion = _traktorVersion + "|" + cmdr.Editor.Metadata.JsonParser.ToJson(Metadata);
@@ -308,35 +308,39 @@ namespace cmdr.Editor.ViewModels
             if (_traktorVersion.Contains("|"))
             {
                 var parts = _device.TraktorVersion.Split(new[] { '|' }, 2);
-                
+
                 _traktorVersion = parts[0];
 
                 try
                 {
                     Metadata = cmdr.Editor.Metadata.JsonParser.FromJson(parts[1]);
-
-                    var mappings = Mappings.Select(m => m.Item as MappingViewModel);
-                    var conditionTuples = mappings.Select(m => m.Conditions);
-                    foreach (var ct in conditionTuples)
-                    {
-                        if (Metadata.DeviceMetadata.ConditionDescriptions.ContainsKey(ct))
-                            ct.Name = Metadata.DeviceMetadata.ConditionDescriptions[ct];
-                    }
-
-                    foreach (KeyValuePair<int, MappingMetadata> mm in Metadata.DeviceMetadata.MappingMetadata)
-                    {
-                        var mapping = mappings.FirstOrDefault(m => m.Id == mm.Key);
-                        if (mapping != null)
-                            mapping.Metadata = mm.Value;
-                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Console.WriteLine(ex.Message);
                 }
             }
 
-            if (Metadata == null)
+            if (Metadata != null)
+            {
+                var mappings = Mappings.Select(m => m.Item as MappingViewModel);
+                var conditionTuples = mappings.Select(m => m.Conditions);
+                string key;
+                foreach (var ct in conditionTuples)
+                {
+                    key = ct.ToString();
+                    if (Metadata.DeviceMetadata.ConditionDescriptions.ContainsKey(key))
+                        ct.Name = Metadata.DeviceMetadata.ConditionDescriptions[key];
+                }
+
+                foreach (KeyValuePair<int, MappingMetadata> mm in Metadata.DeviceMetadata.MappingMetadata)
+                {
+                    var mapping = mappings.FirstOrDefault(m => m.Id == mm.Key);
+                    if (mapping != null)
+                        mapping.Metadata = mm.Value;
+                }
+            }
+            else
                 Metadata = new Metadata.Metadata();
         }
 

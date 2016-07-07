@@ -128,6 +128,11 @@ namespace cmdr.Editor.ViewModels
             IsChanged = true;
         }
 
+        public void UpdateConditionExpression()
+        {
+            raisePropertyChanged("ConditionExpression");
+        }
+
         public void ChangeAssignment(MappingTargetDeck assignment)
         {
             if (Conditions.Condition1 != null && Conditions.Condition1.Target == TargetType && Conditions.Condition1.Assignment == Assignment)

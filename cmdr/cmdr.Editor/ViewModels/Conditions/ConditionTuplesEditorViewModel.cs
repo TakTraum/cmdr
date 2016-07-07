@@ -12,9 +12,9 @@ namespace cmdr.Editor.ViewModels.Conditions
 
         public ConditionTuplesEditorViewModel(IEnumerable<MappingViewModel> mappings)
         {
-            var conditionTuples = mappings.Select(m => m.Conditions)
-                .Where(c => !String.IsNullOrWhiteSpace(c.ToString()))
-                .GroupBy(c => c.ToString())
+            var conditionTuples = mappings
+                .Where(m => !String.IsNullOrWhiteSpace(m.Conditions.ToString()))
+                .GroupBy(c => c.Conditions.ToString())
                 .Select(t => new ConditionTupleViewModel(t))
                 .ToList();
             Descriptions = new ObservableCollection<ConditionTupleViewModel>(conditionTuples);

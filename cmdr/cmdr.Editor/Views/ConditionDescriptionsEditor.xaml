@@ -6,7 +6,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="600" Title="Condition Descriptions">
     <Grid>
-        <DataGrid ItemsSource="{Binding Descriptions}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="False">
+        <DataGrid ItemsSource="{Binding Descriptions}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False" 
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserResizeColumns="True"
+                  >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Count" Binding="{Binding Frequency, Mode=OneWay}" IsReadOnly="True" Width="50" />
                 <DataGridTextColumn Header="Expression" Binding="{Binding Expression, Mode=OneWay}" IsReadOnly="True" Width="Auto" />
