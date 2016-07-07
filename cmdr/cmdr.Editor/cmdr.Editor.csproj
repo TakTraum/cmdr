@@ -362,7 +362,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>REM xcopy "$(TargetDir)*.*" "$(SolutionDir)Releases\$(TargetName)\" /E /Y /C</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)*.*" "$(SolutionDir)Releases\$(TargetName)\" /E /Y /C</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>REM rd /s /q "$(TargetDir)"</PreBuildEvent>
