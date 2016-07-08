@@ -106,7 +106,7 @@ namespace cmdr.Editor.ViewModels
         private void updateChangeAssignmentOption()
         {
             var sameTargetType = _mappings.Select(m => m.TargetType).Distinct();
-            if (sameTargetType.Count() == 1)
+            if (sameTargetType.Count() == 1 && sameTargetType.Single() != TargetType.Global)
             {
                 var sameAssignment = _mappings.Select(m => m.Assignment).Distinct();
                 if (sameAssignment.Count() == 1)
