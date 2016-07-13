@@ -16,8 +16,8 @@ namespace cmdr.TsiLib.Controls
             Type = type;
             _command = command;
 
-            if (type != MappingControlType.LED && command.RawSettings.RotarySensitivity == 0)
-                command.RawSettings.RotarySensitivity = 5f;
+            //if (type != MappingControlType.LED && command.RawSettings.RotarySensitivity == 0)
+            //    command.RawSettings.RotarySensitivity = 5f;
         }
 
 
