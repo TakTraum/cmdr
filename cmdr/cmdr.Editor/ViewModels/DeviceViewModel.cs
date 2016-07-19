@@ -24,6 +24,7 @@ namespace cmdr.Editor.ViewModels
     public class DeviceViewModel : AReversible
     {
         public static readonly string ALL_PORTS = "All Ports";
+        public static readonly string DEFAULT_PORT = "None";
 
         private static readonly List<MappingViewModel> _mappingClipboard = new List<MappingViewModel>();
         private static readonly MenuItemViewModel _separator = MenuItemViewModel.Separator;
@@ -562,14 +563,14 @@ namespace cmdr.Editor.ViewModels
 
         private void updatePorts(Device device)
         {
-            IEnumerable<string> inPorts = new[] { ALL_PORTS };
-            if (!String.IsNullOrWhiteSpace(device.InPort))
+            IEnumerable<string> inPorts = new[] { DEFAULT_PORT, ALL_PORTS };
+            if (!String.IsNullOrWhiteSpace(device.InPort) && !inPorts.Contains(device.InPort))
                 inPorts = inPorts.Union(new[] { device.InPort });
             inPorts = inPorts.Union(MidiManager.InputDevices.Select(d => d.Name));
             InPorts = inPorts.ToList();
 
-            IEnumerable<string> outPorts = new[] { ALL_PORTS };
-            if (!String.IsNullOrWhiteSpace(device.OutPort))
+            IEnumerable<string> outPorts = new[] { DEFAULT_PORT, ALL_PORTS };
+            if (!String.IsNullOrWhiteSpace(device.OutPort) && !outPorts.Contains(device.OutPort))
                 outPorts = outPorts.Union(new[] { device.OutPort });
             outPorts = outPorts.Union(MidiManager.OutputDevices.Select(d => d.Name));
             OutPorts = outPorts.ToList();
