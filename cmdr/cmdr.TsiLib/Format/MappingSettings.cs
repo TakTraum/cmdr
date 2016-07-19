@@ -75,7 +75,7 @@ namespace cmdr.TsiLib.Format
         /// <summary>
         /// Is optional.
         /// </summary>
-        public bool OverrideFactoryMap { get; set; }
+        public bool UseFactoryMap { get; set; }
 
 
         public MappingSettings()
@@ -140,7 +140,7 @@ namespace cmdr.TsiLib.Format
                 }
 
                 if (DeviceType == DeviceType.GenericMidi)
-                    OverrideFactoryMap = stream.ReadBoolBigE();
+                    UseFactoryMap = stream.ReadBoolBigE();
             }
         }
 
@@ -191,7 +191,7 @@ namespace cmdr.TsiLib.Format
                 }
 
                 if (DeviceType == DeviceType.GenericMidi)
-                    writer.WriteBigE(OverrideFactoryMap);
+                    writer.WriteBigE(UseFactoryMap);
             }
 
             writer.EndFrame();

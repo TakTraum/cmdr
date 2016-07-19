@@ -32,8 +32,8 @@ namespace cmdr.TsiLib
 
         public bool OverrideFactoryMap
         {
-            get { return _rawMapping.Settings.OverrideFactoryMap; }
-            set { _rawMapping.Settings.OverrideFactoryMap = value; }
+            get { return !_rawMapping.Settings.UseFactoryMap; }
+            set { _rawMapping.Settings.UseFactoryMap = !value; }
         }
 
 
