@@ -6,6 +6,8 @@ namespace cmdr.TsiLib.Format
 {
     internal class DevicePorts : Frame
     {
+        public static readonly string DEFAULT_PORT = "None";
+
         public string InPortName { get; set; }
         public string OutPortName { get; set; }
         
@@ -13,8 +15,8 @@ namespace cmdr.TsiLib.Format
         public DevicePorts()
             : base("DDPT")
         {
-            InPortName = String.Empty;
-            OutPortName = String.Empty;
+            InPortName = DEFAULT_PORT;
+            OutPortName = DEFAULT_PORT;
         }
 
         public DevicePorts(Stream stream)
