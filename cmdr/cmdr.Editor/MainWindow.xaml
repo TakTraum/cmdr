@@ -39,6 +39,15 @@
                 <Separator />
                 <MenuItem Header="_Close" Command="{Binding CloseCommand, Mode=OneTime}" InputGestureText="Ctrl+W"/>
                 <Separator />
+                <MenuItem Header="_Recently Opened Files" IsEnabled="{Binding MRU.HasMenuItems}" ItemsSource="{Binding MRU.MenuItems}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <Setter Property="Header" Value="{Binding Text}" />
+                            <Setter Property="Command" Value="{Binding Command}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>    
+                </MenuItem>
+                <Separator />
                 <MenuItem Header="_Exit" Command="{Binding ExitCommand, Mode=OneTime}" InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Header="_Edit">

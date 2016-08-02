@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace cmdr.Editor.AppSettings.Base
+namespace cmdr.Editor.Utils.Configuration
 {
-    public class ConfigElementCollection<T> : ConfigurationElementCollection, IConfigElementCollection<T> where T : ConfigElement, new()
+    public sealed class ConfigElementCollection<T> : ConfigurationElementCollection where T : ConfigurationElement, new()
     {
+        public ConfigElementCollection()
+        {
+            AddElementName = getChildElementName();
+        }
+
+
         public T this[int index]
         {
             get
@@ -47,13 +50,33 @@ namespace cmdr.Editor.AppSettings.Base
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((T)element).Key;
+            foreach (PropertyInformation p in element.ElementInformation.Properties)
+            {
+                if (p.IsKey)
+                    return p.Value;
+            }
+
+            try
+            {
+                return element.ElementInformation.Properties[element.ElementInformation.Properties.Keys[0]].Value;
+            }
+            catch (Exception)
+            {
+                return new InvalidOperationException("Configuration Element has no Key");
+            }
         }
 
         public new IEnumerator<T> GetEnumerator()
         {
             foreach (string key in base.BaseGetAllKeys())
                 yield return (this[key] as T);
+        }
+
+        
+        private string getChildElementName()
+        {
+            ConfigurationElementAttribute cea = Attribute.GetCustomAttribute(typeof(T), typeof(ConfigurationElementAttribute)) as ConfigurationElementAttribute;
+            return (cea != null) ? cea.Name : typeof(T).Name;
         }
     }
 }

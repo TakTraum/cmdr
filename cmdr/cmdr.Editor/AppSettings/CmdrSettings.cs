@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using cmdr.Editor.Utils.Configuration;
+using System;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cmdr.Editor.AppSettings
 {
@@ -50,6 +47,11 @@ namespace cmdr.Editor.AppSettings
             set { setSetting("TraktorVersion", value); }
         }
 
+        public MruSection MRU
+        {
+            get { return getSection<MruSection>(); }
+        }
+
 
         private CmdrSettings()
         {
@@ -79,8 +81,10 @@ namespace cmdr.Editor.AppSettings
                 _settings[key].Value = value;
         }
 
-        private T getSection<T>(string sectionName) where T: ConfigurationSection, new()
+        private T getSection<T>() where T : ConfigurationSection, new()
         {
+            ConfigurationSectionAttribute csa = Attribute.GetCustomAttribute(typeof(T), typeof(ConfigurationSectionAttribute)) as ConfigurationSectionAttribute;
+            string sectionName = (csa != null) ? csa.Name : typeof(T).Name;
             if (_config.GetSection(sectionName) == null)
                 _config.Sections.Add(sectionName, new T());
             return _config.GetSection(sectionName) as T;
