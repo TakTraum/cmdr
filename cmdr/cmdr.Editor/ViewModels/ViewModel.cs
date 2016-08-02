@@ -26,6 +26,7 @@ namespace cmdr.Editor.ViewModels
 
         private bool _isExiting;
 
+
         private string _appTitle = APPNAME;
         public string AppTitle
         {
@@ -40,6 +41,11 @@ namespace cmdr.Editor.ViewModels
             set { if (value == null) value = "Ready"; _statusText = value; raisePropertyChanged("StatusText"); }
         }
 
+        private MruTsiFiles _mru;
+        public MruTsiFiles MRU
+        {
+            get { return _mru ?? (_mru = new MruTsiFiles(openRecentFile)); }
+        }
 
         #region Commands
 
@@ -350,6 +356,7 @@ namespace cmdr.Editor.ViewModels
                 {
                     _tsiFileViewModels.Add(vm);
                     openTab(vm);
+                    _mru.Add(path);
                 }
                 else
                     MessageBoxHelper.ShowError("Cannot open file.");
@@ -446,7 +453,21 @@ namespace cmdr.Editor.ViewModels
                     App.ResetStatus();
                 });
 
+            _mru.Load();
+
             await ControllerDefaultMappings.Instance.LoadAsync(CmdrSettings.Instance.PathToControllerDefaultMappings);
+        }
+
+        private void openRecentFile(string file)
+        {
+            if (!File.Exists(file))
+            {
+                var yes = MessageBoxHelper.ShowQuestion("Cannot open '" + file + "'.\nDo you want to remove it from the list of recently opened files?");
+                if (yes)
+                    _mru.Remove(file);
+            }
+            else
+                openFile(file);
         }
 
         #region Events

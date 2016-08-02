@@ -84,11 +84,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utils\Configuration\ConfigurationElementAttribute.cs" />
+    <Compile Include="Utils\Configuration\ConfigurationSectionAttribute.cs" />
     <Compile Include="AppSettings\CmdrSettings.cs" />
-    <Compile Include="AppSettings\Base\ConfigElement.cs" />
-    <Compile Include="AppSettings\Base\ConfigElementCollection.cs" />
-    <Compile Include="AppSettings\Base\ConfigSection.cs" />
-    <Compile Include="AppSettings\Base\IConfigElementCollection.cs" />
+    <Compile Include="Utils\Configuration\ConfigElementCollection.cs" />
+    <Compile Include="Utils\Configuration\ConfigElementCollectionSection.cs" />
+    <Compile Include="AppSettings\MruSection.cs" />
     <Compile Include="AvalonDock\LayoutManager.cs" />
     <Compile Include="AvalonDock\MdiChild.cs" />
     <Compile Include="AvalonDock\MdiContainer.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="ViewModels\ControllerDefaultMappings.cs" />
     <Compile Include="ViewModels\EffectIdentificationViewModel.cs" />
     <Compile Include="ViewModels\MidiBinding\NotesMenuBuilder.cs" />
+    <Compile Include="ViewModels\MruTsiFiles.cs" />
     <Compile Include="ViewModels\Settings\CommandEditorViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />
