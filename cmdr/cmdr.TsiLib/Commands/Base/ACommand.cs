@@ -96,7 +96,7 @@ namespace cmdr.TsiLib.Commands
                     if ((KnownCommands)Id == KnownCommands.DeckCommon_DeckSizeSelector || (KnownCommands)Id == KnownCommands.DeckCommon_AdvancedPanelToggle)
                     {
                         options.Add(MappingTargetDeck.AorFX1orRemixDeck1Slot1OrGlobal, "Deck A & B");
-                        options.Add(MappingTargetDeck.CorFX3orRemixDeck1Slot3, "Deck C & D");
+                        options.Add(MappingTargetDeck.BorFX2orRemixDeck1Slot2, "Deck C & D");
                     }
                     else
                     {
