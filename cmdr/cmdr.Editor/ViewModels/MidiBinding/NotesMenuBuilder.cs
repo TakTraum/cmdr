@@ -64,12 +64,17 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var notesMenu = new MenuItemViewModel { Text = "Note" };
             root.Children.Add(notesMenu);
 
+            int maxOctave;
+            var specialNotes = new[] { "G#", "A", "A#", "B" };
             MenuItemViewModel noteMenu = null;
             foreach (var note in NOTENAMES)
             {
                 noteMenu = new MenuItemViewModel { Text = note };
                 notesMenu.Children.Add(noteMenu);
-                for (int i = -1; i < 10; i++)
+
+                maxOctave = specialNotes.Contains(note) ? 8 : 9;
+
+                for (int i = -1; i <= maxOctave; i++)
                     noteMenu.Children.Add(new MenuItemViewModel { Text = i.ToString(), Tag = String.Format("Note.{0}", note + i) });
             }
 
