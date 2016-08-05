@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace cmdr.MidiLib.Utils
 {
@@ -112,6 +110,47 @@ namespace cmdr.MidiLib.Utils
         public int ToKey(int noteNumber, int octave)
         {
             return (octave * 12 + noteNumber);
+        }
+
+        /// <summary>
+        /// Converts key text to key.
+        /// </summary>
+        /// <param name="keyText">Key text, e.g. D0</param>
+        /// <returns>Key 0 - 127</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when key text is invalid.</exception>
+        public int ToKey(string keyText)
+        {
+            var noteOctave = splitKeyText(keyText);
+            if (noteOctave == null)
+                throw new ArgumentOutOfRangeException("Key text is invalid.");
+            return ToKey(noteOctave.Item1, noteOctave.Item2);
+        }
+
+        /// <summary>
+        /// Converts key text to key.
+        /// </summary>
+        /// <param name="keyText">Key text, e.g. D0</param>
+        /// <returns>Key 0 - 127</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when key text is invalid.</exception>
+        public int ToKeyIPN(string keyText)
+        {
+            var noteOctave = splitKeyText(keyText);
+            if (noteOctave == null)
+                throw new ArgumentOutOfRangeException("Key text is invalid.");
+            return ToKeyIPN(noteOctave.Item1, noteOctave.Item2);
+        }
+
+
+        private Tuple<string, int> splitKeyText(string keyText)
+        {
+            var match = Regex.Match(keyText, @"(.*?)(-?\d)");
+            if (match.Success)
+            {
+                var note = match.Groups[1].Value;
+                var octave = Int32.Parse(match.Groups[2].Value);
+                return new Tuple<string, int>(note, octave);
+            }
+            return null;
         }
     }
 }
