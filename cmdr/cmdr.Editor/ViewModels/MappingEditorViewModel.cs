@@ -59,13 +59,14 @@ namespace cmdr.Editor.ViewModels
             set { _advancedOptions = value; raisePropertyChanged("AdvancedOptions"); }
         }
 
-        private MenuItemViewModel _changeAssignmentOption;
-
         private ICommand _advancedOptionsCommand;
         public ICommand AdvancedOptionsCommand
         {
             get { return _advancedOptionsCommand ?? (_advancedOptionsCommand = new CommandHandler<MenuItemViewModel>(mi => {}, () => AdvancedOptions.Any())); }
         }
+
+        private MenuItemViewModel _changeAssignmentOption;
+        private MenuItemViewModel _applyMidiRangeOption;
 
         #endregion
 
@@ -101,6 +102,7 @@ namespace cmdr.Editor.ViewModels
                 return;
 
             updateChangeAssignmentOption();
+            updateApplyMidiRangeOption();
         }
 
         private void updateChangeAssignmentOption()
@@ -147,6 +149,25 @@ namespace cmdr.Editor.ViewModels
             ConditionsEditor.Refresh();
         }
 
+        private void updateApplyMidiRangeOption()
+        {
+            if (_mappings.Count() > 1 && MidiBindingEditor.ApplyMidiRangeCommand.CanExecute(null))
+            {
+                if (_applyMidiRangeOption == null)
+                    _applyMidiRangeOption = new MenuItemViewModel();
+
+                if (!AdvancedOptions.Contains(_applyMidiRangeOption))
+                    AdvancedOptions.Add(_applyMidiRangeOption);
+
+                _applyMidiRangeOption.Text = "Apply Midi Range";
+                _applyMidiRangeOption.Command = MidiBindingEditor.ApplyMidiRangeCommand;
+
+                return;
+            }
+
+            if (AdvancedOptions.Contains(_applyMidiRangeOption))
+                AdvancedOptions.Remove(_applyMidiRangeOption);
+        }
 
         #region Events
 
