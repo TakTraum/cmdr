@@ -170,6 +170,12 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _incDecCommand ?? (_incDecCommand = new CommandHandler<MenuItemViewModel>(item => IncDec((int)item.Tag), () => CanIncDec())); }
         }
 
+        private ICommand _applyMidiRangeCommand;
+        public ICommand ApplyMidiRangeCommand
+        {
+            get { return _applyMidiRangeCommand ?? (_applyMidiRangeCommand = new CommandHandler(applyMidiRange, canApplyMidiRange)); }
+        }
+
         #endregion
 
 
@@ -177,6 +183,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         {
             _mappings = mappings;
             _device = device;
+            _proprietaryDefinitions = proprietaryDefinitions;
 
             analyzeSelection();
 
@@ -204,7 +211,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             else
             {
                 _canOverrideFactoryMap = _mappings.Any(m => m.CanOverrideFactoryMap);
-                _proprietaryDefinitions = proprietaryDefinitions;
                 NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note)));
             }
 
@@ -314,6 +320,11 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             raisePropertyChanged("NoteString");
         }
 
+        private void updateGenericMidiBinding(MappingViewModel mapping, string midiNote)
+        {
+            mapping.SetBinding(new GenericMidiDefinition(mapping.Command.MappingType, midiNote));
+        }
+
         private void updateBinding(AMidiDefinition definition = null)
         {
             string expression;
@@ -414,7 +425,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var newCC = oldCC + step;
 
             string cc = String.Join(".", parts[0], parts[1], String.Format("{0:000}", newCC));
-            mapping.SetBinding(new TsiLib.MidiDefinitions.GenericMidiDefinition(mapping.MidiBinding.Type, cc));
+            updateGenericMidiBinding(mapping, cc);
         }
 
         private void incDecNote(MappingViewModel mapping, int step)
@@ -427,7 +438,66 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             int newKey = oldKey + step;
 
             string note = String.Join(".", parts[0], parts[1], keyConverter.GetKeyTextIPN(newKey));
-            mapping.SetBinding(new TsiLib.MidiDefinitions.GenericMidiDefinition(mapping.MidiBinding.Type, note));
+            updateGenericMidiBinding(mapping, note);
+        }
+
+        private void applyMidiRange()
+        {
+            var note = _mappings.First().MidiBinding.Note;
+
+            var isCC = note.Contains("CC");
+
+            var keyConverter = new MidiLib.Utils.KeyConverter();
+
+            string suffix = note.Split('.').Last();
+            int number = isCC ? int.Parse(suffix) : keyConverter.ToKeyIPN(suffix);
+
+            string newSuffix;
+            foreach (var m in _mappings)
+            {
+                if (m.MidiBinding != null && m.MidiBinding.Equals(_mappings.First().MidiBinding))
+                    continue;
+                number++;
+                newSuffix = isCC ? String.Format("{0:000}", number) : keyConverter.GetKeyTextIPN(number);
+                updateGenericMidiBinding(m, note.Replace(suffix, newSuffix));
+            }
+
+            analyzeSelection();
+            updateMenus();
+        }
+
+        private bool canApplyMidiRange()
+        {
+            if (!IsGenericMidi)
+                return false;
+
+            var firstBinding = _mappings.First().MidiBinding;
+            if (firstBinding == null || string.IsNullOrEmpty(firstBinding.Note))
+                return false;
+
+            var note = firstBinding.Note;
+
+            var isCC = note.Contains("CC");
+            var isNote = note.Contains("Note");
+            var isCombo = note.Contains("+");
+
+            if (isCombo || !(isCC || isNote))
+                return false;
+
+            var keyConverter = new MidiLib.Utils.KeyConverter();
+
+            int number = 127;
+            string suffix = note.Split('.').Last();
+            if (isCC)
+                number = int.Parse(suffix);
+            else if (isNote)
+                number = keyConverter.ToKeyIPN(suffix);
+
+            int count = _mappings.Count();
+            if (number + count > 127)
+                return false;
+
+            return true;
         }
 
 
