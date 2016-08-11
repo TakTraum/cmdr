@@ -70,8 +70,12 @@
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Height="30">
             <StackPanel Orientation="Horizontal" Visibility="{Binding IsGenericMidi, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
+                <ddButton:DropDownButton Content="&#xFF0B;/&#xFF0D;" Height="20" Width="50" Margin="0,0,5,0"
+                                         MenuPlacement="Left"
+                                         Command="{Binding IncDecCommand, Mode=OneTime}" 
+                                         ItemsSource="{Binding IncDecMenu, Mode=OneTime}" />
                 <ToggleButton Content="Combo" IsChecked="{Binding ComboMode, Mode=OneWay}" Command="{Binding ComboCommand, Mode=OneTime}"
-                              Height="20" Width="50" Margin="0,0,10,0">
+                              Height="20" Width="50" Margin="0,0,5,0">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
                             <Style.Triggers>
@@ -92,7 +96,7 @@
                     </ToggleButton.Style>
                 </ToggleButton>
                 <ToggleButton Content="Learn" IsChecked="{Binding LearnMode, Mode=OneWay}" Command="{Binding LearnCommand, Mode=OneTime}" 
-                              Height="20" Width="50" Margin="0,0,10,0">
+                              Height="20" Width="50" Margin="0,0,5,0">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
                             <Style.Triggers>

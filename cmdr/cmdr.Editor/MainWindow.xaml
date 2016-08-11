@@ -25,6 +25,8 @@
         <KeyBinding Key="V" Modifiers="Control" Command="{Binding PasteCommand, Mode=OneTime}"/>
         <KeyBinding Key="Delete" Command="{Binding RemoveCommand, Mode=OneTime}"/>
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LearnCommand, Mode=OneTime}"/>
+        <KeyBinding Key="OemPlus" Modifiers="Control" Command="{Binding IncOneCommand, Mode=OneTime}"/>
+        <KeyBinding Key="OemMinus" Modifiers="Control" Command="{Binding DecOneCommand, Mode=OneTime}"/>
         <KeyBinding Key="F1" Command="{Binding HelpCommand, Mode=OneTime}"/>
     </Window.InputBindings>
     <DockPanel LastChildFill="True">
@@ -66,17 +68,19 @@
                         <Image Source="Images/paste.png" />
                     </MenuItem.Icon>-->
                 </MenuItem>
-                <Separator />
                 <MenuItem Header="_Remove" Command="{Binding RemoveCommand, Mode=OneTime}" InputGestureText="Delete" >
                     <!--<MenuItem.Icon>
                         <Image Source="Images/delete.png" />
                     </MenuItem.Icon>-->
                 </MenuItem>
+                <Separator/>
                 <MenuItem Header="_Learn" Command="{Binding LearnCommand, Mode=OneTime}" InputGestureText="Ctrl+L" >
                     <!--<MenuItem.Icon>
                         <Image Source="Images/learn.png" />
                     </MenuItem.Icon>-->
                 </MenuItem>
+                <MenuItem Header="_Increment" Command="{Binding IncOneCommand, Mode=OneTime}" InputGestureText="Ctrl+OemPlus" />
+                <MenuItem Header="_Decrement" Command="{Binding DecOneCommand, Mode=OneTime}" InputGestureText="Ctrl+OemMinus" />
             </MenuItem>
             <!--<MenuItem Header="_View" />
             <MenuItem Header="_Window" />-->
