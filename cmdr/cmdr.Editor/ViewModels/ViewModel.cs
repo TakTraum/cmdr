@@ -115,6 +115,18 @@ namespace cmdr.Editor.ViewModels
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(learn, canLearn)); }
         }
 
+        private ICommand _incOneCommand;
+        public ICommand IncOneCommand
+        {
+            get { return _incOneCommand ?? (_incOneCommand = new CommandHandler(() => incDec(1), () => canIncDec(1))); }
+        }
+
+        private ICommand _decOneCommand;
+        public ICommand DecOneCommand
+        {
+            get { return _decOneCommand ?? (_decOneCommand = new CommandHandler(() => incDec(-1), () => canIncDec(-1))); }
+        }
+
         private ICommand _helpCommand;
         public ICommand HelpCommand
         {
@@ -265,6 +277,21 @@ namespace cmdr.Editor.ViewModels
                 && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel != null
                 && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null)
                 return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.LearnCommand.CanExecute(null);
+            return false;
+        }
+
+        private void incDec(int step)
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDec(step);
+        }
+
+        private bool canIncDec(int step)
+        {
+            if (SelectedTsiFileModel != null
+                && SelectedTsiFileModel.SelectedDevice != null
+                && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel != null
+                && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null)
+                return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDec(step);
             return false;
         }
 

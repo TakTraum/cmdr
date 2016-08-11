@@ -9,7 +9,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace cmdr.Editor.ViewModels.MidiBinding
 {
@@ -123,6 +122,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _variousNotes; }
         }
 
+        public ObservableCollection<MenuItemViewModel> IncDecMenu { get; private set; }
+
+        private bool _isCCs = false;
+        private bool _isNotes = false;
+        private bool _hasCombo = false;
+        private int _min = 0;
+        private int _max = 0;
+
         #endregion
 
         #region Commands
@@ -157,6 +164,12 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _comboCommand ?? (_comboCommand = new CommandHandler(toggleCombo, canCombo)); }
         }
 
+        private ICommand _incDecCommand;
+        public ICommand IncDecCommand
+        {
+            get { return _incDecCommand ?? (_incDecCommand = new CommandHandler<MenuItemViewModel>(item => IncDec((int)item.Tag), () => CanIncDec())); }
+        }
+
         #endregion
 
 
@@ -165,10 +178,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             _mappings = mappings;
             _device = device;
 
+            analyzeSelection();
+
             if (IsGenericMidi)
             {
                 ChannelsMenu = new ObservableCollection<MenuItemViewModel>(generateChannelsMenu());
                 NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildGenericMidiMenu());
+                IncDecMenu = new ObservableCollection<MenuItemViewModel>(generateIncDecMenu());
+
                 _midiLearner = new MidiLearner((signal) =>
                 {
                     toggleLearn();
@@ -191,9 +208,99 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note)));
             }
 
-            updateCommonChannelAndNote();
+            updateMenus();
         }
 
+
+        public void IncDec(int step)
+        {
+            foreach (var mapping in _mappings)
+            {
+                if (_isCCs)
+                    incDecCC(mapping, step);
+                else if (_isNotes)
+                    incDecNote(mapping, step);
+            }
+
+            analyzeSelection(true);
+            updateMenus(false, true);
+        }
+
+        public bool CanIncDec(int step = 0)
+        {
+            if (!IsGenericMidi)
+                return false;
+
+            if (_hasCombo || !(_isCCs || _isNotes))
+                return false;
+
+            if (step < 0)
+                return _min + step >= 0;
+            else
+                return 127 >= _max + step;
+        }
+
+
+        private void analyzeSelection(bool allowOverrideNote = false)
+        {
+            var bindings = _mappings.Select(mvm => mvm.MidiBinding).Distinct();
+            var notes = bindings.Select(b => (b != null) ? b.Note : null).Distinct();
+
+            if (IsGenericMidi)
+            {
+                var parts = notes.Select(n =>
+                {
+                    if (n == null)
+                        return null;
+                    var ch = n.Substring(0, 4);
+                    return new { Channel = ch, Note = n.Replace(ch + ".", "") };
+                });
+
+                var channels = parts.Select(p => (p != null) ? p.Channel : null).Distinct();
+
+                _selectedChannels = channels.Where(c => c != null).OrderBy(c => c).ToList();
+
+                _variousChannels = channels.Count() > 1;
+                if (!_variousChannels && String.IsNullOrEmpty(_channel))
+                    setChannel(channels.Single());
+
+                notes = parts.Select(p => (p != null) ? p.Note : null).Distinct();
+
+                _selectedNotes = notes.Where(n => n != null).OrderBy(n => n).Cast<object>().ToList();
+
+                bool allBound = notes.All(n => n != null);
+                _isCCs = allBound && notes.All(n => n.Contains("CC"));
+                _isNotes = allBound && notes.All(n => n.Contains("Note"));
+                _hasCombo = allBound && notes.Any(n => n.Contains("+"));
+
+                if (_isCCs)
+                {
+                    var ccs = notes.Select(n => Int32.Parse(n.Split('.').Last()));
+                    _min = ccs.Min();
+                    _max = ccs.Max();
+                }
+                else if (_isNotes)
+                {
+                    var keyConverter = new MidiLib.Utils.KeyConverter();
+                    var keys = notes.Select(n => keyConverter.ToKeyIPN(n.Split('.').Last()));
+                    _min = keys.Min();
+                    _max = keys.Max();
+                }
+                else
+                {
+                    _min = 0;
+                    _max = 127;
+                }
+            }
+            else
+            {
+                _selectedNotes = _proprietaryDefinitions.Where(n => notes.Contains(n.Note)).DistinctBy(d => d.Note).OrderBy(d => d.Note).Cast<object>().ToList();
+            }
+
+            _variousNotes = notes.Count() > 1;
+            if (!_variousNotes && (String.IsNullOrEmpty(_note) || allowOverrideNote))
+                setNote(notes.Single());
+        }
 
         private void setChannel(string channel)
         {
@@ -246,46 +353,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 mapping.SetBinding(tmpDefinition);
             }
 
-            updateCommonChannelAndNote();
-        }
-
-        private void updateCommonChannelAndNote()
-        {
-            var bindings = _mappings.Select(mvm => mvm.MidiBinding).Distinct();
-            var notes = bindings.Select(b => (b != null) ? b.Note : null).Distinct();
-
-            if (IsGenericMidi)
-            {
-                var parts = notes.Select(n =>
-                {
-                    if (n == null)
-                        return null;
-                    var ch = n.Substring(0, 4);
-                    return new { Channel = ch, Note = n.Replace(ch + ".", "") };
-                });
-
-                var channels = parts.Select(p => (p != null) ? p.Channel : null).Distinct();
-
-                _selectedChannels = channels.Where(c => c != null).OrderBy(c => c).ToList();
-
-                _variousChannels = channels.Count() > 1;
-                if (!_variousChannels && String.IsNullOrEmpty(_channel))
-                    setChannel(channels.Single());
-
-                updateChannelsMenu(_selectedChannels);
-
-                notes = parts.Select(p => (p != null) ? p.Note : null).Distinct();
-
-                _selectedNotes = notes.Where(n => n != null).OrderBy(n => n).Cast<object>().ToList();
-            }
-            else
-                _selectedNotes = _proprietaryDefinitions.Where(n => notes.Contains(n.Note)).DistinctBy(d => d.Note).OrderBy(d => d.Note).Cast<object>().ToList();
-
-            _variousNotes = notes.Count() > 1;
-            if (!_variousNotes && String.IsNullOrEmpty(_note))
-                setNote(notes.Single());
-
-            updateNotesMenu(_selectedNotes);
+            analyzeSelection();
+            updateMenus();
         }
 
         private void reset()
@@ -338,8 +407,46 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             return !(String.IsNullOrEmpty(Note) || Note.Contains("+") || VariousChannels);
         }
 
+        private void incDecCC(MappingViewModel mapping, int step)
+        {
+            var parts = mapping.MidiBinding.Note.Split('.');
+            var oldCC = Int32.Parse(parts.Last());
+            var newCC = oldCC + step;
 
-        #region ContextMenus
+            string cc = String.Join(".", parts[0], parts[1], String.Format("{0:000}", newCC));
+            mapping.SetBinding(new TsiLib.MidiDefinitions.GenericMidiDefinition(mapping.MidiBinding.Type, cc));
+        }
+
+        private void incDecNote(MappingViewModel mapping, int step)
+        {
+            var keyConverter = new MidiLib.Utils.KeyConverter();
+
+            var parts = mapping.MidiBinding.Note.Split('.');
+            var keytext = parts.Last();
+            var oldKey = keyConverter.ToKeyIPN(keytext);
+            int newKey = oldKey + step;
+
+            string note = String.Join(".", parts[0], parts[1], keyConverter.GetKeyTextIPN(newKey));
+            mapping.SetBinding(new TsiLib.MidiDefinitions.GenericMidiDefinition(mapping.MidiBinding.Type, note));
+        }
+
+
+        #region Menus
+
+        private void updateMenus(bool channels = true, bool notes = true)
+        {
+            if (IsGenericMidi)
+            {
+                if (channels)
+                    updateChannelsMenu(_selectedChannels);
+
+                if (notes)
+                    updateIncDecMenu();
+            }
+
+            if (notes)
+                updateNotesMenu(_selectedNotes);
+        }
 
         #region Channels
 
@@ -348,13 +455,13 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             Channel = item.Tag.ToString();
         }
 
-        private List<MenuItemViewModel> generateChannelsMenu()
+        private IEnumerable<MenuItemViewModel> generateChannelsMenu()
         {
             return Enumerable.Range(1, 16).Select(c =>
             {
                 var str = String.Format("Ch{0:00}", c);
                 return new MenuItemViewModel { Text = str, Tag = str };
-            }).ToList();
+            });
         }
 
         private void updateChannelsMenu(IEnumerable<string> selectedChannels)
@@ -408,6 +515,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     NotesMenu.Remove(SEPARATOR);
                     NotesMenu.Remove(_selectedNotesMenuItem);
                 }
+
                 return;
             }
 
@@ -417,6 +525,45 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             {
                 NotesMenu.Add(SEPARATOR);
                 NotesMenu.Add(_selectedNotesMenuItem);
+            }
+        }
+
+        private IEnumerable<MenuItemViewModel> generateIncDecMenu()
+        {
+            List<int> steps = Enumerable.Range(1, 16).ToList();
+            int count = _mappings.Count();
+            if (!steps.Contains(count))
+            {
+                steps.Add(count);
+                steps.Sort();
+            }
+
+            var menu = new ObservableCollection<MenuItemViewModel> { MenuItemViewModel.Separator };
+
+            string suffix;
+            MenuItemViewModel item;
+            foreach (var step in steps)
+            {
+                suffix = (step == count) ? "\t[selection count]" : String.Empty;
+
+                item = new MenuItemViewModel { Text = String.Format("\uFF0B{0:00}{1}", step, suffix), Tag = step };
+                menu.Insert(0, item);
+
+                item = new MenuItemViewModel { Text = String.Format("\uFF0D{0:00}{1}", step, suffix), Tag = -step };
+                menu.Add(item);
+            }
+
+            return menu;
+        }
+
+        private void updateIncDecMenu()
+        {
+            foreach (var item in IncDecMenu)
+            {
+                if (item.IsSeparator)
+                    continue;
+
+                item.IsEnabled = CanIncDec((int)item.Tag);
             }
         }
 
