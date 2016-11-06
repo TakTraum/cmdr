@@ -4,6 +4,7 @@ using System.Linq;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.TsiLib.Utils;
+using cmdr.TsiLib.MidiDefinitions.GenericMidi;
 
 namespace cmdr.TsiLib.MidiDefinitions
 {
@@ -38,23 +39,18 @@ namespace cmdr.TsiLib.MidiDefinitions
 
             int numChannels = 16;
             int num = 128;
-            string note;
             for (int i = 1; i <= numChannels; i++)
             {
                 for (int j = 0; j < num; j++)
                 {
-                    note = String.Format("Ch{0:00}.CC.{1:000}", i, j);
-                    result.Add(note, new GenericMidiDefinition(type, note));
+                    var cc = new ControlChangeMidiDefinition(type, i, j);
+                    result.Add(cc.Note, cc);
+                    var note = new NoteMidiDefinition(type, i, keyConverter.GetKeyTextIPN(j));
+                    result.Add(note.Note, note);
                 }
 
-                for (int j = 0; j < num; j++)
-                {
-                    note = String.Format("Ch{0:00}.Note.{1}", i, keyConverter.GetKeyTextIPN(j));
-                    result.Add(note, new GenericMidiDefinition(type, note));
-                }
-
-                note = String.Format("Ch{0:00}.PitchBend", i);
-                result.Add(note, new GenericMidiDefinition(type, note));
+                var pitch = new PitchBendMidiDefinition(type, i);
+                result.Add(pitch.Note, pitch);
             }
             return result;
         }

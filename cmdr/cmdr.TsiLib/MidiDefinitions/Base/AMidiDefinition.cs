@@ -1,6 +1,5 @@
 ﻿using System;
 using cmdr.TsiLib.Enums;
-using cmdr.TsiLib.MidiDefinitions.Proprietary;
 
 namespace cmdr.TsiLib.MidiDefinitions.Base
 {
@@ -38,35 +37,16 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
 
         public override int GetHashCode()
         {
-            return new { Note, Type }.GetHashCode();
+            return new { Id = Note, Type }.GetHashCode();
         }
 
 
         internal static AMidiDefinition Parse(string deviceTypeStr, MappingType type, Format.MidiDefinition definition)
         {
-            // Proprietary
             if (definition.ControlId > -1)
-            {
-                switch (definition.MidiControlType)
-                {
-                    case MidiControlType.Button:
-                        return new ButtonMidiDefinition(deviceTypeStr, definition);
-                    case MidiControlType.FaderOrKnob:
-                        return new FaderOrKnobMidiDefinition(deviceTypeStr, definition);
-                    case MidiControlType.PushEncoder:
-                        return new PushEncoderMidiDefinition(deviceTypeStr, definition);
-                    case MidiControlType.Encoder:
-                        return new EncoderMidiDefinition(deviceTypeStr, definition);
-                    case MidiControlType.Jog:
-                        return new JogMidiDefinition(deviceTypeStr, definition);
-                    case MidiControlType.Out:
-                        return new OutMidiDefinition(deviceTypeStr, definition);
-                    default:
-                        return null;
-                }
-            }
-
-            return new GenericMidiDefinition(type, definition);
+                return AProprietaryMidiDefinition.Parse(deviceTypeStr, definition);
+            else
+                return AGenericMidiDefinition.Parse(type, definition);
         }
     }
 }

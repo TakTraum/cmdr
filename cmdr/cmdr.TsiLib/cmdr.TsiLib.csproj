@@ -208,7 +208,10 @@
     <Compile Include="MidiDefinitions\Base\AGenericMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Base\AMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Base\AProprietaryMidiDefinition.cs" />
-    <Compile Include="MidiDefinitions\GenericMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\GenericMidi\ComboMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\GenericMidi\ControlChangeMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\GenericMidi\NoteMidiDefinition.cs" />
+    <Compile Include="MidiDefinitions\GenericMidi\PitchBendMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\MidiDefinitionFactory.cs" />
     <Compile Include="MidiDefinitions\Proprietary\ButtonMidiDefinition.cs" />
     <Compile Include="MidiDefinitions\Proprietary\EncoderMidiDefinition.cs" />
