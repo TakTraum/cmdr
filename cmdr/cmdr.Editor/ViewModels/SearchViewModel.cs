@@ -21,6 +21,13 @@ namespace cmdr.Editor.ViewModels
              get { return _searchCommand ?? (_searchCommand = new CommandHandler(search, _dvm.Mappings.Any)); }
          }
 
+         private bool _isFound = true;
+         public bool IsFound
+         {
+             get { return _isFound; }
+             set { _isFound = value; raisePropertyChanged("IsFound"); }
+         }
+
 
          public SearchViewModel(DeviceViewModel dvm)
          {
@@ -49,6 +56,12 @@ namespace cmdr.Editor.ViewModels
 
          private void search()
          {
+             if (string.IsNullOrEmpty(SearchText))
+             {
+                 IsFound = true;
+                 return;
+             }
+
              var comparer = CultureInfo.CurrentCulture.CompareInfo;
              // TODO: Sorting!
              _lastSearchResult = _dvm.Mappings.Select(m => m.Item as MappingViewModel)
@@ -56,10 +69,13 @@ namespace cmdr.Editor.ViewModels
 
              if (_lastSearchResult.Any())
              {
+                 IsFound = true;
                  _lastSearchPos = 1;
                  var select = _dvm.Mappings.Single(m => m.Item == _lastSearchResult.First());
                  highlight(select);
              }
+             else
+                 IsFound = false;
          }
 
          private void highlight(RowItemViewModel item)
