@@ -164,7 +164,7 @@ namespace cmdr.TsiLib
                     var genericDefinition = midi as AGenericMidiDefinition;
                     if (genericDefinition != null && genericDefinition.MidiEncoderMode != device.EncoderMode)
                     {
-                        genericDefinition = new GenericMidiDefinition(MappingType.In, midi.Note);
+                        genericDefinition = AGenericMidiDefinition.Parse(genericDefinition.Type, definition);
                         genericDefinition.MidiEncoderMode = device.EncoderMode;
                         definition = genericDefinition.RawDefinition;
                     }
