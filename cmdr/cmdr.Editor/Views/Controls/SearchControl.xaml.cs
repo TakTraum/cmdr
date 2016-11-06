@@ -40,8 +40,13 @@ namespace cmdr.Editor.Views.Controls
 
             SearchViewModel svm = DataContext as SearchViewModel;
             if (svm != null)
+            {
+                if (!svm.IsFound)
+                    return;
+                
                 if (!svm.Continue())
                     popup.IsOpen = true;
+            }
         }
     }
 }

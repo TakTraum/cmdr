@@ -11,6 +11,20 @@
         <Popup x:Name="popup" IsOpen="False" StaysOpen="False" Placement="Top" VerticalOffset="-3" PopupAnimation="Fade" AllowsTransparency="True">
             <TextBlock Text="End of list" Background="Transparent" Foreground="Red" FontWeight="Bold"/>
         </Popup>
-        <tms:SearchTextBox SearchMode="Delayed" Command="{Binding SearchCommand, Mode=OneTime}" PreviewKeyDown="SearchTextBox_PreviewKeyDown" Text="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+        <tms:SearchTextBox SearchMode="Delayed" 
+                               Command="{Binding SearchCommand, Mode=OneTime}" 
+                               PreviewKeyDown="SearchTextBox_PreviewKeyDown" 
+                               Text="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                               >
+            <tms:SearchTextBox.Style>
+                <Style TargetType="tms:SearchTextBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFound}" Value="False">
+                            <Setter Property="BorderBrush" Value="Red"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </tms:SearchTextBox.Style>
+        </tms:SearchTextBox>
     </Grid>
 </UserControl>
