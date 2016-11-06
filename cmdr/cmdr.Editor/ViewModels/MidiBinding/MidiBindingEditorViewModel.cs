@@ -2,6 +2,7 @@
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.TsiLib.MidiDefinitions.GenericMidi;
 using cmdr.WpfControls.DropDownButton;
 using System;
 using System.Collections.Generic;
@@ -320,11 +321,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             raisePropertyChanged("NoteString");
         }
 
-        private void updateGenericMidiBinding(MappingViewModel mapping, string midiNote)
-        {
-            mapping.SetBinding(new GenericMidiDefinition(mapping.Command.MappingType, midiNote));
-        }
-
         private void updateBinding(AMidiDefinition definition = null)
         {
             string expression;
@@ -353,7 +349,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     }
 
                     if (expression != null)
-                        tmpDefinition = new GenericMidiDefinition(mapping.Command.MappingType, expression);
+                        tmpDefinition = AGenericMidiDefinition.Parse(mapping.Command.MappingType, expression);
                 }
                 else
                 {
@@ -420,46 +416,49 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         private void incDecCC(MappingViewModel mapping, int step)
         {
-            var parts = mapping.MidiBinding.Note.Split('.');
-            var oldCC = Int32.Parse(parts.Last());
+            var oldBinding = mapping.MidiBinding as ControlChangeMidiDefinition;
+            
+            var oldCC = oldBinding.Cc;
             var newCC = oldCC + step;
 
-            string cc = String.Join(".", parts[0], parts[1], String.Format("{0:000}", newCC));
-            updateGenericMidiBinding(mapping, cc);
+            mapping.SetBinding(new ControlChangeMidiDefinition(oldBinding.Type, oldBinding.Channel, newCC));
         }
 
         private void incDecNote(MappingViewModel mapping, int step)
         {
-            var keyConverter = new MidiLib.Utils.KeyConverter();
+            var oldBinding = mapping.MidiBinding as NoteMidiDefinition;
 
-            var parts = mapping.MidiBinding.Note.Split('.');
-            var keytext = parts.Last();
-            var oldKey = keyConverter.ToKeyIPN(keytext);
+            var keyConverter = new MidiLib.Utils.KeyConverter();
+            var oldKey = keyConverter.ToKeyIPN(oldBinding.KeyText);
             int newKey = oldKey + step;
 
-            string note = String.Join(".", parts[0], parts[1], keyConverter.GetKeyTextIPN(newKey));
-            updateGenericMidiBinding(mapping, note);
+            mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, oldBinding.Channel, keyConverter.GetKeyTextIPN(newKey)));
         }
 
         private void applyMidiRange()
         {
-            var note = _mappings.First().MidiBinding.Note;
+            var templateBinding = _mappings.First().MidiBinding as AGenericMidiDefinition;
 
-            var isCC = note.Contains("CC");
+            var isCC = templateBinding is ControlChangeMidiDefinition;
 
             var keyConverter = new MidiLib.Utils.KeyConverter();
 
-            string suffix = note.Split('.').Last();
-            int number = isCC ? int.Parse(suffix) : keyConverter.ToKeyIPN(suffix);
+            int number = isCC ? (templateBinding as ControlChangeMidiDefinition).Cc : keyConverter.ToKeyIPN((templateBinding as NoteMidiDefinition).KeyText);
 
-            string newSuffix;
+            AGenericMidiDefinition newBinding;
             foreach (var m in _mappings)
             {
-                if (m.MidiBinding != null && m.MidiBinding.Equals(_mappings.First().MidiBinding))
+                if (m.MidiBinding != null && m.MidiBinding.Equals(templateBinding))
                     continue;
+
                 number++;
-                newSuffix = isCC ? String.Format("{0:000}", number) : keyConverter.GetKeyTextIPN(number);
-                updateGenericMidiBinding(m, note.Replace(suffix, newSuffix));
+
+                if (isCC)
+                    newBinding = new ControlChangeMidiDefinition(templateBinding.Type, templateBinding.Channel, number);
+                else
+                    newBinding = new NoteMidiDefinition(templateBinding.Type, templateBinding.Channel, keyConverter.GetKeyTextIPN(number));
+
+                m.SetBinding(newBinding);
             }
 
             analyzeSelection();
