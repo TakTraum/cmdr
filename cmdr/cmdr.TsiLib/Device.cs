@@ -310,7 +310,7 @@ namespace cmdr.TsiLib
                 return;
 
             _encoderMode = _mappings
-                .Where(m => m.Command.Control is EncoderControl)
+                .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
                 .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
                 .FirstOrDefault();
         }
