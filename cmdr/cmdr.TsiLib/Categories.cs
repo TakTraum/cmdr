@@ -63,6 +63,13 @@ namespace cmdr.TsiLib
         [Description("Master Clock")]
         MasterClock,
 
+        #region new in Traktor 2.11
+
+        [Description("Master Clock->Ableton Link")]
+        MasterClock_AbletonLink,
+
+        #endregion
+
         [Description("Preview Player")]
         PreviewPlayer,
 
@@ -95,6 +102,13 @@ namespace cmdr.TsiLib
 
         [Description("Remix Deck->Direct Mapping->Slot4")]
         RemixDeck_DirectMapping_Slot4,
+
+        #region new in Traktor 2.11
+
+        [Description("Remix Deck->Step Sequencer")]
+        RemixDeck_StepSequencer,
+
+        #endregion
 
         [Description("Loop Recorder")]
         LoopRecorder,

@@ -253,6 +253,13 @@ namespace cmdr.TsiLib.Conditions.Interpretation
         [ConditionDescription(Categories.RemixDeck, "Sample Page Selector", TargetType.Remix, typeof(EnumCondition<SamplePage>))]
         RemixDeck_SamplePageSelector = 733,
 
+        #region new in Traktor 2.11
+
+        [ConditionDescription(Categories.RemixDeck_StepSequencer, "Current Step", TargetType.Slot, typeof(EnumCondition<Sample>))]
+        RemixDeck_StepSequencer_CurrentStep = 736,
+
+        #endregion
+
         [ConditionDescription(Categories.RemixDeck, "Capture Source", TargetType.Remix, typeof(EnumCondition<CaptureSource>))]
         RemixDeck_CaptureSource = 2002,
 
