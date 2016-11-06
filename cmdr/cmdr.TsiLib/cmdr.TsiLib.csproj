@@ -147,6 +147,8 @@
     <Compile Include="Enums\SlotSize.cs" />
     <Compile Include="Enums\SlotState.cs" />
     <Compile Include="Enums\SlotTriggerType.cs" />
+    <Compile Include="Enums\Sample.cs" />
+    <Compile Include="Enums\PatternLength.cs" />
     <Compile Include="Enums\TargetType.cs" />
     <Compile Include="Enums\TempoRange.cs" />
     <Compile Include="Enums\TempoSource.cs" />
@@ -229,6 +231,7 @@
     <Compile Include="Ranges\FloatRangeCentered.cs" />
     <Compile Include="Ranges\FloatRangeCenteredHalf.cs" />
     <Compile Include="Ranges\FloatRangeRelative.cs" />
+    <Compile Include="Ranges\FloatRangeSwingAmount.cs" />
     <Compile Include="Ranges\IntRange.cs" />
     <Compile Include="Ranges\IntRangeUnlimited.cs" />
     <Compile Include="Resources\EmbeddedResource.cs" />

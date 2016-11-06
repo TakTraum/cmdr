@@ -792,6 +792,77 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.RemixDeck, "Sample Page Selector", TargetType.Remix, typeof(EnumInCommand<SamplePage>), typeof(EnumOutCommand<SamplePage>))]
         RemixDeck_SamplePageSelector = 733,
 
+        #region new commands for Traktor 2.11
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Sequencer On", TargetType.Remix, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_SequencerOn = 734,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Swing Amount", TargetType.Remix, typeof(FloatInCommand<FloatRangeSwingAmount>), typeof(FloatOutCommand<FloatRangeSwingAmount>))]
+        RemixDeck_StepSequencer_SwingAmount = 735,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Current Step", TargetType.Slot, null, typeof(EnumOutCommand<Sample>))]
+        RemixDeck_StepSequencer_CurrentStep = 736,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Pattern Length" ,TargetType.Slot, typeof(EnumInCommand<PatternLength>), typeof(EnumOutCommand<PatternLength>))]
+        RemixDeck_StepSequencer_PatternLength = 738,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Selected Sample", TargetType.Slot, typeof(EnumInCommand<Sample>), typeof(EnumOutCommand<Sample>))]
+        RemixDeck_StepSequencer_SelectedSample = 740,
+
+        #region Enable Step x
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 1", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep1 = 741,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 2", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep2 = 742,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 3", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep3 = 743,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 4", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep4 = 744,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 5", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep5 = 745,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 6", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep6 = 746,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 7", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep7 = 747,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 8", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep8 = 748,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 9", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep9 = 749,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 10", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep10 = 750,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 11", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep11 = 751,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 12", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep12 = 752,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 13", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep13 = 753,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 14", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep14 = 754,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 15", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep15 = 755,
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Enable Step 16", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_StepSequencer_EnableStep16 = 756,
+
+        #endregion
+
+        #endregion
+
         [CommandDescription(Categories.DeckCommon_FreezeMode, "Freeze Slice Count Adjust", TargetType.Track, typeof(EnumInCommand<FreezeSliceCount>), typeof(EnumOutCommand<FreezeSliceCount>))]
         DeckCommon_FreezeMode_FreezeSliceCountAdjust = 802,
 
@@ -1241,6 +1312,13 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.Mixer, "Auto-Gain View On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         Mixer_AutoGainViewOn = 2807,
+
+        #region new command for Traktor 2.11
+
+        [CommandDescription(Categories.MasterClock_AbletonLink, "Reset Downbeat", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        MasterClock_AbletonLink_ResetDownbeat = 2811,
+
+        #endregion
 
         [CommandDescription(Categories.Global, "Send Monitor State", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Global_SendMonitorState = 3048,
