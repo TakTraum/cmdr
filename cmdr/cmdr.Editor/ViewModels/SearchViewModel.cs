@@ -9,7 +9,7 @@ namespace cmdr.Editor.ViewModels
 {
      public class SearchViewModel : ViewModelBase
     {
-         private DeviceViewModel _dvm;
+         private readonly DeviceViewModel _dvm;
          private int _lastSearchPos;
          private IEnumerable<MappingViewModel> _lastSearchResult;
 
@@ -30,6 +30,9 @@ namespace cmdr.Editor.ViewModels
 
          public bool Continue()
          {
+             if (_lastSearchResult == null)
+                 return false;
+
              int count = _lastSearchResult.Count();
              if (count > _lastSearchPos)
              {
@@ -37,6 +40,7 @@ namespace cmdr.Editor.ViewModels
                  highlight(select);
                  _lastSearchPos++;
              }
+
              bool hasNext = (count > _lastSearchPos);
              if (!hasNext)
                  _lastSearchPos = 0;
@@ -45,9 +49,6 @@ namespace cmdr.Editor.ViewModels
 
          private void search()
          {
-             if (SearchText.Length < 2)
-                 return;
-
              var comparer = CultureInfo.CurrentCulture.CompareInfo;
              // TODO: Sorting!
              _lastSearchResult = _dvm.Mappings.Select(m => m.Item as MappingViewModel)
