@@ -1,5 +1,4 @@
-﻿using cmdr.TsiLib.Conditions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace cmdr.Editor.Metadata
 {

@@ -158,8 +158,8 @@ namespace cmdr.Editor.ViewModels
         public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
         public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
 
-        private Metadata.Metadata _metadata;
-        public Metadata.Metadata Metadata
+        private Editor.Metadata.Metadata _metadata;
+        public Editor.Metadata.Metadata Metadata
         {
             get { return _metadata; }
             private set { _metadata = value; raisePropertyChanged("Metadata"); }
@@ -342,7 +342,7 @@ namespace cmdr.Editor.ViewModels
                 }
             }
             else
-                Metadata = new Metadata.Metadata();
+                Metadata = new Editor.Metadata.Metadata();
         }
 
         private void drop(IDataObject dataObject)

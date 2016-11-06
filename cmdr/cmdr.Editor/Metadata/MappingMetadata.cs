@@ -1,16 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 
 namespace cmdr.Editor.Metadata
 {
     public class MappingMetadata
     {
         public bool IsLocked { get; set; }
-        public ObservableCollection<string> Tags { get; set; }
+        public List<string> Tags { get; set; }
 
 
         public MappingMetadata()
         {
-            Tags = new ObservableCollection<string>();
+            Tags = new List<string>();
         }
     }
 }

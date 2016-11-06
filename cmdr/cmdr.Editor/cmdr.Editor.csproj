@@ -116,6 +116,8 @@
     <Compile Include="ViewModels\Conditions\ConditionTupleViewModel.cs" />
     <Compile Include="ViewModels\ControllerDefaultMappings.cs" />
     <Compile Include="ViewModels\EffectIdentificationViewModel.cs" />
+    <Compile Include="ViewModels\Metadata\DeviceMetadataViewModel.cs" />
+    <Compile Include="ViewModels\Metadata\MappingMetadataViewModel.cs" />
     <Compile Include="ViewModels\MidiBinding\NotesMenuBuilder.cs" />
     <Compile Include="ViewModels\MruTsiFiles.cs" />
     <Compile Include="ViewModels\Settings\CommandEditorViewModel.cs" />
