@@ -244,7 +244,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.LoopRecorder, "Size (Loop Recorder)", TargetType.Global, typeof(EnumInCommand<LoopRecorderSize>), typeof(EnumOutCommand<LoopRecorderSize>))]
         LoopRecorder_Size = 281,
 
-        [CommandDescription(Categories.LoopRecorder, "Dry/Wet Adjust (Loop Recorder)", TargetType.Global, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        [CommandDescription(Categories.LoopRecorder, "Dry/Wet Adjust (Loop Recorder)", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
         LoopRecorder_DryWetAdjust = 282,
 
         [CommandDescription(Categories.LoopRecorder, "Play/Pause (Loop Recorder)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
@@ -334,7 +334,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.FXUnit, "Effect 3 Selector", TargetType.FX, typeof(EffectSelectorInCommand), typeof(EffectSelectorOutCommand))] // TODO: Needs special treatment, see EffectList.All
         FXUnit_Effect3Selector = 364,
 
-        [CommandDescription(Categories.FXUnit, "Dry/Wet Adjust (FX Unit)", TargetType.FX, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))] 
+        [CommandDescription(Categories.FXUnit, "Dry/Wet Adjust (FX Unit)", TargetType.FX, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))] 
         FXUnit_DryWetAdjust = 365,
 
         [CommandDescription(Categories.FXUnit, "Knob 1", TargetType.FX, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
