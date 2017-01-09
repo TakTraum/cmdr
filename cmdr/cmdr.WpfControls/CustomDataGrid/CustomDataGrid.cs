@@ -31,5 +31,18 @@ namespace cmdr.WpfControls.CustomDataGrid
                     break;
             }
         }
+
+        protected override void OnSorting(DataGridSortingEventArgs eventArgs)
+        {
+            // Order is: None->Ascending->Descending->None
+            if (eventArgs.Column.SortDirection != System.ComponentModel.ListSortDirection.Descending)
+                base.OnSorting(eventArgs);
+            else
+            {
+                eventArgs.Column.SortDirection = null;
+                Items.SortDescriptions.Clear();
+            }
+
+        }
     }
 }
