@@ -2,6 +2,7 @@
 using cmdr.TsiLib.EventArgs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,21 @@ namespace cmdr.Editor.Views
 
             if (vm.Window == null)
                 vm.Window = this;
+        }
+
+        /// <summary>
+        /// Handles click navigation on the hyperlink in the dialog.
+        /// </summary>
+        /// <param name="sender">Object the sent the event.</param>
+        /// <param name="e">Navigation events arguments.</param>
+        private void hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            if (e.Uri != null && !string.IsNullOrEmpty(e.Uri.OriginalString))
+            {
+                string uri = e.Uri.AbsoluteUri;
+                Process.Start(new ProcessStartInfo(uri));
+                e.Handled = true;
+            }
         }
     }
 }
