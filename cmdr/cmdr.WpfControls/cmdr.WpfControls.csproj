@@ -91,6 +91,7 @@
     <Compile Include="Behaviors\ASelectorAdapter.cs" />
     <Compile Include="Behaviors\SelectorAdapters\DataGridAdapter.cs" />
     <Compile Include="Behaviors\SelectorAdapters\ListBoxAdapter.cs" />
+    <Compile Include="Behaviors\WindowBehavior.cs" />
     <Compile Include="Utils\IListItemConverter.cs" />
     <Compile Include="Behaviors\DraggableRowsBehavior.cs" />
     <Compile Include="Adorners\InsertAdorner.cs" />
