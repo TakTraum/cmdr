@@ -27,7 +27,7 @@ Until the software has reached a stable state, it is recommended to work on copi
 No installation needed, cmdr is portable. Unzip and start cmdr.exe.
 
 ## Usage
-Please go to the [Documentation] section.
+Please go to the [Wiki](Home) section.
 
 ## Credits
 * Ivan Zlatev, for reverse engineering large parts of the TSI structure. Visit his project [Traktor.Mapping](https://github.com/ivanz/Traktor.Mapping).
