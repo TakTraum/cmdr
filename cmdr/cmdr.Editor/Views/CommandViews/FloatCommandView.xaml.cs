@@ -1,6 +1,7 @@
 ﻿using cmdr.Editor.ViewModels;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Ranges;
+using System;
 using System.Globalization;
 using System.Windows.Input;
 
@@ -23,6 +24,8 @@ namespace cmdr.Editor.Views.CommandViews
                 get { return _command.Value; }
                 set { _command.Value = value; raisePropertyChanged("Value"); }
             }
+
+            public float TickFrequency { get { return (MaxValue - MinValue) / 10f; } }
 
             public FloatInCommandWrapper(FloatInCommand<T> command)
             {

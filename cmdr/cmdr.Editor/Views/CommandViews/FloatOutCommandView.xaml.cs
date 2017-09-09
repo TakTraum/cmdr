@@ -1,6 +1,7 @@
 ﻿using cmdr.Editor.ViewModels;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Ranges;
+using System;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -31,6 +32,7 @@ namespace cmdr.Editor.Views.CommandViews
                 set { _command.ControllerRangeMax = value; raisePropertyChanged("ControllerRangeMax"); }
             }
 
+            public float TickFrequency { get { return (MaxValue - MinValue) / 10f; } }
 
             public FloatOutCommandWrapper(FloatOutCommand<T> command)
             {

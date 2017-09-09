@@ -19,12 +19,12 @@
         <Label Grid.Row="0" Grid.Column="0">Controller Range Min</Label>
         <DockPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="10">
             <TextBox Text="{Binding ElementName=slValue, Path=Value, StringFormat=N3, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" TextAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Right" Width="40" PreviewKeyDown="TextBox_KeyDown" />
-            <Slider x:Name="slValue" Margin="0,0,10,0" TickFrequency="0.5" IsSnapToTickEnabled="False" LargeChange="0.5" SmallChange="0.01" TickPlacement="BottomRight"  Value="{Binding ControllerRangeMin, Mode=TwoWay}" Minimum="{Binding MinValue, Mode=OneWay}" Maximum="{Binding MaxValue, Mode=OneWay}" />
+            <Slider x:Name="slValue" Margin="0,0,10,0" TickFrequency="{Binding TickFrequency}" IsSnapToTickEnabled="False" LargeChange="0.5" SmallChange="0.01" TickPlacement="BottomRight"  Value="{Binding ControllerRangeMin, Mode=TwoWay}" Minimum="{Binding MinValue, Mode=OneWay}" Maximum="{Binding MaxValue, Mode=OneWay}" />
         </DockPanel>
         <Label Grid.Row="0" Grid.Column="2">Controller Range Max</Label>
         <DockPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="10">
             <TextBox Text="{Binding ElementName=slValue2, Path=Value, StringFormat=N3, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" TextAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Right" Width="40" PreviewKeyDown="TextBox_KeyDown" />
-            <Slider x:Name="slValue2" Margin="0,0,10,0" TickFrequency="0.5" IsSnapToTickEnabled="False" LargeChange="0.5" SmallChange="0.01" TickPlacement="BottomRight"  Value="{Binding ControllerRangeMax, Mode=TwoWay}" Minimum="{Binding MinValue, Mode=OneWay}" Maximum="{Binding MaxValue, Mode=OneWay}" />
+            <Slider x:Name="slValue2" Margin="0,0,10,0" TickFrequency="{Binding TickFrequency}" IsSnapToTickEnabled="False" LargeChange="0.5" SmallChange="0.01" TickPlacement="BottomRight"  Value="{Binding ControllerRangeMax, Mode=TwoWay}" Minimum="{Binding MinValue, Mode=OneWay}" Maximum="{Binding MaxValue, Mode=OneWay}" />
         </DockPanel>
     </Grid>
 </local:CommandView>
