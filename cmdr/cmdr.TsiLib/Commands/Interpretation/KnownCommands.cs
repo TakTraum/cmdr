@@ -73,7 +73,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.MasterClock, "Clock Int/Ext", TargetType.Global, typeof(EnumInCommand<IntExt>), typeof(EnumOutCommand<IntExt>))]
         MasterClock_ClockIntExt = 62,
 
-        [CommandDescription(Categories.MasterClock, "Set Master Tempo", TargetType.Global, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        [CommandDescription(Categories.MasterClock, "Set Master Tempo", TargetType.Global, typeof(FloatInCommand<FloatRangeMasterTempo>), typeof(FloatOutCommand<FloatRangeMasterTempo>))]
         MasterClock_SetMasterTempo = 64,
 
         [CommandDescription(Categories.MasterClock, "Master Tempo Selector", TargetType.Global, typeof(EnumInCommand<TempoSource>), typeof(EnumOutCommand<TempoSource>))]

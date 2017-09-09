@@ -230,6 +230,7 @@
     <Compile Include="Ranges\FloatRange.cs" />
     <Compile Include="Ranges\FloatRangeCentered.cs" />
     <Compile Include="Ranges\FloatRangeCenteredHalf.cs" />
+    <Compile Include="Ranges\FloatRangeMasterTempo.cs" />
     <Compile Include="Ranges\FloatRangeRelative.cs" />
     <Compile Include="Ranges\FloatRangeSwingAmount.cs" />
     <Compile Include="Ranges\IntRange.cs" />
