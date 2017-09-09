@@ -22,9 +22,14 @@ namespace cmdr.WpfControls.CustomSlider
             double num = this.Maximum - this.Minimum;
             int i = 0;
             // Draw each tick text
+            float val;
             for (i = 0; i <= tickCount; i++)
             {
-                text = String.Format("{0:N1}", Convert.ToSingle(this.Minimum + this.TickFrequency * i));
+                val = Convert.ToSingle(this.Minimum + this.TickFrequency * i);
+                if (val % 1 == 0)
+                    text = String.Format("{0:N0}", val);
+                else
+                    text = String.Format("{0:N1}", val);
 
                 formattedText = new FormattedText(text, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 8, Brushes.Black);
                 dc.DrawText(formattedText, new Point((tickFrequencySize * i), 30));
