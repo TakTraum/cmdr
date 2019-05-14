@@ -25,8 +25,18 @@ namespace cmdr.Editor.AvalonDock
             if (!DefaultLayoutAvailable)
                 return;
 
-            using (var stream = new StreamReader(LAYOUT_PATH))
-                _serializer.Deserialize(stream);
+            try
+            {
+                using (var stream = new StreamReader(LAYOUT_PATH))
+                {
+                    _serializer.Deserialize(stream);
+                }
+            }
+            catch
+            {
+                // just in case, if there is a problem with reading.
+                return;
+            }
         }
 
 
