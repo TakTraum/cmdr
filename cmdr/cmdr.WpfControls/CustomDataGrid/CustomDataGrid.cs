@@ -66,13 +66,28 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         protected override void OnSorting(DataGridSortingEventArgs eventArgs)
         {
-            // Order is: None->Ascending->Descending->None
-            if (eventArgs.Column.SortDirection != System.ComponentModel.ListSortDirection.Descending)
-                base.OnSorting(eventArgs);
-            else
+            if (eventArgs.Column.SortDirection == null)
             {
-                eventArgs.Column.SortDirection = null;
-                Items.SortDescriptions.Clear();
+                base.OnSorting(eventArgs);
+            
+            } else if (eventArgs.Column.SortDirection == System.ComponentModel.ListSortDirection.Ascending)
+            {
+                base.OnSorting(eventArgs);
+ 
+            } else if (eventArgs.Column.SortDirection == System.ComponentModel.ListSortDirection.Descending)
+            {
+                // todo: make this an option using CTRL+mouse button
+                bool allow_tri_state = false;
+
+                if(allow_tri_state ){
+                    eventArgs.Column.SortDirection = null;
+                   Items.SortDescriptions.Clear();
+                } else {
+                    base.OnSorting(eventArgs);
+                }
+            } else {
+                Console.WriteLine("Error - unknown sort order: ");
+
             }
         }
 
