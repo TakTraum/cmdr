@@ -4,3 +4,4 @@ obj/
 *.suo
 /cmdr/.vs/
 /cmdr/packages/
+/.vs/

@@ -19,9 +19,9 @@ Another simple approach is to read the check-ins of small features
 
 ## Forum Threads:
 
-  https://www.native-instruments.com/forum/threads/release-cmdr-controller-manager-done-right.269818/page-2
-  https://forum.djtechtools.com/showthread.php?t=91303
-  https://forum.djtechtools.com/showthread.php?t=84669
+*  https://www.native-instruments.com/forum/threads/release-cmdr-controller-manager-done-right.269818/page-2
+*  https://forum.djtechtools.com/showthread.php?t=91303
+*  https://forum.djtechtools.com/showthread.php?t=84669
     
 
 ## Specific Versions used (as of Dec 2019):
