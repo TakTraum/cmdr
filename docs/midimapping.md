@@ -12,7 +12,7 @@ for notes, we decided to provide an octave selector. so you do not need to scrol
 #### Learn
 activates listening for MIDI messages on the port the device is attached to. if a fader or knob is moved, or a knob is pressed on the selected controller, the message is received and listening stops.
 
-that should be convenient enought. the learn shortcut is CTRL+L. the learn mode is only available if a MIDI controller is found in the system.
+that should be convenient enough. the learn shortcut is CTRL+L. the learn mode is only available if a MIDI controller is found in the system.
 
 #### Combo
 there are occasions where you need to bind two MIDI messages to a command. this can be done using the {"[Combo](Combo)"} button. after you learned or selected the first note/cc, click this button (it will turn yellow) and learn or select another message. this will lead to a note expression like CC.042+CC.031.
@@ -20,4 +20,4 @@ there are occasions where you need to bind two MIDI messages to a command. this 
 ![](midimapping_http://cmdr.acidbuddha.com/img/combocc.PNG)
 
 ### channel selector
-an alleviation is the channel selector which is not tied to the note/cc anymore. this is great to just move a complete mapping from channel 10 to channel 9. for those who want to. (this is in testing)
+an alleviation is the channel selector which is not tied to the note/cc anymore. this is great to just move a complete mapping from channel 10 to channel 9.

@@ -131,6 +131,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         private int _min = 0;
         private int _max = 0;
 
+        private int _min_ch = 1;
+        private int _max_ch = 10;
+        private bool _allBound = false;
+
         #endregion
 
         #region Commands
@@ -218,7 +222,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             updateMenus();
         }
 
-
         public void IncDec(int step)
         {
             foreach (var mapping in _mappings)
@@ -245,6 +248,43 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return _min + step >= 0;
             else
                 return 127 >= _max + step;
+        }
+
+
+        ////////////
+        // pestrela: inc channel
+        public void IncDecCh(int step)
+        {
+            foreach (var mapping in _mappings)
+            {
+                if (_isCCs)
+                    incDecCC_Ch(mapping, step);
+                else if (_isNotes)
+                    incDecNote_Ch(mapping, step);
+            }
+
+            analyzeSelection(true);
+            updateMenus(false, true);
+        }
+
+        public bool CanIncDecCh(int step = 0)
+        {
+            if (!_allBound)
+                return false;
+
+            if (!IsGenericMidi)
+                return false;
+
+            if (_hasCombo || !(_isCCs || _isNotes))
+                return false;
+
+            if ((_min_ch + step) < 1)
+                return false;
+            else if ((_max_ch + step) > 16)
+                return false;
+            else
+                return true;
+            
         }
 
 
@@ -275,10 +315,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
                 _selectedNotes = notes.Where(n => n != null).OrderBy(n => n).Cast<object>().ToList();
 
-                bool allBound = notes.All(n => n != null);
-                _isCCs = allBound && notes.All(n => n.Contains("CC"));
-                _isNotes = allBound && notes.All(n => n.Contains("Note"));
-                _hasCombo = allBound && notes.Any(n => n.Contains("+"));
+                _allBound = notes.All(n => n != null);
+                _isCCs = _allBound && notes.All(n => n.Contains("CC"));
+                _isNotes = _allBound && notes.All(n => n.Contains("Note"));
+                _hasCombo = _allBound && notes.Any(n => n.Contains("+"));
 
                 if (_isCCs)
                 {
@@ -298,15 +338,36 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     _min = 0;
                     _max = 127;
                 }
+
+                // pestrela: check we can inc/dec the channels
+                var channels2 = channels.Select(n => n.Substring(2, 2));
+                var channels3 = channels2.Select(n => Int32.Parse(n));
+                if (_allBound)
+                {
+                    _min_ch = channels3.Min();
+                    _max_ch = channels3.Max();
+                }
+                else
+                {
+                    _min_ch = 0;
+                    _max_ch = 0;
+                }
+
+                _variousChannels = channels.Count() > 1;
+                if (!_variousChannels && String.IsNullOrEmpty(_channel))
+                    setChannel(channels.Single());
             }
             else
             {
                 _selectedNotes = _proprietaryDefinitions.Where(n => notes.Contains(n.Note)).DistinctBy(d => d.Note).OrderBy(d => d.Note).Cast<object>().ToList();
             }
 
+
+            // pestrea: why is this duplicated?
             _variousNotes = notes.Count() > 1;
             if (!_variousNotes && (String.IsNullOrEmpty(_note) || allowOverrideNote))
                 setNote(notes.Single());
+                       
         }
 
         private void setChannel(string channel)
@@ -434,6 +495,46 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
             mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, oldBinding.Channel, keyConverter.GetKeyTextIPN(newKey)));
         }
+
+
+        // pestrela: manipulate channel
+        // private String incDec_channel(String oldCh, int step)
+        private int incDec_channel(int oldCh, int step)
+        {
+            return oldCh + step;
+
+            /*
+            String ch_st = oldCh.Substring(2, 2);
+            int ch = Int32.Parse(ch_st);
+            ch = ch + step;
+
+            String newCh = String.Format("Ch{02}", ch);
+            return newCh;*/
+        }
+
+
+        private void incDecCC_Ch(MappingViewModel mapping, int step)
+        {
+            var oldBinding = mapping.MidiBinding as ControlChangeMidiDefinition;
+
+            var oldCh = oldBinding.Channel;
+            var newCh = incDec_channel(oldCh, step);
+
+            mapping.SetBinding(new ControlChangeMidiDefinition(oldBinding.Type, newCh, oldBinding.Cc));
+        }
+
+        private void incDecNote_Ch(MappingViewModel mapping, int step)
+        {
+            var oldBinding = mapping.MidiBinding as NoteMidiDefinition;
+
+            var oldCh = oldBinding.Channel;
+            var newCh = incDec_channel(oldCh, step);
+            
+            mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, newCh, oldBinding.KeyText));
+        }
+
+        ////////////
+
 
         private void applyMidiRange()
         {

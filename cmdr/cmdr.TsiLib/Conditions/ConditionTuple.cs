@@ -60,9 +60,11 @@ namespace cmdr.TsiLib.Conditions
             SetCondition(rawSettings, ConditionNumber.Two, swap);           
         }
 
+        // todo: break conditions into 2x entries again
         public override string ToString()
         {
-            var conditions = new[] { Condition1, Condition2 }.Where(c => c != null).OrderBy(c => c.ToString());
+            var conditions = new[] { Condition1, Condition2 }.Where(c => c != null);
+            conditions.OrderBy(c => c.ToString());   // ???
             return String.Join(" AND ", conditions.Select(c => c.ToString()));
         } 
 

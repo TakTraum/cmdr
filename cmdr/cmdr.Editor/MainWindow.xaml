@@ -27,6 +27,10 @@
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LearnCommand, Mode=OneTime}"/>
         <KeyBinding Key="OemPlus" Modifiers="Control" Command="{Binding IncOneCommand, Mode=OneTime}"/>
         <KeyBinding Key="OemMinus" Modifiers="Control" Command="{Binding DecOneCommand, Mode=OneTime}"/>
+        <KeyBinding Key="OemPlus" Modifiers="Shift" Command="{Binding IncPadCommand, Mode=OneTime}"/>
+        <KeyBinding Key="OemMinus" Modifiers="Shift" Command="{Binding DecPadCommand, Mode=OneTime}"/>
+        <KeyBinding Key="OemPlus" Modifiers="Alt" Command="{Binding IncChCommand, Mode=OneTime}"/>
+        <KeyBinding Key="OemMinus" Modifiers="Alt" Command="{Binding DecChCommand, Mode=OneTime}"/>
         <KeyBinding Key="F1" Command="{Binding HelpCommand, Mode=OneTime}"/>
     </Window.InputBindings>
     <DockPanel LastChildFill="True">

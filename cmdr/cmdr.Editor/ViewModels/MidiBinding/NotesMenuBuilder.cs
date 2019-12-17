@@ -64,6 +64,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var notesMenu = new MenuItemViewModel { Text = "Note" };
             root.Children.Add(notesMenu);
 
+            // pestrela: TODO: make an setting to show notes per Note or per number
+
+            bool add_count = false;
+            int count = 0;
             int maxOctave;
             var specialNotes = new[] { "G#", "A", "A#", "B" };
             MenuItemViewModel noteMenu = null;
@@ -75,7 +79,23 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 maxOctave = specialNotes.Contains(note) ? 8 : 9;
 
                 for (int i = -1; i <= maxOctave; i++)
-                    noteMenu.Children.Add(new MenuItemViewModel { Text = i.ToString(), Tag = String.Format("Note.{0}", note + i) });
+                {
+                    String text;
+                    String tag;
+
+                    if (add_count)
+                    {
+                        text = String.Format("{0} ({1})", i.ToString(), count);
+                        tag = String.Format("Note.{0} ({1})", note + i, count);
+                    } else {
+                        text = String.Format("{0}", i.ToString());
+                        tag = String.Format("Note.{0}", note + i);
+
+                    }
+
+                    noteMenu.Children.Add(new MenuItemViewModel { Text = text, Tag = tag });
+                    count++;
+                }
             }
 
             #endregion

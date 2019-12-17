@@ -52,7 +52,38 @@ namespace cmdr.Editor.ViewModels
 
         public AMidiDefinition MidiBinding { get { return _mapping.MidiBinding;} }
 
-        public string MappedTo { get { return (_mapping.MidiBinding != null) ? _mapping.MidiBinding.Note : String.Empty; } }
+        public string MappedTo
+        {
+            get
+            {
+                return (_mapping.MidiBinding != null)
+                   ? _mapping.MidiBinding.Note : String.Empty;
+            }
+        }
+
+        public string MappedTo_OnlyNote
+        {
+            get
+            {
+                if (_mapping.MidiBinding == null)
+                {
+                    return String.Empty;
+
+                }
+                else
+                {
+                    String ret = _mapping.MidiBinding.Note;
+                    int len = ret.Length;
+
+                    String channel = ret.Substring(0, 4);
+                    String rest = ret.Substring(5, len - 5);
+
+                    ret = rest + "." + channel;
+                    return ret;
+                }
+            }
+        }
+
 
         public bool CanOverrideFactoryMap { get { return _mapping.CanOverrideFactoryMap; } }
 
@@ -84,6 +115,7 @@ namespace cmdr.Editor.ViewModels
             {
                 raisePropertyChanged("MidiBinding");
                 raisePropertyChanged("MappedTo");
+                raisePropertyChanged("MappedTo_OnlyNote");
                 IsChanged = true;
             }
         }

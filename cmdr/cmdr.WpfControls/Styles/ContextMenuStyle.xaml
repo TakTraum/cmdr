@@ -101,7 +101,7 @@
                       Fill="{StaticResource GlyphBrush}" />
                 <Popup x:Name="Popup"
                        Placement="Right" HorizontalOffset="0" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True"
-                       Focusable="False" PopupAnimation="Fade">
+                       Focusable="False" PopupAnimation="None">
                     <Border x:Name="SubmenuBorder"
                             SnapsToDevicePixels="True" Background="{StaticResource WindowBackgroundBrush}"
                             BorderBrush="{StaticResource SolidBorderBrush}" BorderThickness="1" >
