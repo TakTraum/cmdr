@@ -49,3 +49,12 @@ This is how the filtering remote branch was merged.
   git branch -a -vv
   git checkout remotes/origin/feature/filtering  
     
+
+
+	
+## WPF Filtering
+
+pull request: https://github.com/pestrela/cmdr/commit/b7b6312bf4e9fe7649e1d8a88d6b71a910489465
+original WPF example: https://www.codeproject.com/Articles/41755/Filtering-the-WPF-DataGrid-automatically-via-the-h
+unchanged datagrid tutorial: https://www.wpftutorial.net/DataGrid.html 
+

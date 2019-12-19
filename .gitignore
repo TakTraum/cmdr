@@ -2,6 +2,6 @@
 bin/
 obj/
 *.suo
-/cmdr/.vs/
-/cmdr/packages/
-/.vs/
+cmdr/.vs/
+cmdr/packages/
+.vs/

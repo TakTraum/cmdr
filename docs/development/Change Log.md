@@ -36,3 +36,4 @@ Upcoming release 0.9.7
 See also the TakTraum/cmdr issue list: https://github.com/TakTraum/cmdr/issues
 See also the old Codeplex issue list (ignore the chrome warning):  https://archive.codeplex.com/?p=cmdr  
 
+
