@@ -117,9 +117,12 @@
             <Trigger Property="IsHighlighted" Value="True">
                 <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectedBackgroundBrush}"/>
             </Trigger>
-            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="True">
+            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="True" >
                 <Setter TargetName="SubmenuBorder" Property="CornerRadius" Value="4"/>
                 <Setter TargetName="SubmenuBorder" Property="Padding" Value="0,3,0,3"/>
+            </Trigger>
+            <!--  pestrela - removed fade on Add command as well.  -->
+            <Trigger SourceName="Popup" Property="Popup.PopupAnimation" Value="None" >
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>

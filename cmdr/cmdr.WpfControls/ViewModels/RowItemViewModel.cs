@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using cmdr.WpfControls.CustomDataGrid;
 
 namespace cmdr.WpfControls.ViewModels
 {
@@ -34,6 +35,16 @@ namespace cmdr.WpfControls.ViewModels
             _item = item;
         }
 
+        public void ClearFiltering()
+        {
+            if (ParentSelector == null)
+                return;
+
+            if (ParentSelector is CustomDataGrid.CustomDataGrid)
+                (ParentSelector as CustomDataGrid.CustomDataGrid).ClearFiltering();
+            else
+                throw new InvalidOperationException("Target object has no ClearFiltering method.");
+        }
 
         public void BringIntoView()
         {

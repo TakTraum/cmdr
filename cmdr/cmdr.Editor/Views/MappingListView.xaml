@@ -40,8 +40,8 @@
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.ConditionExpression, Mode=OneWay}" Header="Condition" Width="150" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.Interaction, Mode=OneWay}" Header="Interaction" Width="100" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.MappedTo, Mode=OneWay}" Header="Mapped To" Width="100" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Item.MappedTo_OnlyNote, Mode=OneWay}" Header="Note" Width="100" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.Comment, UpdateSourceTrigger=PropertyChanged}" Header="Comment" MinWidth="75" Width="*"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.MappedTo_OnlyNote, Mode=OneWay}" Header="Note" Width="100" IsReadOnly="True"/>
             </DataGrid.Columns>
             <DataGrid.InputBindings>
                 <KeyBinding Key="C" Modifiers="Ctrl" Command="ApplicationCommands.NotACommand"/>

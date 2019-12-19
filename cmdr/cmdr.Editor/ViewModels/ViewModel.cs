@@ -145,7 +145,7 @@ namespace cmdr.Editor.ViewModels
         private ICommand _incChCommand;
         public ICommand IncChCommand
         {
-            get { return _incChCommand ?? (_incPadCommand = new CommandHandler(() => incDecCh(1), () => canIncDecCh(1))); }
+            get { return _incChCommand ?? (_incChCommand = new CommandHandler(() => incDecCh(1), () => canIncDecCh(1))); }
         }
 
         private ICommand _decChCommand;
@@ -153,6 +153,21 @@ namespace cmdr.Editor.ViewModels
         {
             get { return _decChCommand ?? (_decChCommand = new CommandHandler(() => incDecCh(-1), () => canIncDecCh(-1))); }
         }
+
+        /////////
+        private ICommand _removeFiltering;
+        public ICommand RemoveFiltering
+        {
+            get { return _removeFiltering ?? (_removeFiltering = new CommandHandler(() => removeFiltering(), () => canRemoveFiltering())); } 
+        }
+
+        private ICommand _selectAll;
+        public ICommand SelectAll
+        {
+            get { return _selectAll ?? (_selectAll = new CommandHandler(() => selectAll(), null)); }   // () => canIncDecCh())); }
+        }
+
+
 
         private ICommand _helpCommand;
         public ICommand HelpCommand
@@ -336,6 +351,94 @@ namespace cmdr.Editor.ViewModels
                 return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDecCh(step);
             return false;
         }
+
+
+
+        // The grid always has CTRL+a. This is when the focus is elsewhere
+        private void selectAll()
+        {
+            int i;
+            // SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecCh(step);
+        }
+
+        private bool canSelectAll()
+        {
+            return true;
+        }
+
+        private void removeFiltering()
+        {
+            int i;
+
+            var dev = SelectedTsiFileModel.SelectedDevice;
+            dev.Mappings[0].ClearFiltering();
+
+            // return;
+
+            var a1 = SelectedTsiFileModel;
+            var a2 = SelectedTsiFileModel;
+            var a3 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel;
+            var a4 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor;
+            // var b1 = a2.Mappings[0]; // .ParentSelector;
+
+            //_selectedMappings.Last().BringIntoView();
+            // b0.ClearFiltering();
+
+            i = 0;
+        }
+
+        private bool canRemoveFiltering()
+        {
+            if(is_dev_loaded())
+            {
+                var tsi = SelectedTsiFileModel.SelectedDevice;
+                if (tsi.Mappings.Count() > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /*
+    var tsi = SelectedTsiFileModel;
+    var dev = SelectedTsiFileModel.SelectedDevice;
+        var a1 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel;
+        var a2 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor;
+
+        var b0 = a0.Mappings[0]; // .ParentSelector;
+
+        //_selectedMappings.Last().BringIntoView();
+        b0.ClearFiltering();
+
+        i = 0;
+
+        // SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecCh(step);
+    }*/
+
+        private bool is_dev_loaded()
+        {
+            return (SelectedTsiFileModel != null
+                && SelectedTsiFileModel.SelectedDevice != null
+                );
+        }
+
+        private bool is_mvm_loaded()
+        {
+            return (SelectedTsiFileModel != null
+                && SelectedTsiFileModel.SelectedDevice != null
+                && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel != null
+                && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null);
+        }
+
+        private bool is_mbe_loaded()
+        {
+            return (SelectedTsiFileModel != null
+                && SelectedTsiFileModel.SelectedDevice != null
+                && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel != null
+                && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null);
+        }
+
 
         #endregion
 

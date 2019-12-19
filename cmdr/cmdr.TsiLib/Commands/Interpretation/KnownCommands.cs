@@ -292,11 +292,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.Mixer_EQ, "Mid Low Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         Mixer_EQ_MidLowAdjust = 316,
 
-        [CommandDescription(Categories.Mixer, "Filter On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Mixer_FilterOn = 319,
-
-        [CommandDescription(Categories.Mixer, "Filter Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
-        Mixer_FilterAdjust = 320,
+        // pestrela: Filter was moved to TP3 region, and renamed MixerFX
 
         [CommandDescription(Categories.Mixer, "FX Unit 1 On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         Mixer_FXUnit1On = 321,
@@ -862,6 +858,28 @@ namespace cmdr.TsiLib.Commands.Interpretation
         #endregion
 
         #endregion
+
+        // Traktor changelog: https://www.native-instruments.com/forum/forums/traktor-pro-public-beta-test.393/
+                
+        #region new commands for Traktor 3.0
+
+        [CommandDescription(Categories.DeckCommon, "Flux Reverse Playback On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        DeckCommon_FluxReversePlaybackOn = 874,
+
+        [CommandDescription(Categories.DeckCommon, "Reverse Playback On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        DeckCommon_ReversePlaybackOn = 201,
+
+        [CommandDescription(Categories.Mixer, "Mixer FX On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Mixer_FilterOn = 319,
+
+        [CommandDescription(Categories.Mixer, "Mixer FX Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        Mixer_FilterAdjust = 320,
+
+        [CommandDescription(Categories.DeckCommon, "Mixer FX Selector", TargetType.Track, typeof(EnumInCommand<MixerFx>), typeof(EnumOutCommand<MixerFx>))]
+        Mixer_MixerFXSelector = 349,
+        
+        #endregion
+
 
         [CommandDescription(Categories.DeckCommon_FreezeMode, "Freeze Slice Count Adjust", TargetType.Track, typeof(EnumInCommand<FreezeSliceCount>), typeof(EnumOutCommand<FreezeSliceCount>))]
         DeckCommon_FreezeMode_FreezeSliceCountAdjust = 802,

@@ -14,14 +14,17 @@
 ## Recent changes
 
 Upcoming release 0.9.7
-* Keyboard shortcuts: 
+* New features:
+  * added new commands for TP3.0 (MixerFX, Flux reverse, Reverse)  
+  * added [grep-style string filtering per column](https://github.com/TakTraum/cmdr/pull/9). Contributed by Tom Weeps.
+  * added ability to sort on either Notes/CCs and Channels
+* New Keyboard shortcuts: 
   * alt+"+"/"-": move channel up/down
   * shift+"+"/"-": move note 8 positions up/down (matches pads)
-* Columns: 
-  * added [grep-style string filtering per column](https://github.com/TakTraum/cmdr/pull/9). Contributed by Tom Weeps.
-  * "note column". This enables sort by notes instead of channels
-* Misc:
-  * removed slow pop-up "fade" animation
+  * ctrl+Q: clear filtering
+  * ctrl+A: select all
+* Removed:
+  * removed slow pop-up "fade" animations, tri-state sorting
 
 ## 2019 WishList
 

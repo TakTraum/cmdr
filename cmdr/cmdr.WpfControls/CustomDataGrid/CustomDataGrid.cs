@@ -19,12 +19,91 @@ namespace cmdr.WpfControls.CustomDataGrid
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomDataGrid), new FrameworkPropertyMetadata(typeof(CustomDataGrid)));
         }
 
+        #region clear_filtering
+
+        private Dictionary<string, TextBox> textBoxes;
+
+        private void RememberTextbox(TextBox textBox, DataGridColumnHeader header)
+        {
+            // Try to get the property bound to the column.
+            // This should be stored as datacontext.
+            string columnName = header.DataContext != null ?
+                                        header.DataContext.ToString() : "";
+
+            TextBox filter;
+            if (!textBoxes.TryGetValue(columnName, out filter))
+            {
+                textBoxes.Add(columnName, textBox);
+            }
+
+        }
+        
+        ///
+        // private void remember_textbox_list(TextBox filterTextBox, DataGridColumnHeader header)
+        // {
+        //     int i = 9;
+        //     List<TextBox> new_list = new List<TextBox>();/
+        //
+        //     m_filtertb.Add(filterTextBox);  //pestrela: clear filter feature
+        //
+        // }
+        // 
+         
+
+        public void ClearFiltering()
+        {
+            int ii = 0;
+
+            // using a dictionary
+            foreach (KeyValuePair<string, TextBox> entry in textBoxes)
+            {
+                String key = entry.Key;
+                TextBox tb = entry.Value;
+
+                // do something with entry.Value or entry.Key
+                //TextBox tb = m_filtertb[i];
+                String contents = tb.Text;
+                // tb.Text = string.Empty;
+                tb.Text = "";
+            }
+
+            ApplyFilters();
+        }
+
+
+        /* 
+        public void ClearFiltering_list()
+        {
+
+            // version using a list. This had memory leak problems
+            for (int i = 0; i < m_filtertb.Count; i++)
+            // foreach (TextBox tb in m_filtertb.Select(x => x))
+            {
+                TextBox tb = m_filtertb[i];
+                String a = tb.Text ;
+                // tb.Text = string.Empty;
+                tb.Text = "";
+            }
+
+            //if (this.view != null)
+            //    this.view.Filter = null;
+
+            //columnFilters = new Dictionary<string, string>();
+
+            // remove list
+            m_filtertb.Clear();
+          }        */
+        
+
+        #endregion
 
         public CustomDataGrid()
         {
             // Initialize lists
+            textBoxes = new Dictionary<string, TextBox>();
             columnFilters = new Dictionary<string, ColumnFilter>();
             propertyCache = new Dictionary<string, PropertyInfo>();
+
             // Add a handler for all text changes
             AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(OnTextChanged), false);
             // Datacontext changed, so clear the cache
@@ -105,23 +184,25 @@ namespace cmdr.WpfControls.CustomDataGrid
         /// </summary>
         private Dictionary<string, PropertyInfo> propertyCache;
 
-
+ 
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
             // Get the textbox
             TextBox filterTextBox = e.OriginalSource as TextBox;
+
             // Get the header of the textbox
             DataGridColumnHeader header = TryFindParent<DataGridColumnHeader>(filterTextBox);
            
             if (header != null)
             {
+                RememberTextbox(filterTextBox, header);
                 UpdateFilter(filterTextBox, header);
                 ApplyFilters();
             }
 
             e.Handled = true;
         }
-
+        
         /// <summary>
         /// Update the internal filter
         /// </summary>
@@ -159,7 +240,7 @@ namespace cmdr.WpfControls.CustomDataGrid
                 filter.FilterValue = textBox.Text;
             }           
         }
-
+        
 
         /// <summary>
         /// Apply the filters
@@ -303,7 +384,78 @@ namespace cmdr.WpfControls.CustomDataGrid
             public Binding ColumnBinding { get; set; }
             public string FilterValue { get; set; }
         }
-
+       
         #endregion Filtering
-    }   
+    }
 }
+
+
+/*
+ Improvements from the comments:
+ 
+
+    ------
+    Nice, but I didn't want the filter textbox to dissapear if it has the focus... Pin	Member	Mike Emerson	20-Feb-11 0:05 
+upvote
+downvote	
+So I replaced the Trigger code in the ControlTemplate with
+
+<MultiTrigger>
+<MultiTrigger.Conditions>
+<Condition Property="IsMouseOver" Value="False"/>
+<Condition Property="IsFocused" SourceName="filterTextBox" Value="False"/>
+</MultiTrigger.Conditions>
+<MultiTrigger.ExitActions>
+<BeginStoryboard x:Name="ShowFilterControl_BeginStoryboard" Storyboard="{StaticResource ShowFilterControl}"/>
+<StopStoryboard BeginStoryboardName="HideFilterControl_BeginShowFilterControl"/>
+</MultiTrigger.ExitActions>
+<MultiTrigger.EnterActions>
+<BeginStoryboard x:Name="HideFilterControl_BeginShowFilterControl" Storyboard="{StaticResource HideFilterControl}"/>
+<StopStoryboard BeginStoryboardName="ShowFilterControl_BeginStoryboard"/>
+</MultiTrigger.EnterActions>
+</MultiTrigger>
+
+
+Works like a charm.
+
+    ------
+    Go to ParentThe FilteringDataGrid is great, but I almost abandoned it because my datagrid is never bound to a simple list of properties. 
+    Your input saved me. Just in case somebody needs C# code: here is mine (note that I renamed some member names to meet my standard):
+
+Hide   Expand    Copy Code
+private object GetPropertyValue(object item, string property)
+{
+    object value = null;
+    PropertyInfo pi = null;
+
+    if (property.Contains("."))
+    {
+        int n = property.IndexOf('.');
+        var parent = property.Substring(0, n);
+        if (_propertyCache.ContainsKey(parent))
+            pi = _propertyCache[parent];
+        else
+        {
+            pi = item.GetType().GetProperty(parent);
+            _propertyCache.Add(parent, pi);
+        }
+        var child = pi.GetValue(item, null);
+        if (child != null)
+            value = GetPropertyValue(child, property.Substring(n + 1));
+    }
+    else
+    {
+        if (_propertyCache.ContainsKey(property))
+            pi = _propertyCache[property];
+        else
+        {
+            pi = item.GetType().GetProperty(property);
+            _propertyCache.Add(property, pi);
+        }
+        if (pi != null)
+            value = pi.GetValue(item, null);
+    }
+    return value;
+}
+
+ */

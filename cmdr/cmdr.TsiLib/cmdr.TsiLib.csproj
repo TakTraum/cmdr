@@ -102,6 +102,7 @@
     <Compile Include="Enums\CueType.cs" />
     <Compile Include="Enums\Deck.cs" />
     <Compile Include="Enums\DeckFlavor.cs" />
+    <Compile Include="Enums\MixerFX.cs" />
     <Compile Include="Enums\DeckSize.cs" />
     <Compile Include="Enums\DeviceTarget.cs" />
     <Compile Include="Enums\DeviceType.cs" />
