@@ -52,7 +52,9 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         public void ClearFiltering()
         {
+            var a = textBoxes;
             int ii = 0;
+            
 
             // using a dictionary
             foreach (KeyValuePair<string, TextBox> entry in textBoxes)
@@ -64,8 +66,27 @@ namespace cmdr.WpfControls.CustomDataGrid
                 //TextBox tb = m_filtertb[i];
                 String contents = tb.Text;
                 // tb.Text = string.Empty;
+
+                tb.Text = ".";
                 tb.Text = "";
             }
+
+
+            foreach (KeyValuePair<string, ColumnFilter> entry in columnFilters)
+            {
+                String key = entry.Key;
+                ColumnFilter filter = entry.Value;
+
+                // do something with entry.Value or entry.Key
+                //TextBox tb = m_filtertb[i];
+                //String contents = tb.Text;
+                // tb.Text = string.Empty;
+
+                // tb.Text = ".";
+                //tb.Text = "";
+                filter.FilterValue = "";
+            }
+
 
             ApplyFilters();
         }

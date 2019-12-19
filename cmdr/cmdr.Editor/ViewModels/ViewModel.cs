@@ -158,8 +158,18 @@ namespace cmdr.Editor.ViewModels
         private ICommand _removeFiltering;
         public ICommand RemoveFiltering
         {
-            get { return _removeFiltering ?? (_removeFiltering = new CommandHandler(() => removeFiltering(), () => canRemoveFiltering())); } 
+            get { return _removeFiltering ?? (_removeFiltering = new CommandHandler(() => removeFiltering(), () => canRemoveFiltering())); }
         }
+
+
+        private ICommand _debugDoAction;
+        public ICommand DebugDoAction
+        {
+            get { return _debugDoAction ?? (_debugDoAction = new CommandHandler(() => debugDoAction(), null )); } 
+        }
+
+
+
 
         private ICommand _selectAll;
         public ICommand SelectAll
@@ -366,25 +376,26 @@ namespace cmdr.Editor.ViewModels
             return true;
         }
 
+
+        // this is a dummy action triggered by a shortcut
+        // its only here to inspect the pointers of *this in a debugger.
+        private void debugDoAction()
+        {
+            int i = 0;
+            int j;
+
+        }
+
         private void removeFiltering()
         {
             int i;
 
             var dev = SelectedTsiFileModel.SelectedDevice;
-            dev.Mappings[0].ClearFiltering();
 
-            // return;
-
-            var a1 = SelectedTsiFileModel;
-            var a2 = SelectedTsiFileModel;
-            var a3 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel;
-            var a4 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor;
-            // var b1 = a2.Mappings[0]; // .ParentSelector;
-
-            //_selectedMappings.Last().BringIntoView();
-            // b0.ClearFiltering();
-
-            i = 0;
+            if (canRemoveFiltering())
+            {
+                dev.Mappings[0].ClearFiltering();
+            }
         }
 
         private bool canRemoveFiltering()
@@ -516,6 +527,11 @@ namespace cmdr.Editor.ViewModels
                 AppTitle = String.Format("{0} - {1}", APPNAME, _mdiContainer.SelectedMdiChild.Title);
             else
                 AppTitle = APPNAME;
+
+            // pestrela: avoid confusion by removing filtering always
+            // it would be better to reaply filtering in the new device list
+            removeFiltering();
+
         }
 
         private async Task openFile(string path)
