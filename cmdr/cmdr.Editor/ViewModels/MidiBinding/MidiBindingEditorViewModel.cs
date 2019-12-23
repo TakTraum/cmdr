@@ -502,14 +502,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         private int incDec_channel(int oldCh, int step)
         {
             return oldCh + step;
-
-            /*
-            String ch_st = oldCh.Substring(2, 2);
-            int ch = Int32.Parse(ch_st);
-            ch = ch + step;
-
-            String newCh = String.Format("Ch{02}", ch);
-            return newCh;*/
         }
 
 

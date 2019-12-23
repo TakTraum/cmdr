@@ -56,7 +56,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             int ii = 0;
             
 
-            // using a dictionary
+            // clear the text boxes
             foreach (KeyValuePair<string, TextBox> entry in textBoxes)
             {
                 String key = entry.Key;
@@ -67,11 +67,10 @@ namespace cmdr.WpfControls.CustomDataGrid
                 String contents = tb.Text;
                 // tb.Text = string.Empty;
 
-                tb.Text = ".";
                 tb.Text = "";
             }
 
-
+            // also clear the internal filters
             foreach (KeyValuePair<string, ColumnFilter> entry in columnFilters)
             {
                 String key = entry.Key;
@@ -86,7 +85,6 @@ namespace cmdr.WpfControls.CustomDataGrid
                 //tb.Text = "";
                 filter.FilterValue = "";
             }
-
 
             ApplyFilters();
         }

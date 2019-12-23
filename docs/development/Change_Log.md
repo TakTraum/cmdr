@@ -21,8 +21,13 @@ Upcoming release 0.9.7
 * New Keyboard shortcuts: 
   * alt+"+"/"-": move channel up/down
   * shift+"+"/"-": move note 8 positions up/down (matches pads)
-  * ctrl+Q: clear filtering
+  * ctrl+9/0: Rotate assignement
+  * ctrl+Q: clear grid filtering
   * ctrl+A: select all
+* Modifier renaming:
+  * ctrl/shift+1/2: Inc/Dec modifier condition1 (both keys and values)
+  * ctrl/shift+3/4: Inc/Dec modifier condition2 (both keys and values)
+  * ctrl+5/6: Inc/Dec modifier command
 * Removed:
   * removed slow pop-up "fade" animations, tri-state sorting
 
@@ -37,4 +42,6 @@ Upcoming release 0.9.7
 * See also the TakTraum/cmdr issue list: https://github.com/TakTraum/cmdr/issues
 * See also the old Codeplex issue list (ignore the chrome warning):  https://archive.codeplex.com/?p=cmdr  
 
+* mass swap conditions feature  <<<
+* sort commands by same order as controller manager
 

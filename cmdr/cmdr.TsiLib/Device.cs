@@ -304,6 +304,7 @@ namespace cmdr.TsiLib
             }
         }
 
+        // pestrela: move this to per entry again
         private void updateEncoderMode()
         {
             if (TypeStr != TYPE_STRING_GENERIC_MIDI)

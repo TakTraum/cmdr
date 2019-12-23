@@ -168,6 +168,133 @@ namespace cmdr.Editor.ViewModels
             get { return _debugDoAction ?? (_debugDoAction = new CommandHandler(() => debugDoAction(), null )); } 
         }
 
+        // Rotate assigments
+        private ICommand _decAssignment;
+        public ICommand DecAssignment
+        {
+            get {
+                    return _decAssignment ?? (
+                        _decAssignment= new CommandHandler(() => rotateAssignment(-1), () => canRotateAssignment(-1) ));
+            }
+        }
+
+        private ICommand _incAssignment;
+        public ICommand IncAssignment
+        {
+            get {
+                return _incAssignment?? (
+                    _incAssignment= new CommandHandler(() => rotateAssignment(1), () => canRotateAssignment(1)));
+            }
+        }
+
+        private ICommand _incModifierCommand;
+        public ICommand IncModifierCommand
+        {
+            get
+            {
+                return _incModifierCommand ?? (
+                    _incModifierCommand = new CommandHandler(() => rotateModifierCommand(1), () => canRotateModifierCommand(1)));
+            }
+        }
+
+        private ICommand _decModifierCommand;
+        public ICommand DecModifierCommand
+        {
+            get
+            {
+                return _decModifierCommand ?? (
+                    _decModifierCommand = new CommandHandler(() => rotateModifierCommand(-1), () => canRotateModifierCommand(-1)));
+            }
+        }
+
+
+
+        private ICommand _incModifierCondition1;
+        public ICommand IncModifierCondition1
+        {
+            get
+            {
+                return _incModifierCondition1 ?? (
+                    _incModifierCondition1 = new CommandHandler(() => rotateModifierCondition(1, 1), () => canRotateModifierCondition(1, 1)));
+            }
+        }
+
+        private ICommand _decModifierCondition1;
+        public ICommand DecModifierCondition1
+        {
+            get
+            {
+                return _decModifierCondition1 ?? (
+                    _decModifierCondition1 = new CommandHandler(() => rotateModifierCondition(1, -1), () => canRotateModifierCondition(1, -1)));
+            }
+        }
+
+        private ICommand _incModifierConditionValue1;
+        public ICommand IncModifierConditionValue1
+        {
+            get
+            {
+                return _incModifierConditionValue1 ?? (
+                    _incModifierConditionValue1 = new CommandHandler(() => rotateModifierConditionValue(1, 1), () => canRotateModifierConditionValue(1, 1)));
+            }
+        }
+
+        private ICommand _decModifierConditionValue1;
+        public ICommand DecModifierConditionValue1
+        {
+            get
+            {
+                return _decModifierConditionValue1 ?? (
+                    _decModifierConditionValue1 = new CommandHandler(() => rotateModifierConditionValue(1, -1), () => canRotateModifierConditionValue(1, -1)));
+            }
+        }
+
+
+
+
+        private ICommand _incModifierCondition2;
+        public ICommand IncModifierCondition2
+        {
+            get
+            {
+                return _incModifierCondition2 ?? (
+                    _incModifierCondition2 = new CommandHandler(() => rotateModifierCondition(2, 1), () => canRotateModifierCondition(2, 1)));
+            }
+        }
+
+        private ICommand _decModifierCondition2;
+        public ICommand DecModifierCondition2
+        {
+            get
+            {
+                return _decModifierCondition2 ?? (
+                    _decModifierCondition2 = new CommandHandler(() => rotateModifierCondition(2,-1), () => canRotateModifierCondition(2,-1)));
+            }
+        }
+
+
+
+        private ICommand _incModifierConditionValue2;
+        public ICommand IncModifierConditionValue2
+        {
+            get
+            {
+                return _incModifierConditionValue2 ?? (
+                    _incModifierConditionValue2 = new CommandHandler(() => rotateModifierConditionValue(2, 1), () => canRotateModifierConditionValue(2, 1)));
+            }
+        }
+
+        private ICommand _decModifierConditionValue2;
+        public ICommand DecModifierConditionValue2
+        {
+            get
+            {
+                return _decModifierConditionValue2 ?? (
+                    _decModifierConditionValue2 = new CommandHandler(() => rotateModifierConditionValue(2, -1), () => canRotateModifierConditionValue(2, -1)));
+            }
+        }
+
+
 
 
 
@@ -388,12 +515,9 @@ namespace cmdr.Editor.ViewModels
 
         private void removeFiltering()
         {
-            int i;
-
-            var dev = SelectedTsiFileModel.SelectedDevice;
-
-            if (canRemoveFiltering())
+            if(canRemoveFiltering())
             {
+                var dev = SelectedTsiFileModel.SelectedDevice;
                 dev.Mappings[0].ClearFiltering();
             }
         }
@@ -411,21 +535,52 @@ namespace cmdr.Editor.ViewModels
             return false;
         }
 
-        /*
-    var tsi = SelectedTsiFileModel;
-    var dev = SelectedTsiFileModel.SelectedDevice;
-        var a1 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel;
-        var a2 = SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor;
+        private bool canRotateAssignment(int step)
+        {
+            return is_mvm_loaded();
+        }
 
-        var b0 = a0.Mappings[0]; // .ParentSelector;
 
-        //_selectedMappings.Last().BringIntoView();
-        b0.ClearFiltering();
+        private void rotateAssignment(int step)
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateAssignment(step);
+        }
 
-        i = 0;
 
-        // SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecCh(step);
-    }*/
+        private bool canRotateModifierCommand(int step)
+        {
+            return is_mvm_loaded();
+        }
+
+
+        private void rotateModifierCommand(int step)
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierCommand(step);
+        }
+
+        private bool canRotateModifierCondition(int which, int step)
+        {
+            return is_mvm_loaded();
+        }
+
+
+        private void rotateModifierCondition(int which, int step)
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierCondition(which, step);
+        }
+
+
+        private bool canRotateModifierConditionValue(int which, int step)
+        {
+            return is_mvm_loaded();
+        }
+
+
+        private void rotateModifierConditionValue(int which, int step)
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierConditionValue(which, step);
+        }
+
 
         private bool is_dev_loaded()
         {
@@ -439,7 +594,7 @@ namespace cmdr.Editor.ViewModels
             return (SelectedTsiFileModel != null
                 && SelectedTsiFileModel.SelectedDevice != null
                 && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel != null
-                && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null);
+                );
         }
 
         private bool is_mbe_loaded()
@@ -528,8 +683,10 @@ namespace cmdr.Editor.ViewModels
             else
                 AppTitle = APPNAME;
 
-            // pestrela: avoid confusion by removing filtering always
+            // pestrela: avoid confusion by removing grid filtering always
             // it would be better to reaply filtering in the new device list
+            //
+            // note2: check later if we can call this less often. For example not in "add command"
             removeFiltering();
 
         }
@@ -642,6 +799,9 @@ namespace cmdr.Editor.ViewModels
                 });
 
             _mru.Load();
+
+            // pestrela: todo load debug TSI for testing
+            // TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath)
 
             await ControllerDefaultMappings.Instance.LoadAsync(CmdrSettings.Instance.PathToControllerDefaultMappings);
         }

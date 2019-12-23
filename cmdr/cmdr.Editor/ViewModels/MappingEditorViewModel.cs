@@ -10,6 +10,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
+using System;
+using cmdr.TsiLib.Commands.Interpretation;
+using cmdr.TsiLib.Commands;
+using cmdr.TsiLib.Conditions;
+using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.TsiLib.MidiDefinitions;
+
 namespace cmdr.Editor.ViewModels
 {
     public class MappingEditorViewModel : ViewModelBase
@@ -148,6 +155,334 @@ namespace cmdr.Editor.ViewModels
             CommandEditor.Assignment = assignment;
             ConditionsEditor.Refresh();
         }
+
+        
+        public void rotateAssignment(int step)
+        {
+            foreach (var m in _mappings)
+            {
+                var assignmentOptions = m.Command.AssignmentOptions;
+                var target =  m.TargetType;
+                
+                MappingTargetDeck cur_assignment = m.Assignment;
+                MappingTargetDeck new_assignment;
+                MappingTargetDeck max_assignment = MappingTargetDeck.DorFX4orRemixDeck1Slot4;
+
+                // Todo: move this to class command
+                switch (target)
+                {
+                    case TargetType.Slot:
+                        max_assignment = MappingTargetDeck.RemixDeck4Slot4;
+                        break;
+
+                    case TargetType.Global:
+                        max_assignment = MappingTargetDeck.AorFX1orRemixDeck1Slot1OrGlobal;
+                        break;
+
+                    case TargetType.FX:
+                    case TargetType.Remix:
+                        max_assignment = MappingTargetDeck.DorFX4orRemixDeck1Slot4;
+                        break;
+
+                    case TargetType.Track:
+                    default:
+                        var Id = m.Command.Id;
+                        if ((KnownCommands)Id == KnownCommands.DeckCommon_DeckSizeSelector || (KnownCommands)Id == KnownCommands.DeckCommon_AdvancedPanelToggle) {
+                            max_assignment = MappingTargetDeck.BorFX2orRemixDeck1Slot2;
+
+                        }
+                        else
+                        {
+                            max_assignment = MappingTargetDeck.DorFX4orRemixDeck1Slot4;
+                        }
+                        break;
+                }
+
+                new_assignment = cur_assignment;
+                if (step > 0)
+                {
+                    if (cur_assignment >= max_assignment)
+                    {
+                        new_assignment = MappingTargetDeck.AorFX1orRemixDeck1Slot1OrGlobal;
+
+                    } else
+                    {
+                        new_assignment++;
+                    }
+                }
+                else if (step < 0)
+                {
+                    if (cur_assignment <= MappingTargetDeck.AorFX1orRemixDeck1Slot1OrGlobal)
+                    {
+                        new_assignment = max_assignment;
+                    }
+                    else
+                    {
+                        new_assignment--;
+                    }
+                }
+                m.ChangeAssignment(new_assignment);
+
+            }
+
+            ConditionsEditor.Refresh();
+
+            //analyzeSelection(true);
+            //updateMenus(false, true);
+        }
+
+
+
+        /*
+        public void rotateModifierCondition1(int which, int step)
+        {
+            var conditions_editor = this.ConditionsEditor;
+
+            var conditions_list = conditions_editor.Conditions;
+            var modifier_list = conditions_list[2].Children;
+            var new_modifier_model = modifier_list[2];
+
+
+            var cur_value = cond.Condition1.Value;
+
+            cond.setCondition_hack(ConditionNumber.One, new_modifier_model);
+
+            cond.Condition1.Value = cur_value;
+            cond.Refresh();
+            return;
+        }*/
+    
+            /*
+        public void rotateModifierCondition2(int which, int step)
+        {
+            var conditions_editor = this.ConditionsEditor;
+
+            var conditions_list = conditions_editor.Conditions;
+            var modifier_list = conditions_list[2].Children;
+            var new_modifier_model = modifier_list[2];
+            var cur_value = conditions_editor.Condition1.Value;
+
+            cond.Condition1.Value = cur_value;
+            cond.Refresh();
+            return;
+
+            foreach (var m in _mappings)
+            {
+                var condition1 = m.Conditions.Condition1;
+                var condition2 = m.Conditions.Condition2;
+
+                //ACondition condition = new ACondition();
+                //m.SetCondition(ConditionNumber.One, condition);
+
+                // hack
+                if (((KnownCommands)condition1.Id >= KnownCommands.Modifier_Modifier1) &&
+                    ((KnownCommands)condition1.Id <= KnownCommands.Modifier_Modifier8))
+                {
+                    var i = condition1.Id;
+                    //condition1.RawSettings.conditiononetarget++;
+                    //condition1;
+
+                    m.UpdateConditionExpression();
+                }
+            }
+        }*/
+
+        int rotate_modifier_key_int(int cur_modifier, int step)
+        {
+
+            int new_modifier = 1;
+            if (step > 0)
+            {
+                if (cur_modifier >= 8)
+                {
+                    new_modifier = 1;
+                }
+                else
+                {
+                    new_modifier = cur_modifier + 1;
+                }
+            }
+            else if (step <0)
+            {
+                if (cur_modifier <= 1)
+                {
+                    new_modifier = 8;
+                }
+                else
+                {
+                    new_modifier = cur_modifier - 1;
+                }
+            }
+            return new_modifier;
+        }
+
+        int rotate_modifier_value_int(int cur_modifier, int step)
+        {
+
+            int new_modifier = 1;
+            if (step > 0)
+            {
+                if (cur_modifier >= 7)
+                {
+                    new_modifier = 0;
+                }
+                else
+                {
+                    new_modifier = cur_modifier + 1;
+                }
+            }
+            else if (step < 0)
+            {
+                if (cur_modifier <= 0)
+                {
+                    new_modifier = 7;
+                }
+                else
+                {
+                    new_modifier = cur_modifier - 1;
+                }
+            }
+            return new_modifier;
+        }
+
+        // code based on conditionsEditorViewMode::setCondition()
+        public void rotateModifierCondition(int which, int step)
+        {
+            ConditionNumber number;
+            if (which == 1)
+                number = ConditionNumber.One;
+            else
+                number = ConditionNumber.Two;
+
+            var conditions_editor = this.ConditionsEditor;
+            var conditions_list = conditions_editor.Conditions;
+            var modifier_list = conditions_list[2].Children;
+
+            foreach (var mapping in _mappings)
+            {
+                ACondition cur_condition;
+                if (which == 1)
+                    cur_condition = mapping.Conditions.Condition1;
+                else
+                    cur_condition = mapping.Conditions.Condition2;
+
+                if (cur_condition == null)
+                    continue;       // ignore no condition
+
+                KnownCommands id = (KnownCommands)cur_condition.Id;
+                if (!((id >= KnownCommands.Modifier_Modifier1) &&
+                      (id <= KnownCommands.Modifier_Modifier8)))
+                    continue;       // ignore non-modifiers
+
+                var cur_value = cur_condition.GetValue();
+
+                ////
+                int cur_modifier = id - KnownCommands.Modifier_Modifier1 + 1;
+                int new_modifier = rotate_modifier_key_int(cur_modifier, step);
+
+                MenuItemViewModel item = modifier_list[new_modifier - 1];
+                ConditionProxy new_proxy = null;
+                ACondition new_condition = null;
+
+                if (item.Tag is ConditionProxy)
+                    new_proxy = item.Tag as ConditionProxy;
+                else if (item.Tag is ACondition)
+                    new_condition = item.Tag as ACondition;
+
+                if (new_proxy != null)
+                    mapping.SetCondition(number, new_proxy);
+                else if (new_condition != null)
+                    mapping.SetCondition(number, new_condition);
+                else
+                    mapping.SetCondition(number, new_condition); // clear condition with null value
+
+
+                cur_condition.SetValue(cur_value);
+                mapping.UpdateConditionExpression();
+            }
+            conditions_editor.Refresh();
+        }
+
+
+        public void rotateModifierConditionValue(int which, int step)
+        {
+            ConditionNumber number;
+            if (which == 1)
+                number = ConditionNumber.One;
+            else
+                number = ConditionNumber.Two;
+
+            var conditions_editor = this.ConditionsEditor;
+            var conditions_list = conditions_editor.Conditions;
+            var modifier_list = conditions_list[2].Children;
+
+            foreach (var mapping in _mappings)
+            {
+                ACondition cur_condition;
+                if (which == 1)
+                    cur_condition = mapping.Conditions.Condition1;
+                else
+                    cur_condition = mapping.Conditions.Condition2;
+
+                if (cur_condition == null)
+                    continue;       // ignore no condition
+
+                KnownCommands id = (KnownCommands)cur_condition.Id;
+                if (!((id >= KnownCommands.Modifier_Modifier1) &&
+                      (id <= KnownCommands.Modifier_Modifier8)))
+                    continue;       // ignore non-modifiers
+
+                ModifierValue cur_value = (ModifierValue)cur_condition.GetValue();
+                int cur_value_int = cur_value - ModifierValue._0;
+
+                int new_value_int = rotate_modifier_value_int(cur_value_int, step);
+                var new_value = ModifierValue._0 + new_value_int;
+                cur_condition.SetValue(new_value);
+
+                mapping.UpdateConditionExpression();
+            }
+            conditions_editor.Refresh();
+        }
+
+
+
+
+        //////////
+        public void rotateModifierCommand(int step)
+        {
+            foreach (var m in _mappings)
+            {
+                
+                var command = m.Command;
+                KnownCommands cur_id = (KnownCommands)m.Command.Id;
+                
+                if (!(
+                    (cur_id >= KnownCommands.Modifier_Modifier1) &&
+                    (cur_id <= KnownCommands.Modifier_Modifier8)
+                    ))
+                {
+                    continue;
+                }
+                
+                
+                int cur_modifier = cur_id - KnownCommands.Modifier_Modifier1 + 1;
+                int new_modifier = rotate_modifier_key_int(cur_modifier, step);
+
+                
+                KnownCommands new_id = KnownCommands.Modifier_Modifier1 + new_modifier - 1;
+                string new_name = String.Format("Modifier #{0}", new_modifier);    // this is a hack!
+                m.Command.hack_modifier(new_id, new_name);
+                //m.hack_modifier(new_id, new_name);
+
+                // would this the proper way to do this??
+                //
+                //    var _rawMapping = m._mapping.RawMapping;
+                //    ACommand Command = Commands.All.GetCommandProxy(_rawMapping.TraktorControlId, _rawMapping.Type).Create(_rawMapping.Settings);
+
+                m.UpdateInteraction();
+            }
+        }
+
 
         private void updateApplyMidiRangeOption()
         {

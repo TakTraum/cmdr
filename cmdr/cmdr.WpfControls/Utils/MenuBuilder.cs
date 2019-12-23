@@ -40,6 +40,8 @@ namespace cmdr.WpfControls.Utils
                 target.Children.AddRange(BuildList(proxies.Where(i => pathSelector(i) == p), proxyConverter));
             }
 
+
+            // pestrela: find how to sort the commands to traktor order
             sortTree(root);
             return root.Children;
         }

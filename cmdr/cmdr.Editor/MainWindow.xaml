@@ -34,7 +34,27 @@
         <KeyBinding Key="OemMinus" Modifiers="Shift" Command="{Binding DecPadCommand, Mode=OneTime}"/>
         <KeyBinding Key="OemPlus" Modifiers="Alt" Command="{Binding IncChCommand, Mode=OneTime}"/>
         <KeyBinding Key="OemMinus" Modifiers="Alt" Command="{Binding DecChCommand, Mode=OneTime}"/>
+        
+        <KeyBinding Key="D9" Modifiers="Control" Command="{Binding DecAssignment, Mode=OneTime}"/>
+        <KeyBinding Key="D0" Modifiers="Control" Command="{Binding IncAssignment, Mode=OneTime}"/>
+
+        <KeyBinding Key="D5" Modifiers="Control" Command="{Binding DecModifierCommand, Mode=OneTime}"/>
+        <KeyBinding Key="D6" Modifiers="Control" Command="{Binding IncModifierCommand, Mode=OneTime}"/>
+        
+        <KeyBinding Key="D1" Modifiers="Control" Command="{Binding DecModifierCondition1, Mode=OneTime}"/>
+        <KeyBinding Key="D2" Modifiers="Control" Command="{Binding IncModifierCondition1, Mode=OneTime}"/>
+        <KeyBinding Key="D1" Modifiers="Shift" Command="{Binding DecModifierConditionValue1, Mode=OneTime}"/>
+        <KeyBinding Key="D2" Modifiers="Shift" Command="{Binding IncModifierConditionValue1, Mode=OneTime}"/>
+
+        <KeyBinding Key="D3" Modifiers="Control" Command="{Binding DecModifierCondition2, Mode=OneTime}"/>
+        <KeyBinding Key="D4" Modifiers="Control" Command="{Binding IncModifierCondition2, Mode=OneTime}"/>
+        <KeyBinding Key="D3" Modifiers="Shift" Command="{Binding DecModifierConditionValue2, Mode=OneTime}"/>
+        <KeyBinding Key="D4" Modifiers="Shift" Command="{Binding IncModifierConditionValue2, Mode=OneTime}"/>
+
+        
         <KeyBinding Key="F1" Command="{Binding HelpCommand, Mode=OneTime}"/>
+        <!-- key codes: https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys?redirectedfrom=MSDN&view=netframework-4.8  -->
+        
     </Window.InputBindings>
     <DockPanel LastChildFill="True">
         <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="Transparent" Padding="10,5">
@@ -87,6 +107,21 @@
                 <MenuItem Header="Dec Pad" Command="{Binding DecPadCommand, Mode=OneTime}" InputGestureText="Shift+OemMinus" />
                 <MenuItem Header="Inc Channel" Command="{Binding IncChCommand, Mode=OneTime}" InputGestureText="Alt+OemPlus" />
                 <MenuItem Header="Dec Channel" Command="{Binding DecChCommand, Mode=OneTime}" InputGestureText="Alt+OemMinus" />
+                <Separator/>
+                <MenuItem Header="Dec Condition1 Key" Command="{Binding DecModifierCondition1, Mode=OneTime}" InputGestureText="Ctrl+D1" />
+                <MenuItem Header="Dec Condition1 Value" Command="{Binding DecModifierConditionValue1, Mode=OneTime}" InputGestureText="Shift+D1" />
+                <MenuItem Header="Inc Condition1 Key" Command="{Binding IncModifierCondition1, Mode=OneTime}" InputGestureText="Ctrl+D2" />
+                <MenuItem Header="Inc Condition1 Value" Command="{Binding IncModifierConditionValue1, Mode=OneTime}" InputGestureText="Shift+D2" />
+                <MenuItem Header="Dec Condition2 Key" Command="{Binding DecModifierCondition2, Mode=OneTime}" InputGestureText="Ctrl+D3" />
+                <MenuItem Header="Dec Condition2 Value" Command="{Binding DecModifierConditionValue2, Mode=OneTime}" InputGestureText="Shift+D3" />
+                <MenuItem Header="Inc Condition2 Key" Command="{Binding IncModifierCondition2, Mode=OneTime}" InputGestureText="Ctrl+D4" />
+                <MenuItem Header="Inc Condition2 Value" Command="{Binding IncModifierConditionValue2, Mode=OneTime}" InputGestureText="Shift+D4" />
+                <Separator/>
+                <MenuItem Header="Dec Modifier" Command="{Binding DecModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+D5" />
+                <MenuItem Header="Inc Modifier" Command="{Binding IncModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+D6" />
+                <MenuItem Header="Dec Assignment" Command="{Binding DecAssignment, Mode=OneTime}" InputGestureText="Ctrl+D9" />
+                <MenuItem Header="Inc Assignment" Command="{Binding IncAssignment, Mode=OneTime}" InputGestureText="Ctrl+D0" />
+
                 <Separator/>
                 <MenuItem Header="Select All" Command="{Binding SelectAll, Mode=OneTime}" InputGestureText="Ctrl+A" />
                 <MenuItem Header="Midi _Learn" Command="{Binding LearnCommand, Mode=OneTime}" InputGestureText="Ctrl+L" >

@@ -2,6 +2,25 @@
 
 Building and Development info goes here
 
+## Quickest editing
+
+The quickest way to edit is to change directly "Traktor Settings.tsi", and run traktor without a collection.
+When you finish edits, just restart traktor (no need to import mappings, etc)
+
+* backup collection.nml
+* open Traktor
+  * remove whole collection
+* open cmdr
+  * open TraktorSettings.tsi
+  * do edits
+* traktor
+  * close traktor
+* cmdr
+  * save file with edits
+* restart traktor
+
+* repeat editing loop with cmdr always open
+
 ## Development Quick Start
 
 The simplest way to get started is to install VS2017 and implement a small feature via "cloning".

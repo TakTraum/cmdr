@@ -49,6 +49,7 @@ namespace cmdr.TsiLib.Conditions
         }
 
 
+        //pestrela: add keyboard shortcut to this function 
         public void Swap()
         {
             Format.MappingSettings rawSettings = (Condition1 != null) ? Condition1.RawSettings : (Condition2 != null) ? Condition2.RawSettings : null;
@@ -60,7 +61,7 @@ namespace cmdr.TsiLib.Conditions
             SetCondition(rawSettings, ConditionNumber.Two, swap);           
         }
 
-        // todo: break conditions into 2x entries again
+        // pestrela todo: break conditions into 2x entries again
         public override string ToString()
         {
             var conditions = new[] { Condition1, Condition2 }.Where(c => c != null);
