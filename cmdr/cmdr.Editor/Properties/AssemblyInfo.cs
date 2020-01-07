@@ -8,11 +8,20 @@ using System.Windows;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 [assembly: AssemblyTitle("cmdr - Controller Manager done right")]
-[assembly: AssemblyDescription("This is an unofficial TSI editor for Native Instruments' Traktor Pro. It is free software, and you are welcome to redistribute it under certain conditions. See LICENCE.TXT for more details.\n\nThis software is still under active development, comes with ABSOLUTELY NO WARRANTY and may contain bugs. If you find one please create an issue on https://cmdr.codeplex.com/workitem/list/basic.\n\nSpecial Credit goes to my colleague and friend Acid Buddha for his valuable feature requests, testing and support.")]
+[assembly: AssemblyDescription("This is an unofficial TSI editor for Native Instruments' Traktor Pro. It is free software, and you are welcome to" +
+    " redistribute it under certain conditions. See LICENCE.TXT for more details.\n\n" +
+    "This software is still under active development, comes with ABSOLUTELY NO WARRANTY and may contain bugs. " +
+    "If you find one please create an issue on https://github.com/pestrela/cmdr/issues." +
+    "\n\n" +
+    "Special Credit goes to my colleague and friend Acid Buddha for his valuable feature requests, testing and support." +
+    "\n\n" +
+    "Updated in 2020 by Pedro Estrela by adding TP3 support and Keyboard Shortcuts to rotate all keys, values and conditions.\n" +
+    "See updated ChangeLog here https://github.com/pestrela/cmdr/blob/master/docs/development/Change_Log.md \n" +
+    "\n\n")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("cmdr - Controller Manager done right")]
-[assembly: AssemblyCopyright("Copyright ©  2016 - Michael Rahier")]
+[assembly: AssemblyCopyright("Copyright ©  2016 - Michael Rahier / 2020 - Pedro Estrela")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +60,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.6.0")]
-[assembly: AssemblyFileVersion("0.9.6.0")]
+[assembly: AssemblyVersion("0.9.7.0")]
+[assembly: AssemblyFileVersion("0.9.7.0")]

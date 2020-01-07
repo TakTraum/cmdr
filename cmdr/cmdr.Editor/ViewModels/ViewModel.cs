@@ -208,6 +208,38 @@ namespace cmdr.Editor.ViewModels
         }
 
 
+        private ICommand _bringIntoViewTop;
+        public ICommand BringIntoViewTop
+        {
+            get { return _bringIntoViewTop ?? (_bringIntoViewTop = new CommandHandler(bringIntoViewTop, () => canBringIntoViewTop())); }
+        }
+
+        private ICommand _bringIntoViewBottom;
+        public ICommand BringIntoViewBottom
+        {
+            get { return _bringIntoViewBottom ?? (_bringIntoViewBottom = new CommandHandler(bringIntoViewBottom, () => canBringIntoViewBottom())); }
+        }
+
+
+        private ICommand _incModifierValue;
+        public ICommand IncModifierValue
+        {
+            get
+            {
+                return _incModifierValue ?? (
+                    _incModifierValue = new CommandHandler(() => rotateModifierValue(1), () => canRotateModifierValue(1)));
+            }
+        }
+
+        private ICommand _decModifierValue;
+        public ICommand DecModifierValue
+        {
+            get
+            {
+                return _decModifierValue ?? (
+                    _decModifierValue = new CommandHandler(() => rotateModifierValue(-1), () => canRotateModifierValue(-1)));
+            }
+        }
 
         private ICommand _incModifierCondition1;
         public ICommand IncModifierCondition1
@@ -295,13 +327,18 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-
-
-
-        private ICommand _selectAll;
-        public ICommand SelectAll
+        private ICommand _swapConditions;
+        public ICommand SwapConditions
         {
-            get { return _selectAll ?? (_selectAll = new CommandHandler(() => selectAll(), null)); }   // () => canIncDecCh())); }
+            get { return _swapConditions ?? (_swapConditions = new CommandHandler(() => swapConditions(), () => canSwapConditions())); }
+        }
+
+
+
+        private ICommand _selectAllToggle;
+        public ICommand SelectAllToggle
+        {
+            get { return _selectAllToggle ?? (_selectAllToggle = new CommandHandler(() => selectAllToggle(), () => canSelectAllToggle())); }
         }
 
 
@@ -459,6 +496,26 @@ namespace cmdr.Editor.ViewModels
             return false;
         }
 
+        private void bringIntoViewTop()
+        {
+            SelectedTsiFileModel.SelectedDevice.BringIntoView(0);
+        }
+
+        private bool canBringIntoViewTop()
+        {
+            return is_mvm_loaded();
+        }
+
+        private void bringIntoViewBottom()
+        {
+            SelectedTsiFileModel.SelectedDevice.BringIntoView(1);
+        }
+
+        private bool canBringIntoViewBottom()
+        {
+            return is_mvm_loaded();
+        }
+
         private void incDec(int step)
         {
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDec(step);
@@ -492,15 +549,14 @@ namespace cmdr.Editor.ViewModels
 
 
         // The grid always has CTRL+a. This is when the focus is elsewhere
-        private void selectAll()
+        private void selectAllToggle()
         {
-            int i;
-            // SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecCh(step);
+            SelectedTsiFileModel.SelectedDevice.selectAllToggle();
         }
 
-        private bool canSelectAll()
+        private bool canSelectAllToggle()
         {
-            return true;
+            return is_mvm_loaded();
         }
 
 
@@ -509,7 +565,6 @@ namespace cmdr.Editor.ViewModels
         private void debugDoAction()
         {
             int i = 0;
-            int j;
 
         }
 
@@ -558,6 +613,31 @@ namespace cmdr.Editor.ViewModels
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierCommand(step);
         }
 
+
+        private bool canRotateModifierValue(int step)
+        {
+            return is_mvm_loaded();
+        }
+
+
+        private void rotateModifierValue(int step)
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierValue(step);
+        }
+
+
+        private bool canSwapConditions()
+        {
+            return is_mvm_loaded();
+        }
+
+
+        private void swapConditions()
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.swapConditions();
+        }
+
+
         private bool canRotateModifierCondition(int which, int step)
         {
             return is_mvm_loaded();
@@ -575,7 +655,7 @@ namespace cmdr.Editor.ViewModels
             return is_mvm_loaded();
         }
 
-
+        
         private void rotateModifierConditionValue(int which, int step)
         {
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierConditionValue(which, step);
@@ -613,7 +693,7 @@ namespace cmdr.Editor.ViewModels
 
         private void help()
         {
-            System.Diagnostics.Process.Start("https://cmdr.codeplex.com/documentation");
+            System.Diagnostics.Process.Start("https://github.com/pestrela/cmdr/tree/master/docs");
         }
 
         private void about()
@@ -780,7 +860,13 @@ namespace cmdr.Editor.ViewModels
             {
                 App.SetStatus("Initializing App Settings ...");
                 MessageBoxHelper.ShowInfo(
-                    "Before you can map the sh** out of your controllers, please make a few settings. " +
+                    "UPDATE JAN 2020:\n" +
+                    "****************\n "+
+                    " Please see the new features in the changelog: https://github.com/pestrela/cmdr/blob/master/docs/development/Change_Log.md\n" +
+                    "\n\n" +
+                    "Original Message:\n"+
+                    "******************\n" +
+                    "Before you can map your controllers, please make a few settings. " +
                     "Set at least the targeted Traktor version for your mappings. You can take the default one." +
                     "\n\nIf you want the full functionality, please setup the paths to your \"Traktor Settings.tsi\" and " + 
                     "your Controller Default Mappings." +

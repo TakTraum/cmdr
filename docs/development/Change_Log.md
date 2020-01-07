@@ -10,38 +10,51 @@
   * https://forum.djtechtools.com/showthread.php?t=91303
 * Sep 2017: TakTraum  migrates to github. Lastest version is v0.9.6 
   * https://github.com/TakTraum/cmdr/releases
-
+* Sep 2017: TakTraum  migrates to github. Lastest version is v0.9.6 
+  
 ## Recent changes
 
-Upcoming release 0.9.7
+release 0.9.7 - 7 January 2010
 * New features:
   * added new commands for TP3.0 (MixerFX, Flux reverse, Reverse)  
-  * added [grep-style string filtering per column](https://github.com/TakTraum/cmdr/pull/9). Contributed by Tom Weeps.
-  * added ability to sort on either Notes/CCs and Channels
-* New Keyboard shortcuts: 
-  * alt+"+"/"-": move channel up/down
-  * shift+"+"/"-": move note 8 positions up/down (matches pads)
-  * ctrl+9/0: Rotate assignement
-  * ctrl+Q: clear grid filtering
-  * ctrl+A: select all
-* Modifier renaming:
-  * ctrl/shift+1/2: Inc/Dec modifier condition1 (both keys and values)
-  * ctrl/shift+3/4: Inc/Dec modifier condition2 (both keys and values)
-  * ctrl+5/6: Inc/Dec modifier command
-* Removed:
+  * added [grep-style string filtering per column](https://github.com/TakTraum/cmdr/pull/9) (Contributed by Tom Weeps).
+  * added clear grid filtering
+  * added mass-modifier rotation:
+    * as a command or condition (keyboard shortcut: CTRL+1..6)
+    * as a value or condition value (keyboard shortcut: ALT+1..6)
+  * added new column to sort on Notes/CCs (exiting column sorts on Channels)
+  * added shortcut to mass-change channel and pad number (besides note number)
+  * added shortcut to select All/None, and bring top/bottom into view 
+  * ability to mass-swap conditions
+  
+* Changes:
+  * sorted commands by same order as controller manager
   * removed slow pop-up "fade" animations, tri-state sorting
+  * selected notes are now a list instead of tree
+  * moved codeplex links to github
 
+checkin:
+  updated version and about box to 0.9.7
+  buildtree now sorts by default; Main IN/OUT trees is unsorted on purpose
+  added selectAllToggle (changes between select all/none)
+  
+  
+  
 ## 2019 WishList
 
-* Shortcut to move modifier conditions and FX assigments around
-* Never rewrite FX list     https://github.com/TakTraum/cmdr/issues/6
 * Move "signed encoder mode" from device property to per-entry
+* Never rewrite FX list     https://github.com/TakTraum/cmdr/issues/6
 * Ensure focus always on main grid
-* Seperate column condition1/cond2 
-    
+* Separate column condition1 and condition2 
+* pop up with selected comments (similar to selected notes)
+* dedicated editor for same condition, but different values (eg: is in active loop) 
+* search for a command in all pages 
+* arrows = move selected row into view        
+* better clear grid (CTRL+Q)
+  
+
 * See also the TakTraum/cmdr issue list: https://github.com/TakTraum/cmdr/issues
 * See also the old Codeplex issue list (ignore the chrome warning):  https://archive.codeplex.com/?p=cmdr  
-
-* mass swap conditions feature  <<<
-* sort commands by same order as controller manager
-
+ 
+  
+  

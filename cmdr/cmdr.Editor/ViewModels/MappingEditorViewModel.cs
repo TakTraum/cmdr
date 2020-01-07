@@ -356,7 +356,8 @@ namespace cmdr.Editor.ViewModels
 
             var conditions_editor = this.ConditionsEditor;
             var conditions_list = conditions_editor.Conditions;
-            var modifier_list = conditions_list[2].Children;
+ 
+            var modifier_list = conditions_list.Where(x => x.Text == "Modifier").First().Children;
 
             foreach (var mapping in _mappings)
             {
@@ -406,12 +407,6 @@ namespace cmdr.Editor.ViewModels
 
         public void rotateModifierConditionValue(int which, int step)
         {
-            ConditionNumber number;
-            if (which == 1)
-                number = ConditionNumber.One;
-            else
-                number = ConditionNumber.Two;
-
             var conditions_editor = this.ConditionsEditor;
             var conditions_list = conditions_editor.Conditions;
             var modifier_list = conditions_list[2].Children;
@@ -470,17 +465,63 @@ namespace cmdr.Editor.ViewModels
 
                 
                 KnownCommands new_id = KnownCommands.Modifier_Modifier1 + new_modifier - 1;
-                string new_name = String.Format("Modifier #{0}", new_modifier);    // this is a hack!
-                m.Command.hack_modifier(new_id, new_name);
-                //m.hack_modifier(new_id, new_name);
+                string new_name = String.Format("Modifier #{0}", new_modifier);
 
-                // would this the proper way to do this??
-                //
+
+                // pestrela: this is a bit fragile, and should be improved
+                m.Command.hack_modifier(new_id, new_name);
+                m.hack_modifier(new_id);
+
+                // would this be the proper way?
                 //    var _rawMapping = m._mapping.RawMapping;
                 //    ACommand Command = Commands.All.GetCommandProxy(_rawMapping.TraktorControlId, _rawMapping.Type).Create(_rawMapping.Settings);
 
                 m.UpdateInteraction();
             }
+        }
+
+
+        //////////
+        public void rotateModifierValue(int step)
+        {
+            foreach (var m in _mappings)
+            {
+
+                var command = m.Command;
+                KnownCommands cur_id = (KnownCommands)m.Command.Id;
+
+                if (!(
+                    (cur_id >= KnownCommands.Modifier_Modifier1) &&
+                    (cur_id <= KnownCommands.Modifier_Modifier8)
+                    ))
+                {
+                    continue;
+                }
+
+                var command2 = (cmdr.TsiLib.Commands.EnumInCommand<cmdr.TsiLib.Enums.ModifierValue>)command;
+                ModifierValue cur_value = (ModifierValue)command2.Value;
+                int cur_value_int = cur_value - ModifierValue._0;
+                int new_value_int = rotate_modifier_value_int(cur_value_int, step);
+                var new_value = ModifierValue._0 + new_value_int;
+                command2.Value = new_value;
+
+                m.UpdateInteraction();
+            }
+        }
+
+
+        public void swapConditions()
+        {
+            var conditions_editor = this.ConditionsEditor;
+            var conditions_list = conditions_editor.Conditions;
+
+            foreach (var mapping in _mappings)
+            {
+                mapping.Conditions.Swap();
+
+                mapping.UpdateConditionExpression();
+            }
+            conditions_editor.Refresh();
         }
 
 

@@ -227,7 +227,24 @@ namespace cmdr.Editor.ViewModels
         }
 
         #endregion
-        
+
+
+        public void BringIntoView(int what)
+        {
+            var selected = this.SelectedMappings;
+
+            if (selected.Any())
+            {
+
+                if (what == 0) {
+                    selected.First().BringIntoView();
+                } else
+                {
+                    selected.Last().BringIntoView();
+                }
+            }
+
+        }
 
         public DeviceViewModel(Device device)
         {
@@ -452,10 +469,10 @@ namespace cmdr.Editor.ViewModels
                 });
 
             var allIn = All.KnownInCommands.Select(kv => kv.Value);
-            InCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allIn, itemBuilder, a => a.Category.ToDescriptionString(), "->", false));
+            InCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allIn, itemBuilder, a => a.Category.ToDescriptionString(), "->", false, false));
 
             var allOut = All.KnownOutCommands.Select(kv => kv.Value);
-            OutCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allOut, itemBuilder, a => a.Category.ToDescriptionString(), "->", false));
+            OutCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allOut, itemBuilder, a => a.Category.ToDescriptionString(), "->", false, false));
         }
 
         private void updateAddMappingContextMenus()
@@ -618,6 +635,44 @@ namespace cmdr.Editor.ViewModels
             updateAddMappingContextMenus();
         }
 
+        public void selectNone()
+        {
+            if (_selectedMappings.Count > 0)
+            {
+                SelectedMappings.Clear();
+            }
+        }
+
+        public void selectAll()
+        {
+            selectNone();
+
+            foreach (var m in Mappings)
+            {
+                SelectedMappings.Add(m);
+            }
+        }
+
+        public bool is_selected_all()
+        {
+            if (
+                (_selectedMappings.Count > 0) &&
+                (_selectedMappings.Count == Mappings.Count)
+                )
+            {
+                return true;
+
+            }
+            return false;
+        }
+
+        public void selectAllToggle()
+        {
+            if (this.is_selected_all())
+                selectNone();
+            else
+                selectAll();
+        }
 
         #region Events
 

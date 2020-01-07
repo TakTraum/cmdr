@@ -4,6 +4,7 @@ using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.TsiLib.MidiDefinitions;
+using cmdr.TsiLib.Commands.Interpretation;
 
 namespace cmdr.TsiLib
 {
@@ -226,7 +227,10 @@ namespace cmdr.TsiLib
             CanOverrideFactoryMap = (device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI && device.ProprietaryControllerDeviceType == Proprietary_Controller_DeviceType.Default);
         }
 
-
+        public void hack_modifier(KnownCommands new_id)
+        {
+            RawMapping.TraktorControlId = (int)new_id;
+        }
 
 
         private Format.MidiDefinition getMidiDefinition(Device device, MappingType type, int id)

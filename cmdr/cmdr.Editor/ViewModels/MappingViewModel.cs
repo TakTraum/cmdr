@@ -6,10 +6,10 @@ using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.TsiLib.Commands.Interpretation;
 using System;
 using System.Linq;
 using System.Text;
-
 
 namespace cmdr.Editor.ViewModels
 {
@@ -197,6 +197,9 @@ namespace cmdr.Editor.ViewModels
                     sb.Append(" [Toggle]");
                     break;
                 case MappingInteractionMode.Hold:
+                    sb.Append(" [Hold]");
+                    break;
+
                 case MappingInteractionMode.Direct:
                     break;
                 case MappingInteractionMode.Relative:
@@ -259,6 +262,15 @@ namespace cmdr.Editor.ViewModels
 
         protected override void Revert()
         {
+
+        }
+
+        public void hack_modifier(KnownCommands new_id)
+        {
+            var b = this._mapping;
+
+            b.hack_modifier(new_id);
+
 
         }
 

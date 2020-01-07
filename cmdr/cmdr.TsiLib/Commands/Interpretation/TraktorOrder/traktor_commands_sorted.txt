@@ -1,0 +1,395 @@
+
+Loop > Loop In/Set Cue
+Loop > Loop Out
+Loop > Loop Size Selector
+Loop > Loop Set
+Loop > Loop Size Select + Set
+Loop > Backward Loop Size Select + Set
+Loop > Loop Active On 
+
+Move > Size Selector
+Move > Mode Selector
+Move > Move
+Move > Beatjump
+
+Freeze Mode > Freeze Mode On
+Freeze Mode > Freeze Slice Size Adjust
+Freeze Mode > Freeze Slice Count Adjust
+Freeze Mode > Slice Trigger 1
+Freeze Mode > Slice Trigger 2
+Freeze Mode > Slice Trigger 3
+Freeze Mode > Slice Trigger 4
+Freeze Mode > Slice Trigger 5
+Freeze Mode > Slice Trigger 6
+Freeze Mode > Slice Trigger 7
+Freeze Mode > Slice Trigger 8
+Freeze Mode > Slice Trigger 9
+Freeze Mode > Slice Trigger 10
+Freeze Mode > Slice Trigger 11
+Freeze Mode > Slice Trigger 12
+Freeze Mode > Slice Trigger 13
+Freeze Mode > Slice Trigger 14
+Freeze Mode > Slice Trigger 15
+Freeze Mode > Slice Trigger 16
+
+Timecode > Scratch Control On
+Timecode > Playback Mode Int/Rel/Abs
+Timecode > Platter/Scope View Selector
+Timecode > Calibrate
+Timecode > Reset Tempo Offset
+
+Submix > Slot Volume Adjust
+Submix > Slot Filter On
+Submix > Slot Filter Adjust
+Submix > Slot Mute On
+Submix > Slot FX On
+Submix > Slot FX Amount
+
+
+Load Next
+Load Previous
+Load Selected
+Unload
+Play/Pause
+Cue
+CUP (Cue Play)
+Seek Position
+Jog Touch On
+Jog Turn
+Set as Tempo Master
+Sync On
+Phase Sync
+Tempo Sync
+Tempo Bend
+Tempo Bend (stepless)
+Tempo Adjust
+Tempo Range Selector
+Analyze Loaded Track
+Deck Flavor Selector
+Deck Size Selector
+Advanced Panel Toggle
+Advanced Panel Tab Selector
+Flux Mode On
+Flux Reverse Playback On
+Reverse Playback On
+
+
+Phase
+Beat Phase
+Deck is Loaded
+Is In Active Loop
+
+
+
+Cue > Set Cue and Store as next Hotcue
+Cue > Store Floating Cue/Loop as next Hotcue
+Cue > Delete current Hotcue
+Cue > Jump to Next/Prev Cue/Loop
+Cue > Map Hotcue
+Cue > Select/Set+Store Hotcue
+Cue > Delete Hotcue
+Cue > Cue Type Selector
+
+Grid > Autogrid
+Grid > Reset BPM
+Grid > Copy Phase from Tempo Master
+Grid > Set Grid Marker
+Grid > Delete Grid Marker
+Grid > Move Grid Marker
+Grid > BPM Adjust
+Grid > BPM Lock On
+Grid > BPM x2
+Grid > BPM /2
+Grid > Beat Tap
+Grid > Tick On
+
+
+Load into Next Stopped Deck
+Load, Loop, and Play
+Duplicate Track Deck A
+Duplicate Track Deck B
+Duplicate Track Deck C
+Duplicate Track Deck D
+Waveform Zoom Adjust
+DAW view
+Keylock On
+Keylock On (Preserve Pitch)
+Key Adjust
+Semitone Up/Down
+
+
+Hotcue 1 Type
+Hotcue 2 Type
+Hotcue 3 Type
+Hotcue 4 Type
+Hotcue 5 Type
+Hotcue 6 Type
+Hotcue 7 Type
+Hotcue 8 Type
+
+
+------
+
+Legacy > Play All Slots
+Legacy > Trigger All Slots
+Legacy > Slot Retrigger Play
+Legacy > Slot Load from List
+Legacy > Slot Unload 
+Legacy > Slot Capture from Deck
+Legacy > Slot Capture from Loop Recorder
+Legacy > Slot Copy from Slot
+Legacy > Play Mode All Slots
+Legacy > Slot Size x2
+Legacy > Slot Size /2
+Legacy > Slot Size Reset
+Legacy > Slot Size Adjust
+Direct Mapping > Slot 1 > Slot 1 Cell 1 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 1 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 1 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 1 Trigger
+
+Direct Mapping > Cell Load Modifier
+Direct Mapping > Cell Delete Modifier
+Direct Mapping > Cell Reverse Modifier
+Direct Mapping > Capture Modifier
+
+Meters > Slot Pre-Fader Level (L)
+Meters > Slot Pre-Fader Level (R)
+Meters > Slot Pre-Fader Level (L+R)
+
+Step Sequencer > Sequencer On
+Step Sequencer > Swing Amount
+Step Sequencer > Selected Sample
+Step Sequencer > Pattern Length
+Step Sequencer > Enable Step 1
+Step Sequencer > Enable Step 2
+Step Sequencer > Enable Step 3
+Step Sequencer > Enable Step 4
+Step Sequencer > Enable Step 5
+Step Sequencer > Enable Step 6
+Step Sequencer > Enable Step 7
+Step Sequencer > Enable Step 8
+Step Sequencer > Enable Step 9
+Step Sequencer > Enable Step 10
+Step Sequencer > Enable Step 11
+Step Sequencer > Enable Step 12
+Step Sequencer > Enable Step 13
+Step Sequencer > Enable Step 14
+Step Sequencer > Enable Step 15
+Step Sequencer > Enable Step 16
+
+
+Save Remix Set
+Load Set from List
+Slot Volume Adjust
+Slot Filter On
+Slot Filter Adjust
+Slot Capture/Trigger/Mute
+
+
+
+
+Slot Mute On
+Slot Stop/Delete/Load from List
+Slot Retrigger
+Slot Play Mode
+Slot Trigger Type
+Slot Keylock On
+Slot State
+Slot FX On
+Slot Monitor On
+Slot Punch On
+Quantize Selector
+Quantize On
+Capture Source Selector
+Sample Page Selector
+
+EQ > High adjust
+EQ > High kill
+EQ > mid adjust
+EQ > mid kill
+EQ > midlow adjust
+EQ > midlow kill
+EQ > low adjust
+EQ > low kill
+
+X-Fader > position
+X-Fader > curve adjust
+X-Fader > assign left
+X-Fader > assign right
+X-Fader > auto x-fade left
+X-Fader > auto x-fade right
+
+
+Gain adjust
+auto-gain adjust
+auto-gain view on
+fx unit 1 on
+fx unit 2 on
+fx unit 3 on
+fx unit 4 on
+Deck effect on
+mixer FX adjust
+mixer fx on
+mixer fx selector
+
+balance adjust
+monitor cue on
+volume adjust
+master volume adjust
+limiter on
+monitor volume adjust
+monitor mix adjust
+microphone gain adjust
+
+
+
+
+
+Unit On
+Dry/Wet Adjust
+Knob 1
+Knob 2
+Knob 3
+Button 1
+
+Button 2
+Button 3
+Effect 1 Selector
+Effect 2 Selector
+Effect 3 Selector
+FX Unit Mode Selector
+FX Store Preset
+Effect LFO Reset
+
+
+List > Delete
+List > Reset Played-State
+List > Analyze
+List > Restore Auto-Gain
+List > Detect BPM
+List > BPM Unlock
+List > BPM Lock
+List > Edit
+List > Relocate
+
+List > Add as Track To Collection
+List > Add as One-Shot Sample To Collection
+List > Add as Loop To Collection
+List > Set to One-Shot Sample
+List > Set to Looped Sample
+List > Set to Track
+List > Select Up/Down
+List > Select Page Up/Down
+List > Select Top/Bottom
+List > Select Extend Up/Down
+List > Select Extend Page Up/Down
+List > Select Extend Top/Bottom
+List > Select All
+List > Consolidate
+List > Search
+List > Search Clear
+
+List > Search in Playlists
+List > Show In Explorer
+List > Clear
+List > Expand Content Set
+List > Jump To Current Track
+List > Append To Preparation List
+List > Add As Next To Preparation List
+List > Export To Traktor Pak
+Tree > Save Collection
+Tree > Delete
+Tree > Reset Played-State
+Tree > Analyze
+Tree > Restore AutoGain
+Tree > Edit
+Tree > Relocate
+Tree > Import Collection
+Tree > Import Music Folders
+Tree > Export
+Tree > Export Printable
+
+Tree > Rename Playlist or Folder
+Tree > Select Up/Down
+Tree > Select Expand/Collapse
+Tree > Create Playlist
+Tree > Delete Playlist
+Tree > Create Playlist Folder
+Tree > Delete Playlist Folder
+Tree > Refresh Explorer Folder Content
+Tree > Check Consistency
+Tree > Add Folder To Music Folders
+Favorites > Selector
+Favorites > Add Folder to Favorites
+Favorites > Tracks To Favorite
+
+Preview player > load preview player into deck
+Preview player > load selected
+Preview player > play/pause
+Preview player > seek position
+Preview player > unload
+
+
+
+Loop Recorder > Load Selected
+Loop Recorder > Play/Pause
+Loop Recorder > Seek Position
+Loop Recorder > Unload
+Loop Recorder > Record
+Loop Recorder > Size
+Loop Recorder > Dry/Wet Adjust
+Loop Recorder > Play/Pause
+Loop Recorder > Delete
+Loop Recorder > Undo/Redo
+Loop Recorder > Playback Position
+Loop Recorder > Undo State
+Loop Recorder > State
+
+Audio Recorder > Record/Stop
+Audio Recorder > Cut
+Audio Recorder > Gain Adjust
+Audio Recorder > Load Last Recording
+
+Master Clock > Ableton Link > Reset Downbeat
+
+Master Clock > Auto Master Mode
+Master Clock > Master Tempo Selector
+Master Clock > Set Master Tempo
+Master Clock > Tempo Bend Up
+Master Clock > Tempo Bend Down
+Master Clock > Beat Tap
+Master Clock > Tick On
+Master Clock > Clock Int/Ext
+Master Clock > Clock Send
+Master Clock > Clock Trigger MIDI Sync
+
+Global > MIDI Controls > Buttons > MIDI Button 1
+Global > MIDI Controls > Knobs > MIDI Knob 1
+Global > MIDI Controls > Faders > MIDI Fader 1
+
+Global > Snap On
+Global > Quant On
+Global > Broadcasting On
+Global > Cruise Mode On
+Global > Show Slider Values On
+Global > Tool Tips On
+Global > Send Monitor State
+
+Layout > Only Browser On
+Layout > Layout Selector
+Layout > Fullscreen On
+Layout > Deck Focus Selector
+Layout > Toggle Last Focus
+
+Modifier > Modifier #1
+Modifier > Modifier #2
+Modifier > Modifier #3
+Modifier > Modifier #4
+Modifier > Modifier #5
+Modifier > Modifier #6
+Modifier > Modifier #7
+Modifier > Modifier #8
+
+
+

@@ -41,6 +41,7 @@ namespace cmdr.Editor.ViewModels.Comment
         }
 
 
+        // todo: add a pop-up list of selected comments
         private void onCommentChangedInline(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)

@@ -56,7 +56,7 @@ namespace cmdr.TsiLib.Commands
         public AControl Control { get; private set; }
 
 
-        // pestrela: TO recode!
+        // pestrela: To recode!
         public void hack_modifier(KnownCommands new_id, String new_name)
         {
             Id = (int)new_id;

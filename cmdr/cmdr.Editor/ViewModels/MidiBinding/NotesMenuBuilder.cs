@@ -121,7 +121,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         {
             if (selectedNotes.First() is AMidiDefinition)
                 return BuildProprietaryMenu(selectedNotes.Cast<AMidiDefinition>());
-            return _genericMenuBuilder.BuildTree(selectedNotes.Cast<string>(), buildMenuItem, buildPath, ".", false);
+            return _genericMenuBuilder.BuildList(selectedNotes.Cast<string>(), buildMenuItemSelected);  // , buildPath, ".", false);
         }
 
 
@@ -155,6 +155,16 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             else if (note.StartsWith("Note"))
                 text = Regex.Match(note, @"([-\d]+)").Groups[1].Value;
 
+            return new MenuItemViewModel
+            {
+                Text = text,
+                Tag = note
+            };
+        }
+
+        private MenuItemViewModel buildMenuItemSelected(string note)
+        {
+            string text = note;
             return new MenuItemViewModel
             {
                 Text = text,

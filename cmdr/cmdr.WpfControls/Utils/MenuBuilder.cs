@@ -12,7 +12,8 @@ namespace cmdr.WpfControls.Utils
             return proxies.Select(p => proxyConverter(p)).OrderBy(m => m).ToList();
         }
 
-        public List<MenuItemViewModel> BuildTree(IEnumerable<T> proxies, Func<T, MenuItemViewModel> proxyConverter, Func<T, string> pathSelector, string pathSeparator, bool pathIncludesLeafs)
+        public List<MenuItemViewModel> BuildTree(IEnumerable<T> proxies, Func<T, MenuItemViewModel> proxyConverter, Func<T, string> pathSelector, 
+            string pathSeparator, bool pathIncludesLeafs, bool sort=true)
         {
             var paths = proxies.Select(pathSelector);
             if (!pathIncludesLeafs)
@@ -40,9 +41,9 @@ namespace cmdr.WpfControls.Utils
                 target.Children.AddRange(BuildList(proxies.Where(i => pathSelector(i) == p), proxyConverter));
             }
 
-
-            // pestrela: find how to sort the commands to traktor order
-            sortTree(root);
+            // pestrela: made an option to sort the commands in the Traktor order
+            if(sort)
+                sortTree(root);
             return root.Children;
         }
 

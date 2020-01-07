@@ -58,7 +58,7 @@
         </StackPanel>
 
         <TextBlock Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <Hyperlink NavigateUri="https://cmdr.codeplex.com/wikipage?title=Effects" RequestNavigate="hyperlink_RequestNavigate">Help</Hyperlink>
+            <Hyperlink NavigateUri="https://github.com/pestrela/cmdr/blob/master/docs/Effects.md" RequestNavigate="hyperlink_RequestNavigate">Help</Hyperlink>
         </TextBlock>
     </Grid>
 </Window>
