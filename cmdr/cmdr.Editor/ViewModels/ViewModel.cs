@@ -784,7 +784,7 @@ namespace cmdr.Editor.ViewModels
                     _mru.Add(path);
                 }
                 else
-                    MessageBoxHelper.ShowError("Cannot open file.");
+                    MessageBoxHelper.ShowError("Cannot open file.\nPlease upload the TSI in https://github.com/pestrela/cmdr/issues");
             }
             else
                 _mdiContainer.SelectMdiChild(mdiChild.Id);

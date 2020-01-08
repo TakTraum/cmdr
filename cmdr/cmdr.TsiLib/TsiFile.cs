@@ -72,8 +72,10 @@ namespace cmdr.TsiLib
                 file.load(xml);
                 return file;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                String ret = e.ToString();
+                //System.Windows.Forms.MessageBox.ShowError("Cannot open file."+ret);   // How to pass the exception string to the message box?
                 return null;
             }
         }

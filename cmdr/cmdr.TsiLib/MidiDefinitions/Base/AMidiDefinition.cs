@@ -43,6 +43,15 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
 
         internal static AMidiDefinition Parse(string deviceTypeStr, MappingType type, Format.MidiDefinition definition)
         {
+
+            if (
+                (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
+                (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
+                (deviceTypeStr == "Traktor.Kontrol S8") ||
+                false
+                )
+                return AProprietaryMidiDefinition.Parse(deviceTypeStr, definition);
+
             if (definition.ControlId > -1)
                 return AProprietaryMidiDefinition.Parse(deviceTypeStr, definition);
             else

@@ -66,21 +66,21 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 if (_mapping.MidiBinding == null)
-                {
                     return String.Empty;
 
-                }
-                else
+                String note = _mapping.MidiBinding.Note;
+                int len = note.Length;
+
+                int i = note.IndexOf('.');
+                if (i == -1)
                 {
-                    String ret = _mapping.MidiBinding.Note;
-                    int len = ret.Length;
-
-                    String channel = ret.Substring(0, 4);
-                    String rest = ret.Substring(5, len - 5);
-
-                    ret = rest + "." + channel;
-                    return ret;
+                    return note;
                 }
+
+                String channel = note.Substring(0, i);
+                String rest = note.Substring(i + 1); //, len - i);
+                String ret = rest + "." + channel;
+                return ret;
             }
         }
 
