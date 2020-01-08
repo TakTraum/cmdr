@@ -4,17 +4,19 @@
 
 * 2014: ivanz reverses engineer the TSI format using the 010 SweetScape editor
   * https://github.com/ivanz/TraktorMappingFileFormat/wiki
-* 2016: csurfleet releases a first editor
+* 2016: csurfleet releases a first TSI editor
   * https://forum.djtechtools.com/showthread.php?t=84669&page=6
-* 2016: TakTraum first public relase of cmdr in codeplex: v0.6 
+* 2016: taktraum first public relase of cmdr in codeplex: v0.6 
   * https://forum.djtechtools.com/showthread.php?t=91303
-* Sep 2017: TakTraum  migrates to github. Lastest version is v0.9.6 
+* Sep 2017: taktraum  migrates to github. Lastest version is v0.9.6 
   * https://github.com/TakTraum/cmdr/releases
-* Sep 2017: TakTraum  migrates to github. Lastest version is v0.9.6 
+* Jan 2020: pestrela makes first release after 2 years (v0.9.7) 
+  * https://github.com/TakTraum/cmdr/releases
+  
   
 ## Recent changes
 
-release 0.9.7 - 7 January 2010
+release 0.9.7 - 7 January 2020
 * New features:
   * added new commands for TP3.0 (MixerFX, Flux reverse, Reverse)  
   * added [grep-style string filtering per column](https://github.com/TakTraum/cmdr/pull/9) (Contributed by Tom Weeps).
@@ -26,24 +28,17 @@ release 0.9.7 - 7 January 2010
   * added shortcut to mass-change channel and pad number (besides note number)
   * added shortcut to select All/None, and bring top/bottom into view 
   * ability to mass-swap conditions
-  
-* Changes:
-  * sorted commands by same order as controller manager
-  * removed slow pop-up "fade" animations, tri-state sorting
+* Changes to existing features:
+  * sorted commands by the same order as controller manager
+  * removed slow pop-up "fade" animations, tri-state sorting, and inability to extend ranges using shift
   * selected notes are now a list instead of tree
   * moved codeplex links to github
-
-checkin:
-  updated version and about box to 0.9.7
-  buildtree now sorts by default; Main IN/OUT trees is unsorted on purpose
-  added selectAllToggle (changes between select all/none)
   
-  
-  
-## 2019 WishList
+## 2020 WishList
 
 * Move "signed encoder mode" from device property to per-entry
 * Never rewrite FX list     https://github.com/TakTraum/cmdr/issues/6
+
 * Ensure focus always on main grid
 * Separate column condition1 and condition2 
 * pop up with selected comments (similar to selected notes)
@@ -52,7 +47,6 @@ checkin:
 * arrows = move selected row into view        
 * better clear grid (CTRL+Q)
   
-
 * See also the TakTraum/cmdr issue list: https://github.com/TakTraum/cmdr/issues
 * See also the old Codeplex issue list (ignore the chrome warning):  https://archive.codeplex.com/?p=cmdr  
  
