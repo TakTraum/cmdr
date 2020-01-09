@@ -117,7 +117,7 @@ namespace cmdr.Editor.ViewModels
 
         public static TsiFileViewModel Create()
         {
-            return new TsiFileViewModel(TsiFile.Create(CmdrSettings.Instance.TraktorVersion));
+            return new TsiFileViewModel(TsiFile.Create(CmdrSettings.Instance.TraktorVersion, CmdrSettings.Instance.OptimizeFXList));
         }
 
         public static async Task<TsiFileViewModel> LoadAsync(string filePath)

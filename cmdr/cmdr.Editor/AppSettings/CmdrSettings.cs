@@ -47,6 +47,20 @@ namespace cmdr.Editor.AppSettings
             set { setSetting("TraktorVersion", value); }
         }
 
+        public bool OptimizeFXList
+        {
+            get {
+                string ret = getSetting("OptimizeFXList");
+                return (ret == "True");
+
+                }
+            set {
+                string ret = value.ToString();
+                setSetting("OptimizeFXList", ret);
+            }
+        }
+
+
         public MruSection MRU
         {
             get { return getSection<MruSection>(); }

@@ -13,6 +13,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 
+/*
+ * Terminology about FX list
+ *                    
+ * indices - what is on the TSI. Relative to own file or Trakor settigs.TSI.
+ * id - actual effects, with string
+ * effects: what is on the file
+ * snapshots: the 43 effects
+ */
+
 namespace cmdr.TsiLib
 {
     public class TsiFile
@@ -26,6 +35,8 @@ namespace cmdr.TsiLib
 
         public string TraktorVersion { get; private set; }
 
+        public bool OptimizeFXList { get; private set; }
+
         private DeviceMappingsContainer _devicesContainer;
 
         public string Path { get; private set; }
@@ -38,9 +49,10 @@ namespace cmdr.TsiLib
         private bool _ignoreFx;
 
 
-        private TsiFile(string traktorVersion)
+        private TsiFile(string traktorVersion, bool optimizeFXList)
         {
             TraktorVersion = traktorVersion;
+            OptimizeFXList = optimizeFXList;
 
             _devices = new List<Device>();
             _devicesContainer = new DeviceMappingsContainer();
@@ -51,9 +63,9 @@ namespace cmdr.TsiLib
         /// Creates a new TSI File for the specified version of Traktor.
         /// </summary>
         /// <param name="traktorVersion">The targeted Traktor version.</param>
-        public static TsiFile Create(string traktorVersion)
+        public static TsiFile Create(string traktorVersion, bool optimizeFXList)
         {
-            return new TsiFile(traktorVersion);
+            return new TsiFile(traktorVersion, optimizeFXList);
         }
 
         /// <summary>
@@ -64,7 +76,7 @@ namespace cmdr.TsiLib
         /// <param name="filePath">Path of the file.</param>
         public static TsiFile Load(string traktorVersion, string filePath)
         {
-            TsiFile file = new TsiFile(traktorVersion);
+            TsiFile file = new TsiFile(traktorVersion, false);
             file.Path = filePath;
             try
             {
@@ -75,7 +87,7 @@ namespace cmdr.TsiLib
             catch (Exception e)
             {
                 String ret = e.ToString();
-                //System.Windows.Forms.MessageBox.ShowError("Cannot open file."+ret);   // How to pass the exception string to the message box?
+                //System.Windows.Forms.MessageBox.ShowError("Cannot open file."+ret);   // How to pass an exception string to the message box to the user?
                 return null;
             }
         }
@@ -112,7 +124,7 @@ namespace cmdr.TsiLib
 
         public bool Save(string filePath)
         {
-            // workaround to save indices instead of ids
+            // workaround to save indices (position on a list) instead of ids (actual command)
             var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
             var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
 
@@ -211,7 +223,7 @@ namespace cmdr.TsiLib
                         }
                     }
 
-                    // if possible, replace effect indices with ids
+                    // if possible, replace effect indices (position on a list) with ids (actual command)
                     if (FxSettings != null)
                         restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
                     else
@@ -247,7 +259,7 @@ namespace cmdr.TsiLib
         {
             prepareFxSettings(effectSelectorInCommands, effectSelectorOutCommands);
 
-            // replace ids with indices
+            // replace ids (actual FX) with indices (position on a list)
             foreach (var e in effectSelectorInCommands)
                 if (e.Value != Effect.NoEffect)
                     e.Value = (Effect)(FxSettings.Effects.IndexOf(e.Value) + 1);
@@ -291,12 +303,17 @@ namespace cmdr.TsiLib
             if (IsTraktorSettings)
                 usedSnapshots = FxSettings.Snapshots.Union(usedSnapshots).Distinct().ToDictionary(s => s.Key, s => s.Value);
 
-            FxSettings = new FxSettings(usedFx, usedSnapshots);
+
+            bool optimizeFXList = OptimizeFXList; // how to use  CmdrSettings.Instance.OptimizeFXList ?;
+            optimizeFXList = false;
+
+            if(optimizeFXList)
+                FxSettings = new FxSettings(usedFx, usedSnapshots);
         }
 
         private void restoreEffectSelectorCommands(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
         {
-            // replace indices with ids
+            // replace indices (position on a list) with ids (actual FX)
             foreach (var e in effectSelectorInCommands)
                 if (e.Value != Effect.NoEffect)
                     e.Value = FxSettings.Effects[(int)e.Value - 1];

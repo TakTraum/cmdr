@@ -62,6 +62,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("TraktorVersion", ref _traktorVersion, ref value); }
         }
 
+        private bool _optimizeFXList;
+        public bool OptimizeFXList
+        {
+            get { return _optimizeFXList; }
+            set { SetProperty("OptimizeFXList", ref _optimizeFXList, ref value); }
+        }
+
         private bool _mustOverrideTraktorVersion;
         public bool MustOverrideTraktorVersion
         {
@@ -126,6 +133,7 @@ namespace cmdr.Editor.ViewModels
             _pathToControllerDefaultMappings = CmdrSettings.Instance.PathToControllerDefaultMappings ?? String.Empty;
             _pathToTraktorSettings = CmdrSettings.Instance.PathToTraktorSettings ?? String.Empty;
             _traktorVersion = CmdrSettings.Instance.TraktorVersion ?? String.Empty;
+            _optimizeFXList = CmdrSettings.Instance.OptimizeFXList;
 
             if (TraktorSettings.Initialized)
                 _overrideTraktorVersion = !_traktorVersion.Equals(TraktorSettings.Instance.TraktorVersion);
@@ -197,6 +205,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.PathToControllerDefaultMappings = PathToControllerDefaultMappings;
             CmdrSettings.Instance.PathToTraktorSettings = PathToTraktorSettings;
             CmdrSettings.Instance.TraktorVersion = TraktorVersion;
+            CmdrSettings.Instance.OptimizeFXList = OptimizeFXList;
 
             CmdrSettings.Instance.Save();
 
