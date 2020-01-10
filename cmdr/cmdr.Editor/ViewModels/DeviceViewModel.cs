@@ -276,10 +276,7 @@ namespace cmdr.Editor.ViewModels
                 SelectedMappings.Add(Mappings.First());
                 updateAddMappingContextMenus();
 
-                Mappings.First().ClearFiltering();
-            }
-
-
+                Mappings.First().ClearFiltering();  // this was NOT enough to fix the grid duplication bug at init. see "hack" below            }
         }
 
 
@@ -552,13 +549,13 @@ namespace cmdr.Editor.ViewModels
 
         private void addMapping(MenuItemViewModel item)
         {
-            int index = _mappings.Count;       //add at last ow by default
+            int index = _mappings.Count;       //add on the last position by default
             if (_selectedMappings.Count > 0)   //if something is selected, add it at the end of the selection
                 index = _mappings.IndexOf(_selectedMappings.Last()) + 1;
 
             var proxy = item.Tag as CommandProxy;
             var m = _device.CreateMapping(proxy);
-            _device.InsertMapping(index, m);      // this is to add teh mapping itelf
+            _device.InsertMapping(index, m);      // this is to add the mapping itelf
 
             var mvm = new MappingViewModel(_device, m);
             var row = new RowItemViewModel(mvm);
