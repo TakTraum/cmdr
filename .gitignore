@@ -5,4 +5,7 @@ obj/
 cmdr/.vs/
 cmdr/packages/
 .vs/
-/tests/ddj-1000/t1.tsi
+tests/tmp/
+legacy/cmdr-codeplex-archive/
+
+
