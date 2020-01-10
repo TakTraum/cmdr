@@ -64,7 +64,7 @@ namespace cmdr.Editor.ViewModels
         private ICommand _saveCommand;
         public ICommand SaveCommand
         {
-            get { return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => SelectedTsiFileModel != null && SelectedTsiFileModel.IsChanged)); }
+            get { return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => SelectedTsiFileModel != null)); }
         }
 
         private ICommand _saveAsCommand;
@@ -564,7 +564,7 @@ namespace cmdr.Editor.ViewModels
         // its only here to inspect the pointers of *this in a debugger.
         private void debugDoAction()
         {
-            int i = 0;
+            
 
         }
 
@@ -573,7 +573,7 @@ namespace cmdr.Editor.ViewModels
             if(canRemoveFiltering())
             {
                 var dev = SelectedTsiFileModel.SelectedDevice;
-                dev.Mappings[0].ClearFiltering();
+                dev.Mappings.First().ClearFiltering();
             }
         }
 

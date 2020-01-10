@@ -21,7 +21,7 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         #region clear_filtering
 
-        private Dictionary<string, TextBox> textBoxes;
+        private Dictionary<string, TextBox> filtering_textBoxes;
 
         private void RememberTextbox(TextBox textBox, DataGridColumnHeader header)
         {
@@ -31,9 +31,9 @@ namespace cmdr.WpfControls.CustomDataGrid
                                         header.DataContext.ToString() : "";
 
             TextBox filter;
-            if (!textBoxes.TryGetValue(columnName, out filter))
+            if (!filtering_textBoxes.TryGetValue(columnName, out filter))
             {
-                textBoxes.Add(columnName, textBox);
+                filtering_textBoxes.Add(columnName, textBox);
             }
 
         }
@@ -52,20 +52,14 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         public void ClearFiltering()
         {
-            var a = textBoxes;
-            int ii = 0;
-            
+            var a = filtering_textBoxes;
 
             // clear the text boxes
-            foreach (KeyValuePair<string, TextBox> entry in textBoxes)
+            foreach (KeyValuePair<string, TextBox> entry in filtering_textBoxes)
             {
                 String key = entry.Key;
                 TextBox tb = entry.Value;
-
-                // do something with entry.Value or entry.Key
-                //TextBox tb = m_filtertb[i];
-                String contents = tb.Text;
-                // tb.Text = string.Empty;
+                String old_contents = tb.Text;
 
                 tb.Text = "";
             }
@@ -76,13 +70,6 @@ namespace cmdr.WpfControls.CustomDataGrid
                 String key = entry.Key;
                 ColumnFilter filter = entry.Value;
 
-                // do something with entry.Value or entry.Key
-                //TextBox tb = m_filtertb[i];
-                //String contents = tb.Text;
-                // tb.Text = string.Empty;
-
-                // tb.Text = ".";
-                //tb.Text = "";
                 filter.FilterValue = "";
             }
 
@@ -119,7 +106,7 @@ namespace cmdr.WpfControls.CustomDataGrid
         public CustomDataGrid()
         {
             // Initialize lists
-            textBoxes = new Dictionary<string, TextBox>();
+            filtering_textBoxes = new Dictionary<string, TextBox>();
             columnFilters = new Dictionary<string, ColumnFilter>();
             propertyCache = new Dictionary<string, PropertyInfo>();
 

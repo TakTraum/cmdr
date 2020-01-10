@@ -13,16 +13,20 @@
 * Jan 2020: pestrela makes first release after 2 years (v0.9.7) 
   * https://github.com/TakTraum/cmdr/releases
   
+ 
   
 ## Recent changes
 
-release 0.9.7 - 7 January 2020
+release 0.9.8 - TBD January 2020
 * New features:
-  * S4Mk3, S2MK4 and S8 support
-  
+  * S4Mk3, S2MK4 and S8 support  
 * Changes to existing features:
-  * the feature that "optimized" the FX list (limiting to the commands actually used) is now optional. This feature made very hard to merge multiple mappings with different FX lists. A future enhancement will force Traktors' default list of 43 effects always.
+  * the feature that limited the FX list to the minimum set is now OPTIONAL. This feature made very hard to merge multiple mappings with different FX lists. A future optional enhancement will force Traktors' default list of all 43 effects always.
+  * can now force a save at all times, even without hanges. This is to enable the fastest way to test mappings by closing traktor, rewriting the main settings TSI, and start traktor
+* Major bug fixes:
+  * no more bogus duplicated row with same IDs on first copy/paste
 
+ 
 
 release 0.9.7 - 7 January 2020
 * New features:
@@ -41,6 +45,8 @@ release 0.9.7 - 7 January 2020
   * removed slow pop-up "fade" animations, tri-state sorting, and inability to extend ranges using shift
   * selected notes are now a list instead of tree
   * moved codeplex links to github
+  
+  
   
 ## Old Changelog
 

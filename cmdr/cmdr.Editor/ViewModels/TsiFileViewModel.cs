@@ -117,7 +117,7 @@ namespace cmdr.Editor.ViewModels
 
         public static TsiFileViewModel Create()
         {
-            return new TsiFileViewModel(TsiFile.Create(CmdrSettings.Instance.TraktorVersion, CmdrSettings.Instance.OptimizeFXList));
+            return new TsiFileViewModel(TsiFile.Create(CmdrSettings.Instance.TraktorVersion));
         }
 
         public static async Task<TsiFileViewModel> LoadAsync(string filePath)
@@ -142,7 +142,7 @@ namespace cmdr.Editor.ViewModels
             foreach (var dev in Devices)
                 dev.SaveMetadata();
 
-            bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath));
+            bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath, CmdrSettings.Instance.OptimizeFXList));
 
             if (success)
             {

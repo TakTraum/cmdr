@@ -275,7 +275,11 @@ namespace cmdr.Editor.ViewModels
             {
                 SelectedMappings.Add(Mappings.First());
                 updateAddMappingContextMenus();
+
+                Mappings.First().ClearFiltering();
             }
+
+
         }
 
 
@@ -457,6 +461,8 @@ namespace cmdr.Editor.ViewModels
                 insertMapping(index++, mapping.Copy(true));
 
             _selectedMappings.Last().BringIntoView();
+
+            Mappings.First().ClearFiltering();   // HACK: investigate why there is a duplication on the very first paste or "add-in". Clearing grid filters avoids this bug
         }
 
         private void generateAddMappingContextMenus()
@@ -546,20 +552,22 @@ namespace cmdr.Editor.ViewModels
 
         private void addMapping(MenuItemViewModel item)
         {
-            int index = _mappings.Count;
-            if (_selectedMappings.Count > 0)
+            int index = _mappings.Count;       //add at last ow by default
+            if (_selectedMappings.Count > 0)   //if something is selected, add it at the end of the selection
                 index = _mappings.IndexOf(_selectedMappings.Last()) + 1;
 
             var proxy = item.Tag as CommandProxy;
             var m = _device.CreateMapping(proxy);
-            _device.InsertMapping(index, m);
+            _device.InsertMapping(index, m);      // this is to add teh mapping itelf
 
             var mvm = new MappingViewModel(_device, m);
             var row = new RowItemViewModel(mvm);
-            _mappings.Insert(index, row);
+            _mappings.Insert(index, row);         //this is to add the row to the grid
 
             selectExclusive(row);
             row.BringIntoView();
+
+            row.ClearFiltering();   // HACK: investigate why there is a duplication on the very first paste or "add-in". Clearing grid filters avoids this bug
         }
 
         private void selectExclusive(RowItemViewModel row)

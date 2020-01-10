@@ -49,10 +49,10 @@ namespace cmdr.TsiLib
         private bool _ignoreFx;
 
 
-        private TsiFile(string traktorVersion, bool optimizeFXList)
+        private TsiFile(string traktorVersion)
         {
             TraktorVersion = traktorVersion;
-            OptimizeFXList = optimizeFXList;
+            OptimizeFXList = false;            // this ONLY gets the actual value on the SAVE command
 
             _devices = new List<Device>();
             _devicesContainer = new DeviceMappingsContainer();
@@ -63,9 +63,9 @@ namespace cmdr.TsiLib
         /// Creates a new TSI File for the specified version of Traktor.
         /// </summary>
         /// <param name="traktorVersion">The targeted Traktor version.</param>
-        public static TsiFile Create(string traktorVersion, bool optimizeFXList)
+        public static TsiFile Create(string traktorVersion)
         {
-            return new TsiFile(traktorVersion, optimizeFXList);
+            return new TsiFile(traktorVersion);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace cmdr.TsiLib
         /// <param name="filePath">Path of the file.</param>
         public static TsiFile Load(string traktorVersion, string filePath)
         {
-            TsiFile file = new TsiFile(traktorVersion, false);
+            TsiFile file = new TsiFile(traktorVersion);
             file.Path = filePath;
             try
             {
@@ -122,11 +122,13 @@ namespace cmdr.TsiLib
             _devicesContainer.Devices.List.Remove(device.RawDevice);
         }
 
-        public bool Save(string filePath)
+        public bool Save(string filePath, bool optimizeFXList)
         {
             // workaround to save indices (position on a list) instead of ids (actual command)
             var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
             var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
+
+            OptimizeFXList = optimizeFXList;
 
             bool prepared = false;
 
@@ -305,8 +307,7 @@ namespace cmdr.TsiLib
 
 
             bool optimizeFXList = OptimizeFXList; // how to use  CmdrSettings.Instance.OptimizeFXList ?;
-            optimizeFXList = false;
-
+            
             if(optimizeFXList)
                 FxSettings = new FxSettings(usedFx, usedSnapshots);
         }

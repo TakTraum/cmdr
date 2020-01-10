@@ -310,10 +310,23 @@ namespace cmdr.TsiLib
             if (TypeStr != TYPE_STRING_GENERIC_MIDI)
                 return;
 
-            _encoderMode = _mappings
+            var all_mappings = _mappings
                 .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
-                .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
-                .FirstOrDefault();
+                .Select(m => (m.MidiBinding as AGenericMidiDefinition));
+
+            var all_encoder_modes = all_mappings
+                .Select(m => m.MidiEncoderMode);
+
+            bool multiple_modes = all_encoder_modes.Count() > 1;
+            _encoderMode = all_encoder_modes.FirstOrDefault();
+            return;
+
+
+
+            //_encoderMode = _mappings
+            //    .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
+            //   .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
+            //    .FirstOrDefault();
         }
 
         private void setEncoderModes()
