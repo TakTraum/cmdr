@@ -12,7 +12,7 @@
         Height="Auto" Width="Auto" MinWidth="800" Title="{Binding AppTitle, Mode=OneWay}"
         AllowDrop="True"
         behaviors:AttachedBehaviors.DropBehaviour="{Binding DropCommand, Mode=OneTime}"
-        Background="White"
+        Background="WhiteSmoke"
     >
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewCommand, Mode=OneTime}"/>

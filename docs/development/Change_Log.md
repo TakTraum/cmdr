@@ -20,6 +20,7 @@
 release 0.9.8 - TBD January 2020
 * New features:
   * S4Mk3, S2MK4 and S8 support
+  * Added a new "selected Commands" button. This is similar to the "selected notes" feature. Multiple commands also have "<various>" as well.
 * Changes to existing features:
   * the feature that limited the FX list to the minimum set is now OPTIONAL. This feature made very hard to merge multiple mappings with different FX lists. A future optional enhancement will force Traktors' default list of all 43 effects always. https://github.com/TakTraum/cmdr/issues/6
   * can now force a save at all times, even without hanges. This is to enable the fastest way to test mappings by closing traktor, rewriting the main settings TSI, and start traktor

@@ -632,6 +632,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         {
             if (!_selectedChannels.Where(c => c != _channel).Any())
             {
+                // if we have a single channel, remove the seperator
                 if (ChannelsMenu.Contains(_selectedChannelsMenuItem))
                 {
                     ChannelsMenu.Remove(SEPARATOR);
@@ -641,6 +642,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return;
             }
 
+            // else, create the selected channel options, one per channel. This list is already of unique channels
             _selectedChannelsMenuItem.Children = _selectedChannels.Select(c => new MenuItemViewModel { Text = c, Tag = c }).ToList();
 
             if (!ChannelsMenu.Contains(_selectedChannelsMenuItem))

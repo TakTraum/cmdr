@@ -95,6 +95,8 @@ namespace cmdr.WpfControls.Behaviors.SelectorAdapters
 
         private void resetSorting()
         {
+            return;  // pestrela: disabled this because of exception
+
             var grid = Selector as DataGrid;
 
             ICollectionView view = CollectionViewSource.GetDefaultView(grid.ItemsSource);

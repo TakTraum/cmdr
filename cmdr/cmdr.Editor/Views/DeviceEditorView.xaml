@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="360">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVisConverter"/>
     </UserControl.Resources>
@@ -21,7 +21,9 @@
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Stretch">
             <StackPanel>
-                <Label><Bold>Comment (Name):</Bold></Label>
+                <Label>
+                    <Bold>Comment (Name):</Bold>
+                </Label>
                 <TextBox Text="{Binding Comment}" Height="40" TextWrapping="Wrap" Margin="5,0,5,0"/>
             </StackPanel>
 
@@ -32,7 +34,9 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <DockPanel VerticalAlignment="Bottom" Grid.Row="0">
-                    <Label DockPanel.Dock="Left"><Bold>Ports:</Bold></Label>
+                    <Label DockPanel.Dock="Left">
+                        <Bold>Ports:</Bold>
+                    </Label>
                     <Button DockPanel.Dock="Right" HorizontalAlignment="Left"  Command="{Binding RefreshPortsCommand, Mode=OneTime}" Content="Refresh" Width="50" Height="20"/>
                 </DockPanel>
                 <StackPanel Grid.Row="1" Margin="5,0">
@@ -46,12 +50,16 @@
             </Grid>
 
             <StackPanel Margin="0,10,0,0">
-                <Label><Bold>Target:</Bold></Label>
+                <Label>
+                    <Bold>Target:</Bold>
+                </Label>
                 <ComboBox SelectedItem="{Binding Target}" ItemsSource="{Binding Targets, Mode=OneWay}" Margin="5,0"/>
             </StackPanel>
 
             <StackPanel Margin="0,10,0,0" Visibility="{Binding IsGenericMidi, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
-                <Label><Bold>Encoder Mode:</Bold></Label>
+                <Label>
+                    <Bold>Encoder Mode: (affects all entries)</Bold>
+                </Label>
                 <ComboBox ItemsSource="{Binding EncoderModes, Mode=OneWay}" SelectedValue="{Binding EncoderMode}" SelectedValuePath="Key" DisplayMemberPath="Value"  Margin="5,0"/>
             </StackPanel>
         </StackPanel>

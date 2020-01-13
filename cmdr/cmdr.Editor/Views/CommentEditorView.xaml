@@ -4,10 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ContentControl MinHeight="30" Height="30" Style="{StaticResource ResizeStyle}">
-            <TextBox TextWrapping="Wrap" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
+        <ContentControl MinHeight="30" MinWidth="50" Style="{StaticResource ResizeStyle}">
+            <TextBox TextWrapping="Wrap" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Width="219" />
+            <ddButton:DropDownButton Content="Select" Width="50" HorizontalAlignment="Right" 
+                                             MenuPlacement="Left"
+                                             Command="{Binding SelectCommentsCommand, Mode=OneTime}" 
+                                             ItemsSource="{Binding CommentsMenu, Mode=OneTime}" Margin="229,15,21,251" />
         </ContentControl>
     </Grid>
 </UserControl>

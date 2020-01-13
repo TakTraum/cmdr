@@ -2,12 +2,32 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
+using cmdr.Editor.Utils;
+using cmdr.WpfControls.DropDownButton;
+using System;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace cmdr.Editor.ViewModels.Comment
 {
     public class CommentEditorViewModel : ViewModelBase
     {
         private readonly IEnumerable<MappingViewModel> _mappings;
+
+
+        private ICommand _selectCommentsCommand;
+        public ICommand SelectCommentsCommand
+        {
+            get { return _selectCommentsCommand ?? (_selectCommentsCommand = new CommandHandler<MenuItemViewModel>(selectComments)); }
+        }
+
+        private List<string> _selectedComments;
+        private MenuItemViewModel _selectedCommentsMenuItem = new MenuItemViewModel { Text = "Selected Comments" };
+
+        public ObservableCollection<MenuItemViewModel> CommentsMenu { get; private set; }
+
+        private bool is_various;
 
         private string _comment;
         public string Comment
@@ -20,24 +40,64 @@ namespace cmdr.Editor.ViewModels.Comment
 
                 foreach (var mvm in _mappings)
                     mvm.Comment = _comment;
+
+                updateCommentsMenu();
             }
         }
 
+
+        private void selectComments(MenuItemViewModel item)
+        {
+            Comment = item.Tag.ToString();
+        }
 
         public CommentEditorViewModel(IEnumerable<MappingViewModel> mappings)
         {
             _mappings = mappings;
 
             var common = _mappings.Select(m => m.Comment).Distinct();
-            if (common.Count() == 1)
+            if (common.Count() == 1) {
                 _comment = common.Single();
-            else
+                is_various = false;
+            } else if (common.Count() == 0) {
                 _comment = String.Empty;
+                is_various = false;
+            } else {
+                _comment = "<various>";
+                is_various = true;
+            }
 
             // workaround for inline editing in mapping list
             var first = _mappings.FirstOrDefault();
             if (first != null)
                 first.PropertyChanged += onCommentChangedInline;
+
+            _selectedComments = common.Where(c => c != null).Where(c => c != "").OrderBy(c => c).ToList();
+            _selectedComments.Add("");
+            CommentsMenu = new ObservableCollection<MenuItemViewModel>(generateCommentsMenu());
+            updateCommentsMenu();
+        }
+
+
+        private IEnumerable<MenuItemViewModel> generateCommentsMenu()
+        {
+            return Enumerable.Range(0, 0).Select(c =>
+            {
+                return new MenuItemViewModel { Text = "test", Tag = "test"};
+            });
+        }
+
+
+        private void updateCommentsMenu()
+        {
+            CommentsMenu.Clear();
+            var options = _selectedComments.Select(c => new MenuItemViewModel { Text = c, Tag = c }).ToList();
+            //options.Select(d => CommentsMenu.Add(d));
+            foreach(var comment in options)
+            {
+                CommentsMenu.Add(comment);
+            }
+
         }
 
 
