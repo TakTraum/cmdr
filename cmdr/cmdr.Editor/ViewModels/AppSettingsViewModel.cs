@@ -141,6 +141,7 @@ namespace cmdr.Editor.ViewModels
             _pathToTraktorSettings = CmdrSettings.Instance.PathToTraktorSettings ?? String.Empty;
             _traktorVersion = CmdrSettings.Instance.TraktorVersion ?? String.Empty;
             _optimizeFXList = CmdrSettings.Instance.OptimizeFXList;
+            _removeUnusedMIDIDefinitions = CmdrSettings.Instance.RemoveUnusedMIDIDefinitions;
 
             if (TraktorSettings.Initialized)
                 _overrideTraktorVersion = !_traktorVersion.Equals(TraktorSettings.Instance.TraktorVersion);

@@ -17,20 +17,25 @@
   
 ## Recent changes
 
-release 0.9.8 - TBD January 2020
+release 0.10.0 - 13 January 2020
 * New features:
-  * S4Mk3, S2MK4 and S8 support
-  * Added a new "selected Commands" button. This is similar to the "selected notes" feature. Multiple commands also have "<various>" as well.
+  * s4mk3, s2mk4 and s8 support
+  * added a new "selected Commands" button to easily rename comments. This is similar to the "selected notes" feature. Multiple commands also have "<various>" as well.
 * Changes to existing features:
   * the feature that limited the FX list to the minimum set is now OPTIONAL. This feature made very hard to merge multiple mappings with different FX lists. A future optional enhancement will force Traktors' default list of all 43 effects always. https://github.com/TakTraum/cmdr/issues/6
-  * can now force a save at all times, even without hanges. This is to enable the fastest way to test mappings by closing traktor, rewriting the main settings TSI, and start traktor
-  * Moved "signed encoder mode" from a device property to per-MIDIbinding (ie, changing a single command affects all other commands to that CC/note)
+  * moved "signed encoder mode" from a device property to per-MIDIbinding (ie, changing a single command affects all other commands to that CC/note)
+  * we can now force a save at all times, even without changes. This is to enable the fastest way to test mappings by closing traktor, rewriting the main settings TSI, and start traktor
 * Bug fixes:
-  * Adding a command at startup resulted in a duplicated row (unless the filters were cleared)
+  * Adding any command without triggering a grid filter resulted in a duplicated row
 * Experimental:
-  * Added an experimental feature "Remove Unused MIDI Definitions" to generic midi devices. These entries represent for every possible CC, Note, Direction and Channel combination. These thousands of entries are repeated per device over and over. 
-  This is probably the reason why traktor preferences gets painfully slow with many "EMPTY" mapping pages.  
-  This feature results in much smaller TSIs, which are still openned correctly by Traktor. However, Traktor still creates these thousands of entries anyway, keeping the preferences window slowness.
+  * Added an experimental feature "Remove Unused TSI MIDI Definitions" applicable to generic midi devices. 
+  These entries provide defaults to every possible CC, Note, IN/OUT and Channel combination. 
+  These result in thousands of entries that are repeated over and over per device.
+  See how the struct looks like in line 130 of https://github.com/ivanz/TraktorMappingFileFormat/blob/df5f544d10e3293b72b829841e654da0db71c4b0/Tools/TSI%20Mapping%20Template.bt#L130
+  * These large tens of thousands of entries are maybe the reason why traktor preferences gets painfully slow 
+  with many "EMPTY" mapping pages (https://www.native-instruments.com/forum/threads/preferences-window-freeze.328315/). 
+  Using this feature it results in MUCH smaller TSIs that still open perfectly in Traktor. 
+  * However, at the moment Traktor still creates these thousands of entries anyway, keeping the slowness problem.
 
   
 release 0.9.7 - 7 January 2020

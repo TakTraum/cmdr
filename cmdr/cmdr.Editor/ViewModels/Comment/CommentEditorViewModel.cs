@@ -63,7 +63,7 @@ namespace cmdr.Editor.ViewModels.Comment
                 _comment = String.Empty;
                 is_various = false;
             } else {
-                _comment = "<various>";
+                _comment = "<Various>";
                 is_various = true;
             }
 

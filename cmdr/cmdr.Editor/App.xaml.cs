@@ -19,6 +19,11 @@ namespace cmdr.Editor
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            String appTheme = "Light";
+            //String appTheme = "Dark";
+            this.Resources.MergedDictionaries[0].Source =
+                new Uri($"/Styles/Themes/{appTheme}.xaml", UriKind.Relative);
+
             MainWindow mainWindow = new MainWindow();
             MainViewModel = new ViewModels.ViewModel(mainWindow.dockingManager);
             mainWindow.DataContext = MainViewModel;

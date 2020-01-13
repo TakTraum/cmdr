@@ -13,7 +13,8 @@
         AllowDrop="True"
         behaviors:AttachedBehaviors.DropBehaviour="{Binding DropCommand, Mode=OneTime}"
         Background="WhiteSmoke"
-    >
+        Foreground="Black">
+
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewCommand, Mode=OneTime}"/>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand, Mode=OneTime}"/>

@@ -21,7 +21,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("cmdr - Controller Manager done right")]
-[assembly: AssemblyCopyright("Copyright ©  2016 - Michael Rahier / 2020 - Pedro Estrela")]
+[assembly: AssemblyCopyright("Copyright © 2016-2018 - Michael Rahier / 2020 - Pedro Estrela")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -60,5 +60,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.7.0")]
-[assembly: AssemblyFileVersion("0.9.7.0")]
+[assembly: AssemblyVersion("0.10.0.0")]
+[assembly: AssemblyFileVersion("0.10.0.0")]
