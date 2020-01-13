@@ -80,7 +80,7 @@ namespace cmdr.Editor.ViewModels
 
             public async Task<TsiFile> LoadAsync()
             {
-                TsiFile = await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, Path));
+                TsiFile = await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, Path, false));
                 return TsiFile;
             }
         }
@@ -214,7 +214,7 @@ namespace cmdr.Editor.ViewModels
 
         private static async Task<TsiFile> loadTsiAsync(string filePath)
         {
-            return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath));
+            return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath, false));
         }
 
         private static XElement stripNamespace(XElement root)

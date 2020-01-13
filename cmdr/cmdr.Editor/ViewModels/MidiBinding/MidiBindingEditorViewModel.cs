@@ -482,7 +482,9 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var oldCC = oldBinding.Cc;
             var newCC = oldCC + step;
 
-            mapping.SetBinding(new ControlChangeMidiDefinition(oldBinding.Type, oldBinding.Channel, newCC));
+            var new_CC_def = new ControlChangeMidiDefinition(oldBinding.Type, oldBinding.Channel, newCC);
+
+            mapping.SetBinding(new_CC_def);
         }
 
         private void incDecNote(MappingViewModel mapping, int step)

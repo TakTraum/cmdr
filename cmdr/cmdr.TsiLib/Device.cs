@@ -6,7 +6,7 @@ using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Format;
 using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.TsiLib.Controls.Encoder;
-
+ 
 namespace cmdr.TsiLib
 {
     public class Device
@@ -91,6 +91,7 @@ namespace cmdr.TsiLib
 
         // In Controller Manager, the encoder mode is shown among elements of MappingSettings, but not stored with them. Instead, it's stored in the MidiDefinition.
         // As the encoder mode is the same for all encoders of a controller, it should be handled by the device.
+        // pestrela 2020-01-10: moving this back to midi device
         /// <summary>
         /// Encoder mode, specific to a controller and uniform for all of its encoders. Either 3Fh/41h or 7Fh/01h. Only used for generic midi devices.
         /// </summary>
@@ -101,25 +102,32 @@ namespace cmdr.TsiLib
             set { _encoderMode = value; setEncoderModes(); }
         }
 
+        public bool RemoveUnusedMIDIDefinitions { get; set; }
 
-        internal Device(int id, string deviceTypeStr, string traktorVersion)
-            : this(id, new Format.Device(deviceTypeStr, traktorVersion))
+        internal Device(int id, string deviceTypeStr, string traktorVersion, bool removeUnusedMIDIDefinition)
+            : this(id, new Format.Device(deviceTypeStr, traktorVersion, removeUnusedMIDIDefinition), removeUnusedMIDIDefinition)
         {
             // workaround for Xtreme Mapping only: midi definitions must not be null!
             RawDevice.Data.MidiDefinitions = new MidiDefinitionsContainer();
         }
 
-        internal Device(int id, Format.Device rawDevice)
+        internal Device(int id, Format.Device rawDevice, bool removeUnusedMIDIDefinitions)
         {
+            RemoveUnusedMIDIDefinitions = removeUnusedMIDIDefinitions;
             Id = id;
             RawDevice = rawDevice;
 
-            updateMidiDefinitions();
-
+            
             if (RawDevice.Data.Mappings != null)
                 _mappings = RawDevice.Data.Mappings.List.Mappings.Select(m => new Mapping(this, m)).ToList();
 
+            if(RemoveUnusedMIDIDefinitions)
+                reduceDefinitions();
+
+            updateMidiDefinitions();
+
             updateEncoderMode();
+
         }
 
 
@@ -175,7 +183,7 @@ namespace cmdr.TsiLib
             if (!includeMappings)
                 rawDeviceCopy.Data.Mappings = new MappingsContainer();
 
-            var copy = new Device(-1, rawDeviceCopy);
+            var copy = new Device(-1, rawDeviceCopy, RemoveUnusedMIDIDefinitions);
             copy.EncoderMode = EncoderMode; // encoder mode is not stored in Format.Device
             return copy;
         }
@@ -304,11 +312,57 @@ namespace cmdr.TsiLib
             }
         }
 
-        // pestrela: move this to per entry again
+        private void reduceDefinitions()
+        {
+            if (TypeStr != TYPE_STRING_GENERIC_MIDI)
+                return;
+
+            reduceDefinitions2(MappingType.In);
+            reduceDefinitions2(MappingType.Out);
+
+        }
+
+        private void reduceDefinitions2(MappingType what)
+        {
+            var deviceData = RawDevice.Data;
+            //var used_bindings = this.Mappings.Where(d => d.Type == what).Select(d => d.MidiBinding).Where(e => e != null).Select(d => d.Note).ToList();  //
+            var used_bindings = this.Mappings.Select(d => d.MidiBinding).Where(e => e != null).Where(d => d.Type == what).Select(d => d.Note).ToList();  //
+            List<MidiDefinition> cur_definitions = (what == MappingType.In) ? deviceData.MidiDefinitions.In.Definitions : deviceData.MidiDefinitions.Out.Definitions;
+
+            List<MidiDefinition> new_definitions = new List<MidiDefinition>(); // = definitions.Where(d => false);   // just to get the structure
+
+            foreach (var binding in used_bindings)
+            {
+                var used_definitions = cur_definitions.Where(d => d.MidiNote == binding);
+
+                foreach (var used_definition in used_definitions)
+                {
+                    new_definitions.Add(used_definition);   // TODO: check collisions
+                }
+
+            }
+
+            // todo: remove colisions
+            if (what == MappingType.In)
+            {
+                RawDevice.Data.MidiDefinitions.In.Definitions = new_definitions;
+            } else
+            {
+                RawDevice.Data.MidiDefinitions.Out.Definitions = new_definitions;
+            }
+        }
+     
+
+        // pestrela: this is for the whole device. The new behaviour is per mapping (=per midibinding)
         private void updateEncoderMode()
         {
             if (TypeStr != TYPE_STRING_GENERIC_MIDI)
                 return;
+
+            //_encoderMode = _mappings
+            //    .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
+            //   .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
+            //    .FirstOrDefault();
 
             var all_mappings = _mappings
                 .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
@@ -321,18 +375,15 @@ namespace cmdr.TsiLib
             _encoderMode = all_encoder_modes.FirstOrDefault();
             return;
 
-
-
-            //_encoderMode = _mappings
-            //    .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
-            //   .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
-            //    .FirstOrDefault();
         }
 
         private void setEncoderModes()
         {
             if (TypeStr != TYPE_STRING_GENERIC_MIDI)
                 return;
+
+            // this is when we change the encoder mode on the device settings page. This is now deprecated.
+            //return;
 
             foreach (var def in _midiInDefinitions.Values.Cast<AGenericMidiDefinition>())
                 def.MidiEncoderMode = EncoderMode;

@@ -69,6 +69,18 @@ namespace cmdr.TsiLib.Commands
             updateControl();
         }
 
+        // this is the place the Property manager expects it
+        public MidiEncoderMode get_EncoderMode()
+        {
+            return RawSettings.EncoderMode2;
+
+        }
+
+        public void set_EncoderMode(MidiEncoderMode new_value)
+        {
+            RawSettings.EncoderMode2 = new_value;
+        }
+
 
         internal ACommand(int id, string name, TargetType target, MappingType mappingType, MappingSettings rawSettings)
         {

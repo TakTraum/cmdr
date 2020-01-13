@@ -157,20 +157,30 @@ namespace cmdr.TsiLib
             {
                 // add midi definition to device, if it doesn't already exist
                 var matchingDefinitions = definitions.Where(d => d.MidiNote.Equals(midi.Note));
-                if (!matchingDefinitions.Any())
+                if (matchingDefinitions.Any() == false)
                 {
                     var definition = midi.RawDefinition;
 
                     // adapt encoder mode to device, if necessary
                     var genericDefinition = midi as AGenericMidiDefinition;
-                    if (genericDefinition != null && genericDefinition.MidiEncoderMode != device.EncoderMode)
+                    if (genericDefinition != null) //  && genericDefinition.MidiEncoderMode != device.EncoderMode)
                     {
                         genericDefinition = AGenericMidiDefinition.Parse(genericDefinition.Type, definition);
-                        genericDefinition.MidiEncoderMode = device.EncoderMode;
-                        definition = genericDefinition.RawDefinition;
+                        // genericDefinition.MidiEncoderMode = device.EncoderMode;
+                        genericDefinition.MidiEncoderMode =
+                            //this.MidiBinding.RawDefinition.MidiEncoderMode;
+                            this.Command.RawSettings.EncoderMode2;
+
+                        //genericDefinition.MidiEncoderMode = this.Command.Control.EncoderMode;
+
+                        definition = genericDefinition.RawDefinition;  // pestrela: this was unchanged
                     }
 
                     definitions.Add(definition);
+                } else
+                {
+                    // definition already exist. Update encoder 
+                    //matchingDefinitions.First().EncoderMode = this.MidiBinding.MidiEncoderMode;
                 }
 
                 // add midi binding to device

@@ -19,8 +19,8 @@ b) encoder mode test:
 
 input TSI:
  - device1 = 3f/41:
-   - modifier1 = CC19 = 3f/41
-   - modifier2 = CC20 = 01/7F
+   - modifier1 = CC19 = 01/7F = 100% sensitivity = invert ON
+   - modifier2 = CC20 = 3f/41 = 50% sensi = invert OFF
 
 operation:
  - duplicate 2x commands

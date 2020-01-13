@@ -340,7 +340,7 @@ namespace cmdr.Editor.ViewModels
 
         private static async Task<TsiFile> loadTsiAsync(string filePath)
         {
-            return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath));
+            return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath, CmdrSettings.Instance.RemoveUnusedMIDIDefinitions));
         }
 
         #region Events

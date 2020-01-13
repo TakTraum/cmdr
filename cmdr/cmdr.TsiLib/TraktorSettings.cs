@@ -68,7 +68,7 @@ namespace cmdr.TsiLib
 
         private static bool load()
         {
-            _instance = TsiFile.Load(TRAKTOR_FALLBACK_VERSION, _pathToTraktorSettingsTsi);
+            _instance = TsiFile.Load(TRAKTOR_FALLBACK_VERSION, _pathToTraktorSettingsTsi, false);
             return (_instance != null);
         }
     }

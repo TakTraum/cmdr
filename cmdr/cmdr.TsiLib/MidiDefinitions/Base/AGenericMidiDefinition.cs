@@ -17,7 +17,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
             get { return _note; }
         }
 
-        internal MidiEncoderMode MidiEncoderMode
+        public MidiEncoderMode MidiEncoderMode
         {
             get
             {

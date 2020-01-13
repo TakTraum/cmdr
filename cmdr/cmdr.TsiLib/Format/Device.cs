@@ -9,7 +9,7 @@ namespace cmdr.TsiLib.Format
         public DeviceData Data { get; private set; }
 
 
-        public Device(string deviceType, string traktorVersion)
+        public Device(string deviceType, string traktorVersion, bool RemoveUnusedMIDIDefinition)
             : base("DEVI")
         {
             DeviceType = deviceType;

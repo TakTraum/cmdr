@@ -74,14 +74,14 @@ namespace cmdr.TsiLib
         /// <exception cref="System.Exception">Thrown when file cannot be loaded or parsed.</exception>
         /// <param name="traktorVersion">The targeted Traktor Version. The version of the file is checked against it.</param>
         /// <param name="filePath">Path of the file.</param>
-        public static TsiFile Load(string traktorVersion, string filePath)
+        public static TsiFile Load(string traktorVersion, string filePath, bool RemoveUnusedMIDIDefinitions)
         {
             TsiFile file = new TsiFile(traktorVersion);
             file.Path = filePath;
             try
             {
                 TsiXmlDocument xml = new TsiXmlDocument(filePath);
-                file.load(xml);
+                file.load(xml, RemoveUnusedMIDIDefinitions);
                 return file;
             }
             catch (Exception e)
@@ -95,7 +95,7 @@ namespace cmdr.TsiLib
 
         public Device CreateDevice(string deviceTypeStr)
         {
-            return new Device(createNewId(), deviceTypeStr, TraktorVersion);
+            return new Device(createNewId(), deviceTypeStr, TraktorVersion, false);
         }
 
         public void AddDevice(Device device)
@@ -178,7 +178,7 @@ namespace cmdr.TsiLib
         }
 
 
-        private void load(TsiXmlDocument xml)
+        private void load(TsiXmlDocument xml, bool RemoveUnusedMIDIDefinitions)
         {
             // Traktor version, optional (only for "Traktor Settings.tsi")
             var browserDirRoot = xml.GetEntry<BrowserDirRoot>();
@@ -199,7 +199,7 @@ namespace cmdr.TsiLib
                 byte[] decoded = Convert.FromBase64String(controllerConfig.Value);
                 _devicesContainer = new DeviceMappingsContainer(new MemoryStream(decoded));
                 int id = 0;
-                _devices = _devicesContainer.Devices.List.Select(d => new Device(id++, d)).ToList();
+                _devices = _devicesContainer.Devices.List.Select(d => new Device(id++, d, RemoveUnusedMIDIDefinitions)).ToList();
 
                 var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
                 var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();

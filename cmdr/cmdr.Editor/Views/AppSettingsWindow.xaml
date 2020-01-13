@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:cmdr.Editor.Converters"
-        Title="{Binding Title, Mode=OneWay}" Height="390" MinHeight="390" Width="600" MinWidth="600"
+        Title="{Binding Title, Mode=OneWay}" Height="445" MinHeight="445" Width="600" MinWidth="600"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <converters:InverseBooleanConverter x:Key="invBoolConverter"/>
@@ -109,9 +109,18 @@
                 </TextBox>
                 <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" VerticalContentAlignment="Center" Content="Override" IsChecked="{Binding OverrideTraktorVersion, Mode=TwoWay}" IsEnabled="{Binding MustOverrideTraktorVersion, Converter={StaticResource invBoolConverter}}"/>
             </Grid>
-            <CheckBox Margin="0,10,113,60" Width="Auto" Height="20" VerticalContentAlignment="Center" Content="Optimize FX List" IsChecked="{Binding OptimizeFXList, Mode=TwoWay}" IsEnabled="True" Grid.Column="1" Grid.Row="4"/>
-            <Label Padding="5,0" Content="Optimize FX List:" Margin="0,9,10,65" Grid.Row="4"/>
-            <Label Padding="5,0" FontSize="10" Content="When saving, reduce the FX list to the minimum possible" Margin="0,25,10,49" Grid.Row="4"/>
+
+
+            <CheckBox Margin="0,30,36,115" Width="Auto" Height="20" VerticalContentAlignment="Center" Content="Reduce FX List" IsChecked="{Binding OptimizeFXList, Mode=TwoWay}" IsEnabled="True" Grid.Column="1" Grid.Row="4"/>
+            <Label Padding="5,0" Content="Reduce FX List:" Margin="0,9,10,139" Grid.Row="4"/>
+            <Label Padding="5,0" FontSize="10" Content="When saving, reduce the FX list to the ones actually used " Margin="0,26,10,125" Grid.Row="4"/>
+            <Label Padding="5,0" FontSize="10" Content="(keep unchecked to keep them 'as-is')" Margin="0,39,10,109" Grid.Row="4"/>
+
+            <CheckBox Margin="0,80,22,65" Width="Auto" Height="20" VerticalContentAlignment="Center" Content="Optimize TSI (experimental!)" IsChecked="{Binding RemoveUnusedMIDIDefinitions, Mode=TwoWay}" IsEnabled="True" Grid.Column="1" Grid.Row="4"/>
+
+            <Label Padding="5,0" Content="Optimize TSI (EXPERIMENTAL):" Margin="0,67,67,0" Grid.Row="4" Height="18" VerticalAlignment="Top"/>
+            <Label Padding="5,0" FontSize="10" Content="When loading, remove unused MIDI entries of the TSI" Margin="0,80,10,70" Grid.Row="4"/>
+            <Label Padding="5,0" FontSize="10" Content="This leads to faster loading and a much smaller TSI when saving " Margin="0,95,10,59" Grid.Row="4"/>
 
         </Grid>
 

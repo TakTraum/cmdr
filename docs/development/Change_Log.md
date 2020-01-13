@@ -19,15 +19,19 @@
 
 release 0.9.8 - TBD January 2020
 * New features:
-  * S4Mk3, S2MK4 and S8 support  
+  * S4Mk3, S2MK4 and S8 support
 * Changes to existing features:
-  * the feature that limited the FX list to the minimum set is now OPTIONAL. This feature made very hard to merge multiple mappings with different FX lists. A future optional enhancement will force Traktors' default list of all 43 effects always.
+  * the feature that limited the FX list to the minimum set is now OPTIONAL. This feature made very hard to merge multiple mappings with different FX lists. A future optional enhancement will force Traktors' default list of all 43 effects always. https://github.com/TakTraum/cmdr/issues/6
   * can now force a save at all times, even without hanges. This is to enable the fastest way to test mappings by closing traktor, rewriting the main settings TSI, and start traktor
-* Major bug fixes:
-  * no more bogus duplicated row with same IDs on first copy/paste
+  * Moved "signed encoder mode" from a device property to per-MIDIbinding (ie, changing a single command affects all other commands to that CC/note)
+* Bug fixes:
+  * Adding a command at startup resulted in a duplicated row (unless the filters were cleared)
+* Experimental:
+  * Added an experimental feature "Remove Unused MIDI Definitions" to generic midi devices. These entries represent for every possible CC, Note, Direction and Channel combination. These thousands of entries are repeated per device over and over. 
+  This is probably the reason why traktor preferences gets painfully slow with many "EMPTY" mapping pages.  
+  This feature results in much smaller TSIs, which are still openned correctly by Traktor. However, Traktor still creates these thousands of entries anyway, keeping the preferences window slowness.
 
- 
-
+  
 release 0.9.7 - 7 January 2020
 * New features:
   * added new commands for TP3.0 (MixerFX, Flux reverse, Reverse)  
@@ -162,8 +166,10 @@ v0.6 - TakTraum April 2016
   
 ## 2020 WishList
 
-* Move "signed encoder mode" from device property to per-entry
-* Never rewrite FX list     https://github.com/TakTraum/cmdr/issues/6
+* cleanup huge list of unused midi bindings
+* dark mode
+* undo
+* confirmation on deleting devices and large amount of mappings
 
 * Ensure focus always on main grid
 * Separate column condition1 and condition2 
@@ -172,6 +178,11 @@ v0.6 - TakTraum April 2016
 * search for a command in all pages 
 * arrows = move selected row into view        
 * better clear grid (CTRL+Q)
+
+* preferences slow: https://www.native-instruments.com/forum/threads/whats-your-traktor-pro-preferences-load-time.143612/
+
+
+## Old Wishlists
   
 * See also the TakTraum/cmdr issue list: https://github.com/TakTraum/cmdr/issues
 * See also the old Codeplex issue list (ignore the chrome warning):  https://archive.codeplex.com/?p=cmdr  

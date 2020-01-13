@@ -153,8 +153,23 @@ namespace cmdr.Editor.ViewModels
             return _mapping.Copy(includeMidiBinding);
         }
 
+        public void hack_encoder_mididefinition()
+        {
+            AGenericMidiDefinition midiBinding = (this._mapping.MidiBinding as AGenericMidiDefinition);
+            if(midiBinding == null)
+            {
+                return;    //nothing todo. We are not linked to a midi modifier yet
+            }
+
+            MidiEncoderMode actual_encoder_mode = _mapping.Command.get_EncoderMode();
+            midiBinding.MidiEncoderMode = actual_encoder_mode;
+        }
+
+
         public void UpdateInteraction()
         {
+            hack_encoder_mididefinition();
+
             raisePropertyChanged("Interaction");
             raisePropertyChanged("TraktorCommand");
             IsChanged = true;

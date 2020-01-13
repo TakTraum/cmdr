@@ -2,11 +2,13 @@
 using cmdr.Editor.Views.CommandViews;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Enums;
+using cmdr.TsiLib.MidiDefinitions.Base;
 using SettingControlLibrary.SettingTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+
 
 namespace cmdr.Editor.ViewModels.Settings
 {
@@ -80,7 +82,13 @@ namespace cmdr.Editor.ViewModels.Settings
             {
                 if (_command == null)
                     return;
-                _command.ControlType = value; raisePropertyChanged("ControlType"); raisePropertyChanged("ControlInteractionOptions"); raisePropertyChanged("InteractionMode"); updateContent(); updateMapping();
+                _command.ControlType = value;
+                raisePropertyChanged("ControlType");
+                raisePropertyChanged("ControlInteractionOptions");
+                raisePropertyChanged("InteractionMode");
+
+                updateContent();
+                updateMapping();
             }
         }
 
@@ -217,7 +225,15 @@ namespace cmdr.Editor.ViewModels.Settings
                     case "RotarySensitivity":
                         s = new IntSetting(i++, "Rotary Sensitivity:", 0, 300);
                         break;
+ 
                     case "Mode":
+                    case "EncoderMode":
+                        AGenericMidiDefinition midiBinding = (this._mappings.First().MidiBinding as AGenericMidiDefinition);
+                        if (midiBinding != null)
+                        {
+                            MidiEncoderMode actual_encoder_mode = midiBinding.MidiEncoderMode;
+                            _command.set_EncoderMode(actual_encoder_mode);
+                        }
                         s = new EnumSetting<MidiEncoderMode>(i++, name + ":");
                         break;
                     case "MidiRangeMin":

@@ -69,6 +69,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("OptimizeFXList", ref _optimizeFXList, ref value); }
         }
 
+        private bool _removeUnusedMIDIDefinitions;
+        public bool RemoveUnusedMIDIDefinitions
+        {
+            get { return _removeUnusedMIDIDefinitions; }
+            set { SetProperty("RemoveUnusedMIDIDefinitions", ref _removeUnusedMIDIDefinitions, ref value); }
+        }
+
         private bool _mustOverrideTraktorVersion;
         public bool MustOverrideTraktorVersion
         {
@@ -206,6 +213,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.PathToTraktorSettings = PathToTraktorSettings;
             CmdrSettings.Instance.TraktorVersion = TraktorVersion;
             CmdrSettings.Instance.OptimizeFXList = OptimizeFXList;
+            CmdrSettings.Instance.RemoveUnusedMIDIDefinitions = RemoveUnusedMIDIDefinitions;
 
             CmdrSettings.Instance.Save();
 

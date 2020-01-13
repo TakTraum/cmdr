@@ -60,6 +60,20 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
+        public bool RemoveUnusedMIDIDefinitions
+        {
+            get
+            {
+                string ret = getSetting("RemoveUnusedMIDIDefinitions");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("RemoveUnusedMIDIDefinitions", ret);
+            }
+        }
 
         public MruSection MRU
         {
