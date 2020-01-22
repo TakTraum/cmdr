@@ -234,7 +234,9 @@ namespace cmdr.TsiLib
 
         internal void Attach(Device device)
         {
-            CanOverrideFactoryMap = (device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI && device.ProprietaryControllerDeviceType == Proprietary_Controller_DeviceType.Default);
+            CanOverrideFactoryMap = (
+               device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI && device.ProprietaryControllerDeviceType == Proprietary_Controller_DeviceType.Default
+               );
         }
 
         public void hack_modifier(KnownCommands new_id)

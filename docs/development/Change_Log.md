@@ -27,6 +27,7 @@ release 0.10.0 - 13 January 2020
   * we can now force a save at all times, even without changes. This is to enable the fastest way to test mappings by closing traktor, rewriting the main settings TSI, and start traktor
 * Bug fixes:
   * Adding any command without triggering a grid filter resulted in a duplicated row
+  * CanOverrideFactoryMap fixes
 * Experimental:
   * Added an experimental feature "Remove Unused TSI MIDI Definitions" applicable to generic midi devices. 
   These entries provide defaults to every possible CC, Note, IN/OUT and Channel combination. 

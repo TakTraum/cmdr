@@ -85,7 +85,11 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-        public bool CanOverrideFactoryMap { get { return _mapping.CanOverrideFactoryMap; } }
+        public bool CanOverrideFactoryMap {
+            get {
+                return _mapping.CanOverrideFactoryMap;
+            }
+        }
 
         public bool OverrideFactoryMap
         {

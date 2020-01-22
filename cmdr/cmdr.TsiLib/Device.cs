@@ -76,6 +76,17 @@ namespace cmdr.TsiLib
         {
             get
             {
+                // pestrela: this is to support CanOverrideFactoryMap for the new devices
+                var deviceTypeStr = TypeStr;
+                if (
+                    (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
+                    (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
+                    (deviceTypeStr == "Traktor.Kontrol S8") ||
+                    false
+                    )
+                    return Proprietary_Controller_DeviceType.Default;
+
+
                 if (TypeStr.EndsWith(".Default"))
                     return Proprietary_Controller_DeviceType.Default;
                 else
