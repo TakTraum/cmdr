@@ -2,18 +2,17 @@
 
 ## Major milestones
 
-* 2014: ivanz reverses engineer the TSI format using the 010 SweetScape editor
-  * https://github.com/ivanz/TraktorMappingFileFormat/wiki
-* 2016: csurfleet releases a first TSI editor
-  * https://forum.djtechtools.com/showthread.php?t=84669&page=6
-* 2016: taktraum first public relase of cmdr in codeplex: v0.6 
-  * https://forum.djtechtools.com/showthread.php?t=91303
-* Sep 2017: taktraum  migrates to github. Lastest version is v0.9.6 
-  * https://github.com/TakTraum/cmdr/releases
 * Jan 2020: pestrela makes first release after 2 years (v0.9.7) 
   * https://github.com/TakTraum/cmdr/releases
-  
- 
+* Sep 2017: taktraum  migrates to github. Lastest version is v0.9.6 
+  * https://github.com/TakTraum/cmdr/releases
+* 2016: taktraum first public relase of cmdr in codeplex: v0.6 
+  * https://forum.djtechtools.com/showthread.php?t=91303
+* 2016: csurfleet releases a first TSI editor
+  * https://forum.djtechtools.com/showthread.php?t=84669&page=6
+* 2014: ivanz reverses engineer the TSI format using the 010 SweetScape editor
+  * https://github.com/ivanz/TraktorMappingFileFormat/wiki
+   
   
 ## Recent changes
 
@@ -170,8 +169,17 @@ v0.6 - TakTraum April 2016
   * Traktor folder is derived from NI folder and version, and is needed for loading "Traktor Settings.tsi"
 * some refactoring and cosmetics
   
-  
+    
 ## 2020 WishList
+
+
+* seperate condition columns into cond1+cond2
+* real textbox on midi OUT
+* more increment commands
+
+* option to alphabetically sort commands (except tree)
+* search commands (like notes)
+* see which commands are in which pages (collapsed, ie 10x modifier 1 = appears once)
 
 * cleanup huge list of unused midi bindings
 * dark mode
