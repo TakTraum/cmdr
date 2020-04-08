@@ -5,7 +5,7 @@ Unofficial TSI editor for Native Instruments' Traktor Pro for Windows.
 If you like this piece of software, please make a donation and help it survive. 
 [![Donate button](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9BNNTDQF4X782 "Donate")
 
-![cmdr summary](docs/pics/cmdr - summary.png?raw=true)!
+![cmdr summary](docs/pics/cmdr - summary.png?raw=true)
 
 ## Disclaimer
 This software is still under active development, comes with ABSOLUTELY NO WARRANTY and may contain bugs. 
@@ -33,11 +33,11 @@ No installation needed, cmdr is portable. Unzip and start cmdr.exe.
 Consult the [changelog](docs/development/Change_Log.md) for complete details
 
 
-![cmdr improvements](docs/pics/cmdr - improvementd.png?raw=true "")!
+![cmdr improvements](docs/pics/cmdr - improvementd.png?raw=true "")
 
-![cmdr keyboard shortcuts](docs/pics/cmdr - keyboard shortcuts.png?raw=true "")!
+![cmdr keyboard shortcuts](docs/pics/cmdr - keyboard shortcuts.png?raw=true "")
 
-![cmdr settings](docs/pics/cmdr - settings.png?raw=true "dede")!
+![cmdr settings](docs/pics/cmdr - settings.png?raw=true "dede")
 
 ![traktor_mindmap](pics/traktor_mindmap.png?raw=true "Traktor Mindmap")
 
