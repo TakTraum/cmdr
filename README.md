@@ -33,11 +33,12 @@ No installation needed, cmdr is portable. Unzip and start cmdr.exe.
 Consult the [changelog](docs/development/Change_Log.md) for complete details
 
 
-![cmdr_improvements](docs/pics/cmdr_improvements.png?raw=true "")!
+![cmdr_improvements](docs/pics/cmdr_improvements.png?raw=true "")
 
-![cmdr_keyboard shortcuts](docs/pics/cmdr_keyboard shortcuts.png?raw=true "")!
-
-![cmdr_settings](docs/pics/cmdr_settings.png?raw=true "dede")!
+.
+![cmdr_keyboard_shortcuts](docs/pics/cmdr_keyboard_shortcuts.png?raw=true "")
+.
+![cmdr_settings](docs/pics/cmdr_settings.png?raw=true "dede")
 
 
 
