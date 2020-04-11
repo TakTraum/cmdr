@@ -60,6 +60,14 @@ Another simple approach is to read the check-ins of small features
 	Visual Basic Tools   2.10.0-beta2-63501-03+b9fb1610c87cccc8ceb74a770dba261a58e39c4a
 	Visual Studio Code Debug Adapter Host Package   1.0
 
+## Visual studio tips 
+
+Cant change code on the fly in the debugger
+ - ensure code is specifically 32 bit:
+   -  https://stackoverflow.com/questions/10113532/how-do-i-fix-the-visual-studio-compile-error-mismatch-between-processor-archit
+
+RealClean extension (removes binaries as well)
+  https://marketplace.visualstudio.com/items?itemName=FlorentGoetz.RealCleanExt
 
 ## git cheatsheet
 

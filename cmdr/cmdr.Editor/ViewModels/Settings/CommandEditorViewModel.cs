@@ -238,6 +238,8 @@ namespace cmdr.Editor.ViewModels.Settings
                         break;
                     case "MidiRangeMin":
                         s = new IntSetting(i++, "MIDI Range Min:", 0, 127);
+
+                        //s = new IntCommandViewI();
                         break;
                     case "MidiRangeMax":
                         s = new IntSetting(i++, "MIDI Range Max:", 0, 127);

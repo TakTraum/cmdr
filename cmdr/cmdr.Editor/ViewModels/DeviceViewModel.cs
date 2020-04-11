@@ -174,6 +174,12 @@ namespace cmdr.Editor.ViewModels
             get { return _copyCommand ?? (_copyCommand = new CommandHandler(copy, () => _selectedMappings.Any())); }
         }
 
+        private ICommand _duplicateCommand;
+        public ICommand DuplicateCommand
+        {
+            get { return _duplicateCommand ?? (_duplicateCommand = new CommandHandler(duplicate, () => _selectedMappings.Any())); }
+        }
+
         private ICommand _cutCommand;
         public ICommand CutCommand
         {
@@ -428,6 +434,21 @@ namespace cmdr.Editor.ViewModels
                 DataContext = new ConditionTuplesEditorViewModel(Mappings.Select(r => r.Item as MappingViewModel))
             }
             .ShowDialog();
+        }
+
+        
+        private void delete()
+        {
+            // already present?
+
+            //copy();
+            removeMappings(_selectedMappings);
+        }
+
+        private void duplicate()
+        {
+            copy();
+            paste();
         }
 
         private void cut()

@@ -35,9 +35,9 @@ Consult the [changelog](docs/development/Change_Log.md) for complete details
 
 ![cmdr_improvements](docs/pics/cmdr_improvements.png?raw=true "")
 
-.
+
 ![cmdr_keyboard_shortcuts](docs/pics/cmdr_keyboard_shortcuts.png?raw=true "")
-.
+
 ![cmdr_settings](docs/pics/cmdr_settings.png?raw=true "dede")
 
 

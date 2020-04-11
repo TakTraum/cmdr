@@ -169,13 +169,36 @@ v0.6 - TakTraum April 2016
   * Traktor folder is derived from NI folder and version, and is needed for loading "Traktor Settings.tsi"
 * some refactoring and cosmetics
   
+
+Changelog:
+ - CTRL+D:  duplicatate mappings
+
     
 ## 2020 WishList
 
+* a real textbox on midi OUT
+
 
 * seperate condition columns into cond1+cond2
-* real textbox on midi OUT
+
 * more increment commands
+* show / hide columns (+preferences)
+* remmeber last window position / maximize
+* Browser > List > Add or Remove Track from Preparation List  The ID is 3480 
+  * another TP3 command mentioned by stewe
+* inc/dec Combos and mixture of notes
+* favorite start at 0
+
+* moving mappings up and down (IDs?)
+
+  - new report: what is where!
+  - add decimal to notes (optional column) for XDJ-XZ
+  - add new column with translation table (text file loaded seperately)
+  add shortcut do "duplicate" and to "delete"
+
+
+
+
 
 * option to alphabetically sort commands (except tree)
 * search commands (like notes)

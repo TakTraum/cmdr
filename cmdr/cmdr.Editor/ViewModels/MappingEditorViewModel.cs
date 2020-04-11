@@ -459,6 +459,8 @@ namespace cmdr.Editor.ViewModels
                     continue;
                 }
                 
+
+
                 
                 int cur_modifier = cur_id - KnownCommands.Modifier_Modifier1 + 1;
                 int new_modifier = rotate_modifier_key_int(cur_modifier, step);

@@ -56,8 +56,23 @@ namespace cmdr.Editor.ViewModels
         {
             get
             {
-                return (_mapping.MidiBinding != null)
-                   ? _mapping.MidiBinding.Note : String.Empty;
+                if(_mapping.MidiBinding == null)
+                {
+                    return String.Empty;
+
+                } else
+                {
+                    String ret = _mapping.MidiBinding.Note;
+
+                    // TODO: refresh this dynamically 
+                    bool invert = _mapping.Command.Control.Invert;
+                    if (invert)
+                    {
+                        ret = ret + "_I";
+                    }
+                    return ret;
+
+                }
             }
         }
 
@@ -78,7 +93,15 @@ namespace cmdr.Editor.ViewModels
                 }
 
                 String channel = note.Substring(0, i);
-                String rest = note.Substring(i + 1); //, len - i);
+                String rest = note.Substring(i + 1);
+
+                // TODO: refresh this dynamically 
+                bool invert = _mapping.Command.Control.Invert;
+                if (invert)
+                {
+                    rest = rest + "_I";
+                }
+
                 String ret = rest + "." + channel;
                 return ret;
             }

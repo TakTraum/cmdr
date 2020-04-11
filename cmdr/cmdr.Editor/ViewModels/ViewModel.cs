@@ -85,6 +85,12 @@ namespace cmdr.Editor.ViewModels
             get { return _exitCommand ?? (_exitCommand = new CommandHandler(exit)); }
         }
 
+        private ICommand _duplicateCommand;
+        public ICommand DuplicateCommand
+        {
+            get { return _duplicateCommand ?? (_duplicateCommand = new CommandHandler(duplicate, canExecuteCopyOrCut)); }
+        }
+
         private ICommand _copyCommand;
         public ICommand CopyCommand
         {
@@ -426,6 +432,14 @@ namespace cmdr.Editor.ViewModels
             await saveAs(SelectedTsiFileModel);
         }
 
+
+
+
+
+
+
+
+
         private void close()
         {
             _mdiContainer.RemoveMdiChild(_mdiContainer.SelectedMdiChild.Id, true);
@@ -439,6 +453,14 @@ namespace cmdr.Editor.ViewModels
         #endregion
 
         #region edit methods
+
+
+        private void duplicate()
+        {
+            SelectedTsiFileModel.SelectedDevice.DuplicateCommand.Execute(null);
+        }
+
+
 
         private void copy()
         {
