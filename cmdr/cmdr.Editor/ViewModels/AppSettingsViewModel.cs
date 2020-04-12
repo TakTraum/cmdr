@@ -83,6 +83,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("LoadLastFileAtStartup", ref _loadLastFileAtStartup, ref value); }
         }
 
+        private bool _showDecimalNotes;
+        public bool ShowDecimalNotes
+        {
+            get { return _showDecimalNotes; }
+            set { SetProperty("ShowDecimalNotes", ref _showDecimalNotes, ref value); }
+        }
+
         private bool _mustOverrideTraktorVersion;
         public bool MustOverrideTraktorVersion
         {
@@ -150,6 +157,8 @@ namespace cmdr.Editor.ViewModels
             _optimizeFXList = CmdrSettings.Instance.OptimizeFXList;
             _removeUnusedMIDIDefinitions = CmdrSettings.Instance.RemoveUnusedMIDIDefinitions;
             _loadLastFileAtStartup = CmdrSettings.Instance.LoadLastFileAtStartup;
+            _showDecimalNotes = CmdrSettings.Instance.ShowDecimalNotes;
+            
 
             if (TraktorSettings.Initialized)
                 _overrideTraktorVersion = !_traktorVersion.Equals(TraktorSettings.Instance.TraktorVersion);
@@ -224,6 +233,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.OptimizeFXList = OptimizeFXList;
             CmdrSettings.Instance.RemoveUnusedMIDIDefinitions = RemoveUnusedMIDIDefinitions;
             CmdrSettings.Instance.LoadLastFileAtStartup = LoadLastFileAtStartup;
+            CmdrSettings.Instance.ShowDecimalNotes = ShowDecimalNotes;
 
             CmdrSettings.Instance.Save();
 

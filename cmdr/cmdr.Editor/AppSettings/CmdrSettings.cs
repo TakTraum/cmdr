@@ -95,6 +95,21 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
+
+        public bool ShowDecimalNotes
+        {
+            get
+            {
+                string ret = getSetting("ShowDecimalNotes");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ShowDecimalNotes", ret);
+            }
+        }
         public MruSection MRU
         {
             get { return getSection<MruSection>(); }

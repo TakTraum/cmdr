@@ -1,4 +1,5 @@
-﻿using cmdr.TsiLib.MidiDefinitions.Base;
+﻿using cmdr.Editor.AppSettings;
+using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
 using System;
@@ -34,9 +35,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
             #region CC
 
-            var ccMenu = new MenuItemViewModel { Text = "CC" };
-            root.Children.Add(ccMenu);
-
             MenuItemViewModel rangeMenu = null;
             int part = 0;
             int limit = 0;
@@ -48,8 +46,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 {
                     part++;
                     limit = CC_PART * part;
-                    rangeMenu = new MenuItemViewModel { Text = String.Format("{0} - {1}", i, limit - 1) };
-                    ccMenu.Children.Add(rangeMenu);
+                    rangeMenu = new MenuItemViewModel { Text = String.Format("CC {0} - {1}", i, limit - 1) };
+                    root.Children.Add(rangeMenu);
                 }
 
                 ccNumString = String.Format("{0:000}", i);
@@ -61,12 +59,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
             #region Notes
             
-            var notesMenu = new MenuItemViewModel { Text = "Note" };
-            root.Children.Add(notesMenu);
-
-            // pestrela: TODO: make an setting to show notes per Note or per number
-
-            bool add_count = false;
+            bool add_count = CmdrSettings.Instance.ShowDecimalNotes;
             int count = 0;
             int maxOctave;
             var specialNotes = new[] { "G#", "A", "A#", "B" };
@@ -74,7 +67,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             foreach (var note in NOTENAMES)
             {
                 noteMenu = new MenuItemViewModel { Text = note };
-                notesMenu.Children.Add(noteMenu);
+                root.Children.Add(noteMenu);
 
                 maxOctave = specialNotes.Contains(note) ? 8 : 9;
 
@@ -86,8 +79,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     if (add_count)
                     {
                         text = String.Format("{0} ({1})", i.ToString(), count);
-                        tag = String.Format("Note.{0} ({1})", note + i, count);
-                    } else {
+                        //tag = String.Format("Note.{0} ({1})", note + i, count);
+                        tag = String.Format("Note.{0}", note + i);
+                    }
+                    else {
                         text = String.Format("{0}", i.ToString());
                         tag = String.Format("Note.{0}", note + i);
 

@@ -75,6 +75,9 @@ SelectNext extension:
 Auto sync solution explorer:
   Tools->Options->Projects and Solutions->Track Active Item in Solution Explorer  
   
+DotNet Fiddle:
+  https://dotnetfiddle.net/  
+  
 ## git cheatsheet
 
 This is how the filtering remote branch was merged.

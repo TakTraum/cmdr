@@ -27,6 +27,11 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -153,7 +158,20 @@
                           IsChecked="{Binding RemoveUnusedMIDIDefinitions, Mode=TwoWay}" 
                           IsEnabled="True" />
             </Grid>
-            
+
+
+            <!-- Show Decimal Notes -->
+            <StackPanel Grid.Row="7" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
+                <Label Padding="5,0" Content="ShowDecimalNotes:" />
+                <Label Padding="5,0" Content="Shows the decimal note value as well" FontSize="10" /> 
+            </StackPanel>
+            <Grid Grid.Row="7" Grid.Column="1" VerticalAlignment="Center">
+                <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" 
+                          VerticalContentAlignment="Center" 
+                          Content="Show Decimal Notes" 
+                          IsChecked="{Binding ShowDecimalNotes, Mode=TwoWay}" 
+                          IsEnabled="True" />
+            </Grid>
         </Grid>
 
     </DockPanel>

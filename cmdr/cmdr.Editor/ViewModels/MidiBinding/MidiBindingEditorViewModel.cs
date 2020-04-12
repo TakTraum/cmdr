@@ -630,6 +630,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         private void updateChannelsMenu(IEnumerable<string> selectedChannels)
         {
+            // todo: merge this method with the notes one
+
             if (!_selectedChannels.Where(c => c != _channel).Any())
             {
                 // if we have a single channel, remove the seperator
@@ -647,8 +649,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
             if (!ChannelsMenu.Contains(_selectedChannelsMenuItem))
             {
-                ChannelsMenu.Add(SEPARATOR);
-                ChannelsMenu.Add(_selectedChannelsMenuItem);
+                ChannelsMenu.Insert(0, SEPARATOR);
+                ChannelsMenu.Insert(0, _selectedChannelsMenuItem);
             }
         }
 
@@ -686,11 +688,11 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             }
 
             _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
-
+           
             if (!NotesMenu.Contains(_selectedNotesMenuItem))
             {
-                NotesMenu.Add(SEPARATOR);
-                NotesMenu.Add(_selectedNotesMenuItem);
+                NotesMenu.Insert(0, SEPARATOR);
+                NotesMenu.Insert(0, _selectedNotesMenuItem);
             }
         }
 

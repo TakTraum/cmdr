@@ -185,19 +185,21 @@ release 0.10.1 - TBD
 * replaced MIDI out non-editable textboxes with a simple list (with scrollbar)
 * added 2x missing commands (semitone up down / add or remove prep list)
 
+* simplified selectedNotes/selectedchannels sub menus
+
+
     
 ## 2020 WishList
 
+* inc/dec Combos and mixture of notes
 
 
 * show / hide columns (+preferences)
 * remmeber last window position / maximize
 
-
 * seperate condition columns into cond1+cond2
 
 * more increment commands
-* inc/dec Combos and mixture of notes
 * favorite start at 0
 
 * moving mappings up and down (IDs?)
