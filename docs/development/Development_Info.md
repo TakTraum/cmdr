@@ -7,7 +7,7 @@ Building and Development info goes here
 The quickest way to edit is to change directly "Traktor Settings.tsi", and run traktor without a collection.
 When you finish edits, just restart traktor (no need to import mappings, etc)
 
-* backup collection.nml
+* backup collectio  n.nml
 * open Traktor
   * remove whole collection
 * open cmdr
