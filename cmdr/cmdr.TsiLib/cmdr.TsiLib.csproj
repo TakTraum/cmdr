@@ -104,6 +104,8 @@
     <Compile Include="Enums\CueType.cs" />
     <Compile Include="Enums\Deck.cs" />
     <Compile Include="Enums\DeckFlavor.cs" />
+    <Compile Include="Enums\MappingResolution.cs" />
+    <Compile Include="Enums\MidiOutRange.cs" />
     <Compile Include="Enums\MixerFX.cs" />
     <Compile Include="Enums\DeckSize.cs" />
     <Compile Include="Enums\DeviceTarget.cs" />
@@ -128,7 +130,6 @@
     <Compile Include="Enums\LoopSize.cs" />
     <Compile Include="Enums\MappingControlType.cs" />
     <Compile Include="Enums\MappingInteractionMode.cs" />
-    <Compile Include="Enums\MappingResolution.cs" />
     <Compile Include="Enums\MappingTargetDeck.cs" />
     <Compile Include="Enums\MappingType.cs" />
     <Compile Include="Enums\MidiControlType.cs" />

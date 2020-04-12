@@ -1,0 +1,398 @@
+
+
+
+Loop > Loop In/Set Cue
+Loop > Loop Out
+Loop > Loop Size Selector
+Loop > Loop Set
+Loop > Loop Size Select + Set
+Loop > Backward Loop Size Select + Set
+Loop > Loop Active On 
+
+Move > Size Selector (Deck Common Move)
+Move > Mode Selector (Deck Common Move)
+Move > Move
+Move > Beatjump
+
+Freeze Mode > Freeze Mode On
+Freeze Mode > Freeze Slice Size Adjust
+Freeze Mode > Freeze Slice Count Adjust
+Freeze Mode > Slice Trigger 1
+Freeze Mode > Slice Trigger 2
+Freeze Mode > Slice Trigger 3
+Freeze Mode > Slice Trigger 4
+Freeze Mode > Slice Trigger 5
+Freeze Mode > Slice Trigger 6
+Freeze Mode > Slice Trigger 7
+Freeze Mode > Slice Trigger 8
+Freeze Mode > Slice Trigger 9
+Freeze Mode > Slice Trigger 10
+Freeze Mode > Slice Trigger 11
+Freeze Mode > Slice Trigger 12
+Freeze Mode > Slice Trigger 13
+Freeze Mode > Slice Trigger 14
+Freeze Mode > Slice Trigger 15
+Freeze Mode > Slice Trigger 16
+
+Timecode > Scratch Control On
+Timecode > Playback Mode Int/Rel/Abs
+Timecode > Platter/Scope View Selector
+Timecode > Calibrate
+Timecode > Reset Tempo Offset
+
+Submix > Slot Volume Adjust (Submix)
+Submix > Slot Filter On (Submix)
+Submix > Slot Filter Adjust (Submix)
+Submix > Slot Mute On (Submix)
+Submix > Slot FX On (Submix)
+Submix > Slot FX Amount (Submix)
+
+
+Deck Common > Load Next
+Deck Common > Load Previous
+Deck Common > Load Selected (Deck Common)
+Deck Common > Unload (Deck Common)
+Deck Common > Play/Pause (Deck Common)
+Deck Common > Cue
+Deck Common > CUP (Cue Play)
+Deck Common > Seek Position (Deck Common)
+Deck Common > Jog Touch On
+Deck Common > Jog Turn
+Deck Common > Set as Tempo Master
+Deck Common > Sync On
+Deck Common > Phase Sync
+Deck Common > Tempo Sync
+Deck Common > Tempo Bend
+Deck Common > Tempo Bend (stepless)
+Deck Common > Tempo Adjust
+Deck Common > Tempo Range Selector
+Deck Common > Analyze Loaded Track
+Deck Common > Deck Flavor Selector
+Deck Common > Deck Size Selector
+Deck Common > Advanced Panel Toggle
+Deck Common > Advanced Panel Tab Selector
+Deck Common > Flux Mode On
+Deck Common > Flux Reverse Playback On
+Deck Common > Reverse Playback On
+
+
+Deck Common (out) > Phase
+Deck Common (out) > Beat Phase
+Deck Common (out) > Deck is Loaded
+Deck Common (out) > Is In Active Loop
+
+
+
+Track deck > Cue > Set Cue and Store as next Hotcue
+Track deck > Cue > Store Floating Cue/Loop as next Hotcue
+Track deck > Cue > Delete current Hotcue
+Track deck > Cue > Jump to Next/Prev Cue/Loop
+Track deck > Cue > Map Hotcue
+Track deck > Cue > Select/Set+Store Hotcue
+Track deck > Cue > Delete Hotcue
+Track deck > Cue > Cue Type Selector
+
+Track deck > Grid > Autogrid
+Track deck > Grid > Reset BPM
+Track deck > Grid > Copy Phase from Tempo Master
+Track deck > Grid > Set Grid Marker
+Track deck > Grid > Delete Grid Marker
+Track deck > Grid > Move Grid Marker
+Track deck > Grid > BPM Adjust
+Track deck > Grid > BPM Lock On
+Track deck > Grid > BPM x2
+Track deck > Grid > BPM /2
+Track deck > Grid > Beat Tap (Track Deck - Grid)
+Track deck > Grid > Tick On (Track Deck - Grid)
+
+
+Track deck > Load into Next Stopped Deck
+Track deck > Load, Loop, and Play
+Track deck > Duplicate Track Deck A
+Track deck > Duplicate Track Deck B
+Track deck > Duplicate Track Deck C
+Track deck > Duplicate Track Deck D
+Track deck > Waveform Zoom Adjust
+Track deck > DAW view
+Track deck > Keylock On
+Track deck > Keylock On (Preserve Pitch)
+Track deck > Key Adjust
+Track deck > Semitone Up/Down
+
+
+Track deck > Hotcue 1 Type
+Track deck > Hotcue 2 Type
+Track deck > Hotcue 3 Type
+Track deck > Hotcue 4 Type
+Track deck > Hotcue 5 Type
+Track deck > Hotcue 6 Type
+Track deck > Hotcue 7 Type
+Track deck > Hotcue 8 Type
+
+
+# Section: Remix decks
+
+Legacy > Play All Slots
+Legacy > Trigger All Slots
+Legacy > Slot Retrigger Play
+Legacy > Slot Load from List
+Legacy > Slot Unload 
+Legacy > Slot Capture from Deck
+Legacy > Slot Capture from Loop Recorder
+Legacy > Slot Copy from Slot
+Legacy > Play Mode All Slots
+Legacy > Slot Size x2
+Legacy > Slot Size /2
+Legacy > Slot Size Reset
+Legacy > Slot Size Adjust
+Direct Mapping > Slot 1 > Slot 1 Cell 1 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 1 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 1 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 1 Trigger
+
+Direct Mapping > Cell Load Modifier
+Direct Mapping > Cell Delete Modifier
+Direct Mapping > Cell Reverse Modifier
+Direct Mapping > Cell Capture Modifier
+
+Meters > Slot Pre-Fader Level (L)
+Meters > Slot Pre-Fader Level (R)
+Meters > Slot Pre-Fader Level (L+R)
+
+Step Sequencer > Sequencer On
+Step Sequencer > Swing Amount
+Step Sequencer > Selected Sample
+Step Sequencer > Pattern Length
+Step Sequencer > Enable Step 1
+Step Sequencer > Enable Step 2
+Step Sequencer > Enable Step 3
+Step Sequencer > Enable Step 4
+Step Sequencer > Enable Step 5
+Step Sequencer > Enable Step 6
+Step Sequencer > Enable Step 7
+Step Sequencer > Enable Step 8
+Step Sequencer > Enable Step 9
+Step Sequencer > Enable Step 10
+Step Sequencer > Enable Step 11
+Step Sequencer > Enable Step 12
+Step Sequencer > Enable Step 13
+Step Sequencer > Enable Step 14
+Step Sequencer > Enable Step 15
+Step Sequencer > Enable Step 16
+
+
+Remix Deck > Save Remix Set
+Remix Deck > Load Set from List
+Remix Deck > Slot Volume Adjust
+Remix Deck > Slot Filter On
+Remix Deck > Slot Filter Adjust
+Remix Deck > Slot Capture/Trigger/Mute
+Remix Deck > Slot Mute On
+Remix Deck > Slot Stop/Delete/Load from List
+Remix Deck > Slot Retrigger
+Remix Deck > Slot Play Mode
+Remix Deck > Slot Trigger Type
+Remix Deck > Slot Keylock On
+Remix Deck > Slot State
+Remix Deck > Slot FX On
+Remix Deck > Slot Monitor On
+Remix Deck > Slot Punch On
+Remix Deck > Quantize Selector
+Remix Deck > Quantize On
+Remix Deck > Capture Source Selector
+Remix Deck > Sample Page Selector
+
+EQ > High adjust
+EQ > High kill
+EQ > mid adjust
+EQ > mid kill
+EQ > midlow adjust
+EQ > midlow kill
+EQ > low adjust
+EQ > low kill
+
+X-Fader > position (X-Fader)
+X-Fader > curve adjust
+X-Fader > assign left
+X-Fader > assign right
+X-Fader > auto x-fade left
+X-Fader > auto x-fade right
+
+
+Mixer > Gain adjust (mixer)
+Mixer > auto-gain adjust
+Mixer > auto-gain view on
+Mixer > fx unit 1 on
+Mixer > fx unit 2 on
+Mixer > fx unit 3 on
+Mixer > fx unit 4 on
+Mixer > Deck effect on
+Mixer > mixer FX adjust
+Mixer > mixer fx on
+Mixer > mixer fx selector
+
+Mixer > balance adjust
+Mixer > monitor cue on
+Mixer > volume adjust
+Mixer > master volume adjust
+Mixer > limiter on
+Mixer > monitor volume adjust
+Mixer > monitor mix adjust
+Mixer > microphone gain adjust
+
+
+
+
+
+Unit On
+Dry/Wet Adjust
+Knob 1
+Knob 2
+Knob 3
+Button 1
+
+Button 2
+Button 3
+Effect 1 Selector
+Effect 2 Selector
+Effect 3 Selector
+FX Unit Mode Selector
+FX Store Preset
+Effect LFO Reset
+
+
+Browser List > Restore Auto-Gain (Browser List)
+Browser List > Detect BPM (Browser List)
+Browser List > BPM Unlock (Browser List)
+Browser List > BPM Lock (Browser List)
+
+Browser List > Delete (Browser List)
+Browser List > Reset Played-State (Browser List)
+Browser List > Analyze (Browser List)
+Browser List > analysis lock (browser list)
+Browser List > analysis unlock (browser list)
+Browser List > Edit (Browser List)
+Browser List > Relocate (Browser List)
+ 
+Browser List > Add as Track To Collection
+Browser List > Add as One-Shot Sample To Collection
+Browser List > Add as Loop To Collection
+Browser List > Set to One-Shot Sample (Browser List)
+Browser List > Set to Looped Sample (Browser List)
+Browser List > Set to Track (Browser List)
+Browser List > Select Up/Down (Browser List)
+Browser List > Select Page Up/Down (Browser List)
+Browser List > Select Top/Bottom (Browser List)
+Browser List > Select Extend Up/Down (Browser List)
+Browser List > Select Extend Page Up/Down (Browser List)
+Browser List > Select Extend Top/Bottom (Browser List)
+Browser List > Select All (Browser List)
+
+Browser List > Consolidate
+Browser List > Search (Browser List)
+Browser List > Search Clear (Browser List) 
+Browser List > Search in Playlists (Browser List)
+Browser List > Show In Explorer (Browser List)
+Browser List > Clear (Browser List)
+
+Browser List > Expand Remix Set
+Browser List > Jump To Current Track (Browser List)
+Browser List > Append To Preparation List 
+Browser List > Add or Remove Track from Preparation List
+Browser List > Add As Next To Preparation List  
+Browser List > Export as remix set (Browser List)
+
+Browser Tree > Save Collection (Browser Tree)
+Browser Tree > Delete (Browser Tree)
+Browser Tree > Reset Played-State (Browser Tree)
+Browser Tree > Analyze (Browser Tree)
+Browser Tree > Restore AutoGain (Browser Tree)
+Browser Tree > Edit (Browser Tree)
+Browser Tree > Relocate (Browser Tree)
+Browser Tree > Import Collection (Browser Tree)
+Browser Tree > Import Music Folders (Browser Tree)
+Browser Tree > Export (Browser Tree)
+Browser Tree > Export Printable (Browser Tree)
+
+Browser Tree > Rename Playlist or Folder (Browser Tree)
+Browser Tree > Select Up/Down (Browser Tree)
+Browser Tree > Select Expand/Collapse (Browser Tree)
+Browser Tree > Create Playlist
+Browser Tree > Delete Playlist
+Browser Tree > Create Playlist Folder
+Browser Tree > Delete Playlist Folder
+Browser Tree > Refresh Explorer Folder Content (Browser Tree)
+Browser Tree > Check Consistency
+Browser Tree > Add Folder To Music Folders
+Browser Favorites > Selector (Browser Favorites)
+Browser Favorites > Add Folder to Favorites
+Browser Favorites > Tracks To Favorite
+
+Preview player > load preview player into deck
+Preview player > Load Selected (Preview Player)
+Preview player > play/pause (Preview Player)
+Preview player > seek position (Preview Player)
+Preview player > unload (Preview Player)
+
+
+
+Loop Recorder > Load Selected (Loop Recorder)
+Loop Recorder > Play/Pause (Loop Recorder)
+Loop Recorder > Seek Position (Loop Recorder)
+Loop Recorder > Unload (Loop Recorder)
+Loop Recorder > Record (Loop Recorder)
+Loop Recorder > Size (Loop Recorder)
+Loop Recorder > Dry/Wet Adjust (Loop Recorder)
+Loop Recorder > Delete (Loop Recorder)
+Loop Recorder > Undo/Redo (Loop Recorder)
+Loop Recorder > Playback Position (Loop Recorder)
+Loop Recorder > Undo State (Loop Recorder)
+Loop Recorder > State (Loop Recorder)
+
+Audio Recorder > Record/Stop (Audio Recorder)
+Audio Recorder > Cut (Audio Recorder)
+Audio Recorder > Gain Adjust (Audio Recorder)
+Audio Recorder > Load Last Recording (Audio Recorder)
+
+Master Clock > Ableton Link > Reset Downbeat
+
+Master Clock > Auto Master Mode
+Master Clock > Master Tempo Selector
+Master Clock > Set Master Tempo
+Master Clock > Tempo Bend Up
+Master Clock > Tempo Bend Down
+Master Clock > Beat Tap (Master Clock)
+Master Clock > Tick On (Master Clock)
+Master Clock > Clock Int/Ext
+Master Clock > Clock Send
+Master Clock > Clock Trigger MIDI Sync
+
+Global > MIDI Controls > Buttons > MIDI Button 1
+Global > MIDI Controls > Knobs > MIDI Knob 1
+Global > MIDI Controls > Faders > MIDI Fader 1
+
+Global > Snap On
+Global > Quant On
+Global > Broadcasting On
+Global > Cruise Mode On
+Global > Show Slider Values On
+Global > Tool Tips On
+Global > Send Monitor State
+
+Layout > Only Browser On
+Layout > Layout Selector
+Layout > Fullscreen On
+Layout > Deck Focus Selector
+Layout > Toggle Last Focus
+
+Modifier > Modifier #1
+Modifier > Modifier #2
+Modifier > Modifier #3
+Modifier > Modifier #4
+Modifier > Modifier #5
+Modifier > Modifier #6
+Modifier > Modifier #7
+Modifier > Modifier #8
+
+
+

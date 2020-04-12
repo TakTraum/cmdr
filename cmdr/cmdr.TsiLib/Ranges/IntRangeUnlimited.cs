@@ -9,4 +9,15 @@ namespace cmdr.TsiLib.Ranges
 
         }
     }
+
+    /*
+     * ????
+    public class IntRangeMIDILed: IntRange
+    {
+        public IntRangeUnlimited()
+            : base(0, 127)
+        {
+
+        }
+    }*/
 }

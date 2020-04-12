@@ -237,12 +237,15 @@ namespace cmdr.Editor.ViewModels.Settings
                         s = new EnumSetting<MidiEncoderMode>(i++, name + ":");
                         break;
                     case "MidiRangeMin":
-                        s = new IntSetting(i++, "MIDI Range Min:", 0, 127);
+                        // pestrela 2020/04/11: there is no source code to "IntSetting", comes from "SettingControlLibrary.dll" that is pre-compiled.
+                        //s = new IntSetting(i++, "MIDI Range Min:", 0, 127);
 
-                        //s = new IntCommandViewI();
+                        // pestrela: replaced this with a realy large enum. 
+                        s = new EnumSetting<MidiOutRange>(i++, "MIDI Range Min:");
                         break;
                     case "MidiRangeMax":
-                        s = new IntSetting(i++, "MIDI Range Max:", 0, 127);
+                        // s = new IntSetting(i++, "MIDI Range Max:", 0, 127);
+                        s = new EnumSetting<MidiOutRange>(i++, "MIDI Range Max:");
                         break;
                     case "Resolution":
                         s = new EnumSetting<MappingResolution>(i++, name + ":");

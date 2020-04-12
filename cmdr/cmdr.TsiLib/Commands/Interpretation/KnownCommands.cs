@@ -464,6 +464,8 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.TrackDeck, "Key Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         TrackDeck_KeyAdjust = 402,
 
+        [CommandDescription(Categories.TrackDeck, "Semitone Up/Down", TargetType.Track, typeof(EnumInCommand<JumpDirection>), typeof(EnumInCommand<JumpDirection>))]
+        TrackDeck_SemiToneUpDown = 403,
 
         [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 1 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
         TrackDeck_Cue_Hotcue1Type = 2333,
@@ -1039,6 +1041,9 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.Browser_List, "Append To Preparation List", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_AppendToPreparationList = 3460,
+
+        [CommandDescription(Categories.Browser_List, "Add or Remove Track from Preparation List", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_List_AddOrRemoveTrackfromPreparationList = 3480,
 
 
         [CommandDescription(Categories.Browser_List, "Add As Next To Preparation List", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]

@@ -1,0 +1,125 @@
+------
+bpm lock (browser list)
+bpm unlock (browser list)
+detect bpm (browser list)
+dry/wet adjust
+expand content set (browser list)
+export (browser tree)
+export printable (browser tree)
+export to traktor pak (browser list)
+import collection (browser tree)
+import music folders (browser tree)
+jump to current track (browser list)
+load into next stopped deck
+load last recording (audio recorder)
+load selected (loop recorder)
+load, loop, and play
+midlow adjust
+midlow kill
+quant on
+quantize on
+refresh explorer folder content (browser tree)
+rename playlist or folder (browser tree)
+restore auto-gain (browser list)
+restore autogain (browser tree)
+save collection (browser tree)
+search (browser list)
+search clear (browser list)
+search in playlists (browser list)
+seek position (loop recorder)
+select all (browser list)
+select expand/collapse (browser tree)
+semitone up/down
+set to looped sample (browser list)
+set to one-shot sample (browser list)
+set to track (browser list)
+show in explorer (browser list)
+slice trigger 1
+slice trigger 10
+slice trigger 11
+slice trigger 12
+slice trigger 13
+slice trigger 14
+slice trigger 15
+slice trigger 16
+slice trigger 2
+slice trigger 3
+slice trigger 4
+slice trigger 5
+slice trigger 6
+slice trigger 7
+slice trigger 8
+slice trigger 9
+slot filter adjust
+slot filter on
+slot fx on
+slot mute on
+slot volume adjust
+tracks to favorite
+unit on
+unload (loop recorder)
+
+
+
+******
+
+
+
+
+Analysis Lock (Browser Tree)
+Analysis Unlock (Browser Tree)
+Current Step
+Deck Play (Remix Deck) (dug)
+Deck Post-Fader Level (L)
+Deck Post-Fader Level (L+R)
+Deck Post-Fader Level (R)
+Deck Pre-Fader Level (L)
+Deck Pre-Fader Level (L+R)
+Deck Pre-Fader Level (R)
+Dry/Wet Adjust (FX Unit)
+Expand Remix Set
+Export
+Export As Remix Set
+Export Printable
+Flux State
+Import Collection
+Import Music Folders
+Jump To Current Track
+Jump to active Cue Point (quantized)
+Load
+Load Last Recording
+Master Out Clip (L)
+Master Out Clip (L+R)
+Master Out Clip (R)
+Master Out Level (L)
+Master Out Level (L+R)
+Master Out Level (R)
+Mid Low Adjust
+Mid Low Kill
+Mixer Level (L)
+Mixer Level (R)
+Post Fade-Out Marker (dug)
+Quantize On (Global)
+Quantize On (Remix Deck)
+Record Input Clip (L)
+Record Input Clip (R)
+Record Input Level (L)
+Record Input Level (R)
+Refresh Explorer Folder Content
+Rename Playlist Or Folder
+Restore AutoGain
+Routing Selector
+Save Collection
+Save Traktor Settings
+Scratch (dug)
+Search
+Search Clear
+Search In Playlists
+Select All
+Select Expand/Collapse
+Set To Looped Sample
+Set To One-Shot Sample
+Set To Track
+Show In Explorer
+Track End Warning
+Unit On (FX Unit)

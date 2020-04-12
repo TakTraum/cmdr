@@ -170,22 +170,33 @@ v0.6 - TakTraum April 2016
 * some refactoring and cosmetics
   
 
-Changelog:
- - CTRL+D:  duplicatate mappings
+-------------
+-------------
+-------------
+ 
+release 0.10.1 - TBD
+
+* CTRL+D: duplicate mappings
+* CTRL+Shift+tilde: select all 
+* ctrl+shift+ plus minus: decPad/incPad
+* added "_I" identifier for inverted MIDI codes
+* Just in time debugger now works again
+* New setting: Load Last File At Startup
+* replaced MIDI out non-editable textboxes with a simple list (with scrollbar)
+* added 2x missing commands (semitone up down / add or remove prep list)
 
     
 ## 2020 WishList
 
-* a real textbox on midi OUT
+
+
+* show / hide columns (+preferences)
+* remmeber last window position / maximize
 
 
 * seperate condition columns into cond1+cond2
 
 * more increment commands
-* show / hide columns (+preferences)
-* remmeber last window position / maximize
-* Browser > List > Add or Remove Track from Preparation List  The ID is 3480 
-  * another TP3 command mentioned by stewe
 * inc/dec Combos and mixture of notes
 * favorite start at 0
 

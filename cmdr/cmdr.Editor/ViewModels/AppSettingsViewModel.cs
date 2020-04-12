@@ -76,6 +76,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("RemoveUnusedMIDIDefinitions", ref _removeUnusedMIDIDefinitions, ref value); }
         }
 
+        private bool _loadLastFileAtStartup;
+        public bool LoadLastFileAtStartup
+        {
+            get { return _loadLastFileAtStartup; }
+            set { SetProperty("LoadLastFileAtStartup", ref _loadLastFileAtStartup, ref value); }
+        }
+
         private bool _mustOverrideTraktorVersion;
         public bool MustOverrideTraktorVersion
         {
@@ -142,6 +149,7 @@ namespace cmdr.Editor.ViewModels
             _traktorVersion = CmdrSettings.Instance.TraktorVersion ?? String.Empty;
             _optimizeFXList = CmdrSettings.Instance.OptimizeFXList;
             _removeUnusedMIDIDefinitions = CmdrSettings.Instance.RemoveUnusedMIDIDefinitions;
+            _loadLastFileAtStartup = CmdrSettings.Instance.LoadLastFileAtStartup;
 
             if (TraktorSettings.Initialized)
                 _overrideTraktorVersion = !_traktorVersion.Equals(TraktorSettings.Instance.TraktorVersion);
@@ -215,6 +223,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.TraktorVersion = TraktorVersion;
             CmdrSettings.Instance.OptimizeFXList = OptimizeFXList;
             CmdrSettings.Instance.RemoveUnusedMIDIDefinitions = RemoveUnusedMIDIDefinitions;
+            CmdrSettings.Instance.LoadLastFileAtStartup = LoadLastFileAtStartup;
 
             CmdrSettings.Instance.Save();
 

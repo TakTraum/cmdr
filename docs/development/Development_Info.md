@@ -62,13 +62,19 @@ Another simple approach is to read the check-ins of small features
 
 ## Visual studio tips 
 
-Cant change code on the fly in the debugger
+Cant change code on the fly in the debugger:
  - ensure code is specifically 32 bit:
    -  https://stackoverflow.com/questions/10113532/how-do-i-fix-the-visual-studio-compile-error-mismatch-between-processor-archit
 
 RealClean extension (removes binaries as well)
   https://marketplace.visualstudio.com/items?itemName=FlorentGoetz.RealCleanExt
 
+SelectNext extension:
+  https://marketplace.visualstudio.com/items?itemName=thomaswelen.SelectNextOccurrence
+
+Auto sync solution explorer:
+  Tools->Options->Projects and Solutions->Track Active Item in Solution Explorer  
+  
 ## git cheatsheet
 
 This is how the filtering remote branch was merged.

@@ -411,15 +411,35 @@ namespace cmdr.Editor.ViewModels
             openTab(vm);
         }
 
+
+        private void open_last_mru_file()
+        {
+            if (!CmdrSettings.Instance.LoadLastFileAtStartup)
+            {
+                return;
+            }
+
+            string path = _mru.get_last_file();
+            if (!String.IsNullOrEmpty(path))
+            {
+                open_path(path);
+            }
+        }
+
+        private async void open_path(string path)
+        {
+            if (!String.IsNullOrEmpty(path))
+                await openFile(path);
+        }
+
         private async void open()
         {
             string initialDirectory = null;
             if (!String.IsNullOrEmpty(CmdrSettings.Instance.DefaultWorkspace))
                 initialDirectory = CmdrSettings.Instance.DefaultWorkspace;
-            
+
             string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, false, initialDirectory);
-            if (!String.IsNullOrEmpty(path))
-                await openFile(path);
+            open_path(path);
         }
 
         private async void save()
@@ -908,8 +928,7 @@ namespace cmdr.Editor.ViewModels
 
             _mru.Load();
 
-            // pestrela: todo load debug TSI for testing
-            // TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath)
+            open_last_mru_file();
 
             await ControllerDefaultMappings.Instance.LoadAsync(CmdrSettings.Instance.PathToControllerDefaultMappings);
         }

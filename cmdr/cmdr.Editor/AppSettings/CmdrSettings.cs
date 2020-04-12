@@ -21,7 +21,12 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
-        public bool Initialized { get { return !String.IsNullOrEmpty(TraktorVersion); } }
+        public bool Initialized {
+            get {
+                bool ret = !String.IsNullOrEmpty(TraktorVersion);
+                return ret;
+            }
+        }
 
         public string DefaultWorkspace
         {
@@ -72,6 +77,21 @@ namespace cmdr.Editor.AppSettings
             {
                 string ret = value.ToString();
                 setSetting("RemoveUnusedMIDIDefinitions", ret);
+            }
+        }
+
+        public bool LoadLastFileAtStartup
+        {
+            get
+            {
+                string ret = getSetting("LoadLastFileAtStartup");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("LoadLastFileAtStartup", ret);
             }
         }
 
