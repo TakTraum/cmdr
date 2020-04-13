@@ -453,13 +453,6 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-
-
-
-
-
-
-
         private void close()
         {
             _mdiContainer.RemoveMdiChild(_mdiContainer.SelectedMdiChild.Id, true);

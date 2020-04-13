@@ -186,7 +186,7 @@ release 0.10.1 - TBD
 * added 2x missing commands (semitone up down / add or remove prep list)
 
 * simplified selectedNotes/selectedchannels sub menus
-
+* added show decimal note setting
 
     
 ## 2020 WishList

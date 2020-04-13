@@ -129,8 +129,16 @@
 
             <!--<MenuItem Header="_View" />
             <MenuItem Header="_Window" />-->
-            
-            <MenuItem Header="Assignment">
+
+
+            <MenuItem Header="Commands">
+                <MenuItem Header="Dec Command" Command="{Binding DecModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+5" />
+                <MenuItem Header="Inc Command" Command="{Binding IncModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+6" />
+                <MenuItem Header="Dec Value" Command="{Binding DecModifierValue, Mode=OneTime}" InputGestureText="Ctrl+Shift+5" />
+                <MenuItem Header="Inc Value" Command="{Binding IncModifierValue, Mode=OneTime}" InputGestureText="Ctrl+Shift+6" />
+            </MenuItem>
+
+            <MenuItem Header="Assignments">
                 <MenuItem Header="_Dec Note" Command="{Binding DecOneCommand, Mode=OneTime}" InputGestureText="Ctrl+Minus" />
                 <MenuItem Header="_Inc Note" Command="{Binding IncOneCommand, Mode=OneTime}" InputGestureText="Ctrl+Plus" />
                 <MenuItem Header="Dec Pad" Command="{Binding DecPadCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+Minus" />
@@ -144,7 +152,7 @@
                 <MenuItem Header="Midi _Learn" Command="{Binding LearnCommand, Mode=OneTime}" InputGestureText="Ctrl+L" />
             </MenuItem>
                 
-            <MenuItem Header="Condition">
+            <MenuItem Header="Conditions">
                 <MenuItem Header="Dec Condition1 Key" Command="{Binding DecModifierCondition1, Mode=OneTime}" InputGestureText="Ctrl+1" />
                 <MenuItem Header="Dec Condition1 Value" Command="{Binding DecModifierConditionValue1, Mode=OneTime}" InputGestureText="Ctrl+Shift+1" />
                 <MenuItem Header="Inc Condition1 Key" Command="{Binding IncModifierCondition1, Mode=OneTime}" InputGestureText="Ctrl+2" />
@@ -160,12 +168,6 @@
                 <MenuItem Header="Show _Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
             </MenuItem>
                 
-            <MenuItem Header="Commands">
-                <MenuItem Header="Dec Command" Command="{Binding DecModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+5" />
-                <MenuItem Header="Inc Command" Command="{Binding IncModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+6" />
-                <MenuItem Header="Dec Value" Command="{Binding DecModifierValue, Mode=OneTime}" InputGestureText="Ctrl+Shift+5" />
-                <MenuItem Header="Inc Value" Command="{Binding IncModifierValue, Mode=OneTime}" InputGestureText="Ctrl+Shift+6" />
-            </MenuItem>
                 
             <MenuItem Header="_Help">
                 <MenuItem Header="_Show Help" Command="{Binding HelpCommand, Mode=OneTime}" InputGestureText="F1" />

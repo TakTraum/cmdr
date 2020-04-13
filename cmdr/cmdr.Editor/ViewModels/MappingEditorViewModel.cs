@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Input;
 
 using System;
+using System.Text;
 using cmdr.TsiLib.Commands.Interpretation;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
@@ -233,69 +234,16 @@ namespace cmdr.Editor.ViewModels
 
 
 
-        /*
-        public void rotateModifierCondition1(int which, int step)
-        {
-            var conditions_editor = this.ConditionsEditor;
-
-            var conditions_list = conditions_editor.Conditions;
-            var modifier_list = conditions_list[2].Children;
-            var new_modifier_model = modifier_list[2];
-
-
-            var cur_value = cond.Condition1.Value;
-
-            cond.setCondition_hack(ConditionNumber.One, new_modifier_model);
-
-            cond.Condition1.Value = cur_value;
-            cond.Refresh();
-            return;
-        }*/
-    
-            /*
-        public void rotateModifierCondition2(int which, int step)
-        {
-            var conditions_editor = this.ConditionsEditor;
-
-            var conditions_list = conditions_editor.Conditions;
-            var modifier_list = conditions_list[2].Children;
-            var new_modifier_model = modifier_list[2];
-            var cur_value = conditions_editor.Condition1.Value;
-
-            cond.Condition1.Value = cur_value;
-            cond.Refresh();
-            return;
-
-            foreach (var m in _mappings)
-            {
-                var condition1 = m.Conditions.Condition1;
-                var condition2 = m.Conditions.Condition2;
-
-                //ACondition condition = new ACondition();
-                //m.SetCondition(ConditionNumber.One, condition);
-
-                // hack
-                if (((KnownCommands)condition1.Id >= KnownCommands.Modifier_Modifier1) &&
-                    ((KnownCommands)condition1.Id <= KnownCommands.Modifier_Modifier8))
-                {
-                    var i = condition1.Id;
-                    //condition1.RawSettings.conditiononetarget++;
-                    //condition1;
-
-                    m.UpdateConditionExpression();
-                }
-            }
-        }*/
-
-        int rotate_modifier_key_int(int cur_modifier, int step)
+     
+        int rotate_modifier_key_int(int cur_modifier, int step, int start, int stop)
         {
 
             int new_modifier = 1;
             if (step > 0)
             {
-                if (cur_modifier >= 8)
+                if (cur_modifier >= stop)
                 {
-                    new_modifier = 1;
+                    new_modifier = start;
                 }
                 else
                 {
@@ -304,9 +252,9 @@ namespace cmdr.Editor.ViewModels
             }
             else if (step <0)
             {
-                if (cur_modifier <= 1)
+                if (cur_modifier <= start)
                 {
-                    new_modifier = 8;
+                    new_modifier = stop;
                 }
                 else
                 {
@@ -379,7 +327,7 @@ namespace cmdr.Editor.ViewModels
 
                 ////
                 int cur_modifier = id - KnownCommands.Modifier_Modifier1 + 1;
-                int new_modifier = rotate_modifier_key_int(cur_modifier, step);
+                int new_modifier = rotate_modifier_key_int(cur_modifier, step, 1, 8);
 
                 MenuItemViewModel item = modifier_list[new_modifier - 1];
                 ConditionProxy new_proxy = null;
@@ -440,50 +388,160 @@ namespace cmdr.Editor.ViewModels
         }
 
 
+        public bool is_range_id(KnownCommands cur_id, KnownCommands start, KnownCommands end)
+        {
+            return ((cur_id >= start) &&
+                    (cur_id <= end)
+                    );
+
+        }
+
+        public string patch_command_name(string text, int new_int)
+        {
+            string ret = "";
+            bool done_replace = false;
+            var sb = new    StringBuilder();
+            for (var i = 0; i < text.Length - 0; i++)
+            {
+                if (char.IsDigit(text[i]))
+                {
+                    if (!done_replace)
+                    {
+                        string to_add = string.Format("{0}", new_int);
+                        sb.Append(to_add);
+                    }
+                    done_replace = true;
+                }
+                else
+                {
+                    sb.Append(text[i]);
+                }
+            }
+
+            return sb.ToString();
+        }
+        
+
+        public void try_rotate(MappingViewModel m, int step, KnownCommands start_c, KnownCommands end_c)
+        {
+            var command = m.Command;
+            KnownCommands cur_id = (KnownCommands)m.Command.Id;
+
+            if (!is_range_id(cur_id, start_c, end_c)){
+                return;
+            }
+
+
+            int cur_modifier = cur_id - start_c + 1;
+
+            int start_i = 1;
+            int end_i = 8;
+
+            switch (end_c)
+            {
+                case KnownCommands.FXUnit_Button3:
+                case KnownCommands.FXUnit_Effect3Selector:
+                case KnownCommands.FXUnit_Knob3:
+                    end_i = 3;
+                    break;
+
+
+                case KnownCommands.Global_MidiControls_Buttons_MidiButton8:
+                case KnownCommands.Global_MidiControls_Knobs_MidiFader8:
+                case KnownCommands.Global_MidiControls_Knobs_MidiKnob8:
+                case KnownCommands.Modifier_Modifier8:
+                case KnownCommands.TrackDeck_Cue_Hotcue8Type:
+                    end_i = 8;
+                    break;
+
+                case KnownCommands.Mixer_FXUnit4On:
+                    end_i = 4;
+                    break;
+
+                case KnownCommands.RemixDeck_StepSequencer_EnableStep16:
+                    // needs bugfix
+                    return;
+
+                    end_i = 16;
+                    break;
+            }
+
+            int new_modifier = rotate_modifier_key_int(cur_modifier, step, start_i, end_i);
+
+            string new_name = patch_command_name(command.Name, new_modifier);
+
+            KnownCommands new_id = start_c + new_modifier - 1;
+
+            // pestrela: this is a bit fragile, and should be improved
+            m.Command.hack_modifier(new_id, new_name);
+            m.hack_modifier(new_id);
+
+            // would this be the proper way?
+            //    var _rawMapping = m._mapping.RawMapping;
+            //    ACommand Command = Commands.All.GetCommandProxy(_rawMapping.TraktorControlId, _rawMapping.Type).Create(_rawMapping.Settings);
+
+            m.UpdateInteraction();
+        }
+
+        public List<KnownCommands> get_rotatable_commands() {
+
+            KnownCommands[] array = {
+                    /* 
+                     * ignored:
+                            KnownCommands.RemixDeck_DirectMapping_Slot4_Slot4Cell13State
+                            KnownCommands.RemixDeck_DirectMapping_Slot4_Slot4Cell13Trigger
+                    */
+                    KnownCommands.DeckCommon_FreezeMode_SliceTrigger1,
+                    KnownCommands.DeckCommon_FreezeMode_SliceTrigger16,
+
+                    KnownCommands.FXUnit_Button1,
+                    KnownCommands.FXUnit_Button3,
+                    KnownCommands.FXUnit_Effect1Selector,
+                    KnownCommands.FXUnit_Effect3Selector,
+                    KnownCommands.FXUnit_Knob1,
+                    KnownCommands.FXUnit_Knob3,
+
+                    KnownCommands.Global_MidiControls_Buttons_MidiButton1,
+                    KnownCommands.Global_MidiControls_Buttons_MidiButton8,
+                    KnownCommands.Global_MidiControls_Knobs_MidiFader1,
+                    KnownCommands.Global_MidiControls_Knobs_MidiFader8,
+                    KnownCommands.Global_MidiControls_Knobs_MidiKnob1,
+                    KnownCommands.Global_MidiControls_Knobs_MidiKnob8,
+
+                    KnownCommands.Mixer_FXUnit1On,
+                    KnownCommands.Mixer_FXUnit4On,
+                    KnownCommands.Modifier_Modifier1,
+                    KnownCommands.Modifier_Modifier8,
+
+                    KnownCommands.RemixDeck_StepSequencer_EnableStep1,
+                    KnownCommands.RemixDeck_StepSequencer_EnableStep16,
+                    KnownCommands.TrackDeck_Cue_Hotcue1Type,
+                    KnownCommands.TrackDeck_Cue_Hotcue8Type,
+                };
+
+            List<KnownCommands> list = new List<KnownCommands>(array);
+            return list;
+        }
 
 
         //////////
         public void rotateModifierCommand(int step)
         {
+            var possibilities = get_rotatable_commands();
+
             foreach (var m in _mappings)
             {
-                
-                var command = m.Command;
-                KnownCommands cur_id = (KnownCommands)m.Command.Id;
-                
-                if (!(
-                    (cur_id >= KnownCommands.Modifier_Modifier1) &&
-                    (cur_id <= KnownCommands.Modifier_Modifier8)
-                    ))
+                // take elements two-by-two
+                for (var i = 0; i < possibilities.Count(); i = i + 2)
                 {
-                    continue;
+                    try_rotate(m, step, possibilities[i], possibilities[i + 1]);
                 }
-                
-
-
-                
-                int cur_modifier = cur_id - KnownCommands.Modifier_Modifier1 + 1;
-                int new_modifier = rotate_modifier_key_int(cur_modifier, step);
-
-                
-                KnownCommands new_id = KnownCommands.Modifier_Modifier1 + new_modifier - 1;
-                string new_name = String.Format("Modifier #{0}", new_modifier);
-
-
-                // pestrela: this is a bit fragile, and should be improved
-                m.Command.hack_modifier(new_id, new_name);
-                m.hack_modifier(new_id);
-
-                // would this be the proper way?
-                //    var _rawMapping = m._mapping.RawMapping;
-                //    ACommand Command = Commands.All.GetCommandProxy(_rawMapping.TraktorControlId, _rawMapping.Type).Create(_rawMapping.Settings);
-
-                m.UpdateInteraction();
             }
         }
 
-
         //////////
+  
+
         public void rotateModifierValue(int step)
         {
             foreach (var m in _mappings)
@@ -491,6 +549,9 @@ namespace cmdr.Editor.ViewModels
 
                 var command = m.Command;
                 KnownCommands cur_id = (KnownCommands)m.Command.Id;
+
+
+               //var command3 = (KnownCommands)m.Command;
 
                 if (!(
                     (cur_id >= KnownCommands.Modifier_Modifier1) &&

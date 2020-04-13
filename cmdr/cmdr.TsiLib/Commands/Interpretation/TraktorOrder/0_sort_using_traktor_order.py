@@ -110,10 +110,31 @@ for line in cmdr_list:
           print("duplicate keys: %s" % (key) )
         
         c2[key].append(ret) #= ret
+        c2[key].append(ret) #= ret
         
         
+def hasNumbers(inputString):
+  return any(char.isdigit() for char in inputString)
 
-   
+ranges = []  
+for key in c2.keys():
+  if hasNumbers(key):
+    #print(key)
+    ranges.append(key)
+
+
+#data1 = open('2_cmdr_commands_unsorted.txt').readlines()
+#data2 = [a for a in data if "Command" in a ]
+#data3 = [ a.split('"')[1] for a in data2 ]
+#data4 = [ a for a in data3 if "1" in a ]
+
+# to generate list of rotatable commands
+# cat 2_cmdr_commands_unsorted.txt | sort -u |  grep "=" |  awk '$1 ~ /[1]/{print "KnownCommands."$1}' | sort -V
+
+
+# sys.exit(1)        
+
+###########   
 f_out = open(file_out_sorted, "w")    
 
 c3 = c2.copy()
