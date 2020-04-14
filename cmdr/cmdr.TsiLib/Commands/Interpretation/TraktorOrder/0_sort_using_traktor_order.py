@@ -53,7 +53,7 @@ def real_ignore_list(real):
 
   
 
-file_in_sorted   = '1_traktor_commands_sorted.txt'
+file_in_sorted   = 'sorted_commands/traktor_commands_sorted.txt'
 file_in_unsorted = '2_cmdr_commands_unsorted.txt'
 file_out_sorted  = '3_cmdr_commands_sorted.txt'
 file_out_reference = '4_traktor_commands_final.txt'

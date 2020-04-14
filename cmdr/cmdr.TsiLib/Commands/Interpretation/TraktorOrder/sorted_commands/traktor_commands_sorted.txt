@@ -72,6 +72,9 @@ Deck Common > Deck Size Selector
 Deck Common > Advanced Panel Toggle
 Deck Common > Advanced Panel Tab Selector
 Deck Common > Flux Mode On
+
+  Deck Common > Flux State
+  
 Deck Common > Flux Reverse Playback On
 Deck Common > Reverse Playback On
 
