@@ -555,12 +555,19 @@ namespace cmdr.Editor.ViewModels
                                                                          c.Text.ToLower(), SearchText.ToLower(), CompareOptions.IgnoreCase) 
                                                          >= 0).ToList();
 
-            // unclear why this doesn't work
-            //
-            // remove hundreds of slot entries as well
-            //limited_list = limited_list.Where(c => (CommandProxy)(c.Tag).Category != Categories.RemixDeck_DirectMapping_Slot1);
-            //CommandProxy a = (CommandProxy)(limited_list.ToList()[0].Tag);
-            //var b = a.Category;
+
+            // Remove hundreds of remix deck entries
+            List<Categories> blacklist = new List<Categories> {
+                Categories.RemixDeck_DirectMapping_Slot1,
+                Categories.RemixDeck_DirectMapping_Slot2,
+                Categories.RemixDeck_DirectMapping_Slot3,
+                Categories.RemixDeck_DirectMapping_Slot4
+            };
+            foreach(var cat in blacklist)
+            {
+                limited_list = limited_list.Where(c => ((CommandProxy)(c.Tag)).Category != cat).ToList();
+            }
+            ////
 
             if (has_shortcut)
             {
@@ -574,7 +581,7 @@ namespace cmdr.Editor.ViewModels
             }
 
             int matches = limited_list.Count();
-            if (matches < 20)
+            if (matches < 30)
             {
                 foreach (var item in limited_list)
                 {
