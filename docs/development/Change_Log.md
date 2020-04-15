@@ -187,6 +187,11 @@ release 0.10.1 - TBD
 
 * simplified selectedNotes/selectedchannels sub menus
 * added show decimal note setting
+* generalized rotate command to more commands
+
+* first cut of a filter on the IN/OUT menus. 
+These are in addition to the IN shortcut on the OUT menu
+for now this is on the old search box
 
     
 ## 2020 WishList

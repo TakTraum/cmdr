@@ -54,13 +54,26 @@ namespace cmdr.Editor.ViewModels
              return hasNext;
          }
 
-         private void search()
+         private void limit_menu()
          {
-             if (string.IsNullOrEmpty(SearchText))
+            string to_search = SearchText.ToLower();
+            _dvm.limit_add_mapping_menus(to_search);
+
+         }
+
+        private void search()
+         {
+            /// pestrela: limit list of commands
+            limit_menu();
+
+            if (string.IsNullOrEmpty(SearchText))
              {
                  IsFound = true;
                  return;
              }
+
+            return;
+
 
              var comparer = CultureInfo.CurrentCulture.CompareInfo;
              // TODO: Sorting!

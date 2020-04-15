@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Globalization;
 
 namespace cmdr.Editor.ViewModels
 {
@@ -152,8 +153,26 @@ namespace cmdr.Editor.ViewModels
             set { _searchViewModel = value; raisePropertyChanged("SearchViewModel"); }
         }
 
+        private FilterCmdViewModel _filterCmdViewModel;
+        public FilterCmdViewModel FilterCmdViewModel
+        {
+            get { return _filterCmdViewModel ?? (_filterCmdViewModel = new FilterCmdViewModel(this)); }
+            set { _filterCmdViewModel = value; raisePropertyChanged("FilterCmdViewModel"); }
+        }
+
+
         public ObservableCollection<MenuItemViewModel> InCommands { get; private set; }
         public ObservableCollection<MenuItemViewModel> OutCommands { get; private set; }
+
+        private int InCommands_dynamic_index;
+        private int OutCommands_dynamic_index;
+
+        private bool In_has_shortcut;
+        private bool Out_has_shortcut;
+
+
+        public ObservableCollection<MenuItemViewModel> InCommands_wholelist { get; private set; }
+        public ObservableCollection<MenuItemViewModel> OutCommands_wholelist { get; private set; }
 
         public Dictionary<string, AMidiDefinition> DefaultMidiInDefinitions { get; private set; }
         public Dictionary<string, AMidiDefinition> DefaultMidiOutDefinitions { get; private set; }
@@ -484,6 +503,11 @@ namespace cmdr.Editor.ViewModels
             Mappings.First().ClearFiltering();   // HACK: investigate why there is a duplication on the very first paste or "add-in". Clearing grid filters avoids this bug
         }
 
+
+        // This function generates the initial menu tree for the IN and OUT buttons
+        // Later functions will dynamically add:
+        //   a) the OUT shortcut
+        //   b) the filter list
         private void generateAddMappingContextMenus()
         {
             var builder = new MenuBuilder<CommandProxy>();
@@ -498,28 +522,115 @@ namespace cmdr.Editor.ViewModels
 
             var allOut = All.KnownOutCommands.Select(kv => kv.Value);
             OutCommands = new ObservableCollection<MenuItemViewModel>(builder.BuildTree(allOut, itemBuilder, a => a.Category.ToDescriptionString(), "->", false, false));
+
+            // list versions for searching later
+            InCommands_wholelist = new ObservableCollection<MenuItemViewModel>(builder.BuildList(allIn, itemBuilder));
+            OutCommands_wholelist = new ObservableCollection<MenuItemViewModel>(builder.BuildList(allOut, itemBuilder));
+
+
+            InCommands.Add(_separator);
+            InCommands.Add(_separator);
+            OutCommands.Add(_separator);
+            OutCommands.Add(_separator);
+
+            // location of the dynamic components of the menu
+            InCommands_dynamic_index = InCommands.Count() - 2;
+            OutCommands_dynamic_index = InCommands.Count() - 2;
+
+            In_has_shortcut = false;
+            Out_has_shortcut = false;
+
+    }
+
+
+    void limit_add_mapping_menus_inner(
+            string SearchText,
+            ObservableCollection<MenuItemViewModel> Commands,
+            int seperator_index,
+            bool has_shortcut,
+            ObservableCollection<MenuItemViewModel> Commands_wholelist)
+        {
+            var comparer = CultureInfo.CurrentCulture.CompareInfo;
+            List<MenuItemViewModel> limited_list = Commands_wholelist.Where(c => comparer.IndexOf(
+                                                                         c.Text.ToLower(), SearchText.ToLower(), CompareOptions.IgnoreCase) 
+                                                         >= 0).ToList();
+
+            // unclear why this doesn't work
+            //
+            // remove hundreds of slot entries as well
+            //limited_list = limited_list.Where(c => (CommandProxy)(c.Tag).Category != Categories.RemixDeck_DirectMapping_Slot1);
+            //CommandProxy a = (CommandProxy)(limited_list.ToList()[0].Tag);
+            //var b = a.Category;
+
+            if (has_shortcut)
+            {
+                seperator_index += 1;
+            }
+
+            // remove everything after the separator
+            while (Commands.Count > seperator_index + 2)
+            {
+                Commands.RemoveAt(Commands.Count - 1);
+            }
+
+            int matches = limited_list.Count();
+            if (matches < 20)
+            {
+                foreach (var item in limited_list)
+                {
+                    Commands.Add(item);
+                }
+            } 
+            return;
         }
 
+
+        public void limit_add_mapping_menus(string SearchText)
+        {
+            limit_add_mapping_menus_inner(
+                SearchText,
+                InCommands,
+                InCommands_dynamic_index,
+                In_has_shortcut,
+                InCommands_wholelist);
+
+            limit_add_mapping_menus_inner(
+                SearchText,
+                OutCommands,
+                OutCommands_dynamic_index,
+                Out_has_shortcut,
+                OutCommands_wholelist);
+        }
+
+        // This function is called everytime we select a new mapping. 
+        // This is to put the shorthand of the current command in IN/OUT with a seperator 
+        // This is ONLY for the OUT menu
         private void updateAddMappingContextMenus()
         {
-            if (OutCommands.Contains(_separator))
+
+            if (Out_has_shortcut)
             {
-                OutCommands.Remove(_separator);
-                OutCommands.RemoveAt(OutCommands.Count - 1);
+                //OutCommands.Remove(_separator);
+                OutCommands.RemoveAt(OutCommands_dynamic_index + 1);
             }
             
             MappingViewModel selectedMapping = null;
+            Out_has_shortcut = false;
 
-            if (_selectedMappings.Count != 1 || (selectedMapping = _selectedMappings.Single().Item as MappingViewModel).Command.MappingType != MappingType.In)
+            if (_selectedMappings.Count != 1 || (selectedMapping = _selectedMappings.Single().Item as MappingViewModel).Command.MappingType != MappingType.In) {
+                // Only IN->OUT shortcut is implemented
                 return;
+            }
 
             if (All.KnownOutCommands.ContainsKey(selectedMapping.Command.Id))
             {
                 var commandProxy = All.KnownOutCommands[selectedMapping.Command.Id];
-                if (!OutCommands.Contains(_separator))
+                if (true)
                 {
-                    OutCommands.Add(_separator);
-                    OutCommands.Add(new MenuItemViewModel
+                    Out_has_shortcut = true;
+
+                    //OutCommands.Add(_separator);
+                    OutCommands.Insert(OutCommands_dynamic_index + 1, new MenuItemViewModel
                     {
                         Text = commandProxy.Name + " (" + selectedMapping.AssignmentExpression + ")",
                         Tag = commandProxy,

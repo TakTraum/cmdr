@@ -34,7 +34,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -160,6 +160,7 @@
     <Compile Include="ViewModels\Metadata\MappingMetadataViewModel.cs" />
     <Compile Include="ViewModels\MidiBinding\NotesMenuBuilder.cs" />
     <Compile Include="ViewModels\MruTsiFiles.cs" />
+    <Compile Include="ViewModels\FilterCmdViewModel.cs" />
     <Compile Include="ViewModels\Settings\CommandEditorViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />

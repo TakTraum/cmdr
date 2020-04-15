@@ -39,7 +39,7 @@ namespace cmdr.Editor.ViewModels
         {
             get { return _isCommandEnabled; }
         }
-
+        
         private CommandEditorViewModel _commandEditor;
         public CommandEditorViewModel CommandEditor { get { return _commandEditor; } }
 
@@ -459,8 +459,8 @@ namespace cmdr.Editor.ViewModels
                     break;
 
                 case KnownCommands.RemixDeck_StepSequencer_EnableStep16:
-                    // needs bugfix
-                    return;
+                    // needs bugfix?
+                    //return;
 
                     end_i = 16;
                     break;

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Input;
 using cmdr.Editor.Utils;
 using cmdr.WpfControls.DropDownButton;
-using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
