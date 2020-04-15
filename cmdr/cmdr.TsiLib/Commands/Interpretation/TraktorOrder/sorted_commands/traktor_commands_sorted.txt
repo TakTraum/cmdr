@@ -1,6 +1,3 @@
-
-
-
 Loop > Loop In/Set Cue
 Loop > Loop Out
 Loop > Loop Size Selector
@@ -47,7 +44,6 @@ Submix > Slot Mute On (Submix)
 Submix > Slot FX On (Submix)
 Submix > Slot FX Amount (Submix)
 
-
 Deck Common > Load Next
 Deck Common > Load Previous
 Deck Common > Load Selected (Deck Common)
@@ -72,19 +68,14 @@ Deck Common > Deck Size Selector
 Deck Common > Advanced Panel Toggle
 Deck Common > Advanced Panel Tab Selector
 Deck Common > Flux Mode On
-
-  Deck Common > Flux State
-  
+Deck Common > Flux State
 Deck Common > Flux Reverse Playback On
 Deck Common > Reverse Playback On
-
 
 Deck Common (out) > Phase
 Deck Common (out) > Beat Phase
 Deck Common (out) > Deck is Loaded
 Deck Common (out) > Is In Active Loop
-
-
 
 Track deck > Cue > Set Cue and Store as next Hotcue
 Track deck > Cue > Store Floating Cue/Loop as next Hotcue
@@ -94,6 +85,15 @@ Track deck > Cue > Map Hotcue
 Track deck > Cue > Select/Set+Store Hotcue
 Track deck > Cue > Delete Hotcue
 Track deck > Cue > Cue Type Selector
+
+Track deck (out) > Hotcue 1 Type
+Track deck (out) > Hotcue 2 Type
+Track deck (out) > Hotcue 3 Type
+Track deck (out) > Hotcue 4 Type
+Track deck (out) > Hotcue 5 Type
+Track deck (out) > Hotcue 6 Type
+Track deck (out) > Hotcue 7 Type
+Track deck (out) > Hotcue 8 Type
 
 Track deck > Grid > Autogrid
 Track deck > Grid > Reset BPM
@@ -108,8 +108,6 @@ Track deck > Grid > BPM /2
 Track deck > Grid > Beat Tap (Track Deck - Grid)
 Track deck > Grid > Tick On (Track Deck - Grid)
 
-
-Track deck > Load into Next Stopped Deck
 Track deck > Load, Loop, and Play
 Track deck > Duplicate Track Deck A
 Track deck > Duplicate Track Deck B
@@ -121,17 +119,6 @@ Track deck > Keylock On
 Track deck > Keylock On (Preserve Pitch)
 Track deck > Key Adjust
 Track deck > Semitone Up/Down
-
-
-Track deck > Hotcue 1 Type
-Track deck > Hotcue 2 Type
-Track deck > Hotcue 3 Type
-Track deck > Hotcue 4 Type
-Track deck > Hotcue 5 Type
-Track deck > Hotcue 6 Type
-Track deck > Hotcue 7 Type
-Track deck > Hotcue 8 Type
-
 
 # Section: Remix decks
 
@@ -149,18 +136,77 @@ Legacy > Slot Size /2
 Legacy > Slot Size Reset
 Legacy > Slot Size Adjust
 Direct Mapping > Slot 1 > Slot 1 Cell 1 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 2 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 3 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 4 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 5 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 6 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 7 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 8 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 9 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 10 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 11 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 12 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 13 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 14 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 15 Trigger
+Direct Mapping > Slot 1 > Slot 1 Cell 16 Trigger
+
 Direct Mapping > Slot 2 > Slot 2 Cell 1 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 2 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 3 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 4 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 5 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 6 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 7 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 8 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 9 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 10 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 11 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 12 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 13 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 14 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 15 Trigger
+Direct Mapping > Slot 2 > Slot 2 Cell 16 Trigger
+
 Direct Mapping > Slot 3 > Slot 3 Cell 1 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 2 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 3 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 4 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 5 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 6 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 7 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 8 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 9 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 10 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 11 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 12 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 13 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 14 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 15 Trigger
+Direct Mapping > Slot 3 > Slot 3 Cell 16 Trigger
+
 Direct Mapping > Slot 4 > Slot 4 Cell 1 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 2 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 3 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 4 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 5 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 6 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 7 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 8 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 9 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 10 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 11 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 12 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 13 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 14 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 15 Trigger
+Direct Mapping > Slot 4 > Slot 4 Cell 16 Trigger
 
 Direct Mapping > Cell Load Modifier
 Direct Mapping > Cell Delete Modifier
 Direct Mapping > Cell Reverse Modifier
 Direct Mapping > Cell Capture Modifier
-
-Meters > Slot Pre-Fader Level (L)
-Meters > Slot Pre-Fader Level (R)
-Meters > Slot Pre-Fader Level (L+R)
 
 Step Sequencer > Sequencer On
 Step Sequencer > Swing Amount
@@ -182,7 +228,6 @@ Step Sequencer > Enable Step 13
 Step Sequencer > Enable Step 14
 Step Sequencer > Enable Step 15
 Step Sequencer > Enable Step 16
-
 
 Remix Deck > Save Remix Set
 Remix Deck > Load Set from List
@@ -221,6 +266,25 @@ X-Fader > assign right
 X-Fader > auto x-fade left
 X-Fader > auto x-fade right
 
+Mixer > Meters (out) > Deck Post-Fader Level (L)
+Mixer > Meters (out) > Deck Post-Fader Level (R)
+Mixer > Meters (out) > Deck Post-Fader Level (L+R)
+Mixer > Meters (out) > Deck Pre-Fader Level (L)
+Mixer > Meters (out) > Deck Pre-Fader Level (R)
+Mixer > Meters (out) > Deck Pre-Fader Level (L+R)
+ 
+Mixer > Meters (out) > Mixer Level (L)
+Mixer > Meters (out) > Mixer Level (R)
+Mixer > Meters (out) > Master Out Level (L)
+Mixer > Meters (out) > Master Out Level (R)
+Mixer > Meters (out) > Master Out Level (L+R)
+Mixer > Meters (out) > Master Out Clip (L)
+Mixer > Meters (out) > Master Out Clip (R)
+Mixer > Meters (out) > Master Out Clip (L+R)
+Mixer > Meters (out) > Record Input Level (L)
+Mixer > Meters (out) > Record Input Level (R)
+Mixer > Meters (out) > Record Input Clip (L)
+Mixer > Meters (out) > Record Input Clip (R)
 
 Mixer > Gain adjust (mixer)
 Mixer > auto-gain adjust
@@ -243,17 +307,12 @@ Mixer > monitor volume adjust
 Mixer > monitor mix adjust
 Mixer > microphone gain adjust
 
-
-
-
-
 Unit On
 Dry/Wet Adjust
 Knob 1
 Knob 2
 Knob 3
 Button 1
-
 Button 2
 Button 3
 Effect 1 Selector
@@ -263,12 +322,10 @@ FX Unit Mode Selector
 FX Store Preset
 Effect LFO Reset
 
-
-Browser List > Restore Auto-Gain (Browser List)
-Browser List > Detect BPM (Browser List)
-Browser List > BPM Unlock (Browser List)
-Browser List > BPM Lock (Browser List)
-
+Browser List > Restore Auto-Gain (Browser List)?
+Browser List > Detect BPM (Browser List)?
+Browser List > BPM Unlock (Browser List)?
+Browser List > BPM Lock (Browser List)?
 Browser List > Delete (Browser List)
 Browser List > Reset Played-State (Browser List)
 Browser List > Analyze (Browser List)
@@ -276,7 +333,6 @@ Browser List > analysis lock (browser list)
 Browser List > analysis unlock (browser list)
 Browser List > Edit (Browser List)
 Browser List > Relocate (Browser List)
- 
 Browser List > Add as Track To Collection
 Browser List > Add as One-Shot Sample To Collection
 Browser List > Add as Loop To Collection
@@ -290,14 +346,12 @@ Browser List > Select Extend Up/Down (Browser List)
 Browser List > Select Extend Page Up/Down (Browser List)
 Browser List > Select Extend Top/Bottom (Browser List)
 Browser List > Select All (Browser List)
-
 Browser List > Consolidate
 Browser List > Search (Browser List)
 Browser List > Search Clear (Browser List) 
 Browser List > Search in Playlists (Browser List)
 Browser List > Show In Explorer (Browser List)
 Browser List > Clear (Browser List)
-
 Browser List > Expand Remix Set
 Browser List > Jump To Current Track (Browser List)
 Browser List > Append To Preparation List 
@@ -316,7 +370,6 @@ Browser Tree > Import Collection (Browser Tree)
 Browser Tree > Import Music Folders (Browser Tree)
 Browser Tree > Export (Browser Tree)
 Browser Tree > Export Printable (Browser Tree)
-
 Browser Tree > Rename Playlist or Folder (Browser Tree)
 Browser Tree > Select Up/Down (Browser Tree)
 Browser Tree > Select Expand/Collapse (Browser Tree)
@@ -327,9 +380,9 @@ Browser Tree > Delete Playlist Folder
 Browser Tree > Refresh Explorer Folder Content (Browser Tree)
 Browser Tree > Check Consistency
 Browser Tree > Add Folder To Music Folders
+
 Browser Favorites > Selector (Browser Favorites)
 Browser Favorites > Add Folder to Favorites
-Browser Favorites > Tracks To Favorite
 
 Preview player > load preview player into deck
 Preview player > Load Selected (Preview Player)
@@ -337,15 +390,10 @@ Preview player > play/pause (Preview Player)
 Preview player > seek position (Preview Player)
 Preview player > unload (Preview Player)
 
-
-
-Loop Recorder > Load Selected (Loop Recorder)
-Loop Recorder > Play/Pause (Loop Recorder)
-Loop Recorder > Seek Position (Loop Recorder)
-Loop Recorder > Unload (Loop Recorder)
 Loop Recorder > Record (Loop Recorder)
 Loop Recorder > Size (Loop Recorder)
 Loop Recorder > Dry/Wet Adjust (Loop Recorder)
+Loop Recorder > Play/Pause (Loop Recorder)
 Loop Recorder > Delete (Loop Recorder)
 Loop Recorder > Undo/Redo (Loop Recorder)
 Loop Recorder > Playback Position (Loop Recorder)
@@ -371,8 +419,31 @@ Master Clock > Clock Send
 Master Clock > Clock Trigger MIDI Sync
 
 Global > MIDI Controls > Buttons > MIDI Button 1
+Global > MIDI Controls > Buttons > MIDI Button 2
+Global > MIDI Controls > Buttons > MIDI Button 3
+Global > MIDI Controls > Buttons > MIDI Button 4
+Global > MIDI Controls > Buttons > MIDI Button 5
+Global > MIDI Controls > Buttons > MIDI Button 6
+Global > MIDI Controls > Buttons > MIDI Button 7
+Global > MIDI Controls > Buttons > MIDI Button 8
+
 Global > MIDI Controls > Knobs > MIDI Knob 1
+Global > MIDI Controls > Knobs > MIDI Knob 2
+Global > MIDI Controls > Knobs > MIDI Knob 3
+Global > MIDI Controls > Knobs > MIDI Knob 4
+Global > MIDI Controls > Knobs > MIDI Knob 5
+Global > MIDI Controls > Knobs > MIDI Knob 6
+Global > MIDI Controls > Knobs > MIDI Knob 7
+Global > MIDI Controls > Knobs > MIDI Knob 8
+
 Global > MIDI Controls > Faders > MIDI Fader 1
+Global > MIDI Controls > Faders > MIDI Fader 2
+Global > MIDI Controls > Faders > MIDI Fader 3
+Global > MIDI Controls > Faders > MIDI Fader 4
+Global > MIDI Controls > Faders > MIDI Fader 5
+Global > MIDI Controls > Faders > MIDI Fader 6
+Global > MIDI Controls > Faders > MIDI Fader 7
+Global > MIDI Controls > Faders > MIDI Fader 8
 
 Global > Snap On
 Global > Quant On
@@ -381,6 +452,7 @@ Global > Cruise Mode On
 Global > Show Slider Values On
 Global > Tool Tips On
 Global > Send Monitor State
+Global > Save Traktor Settings
 
 Layout > Only Browser On
 Layout > Layout Selector
