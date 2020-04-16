@@ -13,7 +13,10 @@ namespace cmdr.Editor.ViewModels
          private int _lastSearchPos;
          private IEnumerable<MappingViewModel> _lastSearchResult;
 
-         public string SearchText { get; set; }
+         public string SearchText {
+            get;
+            set;
+        }
 
          private ICommand _searchCommand;
          public ICommand SearchCommand
@@ -41,14 +44,12 @@ namespace cmdr.Editor.ViewModels
             
          }
 
-     
 
         private void search()
          {
             string to_search = SearchText.ToLower();
             _dvm.limit_add_mapping_menus(to_search);
         }
-
 
     }
 }

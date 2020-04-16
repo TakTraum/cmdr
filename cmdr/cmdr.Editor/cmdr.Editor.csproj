@@ -218,6 +218,9 @@
     <Compile Include="Views\Controls\ConditionControl.xaml.cs">
       <DependentUpon>ConditionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\FilterControl.xaml.cs">
+      <DependentUpon>FilterControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\SearchControl.xaml.cs">
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
@@ -318,6 +321,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\ConditionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\FilterControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

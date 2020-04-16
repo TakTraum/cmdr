@@ -551,11 +551,29 @@ namespace cmdr.Editor.ViewModels
             bool has_shortcut,
             ObservableCollection<MenuItemViewModel> Commands_wholelist)
         {
-            var comparer = CultureInfo.CurrentCulture.CompareInfo;
-            List<MenuItemViewModel> limited_list = Commands_wholelist.Where(c => comparer.IndexOf(
-                                                                         c.Text.ToLower(), SearchText.ToLower(), CompareOptions.IgnoreCase) 
-                                                         >= 0).ToList();
+            /// step 1: clean up shortcuts
+            if (has_shortcut)
+            {
+                seperator_index += 1;
+            }
 
+            // remove everything after the separator
+            while (Commands.Count > seperator_index + 2)
+            {
+                Commands.RemoveAt(Commands.Count - 1);
+            }
+
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                return;
+            }
+
+            /// step 2: generate shortcuts
+            var comparer = CultureInfo.CurrentCulture.CompareInfo;
+            List<MenuItemViewModel> limited_list;
+            limited_list = Commands_wholelist.Where(
+                    c => comparer.IndexOf(c.Text.ToLower(), SearchText.ToLower(), CompareOptions.IgnoreCase) >= 0
+                ).ToList();
 
             // Remove hundreds of remix deck entries
             List<Categories> blacklist = new List<Categories> {
@@ -568,20 +586,8 @@ namespace cmdr.Editor.ViewModels
             {
                 limited_list = limited_list.Where(c => ((CommandProxy)(c.Tag)).Category != cat).ToList();
             }
-            ////
 
-            if (has_shortcut)
-            {
-                seperator_index += 1;
-            }
-
-            // remove everything after the separator
-            while (Commands.Count > seperator_index + 2)
-            {
-                Commands.RemoveAt(Commands.Count - 1);
-            }
-
-            // limit the list to the configure value
+            /// limit the list to the configure value
             int matches = limited_list.Count();
             int max_size = CmdrSettings.Instance.FilterMenuSize;
             limited_list = limited_list.Take(max_size).ToList();
