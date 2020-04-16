@@ -78,6 +78,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         }
 
         public ObservableCollection<MenuItemViewModel> ChannelsMenu { get; private set; }
+        private int ChannelsMenu_shortcuts = 0;
 
         private bool _variousChannels;
         public bool VariousChannels { get { return _variousChannels; } }
@@ -116,6 +117,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         }
 
         public ObservableCollection<MenuItemViewModel> NotesMenu { get; private set; }
+
+        private int NotesMenu_shortcuts = 0;
 
         private bool _variousNotes;
         public bool VariousNotes
@@ -218,6 +221,9 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 _canOverrideFactoryMap = _mappings.Any(m => m.CanOverrideFactoryMap);
                 NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note)));
             }
+
+            NotesMenu.Insert(0, SEPARATOR);
+            ChannelsMenu.Insert(0, SEPARATOR);
 
             updateMenus();
         }
@@ -628,29 +634,27 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             });
         }
 
+
+
         private void updateChannelsMenu(IEnumerable<string> selectedChannels)
         {
             // todo: merge this method with the notes one
-
-            if (!_selectedChannels.Where(c => c != _channel).Any())
+            // remove possible previous entries
+            while (ChannelsMenu_shortcuts > 0)
             {
-                // if we have a single channel, remove the seperator
-                if (ChannelsMenu.Contains(_selectedChannelsMenuItem))
-                {
-                    ChannelsMenu.Remove(SEPARATOR);
-                    ChannelsMenu.Remove(_selectedChannelsMenuItem);
-                }
-                
-                return;
+                //OutCommands.Add(_separator);
+                ChannelsMenu.RemoveAt(0);
+                ChannelsMenu_shortcuts -= 1;
             }
+
 
             // else, create the selected channel options, one per channel. This list is already of unique channels
             _selectedChannelsMenuItem.Children = _selectedChannels.Select(c => new MenuItemViewModel { Text = c, Tag = c }).ToList();
 
-            if (!ChannelsMenu.Contains(_selectedChannelsMenuItem))
+            foreach (var item in _selectedChannelsMenuItem.Children)
             {
-                ChannelsMenu.Insert(0, SEPARATOR);
-                ChannelsMenu.Insert(0, _selectedChannelsMenuItem);
+                ChannelsMenu.Insert(0, item);
+                ChannelsMenu_shortcuts += 1;
             }
         }
 
@@ -673,26 +677,25 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         private void updateNotesMenu(IEnumerable<object> selectedNotes)
         {
+            // remove possible previous entries
+            while(NotesMenu_shortcuts > 0)
+            {
+                //OutCommands.Add(_separator);
+                NotesMenu.RemoveAt(0);
+                NotesMenu_shortcuts -= 1;
+            }
+
+            ////
             var hasVariousNotesUnequalNull = (IsGenericMidi && !_selectedNotes.Where(n => n.ToString() != _note).Any()) ||
                 (!IsGenericMidi && !_selectedNotes.Cast<AMidiDefinition>().Where(n => n.Note != _note).Any());
 
-            if (hasVariousNotesUnequalNull)
-            {
-                if (NotesMenu.Contains(_selectedNotesMenuItem))
-                {
-                    NotesMenu.Remove(SEPARATOR);
-                    NotesMenu.Remove(_selectedNotesMenuItem);
-                }
-
-                return;
-            }
 
             _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
-           
-            if (!NotesMenu.Contains(_selectedNotesMenuItem))
+
+            foreach(var item in _selectedNotesMenuItem.Children)
             {
-                NotesMenu.Insert(0, SEPARATOR);
-                NotesMenu.Insert(0, _selectedNotesMenuItem);
+                NotesMenu.Insert(0, item);
+                NotesMenu_shortcuts += 1;
             }
         }
 

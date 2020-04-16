@@ -52,11 +52,23 @@
 
 
         <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" LastChildFill="True">
+            <Label Content="ola" FontSize="11" />
+            <Label Content="{Binding 
+                    ElementName=ValueTotalPageCount, 
+                    Path=Value,
+                    Mode=OneWay, 
+                    UpdateSourceTrigger=PropertyChanged}" 
+                   FontSize="11"/>
+
+
             <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" FontSize="11">
                 <Run Text="{Binding Path=SelectedItems.Count, ElementName=MappingsGrid, Mode=OneWay}" />
-                <Run Text=" / " />
+                <Run Text="selected /" />
                 <Run Text="{Binding Path=Items.Count, ElementName=MappingsGrid, Mode=OneWay}" />
-                <Run Text=" selected" />
+                <Run Text="filtered /" />
+                <Run Text="{Binding Path=ItemsSource.Count, ElementName=MappingsGrid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" />
+                <Run Text="total" />
+
             </TextBlock>
         </DockPanel>
 

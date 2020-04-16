@@ -643,7 +643,6 @@ namespace cmdr.Editor.ViewModels
                 {
                     Out_has_shortcut = true;
 
-                    //OutCommands.Add(_separator);
                     OutCommands.Insert(OutCommands_dynamic_index + 1, new MenuItemViewModel
                     {
                         Text = commandProxy.Name + " (" + selectedMapping.AssignmentExpression + ")",

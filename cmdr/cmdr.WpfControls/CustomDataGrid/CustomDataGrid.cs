@@ -53,7 +53,7 @@ namespace cmdr.WpfControls.CustomDataGrid
         public void ClearFiltering()
         {
             var a = filtering_textBoxes;
-
+           
             // clear the text boxes
             foreach (KeyValuePair<string, TextBox> entry in filtering_textBoxes)
             {
