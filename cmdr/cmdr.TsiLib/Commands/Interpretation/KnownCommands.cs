@@ -69,7 +69,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         DeckCommon_Loop_LoopActiveOn = 202,
 
 
-        [CommandDescription(Categories.DeckCommon_Move, "Size Selector (Cue/Loop)", TargetType.Track, typeof(EnumInCommand<CuePointOrLoopMoveSize>), typeof(EnumOutCommand<CuePointOrLoopMoveSize>))]
+        [CommandDescription(Categories.DeckCommon_Move, "Size Selector (Deck Common Move)", TargetType.Track, typeof(EnumInCommand<CuePointOrLoopMoveSize>), typeof(EnumOutCommand<CuePointOrLoopMoveSize>))]
         DeckCommon_Move_SizeSelectorCueLoop = 2372,
 
 
@@ -181,27 +181,27 @@ namespace cmdr.TsiLib.Commands.Interpretation
         DeckCommon_Timecode_ResetTempoOffset = 5154,
 
 
-        [CommandDescription(Categories.DeckCommon_Submix, "Slot Volume Adjust", TargetType.Slot, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        [CommandDescription(Categories.DeckCommon_Submix, "Slot Volume Adjust (Submix)", TargetType.Slot, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
         RemixDeck_SlotVolumeAdjust = 251,
 
 
-        [CommandDescription(Categories.DeckCommon_Submix, "Slot Filter On", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        [CommandDescription(Categories.DeckCommon_Submix, "Slot Filter On (Submix)", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         RemixDeck_SlotFilterOn = 250,
 
 
-        [CommandDescription(Categories.DeckCommon_Submix, "Slot Filter Adjust", TargetType.Slot, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        [CommandDescription(Categories.DeckCommon_Submix, "Slot Filter Adjust (Submix)", TargetType.Slot, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         RemixDeck_SlotFilterAdjust = 249,
 
 
-        [CommandDescription(Categories.DeckCommon_Submix, "Slot Mute On", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        [CommandDescription(Categories.DeckCommon_Submix, "Slot Mute On (Submix)", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         RemixDeck_SlotMuteOn = 259,
 
 
-        [CommandDescription(Categories.DeckCommon_Submix, "Slot FX On", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        [CommandDescription(Categories.DeckCommon_Submix, "Slot FX On (Submix)", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         DeckCommon_Submix_SlotFXOn = 239,
 
 
-        [CommandDescription(Categories.DeckCommon_Submix, "Slot FX Amount", TargetType.Slot, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        [CommandDescription(Categories.DeckCommon_Submix, "Slot FX Amount (Submix)", TargetType.Slot, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
         DeckCommon_Submix_SlotFXAmount = 232,
 
 
@@ -217,40 +217,24 @@ namespace cmdr.TsiLib.Commands.Interpretation
         DeckCommon_LoadSelected = 3076,
 
 
-        [CommandDescription(Categories.PreviewPlayer, "Load Selected (Preview Player)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        PreviewPlayer_LoadSelected = 3137,
-
-
         [CommandDescription(Categories.DeckCommon, "Unload (Deck Common)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         DeckCommon_Unload = 2178,
-
-
-        [CommandDescription(Categories.PreviewPlayer, "Unload (Preview Player)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        PreviewPlayer_Unload = 2179,
 
 
         [CommandDescription(Categories.DeckCommon, "Play/Pause (Deck Common)", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         DeckCommon_PlayPause = 100,
 
 
-        [CommandDescription(Categories.PreviewPlayer, "Play/Pause (Preview Player)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        PreviewPlayer_PlayPause = 210,
-
-
-        [CommandDescription(Categories.LoopRecorder, "Play/Pause (Loop Recorder)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        LoopRecorder_PlayPause = 283,
-
-
         [CommandDescription(Categories.DeckCommon, "Cue", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         DeckCommon_Cue = 206,
 
 
+        [CommandDescription(Categories.DeckCommon, "CUP (Cue Play)", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        DeckCommon_CupCuePlay = 204,
+
+
         [CommandDescription(Categories.DeckCommon, "Seek Position (Deck Common)", TargetType.Track, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
         DeckCommon_SeekPosition = 103,
-
-
-        [CommandDescription(Categories.PreviewPlayer, "Seek Position (Preview Player)", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        PreviewPlayer_SeekPosition = 211,
 
 
         [CommandDescription(Categories.DeckCommon, "Jog Touch On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
@@ -259,6 +243,10 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.DeckCommon, "Jog Turn", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         DeckCommon_JogTurn = 120,
+
+
+        [CommandDescription(Categories.DeckCommon, "Scratch (dug)", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        DeckCommon_Scratch = 121,
 
 
         [CommandDescription(Categories.DeckCommon, "Set As Tempo Master", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -277,12 +265,12 @@ namespace cmdr.TsiLib.Commands.Interpretation
         DeckCommon_TempoSync = 122,
 
 
-        [CommandDescription(Categories.DeckCommon, "Tempo Bend (stepless)", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
-        DeckCommon_TempoBendStepless = 404,
-
-
         [CommandDescription(Categories.DeckCommon, "Tempo Bend", TargetType.Track, typeof(HoldEnumInCommand<UpDown>), typeof(EnumOutCommand<UpDown>))]
         DeckCommon_TempoBend = 406,
+
+
+        [CommandDescription(Categories.DeckCommon, "Tempo Bend (stepless)", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        DeckCommon_TempoBendStepless = 404,
 
 
         [CommandDescription(Categories.DeckCommon, "Tempo Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
@@ -315,6 +303,10 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.DeckCommon, "Flux Mode On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         DeckCommon_FluxModeOn = 2350,
+
+
+        [CommandDescription(Categories.DeckCommon, "Flux State", TargetType.Track, null, typeof(EnumOutCommand<FluxState>))]
+        DeckCommon_FluxState = 2349,
 
 
         [CommandDescription(Categories.DeckCommon, "Flux Reverse Playback On", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
@@ -373,6 +365,42 @@ namespace cmdr.TsiLib.Commands.Interpretation
         TrackDeck_Cue_CueTypeSelector = 2327,
 
 
+        [CommandDescription(Categories.TrackDeck_Cue, "Jump to active Cue Point (quantized)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        TrackDeck_Cue_JumpToActiveCuePointQuantized = 209,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 1 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue1Type = 2333,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 2 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue2Type = 2334,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 3 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue3Type = 2335,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 4 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue4Type = 2336,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 5 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue5Type = 2337,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 6 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue6Type = 2338,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 7 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue7Type = 2339,
+
+
+        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 8 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
+        TrackDeck_Cue_Hotcue8Type = 2340,
+
+
         [CommandDescription(Categories.TrackDeck_Grid, "Autogrid", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         TrackDeck_Grid_Autogrid = 2237,
 
@@ -417,16 +445,12 @@ namespace cmdr.TsiLib.Commands.Interpretation
         TrackDeck_Grid_BeatTap = 2240,
 
 
-        [CommandDescription(Categories.MasterClock, "Beat Tap (Master Clock)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        MasterClock_BeatTap = 2469,
-
-
         [CommandDescription(Categories.TrackDeck_Grid, "Tick On (Track Deck - Grid)", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         TrackDeck_Grid_TickOn = 2252,
 
 
-        [CommandDescription(Categories.MasterClock, "Tick On (Master Clock)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        MasterClock_TickOn = 2470,
+        [CommandDescription(Categories.TrackDeck, "Load Loop and Play (Track Deck)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        TrackDeck_Load = 2395,
 
 
         [CommandDescription(Categories.TrackDeck, "Duplicate Track Deck A", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -443,6 +467,14 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.TrackDeck, "Duplicate Track Deck D", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         TrackDeck_DuplicateTrackDeckD = 2404,
+
+
+        [CommandDescription(Categories.TrackDeck, "Track End Warning", TargetType.Track, null, typeof(EnumOutCommand<OnOff>))]
+        TrackDeck_TrackEndWarning = 520,
+
+
+        [CommandDescription(Categories.TrackDeck, "Post Fade-Out Marker (dug)", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        TrackDeck_PotFadeOutMarker = 522,
 
 
         [CommandDescription(Categories.TrackDeck, "Waveform Zoom Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
@@ -464,39 +496,9 @@ namespace cmdr.TsiLib.Commands.Interpretation
         [CommandDescription(Categories.TrackDeck, "Key Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
         TrackDeck_KeyAdjust = 402,
 
+
         [CommandDescription(Categories.TrackDeck, "Semitone Up/Down", TargetType.Track, typeof(EnumInCommand<JumpDirection>), typeof(EnumInCommand<JumpDirection>))]
         TrackDeck_SemiToneUpDown = 403,
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 1 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue1Type = 2333,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 2 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue2Type = 2334,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 3 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue3Type = 2335,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 4 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue4Type = 2336,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 5 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue5Type = 2337,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 6 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue6Type = 2338,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 7 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue7Type = 2339,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Hotcue 8 Type", TargetType.Track, null, typeof(EnumOutCommand<HotcueType>))]
-        TrackDeck_Cue_Hotcue8Type = 2340,
 
 
         [CommandDescription(Categories.RemixDeck_Legacy, "Play All Slots", TargetType.Remix, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
@@ -555,16 +557,256 @@ namespace cmdr.TsiLib.Commands.Interpretation
         RemixDeck_DirectMapping_Slot1_Slot1Cell1Trigger = 601,
 
 
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell2Trigger = 602,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell3Trigger = 603,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell4Trigger = 604,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell5Trigger = 605,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell6Trigger = 606,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell7Trigger = 607,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell8Trigger = 608,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell9Trigger = 609,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell10Trigger = 610,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell11Trigger = 611,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell12Trigger = 612,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell13Trigger = 613,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell14Trigger = 614,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell15Trigger = 615,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot1_Slot1Cell16Trigger = 616,
+
+
         [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 1 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
         RemixDeck_DirectMapping_Slot2_Slot2Cell1Trigger = 617,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell2Trigger = 618,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell3Trigger = 619,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell4Trigger = 620,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell5Trigger = 621,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell6Trigger = 622,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell7Trigger = 623,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell8Trigger = 624,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell9Trigger = 625,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell10Trigger = 626,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell11Trigger = 627,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell12Trigger = 628,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell13Trigger = 629,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell14Trigger = 630,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell15Trigger = 631,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot2_Slot2Cell16Trigger = 632,
 
 
         [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 1 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
         RemixDeck_DirectMapping_Slot3_Slot3Cell1Trigger = 633,
 
 
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell2Trigger = 634,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell3Trigger = 635,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell4Trigger = 636,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell5Trigger = 637,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell6Trigger = 638,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell7Trigger = 639,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell8Trigger = 640,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell9Trigger = 641,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell10Trigger = 642,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell11Trigger = 643,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell12Trigger = 644,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell13Trigger = 645,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell14Trigger = 646,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell15Trigger = 647,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot3_Slot3Cell16Trigger = 648,
+
+
         [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 1 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
         RemixDeck_DirectMapping_Slot4_Slot4Cell1Trigger = 649,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell2Trigger = 650,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell3Trigger = 651,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell4Trigger = 652,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell5Trigger = 653,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell6Trigger = 654,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell7Trigger = 655,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell8Trigger = 656,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell9Trigger = 657,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell10Trigger = 658,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell11Trigger = 659,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell12Trigger = 660,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell13Trigger = 661,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell14Trigger = 662,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell15Trigger = 663,
+
+
+        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_Slot4_Slot4Cell16Trigger = 664,
 
 
         [CommandDescription(Categories.RemixDeck_DirectMapping, "Cell Load Modifier", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
@@ -579,12 +821,20 @@ namespace cmdr.TsiLib.Commands.Interpretation
         RemixDeck_DirectMapping_CellReverseModifier = 731,
 
 
+        [CommandDescription(Categories.RemixDeck_DirectMapping, "Cell Capture Modifier", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
+        RemixDeck_DirectMapping_CellCaptureModifier = 732,
+
+
         [CommandDescription(Categories.RemixDeck_StepSequencer, "Sequencer On", TargetType.Remix, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         RemixDeck_StepSequencer_SequencerOn = 734,
 
 
         [CommandDescription(Categories.RemixDeck_StepSequencer, "Swing Amount", TargetType.Remix, typeof(FloatInCommand<FloatRangeSwingAmount>), typeof(FloatOutCommand<FloatRangeSwingAmount>))]
         RemixDeck_StepSequencer_SwingAmount = 735,
+
+
+        [CommandDescription(Categories.RemixDeck_StepSequencer, "Current Step", TargetType.Slot, null, typeof(EnumOutCommand<Sample>))]
+        RemixDeck_StepSequencer_CurrentStep = 736,
 
 
         [CommandDescription(Categories.RemixDeck_StepSequencer, "Selected Sample", TargetType.Slot, typeof(EnumInCommand<Sample>), typeof(EnumOutCommand<Sample>))]
@@ -711,16 +961,16 @@ namespace cmdr.TsiLib.Commands.Interpretation
         RemixDeck_QuantizeOn = 230,
 
 
-        [CommandDescription(Categories.Global, "Quantize On (Global)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_QuantizeOn = 2313,
-
-
         [CommandDescription(Categories.RemixDeck, "Capture Source Selector", TargetType.Remix, typeof(EnumInCommand<CaptureSource>), typeof(EnumOutCommand<CaptureSource>))]
         RemixDeck_CaptureSourceSelector = 2002,
 
 
         [CommandDescription(Categories.RemixDeck, "Sample Page Selector", TargetType.Remix, typeof(EnumInCommand<SamplePage>), typeof(EnumOutCommand<SamplePage>))]
         RemixDeck_SamplePageSelector = 733,
+
+
+        [CommandDescription(Categories.RemixDeck, "Deck Play (Remix Deck) (dug)", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        RemixDeck_DeckPlay = 241,
 
 
         [CommandDescription(Categories.Mixer_EQ, "High Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
@@ -737,6 +987,14 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.Mixer_EQ, "Mid Kill", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         Mixer_EQ_MidKill = 305,
+
+
+        [CommandDescription(Categories.Mixer_EQ, "Mid Low Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        Mixer_EQ_MidLowAdjust = 316,
+
+
+        [CommandDescription(Categories.Mixer_EQ, "Mid Low Kill", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Mixer_EQ_MidLowKill = 307,
 
 
         [CommandDescription(Categories.Mixer_EQ, "Low Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
@@ -771,8 +1029,76 @@ namespace cmdr.TsiLib.Commands.Interpretation
         Mixer_XFader_AutoXFadeRight = 2114,
 
 
-        [CommandDescription(Categories.AudioRecorder, "Gain Adjust (Audio Recorder)", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeCentered>))]
-        AudioRecorder_GainAdjust = 29,
+        [CommandDescription(Categories.Mixer_Meters, "Deck Post-Fader Level (L)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_DeckPostFaderLevelL = 2690,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Deck Post-Fader Level (R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_DeckPostFaderLevelR = 2691,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Deck Post-Fader Level (L+R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_DeckPostFaderLevelLR = 2713,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Deck Pre-Fader Level (L)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_DeckPreFaderLevelL = 2688,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Deck Pre-Fader Level (R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_DeckPreFaderLevelR = 2689,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Deck Pre-Fader Level (L+R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_DeckPreFaderLevelLR = 2712,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Mixer Level (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MixerLevelL = 2692,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Mixer Level (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MixerLevelR = 2693,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Master Out Level (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MasterOutLevelL = 2694,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Master Out Level (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MasterOutLevelR = 2695,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Master Out Level (L+R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MasterOutLevelLR = 2703,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Master Out Clip (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MasterOutClipL = 2696,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Master Out Clip (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MasterOutClipR = 2697,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Master Out Clip (L+R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_MasterOutClipLR = 2704,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Record Input Level (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_RecordInputLevelL = 2698,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Record Input Level (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_RecordInputLevelR = 2699,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Record Input Clip (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_RecordInputClipL = 2700,
+
+
+        [CommandDescription(Categories.Mixer_Meters, "Record Input Clip (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
+        Mixer_Meters_RecordInputClipR = 2701,
 
 
         [CommandDescription(Categories.Mixer, "Gain Adjust (Mixer)", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
@@ -855,10 +1181,6 @@ namespace cmdr.TsiLib.Commands.Interpretation
         FXUnit_UnitOn = 369,
 
 
-        [CommandDescription(Categories.LoopRecorder, "Dry/Wet Adjust (Loop Recorder)", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        LoopRecorder_DryWetAdjust = 282,
-
-
         [CommandDescription(Categories.FXUnit, "Dry/Wet Adjust (FX Unit)", TargetType.FX, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
         FXUnit_DryWetAdjust = 365,
 
@@ -903,6 +1225,10 @@ namespace cmdr.TsiLib.Commands.Interpretation
         FXUnit_FXUnitModeSelector = 2301,
 
 
+        [CommandDescription(Categories.FXUnit, "Routing Selector", TargetType.FX, typeof(EnumInCommand<FXRouting>), typeof(EnumOutCommand<FXRouting>))]
+        FXUnit_RoutingSelector = 325,
+
+
         [CommandDescription(Categories.FXUnit, "FX Store Preset", TargetType.FX, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         FXUnit_FXStorePreset = 326,
 
@@ -911,48 +1237,32 @@ namespace cmdr.TsiLib.Commands.Interpretation
         FXUnit_EffectLFOReset = 323,
 
 
-        [CommandDescription(Categories.LoopRecorder, "Delete (Loop Recorder)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        LoopRecorder_Delete = 284,
-
-
         [CommandDescription(Categories.Browser_List, "Delete (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Delete = 3211,
-
-
-        [CommandDescription(Categories.Browser_Tree, "Delete (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_Tree_Delete = 3336,
 
 
         [CommandDescription(Categories.Browser_List, "Reset Played-State (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_ResetPlayedState = 3212,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Reset Played-State (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_Tree_ResetPlayedState = 3337,
-
-
         [CommandDescription(Categories.Browser_List, "Analyze (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Analyze = 3213,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Analyze (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_Tree_Analyze = 3338,
+        [CommandDescription(Categories.Browser_List, "Analysis Lock (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_List_AnalysisLock = 3231,
+
+
+        [CommandDescription(Categories.Browser_List, "Analysis Unlock (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_List_AnalysisUnlock = 3232,
 
 
         [CommandDescription(Categories.Browser_List, "Edit (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Edit = 3215,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Edit (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_Tree_Edit = 3339,
-
-
         [CommandDescription(Categories.Browser_List, "Relocate (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Relocate = 3216,
-
-
-        [CommandDescription(Categories.Browser_Tree, "Relocate (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_Tree_Relocate = 3340,
 
 
         [CommandDescription(Categories.Browser_List, "Add As Track To Collection", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -967,24 +1277,20 @@ namespace cmdr.TsiLib.Commands.Interpretation
         Browser_List_AddAsLoopToCollection = 3469,
 
 
-        [CommandDescription(Categories.Browser_List, "Set To One-Shot Sample", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Set To One-Shot Sample (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SetToOneShotSample = 3474,
 
 
-        [CommandDescription(Categories.Browser_List, "Set To Looped Sample", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Set To Looped Sample (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SetToLoopedSample = 3473,
 
 
-        [CommandDescription(Categories.Browser_List, "Set To Track", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Set To Track (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SetToTrack = 3472,
 
 
         [CommandDescription(Categories.Browser_List, "Select Up/Down (Browser List)", TargetType.Global, typeof(EnumInCommand<ListNavigation>), typeof(EnumOutCommand<ListNavigation>))]
         Browser_List_SelectUpDown = 3200,
-
-
-        [CommandDescription(Categories.Browser_Tree, "Select Up/Down (Browser Tree)", TargetType.Global, typeof(EnumInCommand<TreeNavigation>), typeof(EnumOutCommand<TreeNavigation>))]
-        Browser_Tree_SelectUpDown = 3328,
 
 
         [CommandDescription(Categories.Browser_List, "Select Page Up/Down (Browser List)", TargetType.Global, typeof(EnumInCommand<UpDown>), typeof(EnumOutCommand<UpDown>))]
@@ -1007,40 +1313,45 @@ namespace cmdr.TsiLib.Commands.Interpretation
         Browser_List_SelectExtendTopBottom = 3205,
 
 
-        [CommandDescription(Categories.Browser_List, "Select All", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Select All (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SelectAll = 3206,
 
 
-        [CommandDescription(Categories.Browser_List, "Consolidate", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Consolidate (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Consolidate = 3172,
 
 
-        [CommandDescription(Categories.Browser_List, "Search", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Search (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Search = 3221,
 
 
-        [CommandDescription(Categories.Browser_List, "Search Clear", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Search Clear (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SearchClear = 3222,
 
 
-        [CommandDescription(Categories.Browser_List, "Search In Playlists", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Search In Playlists (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SearchInPlaylists = 3357,
 
 
-        [CommandDescription(Categories.Browser_List, "Show In Explorer", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Show In Explorer (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_ShowInExplorer = 3358,
 
 
-        [CommandDescription(Categories.Browser_List, "Clear", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Clear (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Clear = 3224,
 
 
-        [CommandDescription(Categories.Browser_List, "Jump To Current Track", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Expand Remix Set", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_List_ExpandRemixSet = 3223,
+
+
+        [CommandDescription(Categories.Browser_List, "Jump To Current Track (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_JumpToCurrentTrack = 3366,
 
 
         [CommandDescription(Categories.Browser_List, "Append To Preparation List", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_AppendToPreparationList = 3460,
+
 
         [CommandDescription(Categories.Browser_List, "Add or Remove Track from Preparation List", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_AddOrRemoveTrackfromPreparationList = 3480,
@@ -1050,35 +1361,71 @@ namespace cmdr.TsiLib.Commands.Interpretation
         Browser_List_AddAsNextToPreparationList = 3461,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Save Collection", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Export As Remix Set (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_List_ExportAsRemixSet = 3475,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Analysis Lock (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_Tree_AnalysisLock = 3477,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Analysis Unlock (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_Tree_AnalysisUnlock = 3478,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Save Collection (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_SaveCollection = 3214,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Restore AutoGain", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Delete (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_Tree_Delete = 3336,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Reset Played-State (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_Tree_ResetPlayedState = 3337,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Analyze (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_Tree_Analyze = 3338,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Restore AutoGain (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_RestoreAutoGain = 3367,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Import Collection", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Edit (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_Tree_Edit = 3339,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Relocate (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Browser_Tree_Relocate = 3340,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Import Collection (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_ImportCollection = 3353,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Import Music Folders", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Import Music Folders (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_ImportMusicFolders = 3345,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Export", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Export (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_Export = 3346,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Export Printable", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Export Printable (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_ExportPrintable = 3348,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Rename Playlist Or Folder", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Rename Playlist Or Folder (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_RenamePlaylistOrFolder = 3349,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Select Expand/Collapse", TargetType.Global, typeof(EnumInCommand<ExpandCollapse>), typeof(EnumOutCommand<ExpandCollapse>))]
+        [CommandDescription(Categories.Browser_Tree, "Select Up/Down (Browser Tree)", TargetType.Global, typeof(EnumInCommand<TreeNavigation>), typeof(EnumOutCommand<TreeNavigation>))]
+        Browser_Tree_SelectUpDown = 3328,
+
+
+        [CommandDescription(Categories.Browser_Tree, "Select Expand/Collapse (Browser Tree)", TargetType.Global, typeof(EnumInCommand<ExpandCollapse>), typeof(EnumOutCommand<ExpandCollapse>))]
         Browser_Tree_SelectExpandCollapse = 3329,
 
 
@@ -1098,7 +1445,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
         Browser_Tree_DeletePlaylistFolder = 3376,
 
 
-        [CommandDescription(Categories.Browser_Tree, "Refresh Explorer Folder Content", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Refresh Explorer Folder Content (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_RefreshExplorerFolderContent = 3233,
 
 
@@ -1122,12 +1469,40 @@ namespace cmdr.TsiLib.Commands.Interpretation
         PreviewPlayer_LoadPreviewPlayerIntoDeck = 3139,
 
 
+        [CommandDescription(Categories.PreviewPlayer, "Load Selected (Preview Player)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        PreviewPlayer_LoadSelected = 3137,
+
+
+        [CommandDescription(Categories.PreviewPlayer, "Play/Pause (Preview Player)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        PreviewPlayer_PlayPause = 210,
+
+
+        [CommandDescription(Categories.PreviewPlayer, "Seek Position (Preview Player)", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        PreviewPlayer_SeekPosition = 211,
+
+
+        [CommandDescription(Categories.PreviewPlayer, "Unload (Preview Player)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        PreviewPlayer_Unload = 2179,
+
+
         [CommandDescription(Categories.LoopRecorder, "Record (Loop Recorder)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         LoopRecorder_Record = 280,
 
 
         [CommandDescription(Categories.LoopRecorder, "Size (Loop Recorder)", TargetType.Global, typeof(EnumInCommand<LoopRecorderSize>), typeof(EnumOutCommand<LoopRecorderSize>))]
         LoopRecorder_Size = 281,
+
+
+        [CommandDescription(Categories.LoopRecorder, "Dry/Wet Adjust (Loop Recorder)", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        LoopRecorder_DryWetAdjust = 282,
+
+
+        [CommandDescription(Categories.LoopRecorder, "Play/Pause (Loop Recorder)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        LoopRecorder_PlayPause = 283,
+
+
+        [CommandDescription(Categories.LoopRecorder, "Delete (Loop Recorder)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        LoopRecorder_Delete = 284,
 
 
         [CommandDescription(Categories.LoopRecorder, "Undo/Redo (Loop Recorder)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1154,7 +1529,11 @@ namespace cmdr.TsiLib.Commands.Interpretation
         AudioRecorder_Cut = 2055,
 
 
-        [CommandDescription(Categories.AudioRecorder, "Load Last Recording", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.AudioRecorder, "Gain Adjust (Audio Recorder)", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeCentered>))]
+        AudioRecorder_GainAdjust = 29,
+
+
+        [CommandDescription(Categories.AudioRecorder, "Load Last Recording (Audio Recorder)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         AudioRecorder_LoadLastRecording = 3084,
 
 
@@ -1182,6 +1561,14 @@ namespace cmdr.TsiLib.Commands.Interpretation
         MasterClock_TempoBendDown = 2477,
 
 
+        [CommandDescription(Categories.MasterClock, "Beat Tap (Master Clock)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        MasterClock_BeatTap = 2469,
+
+
+        [CommandDescription(Categories.MasterClock, "Tick On (Master Clock)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        MasterClock_TickOn = 2470,
+
+
         [CommandDescription(Categories.MasterClock, "Clock Int/Ext", TargetType.Global, typeof(EnumInCommand<IntExt>), typeof(EnumOutCommand<IntExt>))]
         MasterClock_ClockIntExt = 62,
 
@@ -1198,16 +1585,104 @@ namespace cmdr.TsiLib.Commands.Interpretation
         Global_MidiControls_Buttons_MidiButton1 = 850,
 
 
+        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 2", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_MidiControls_Buttons_MidiButton2 = 851,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 3", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_MidiControls_Buttons_MidiButton3 = 852,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 4", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_MidiControls_Buttons_MidiButton4 = 853,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 5", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_MidiControls_Buttons_MidiButton5 = 854,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 6", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_MidiControls_Buttons_MidiButton6 = 855,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 7", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_MidiControls_Buttons_MidiButton7 = 856,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 8", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_MidiControls_Buttons_MidiButton8 = 857,
+
+
         [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 1", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
         Global_MidiControls_Knobs_MidiKnob1 = 858,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 2", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiKnob2 = 859,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 3", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiKnob3 = 860,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 4", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiKnob4 = 861,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 5", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiKnob5 = 862,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 6", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiKnob6 = 863,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 7", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiKnob7 = 864,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 8", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiKnob8 = 865,
 
 
         [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 1", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
         Global_MidiControls_Knobs_MidiFader1 = 866,
 
 
+        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 2", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiFader2 = 867,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 3", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiFader3 = 868,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 4", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiFader4 = 869,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 5", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiFader5 = 870,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 6", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiFader6 = 871,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 7", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiFader7 = 872,
+
+
+        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 8", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
+        Global_MidiControls_Knobs_MidiFader8 = 873,
+
+
         [CommandDescription(Categories.Global, "Snap On", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         Global_SnapOn = 2311,
+
+
+        [CommandDescription(Categories.Global, "Quant On (Global)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        Global_QuantizeOn = 2313,
 
 
         [CommandDescription(Categories.Global, "Broadcasting On", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
@@ -1228,6 +1703,10 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.Global, "Send Monitor State", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Global_SendMonitorState = 3048,
+
+
+        [CommandDescription(Categories.Global, "Save Traktor Settings", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        Global_SaveTraktorSettings = 3072,
 
 
         [CommandDescription(Categories.Layout, "Only Browser On", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
@@ -1289,22 +1768,6 @@ namespace cmdr.TsiLib.Commands.Interpretation
         //
 
 
-        [CommandDescription(Categories.DeckCommon, "Scratch (dug)", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
-        DeckCommon_Scratch = 121,
-
-
-        [CommandDescription(Categories.DeckCommon, "CUP (Cue Play)", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        DeckCommon_CupCuePlay = 204,
-
-
-        [CommandDescription(Categories.TrackDeck_Cue, "Jump to active Cue Point (quantized)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        TrackDeck_Cue_JumpToActiveCuePointQuantized = 209,
-
-
-        [CommandDescription(Categories.RemixDeck, "Deck Play (Remix Deck) (dug)", TargetType.Slot, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        RemixDeck_DeckPlay = 241,
-
-
         [CommandDescription(Categories.DeckCommon_Submix_Meters, "Slot Pre-Fader Level (L)", TargetType.Slot, null, typeof(FloatOutCommand<FloatRangeRelative>))]
         DeckCommon_Submix_Meters_SlotPreFaderLevelL = 261,
 
@@ -1315,266 +1778,6 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
         [CommandDescription(Categories.DeckCommon_Submix_Meters, "Slot Pre-Fader Level (L+R)", TargetType.Slot, null, typeof(FloatOutCommand<FloatRangeRelative>))]
         DeckCommon_Submix_Meters_SlotPreFaderLevelLR = 361,
-
-
-        [CommandDescription(Categories.Mixer_EQ, "Mid Low Kill", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Mixer_EQ_MidLowKill = 307,
-
-
-        [CommandDescription(Categories.Mixer_EQ, "Mid Low Adjust", TargetType.Track, typeof(FloatInCommand<FloatRangeCentered>), typeof(FloatOutCommand<FloatRangeCentered>))]
-        Mixer_EQ_MidLowAdjust = 316,
-
-
-        [CommandDescription(Categories.FXUnit, "Routing Selector", TargetType.FX, typeof(EnumInCommand<FXRouting>), typeof(EnumOutCommand<FXRouting>))]
-        FXUnit_RoutingSelector = 325,
-
-
-        [CommandDescription(Categories.TrackDeck, "Track End Warning", TargetType.Track, null, typeof(EnumOutCommand<OnOff>))]
-        TrackDeck_TrackEndWarning = 520,
-
-
-        [CommandDescription(Categories.TrackDeck, "Post Fade-Out Marker (dug)", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        TrackDeck_PotFadeOutMarker = 522,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell2Trigger = 602,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell3Trigger = 603,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell4Trigger = 604,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell5Trigger = 605,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell6Trigger = 606,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell7Trigger = 607,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell8Trigger = 608,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell9Trigger = 609,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell10Trigger = 610,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell11Trigger = 611,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell12Trigger = 612,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell13Trigger = 613,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell14Trigger = 614,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell15Trigger = 615,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot1_Slot1Cell16Trigger = 616,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell2Trigger = 618,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell3Trigger = 619,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell4Trigger = 620,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell5Trigger = 621,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell6Trigger = 622,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell7Trigger = 623,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell8Trigger = 624,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell9Trigger = 625,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell10Trigger = 626,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell11Trigger = 627,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell12Trigger = 628,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell13Trigger = 629,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell14Trigger = 630,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell15Trigger = 631,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot2, "Slot 2 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot2_Slot2Cell16Trigger = 632,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell2Trigger = 634,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell3Trigger = 635,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell4Trigger = 636,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell5Trigger = 637,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell6Trigger = 638,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell7Trigger = 639,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell8Trigger = 640,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell9Trigger = 641,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell10Trigger = 642,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell11Trigger = 643,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell12Trigger = 644,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell13Trigger = 645,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell14Trigger = 646,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell15Trigger = 647,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot3, "Slot 3 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot3_Slot3Cell16Trigger = 648,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 2 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell2Trigger = 650,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 3 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell3Trigger = 651,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 4 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell4Trigger = 652,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 5 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell5Trigger = 653,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 6 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell6Trigger = 654,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 7 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell7Trigger = 655,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 8 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell8Trigger = 656,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 9 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell9Trigger = 657,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 10 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell10Trigger = 658,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 11 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell11Trigger = 659,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 12 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell12Trigger = 660,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 13 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell13Trigger = 661,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 14 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell14Trigger = 662,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 15 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell15Trigger = 663,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 16 Trigger", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell16Trigger = 664,
 
 
         [CommandDescription(Categories.RemixDeck_DirectMapping_Slot1, "Slot 1 Cell 1 State", TargetType.Remix, null, typeof(EnumOutCommand<SlotCellState>))]
@@ -1830,211 +2033,8 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
 
         [CommandDescription(Categories.RemixDeck_DirectMapping_Slot4, "Slot 4 Cell 16 State", TargetType.Remix, null, typeof(EnumOutCommand<SlotCellState>))]
-        RemixDeck_DirectMapping_Slot4_Slot4Cell16State = 728,
-
-
-        [CommandDescription(Categories.RemixDeck_DirectMapping, "Cell Capture Modifier", TargetType.Remix, typeof(HoldInCommand), typeof(TriggerOutCommand))]
-        RemixDeck_DirectMapping_CellCaptureModifier = 732,
-
-
-        [CommandDescription(Categories.RemixDeck_StepSequencer, "Current Step", TargetType.Slot, null, typeof(EnumOutCommand<Sample>))]
-        RemixDeck_StepSequencer_CurrentStep = 736,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 2", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_MidiControls_Buttons_MidiButton2 = 851,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 3", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_MidiControls_Buttons_MidiButton3 = 852,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 4", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_MidiControls_Buttons_MidiButton4 = 853,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 5", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_MidiControls_Buttons_MidiButton5 = 854,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 6", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_MidiControls_Buttons_MidiButton6 = 855,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 7", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_MidiControls_Buttons_MidiButton7 = 856,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Buttons, "MIDI Button 8", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
-        Global_MidiControls_Buttons_MidiButton8 = 857,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 2", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiKnob2 = 859,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 3", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiKnob3 = 860,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 4", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiKnob4 = 861,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 5", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiKnob5 = 862,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 6", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiKnob6 = 863,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 7", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiKnob7 = 864,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Knobs, "MIDI Knob 8", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiKnob8 = 865,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 2", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiFader2 = 867,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 3", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiFader3 = 868,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 4", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiFader4 = 869,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 5", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiFader5 = 870,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 6", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiFader6 = 871,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 7", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiFader7 = 872,
-
-
-        [CommandDescription(Categories.Global_MidiControls_Faders, "MIDI Fader 8", TargetType.Global, typeof(FloatInCommand<FloatRangeRelative>), typeof(FloatOutCommand<FloatRangeRelative>))]
-        Global_MidiControls_Knobs_MidiFader8 = 873,
-
-
-        [CommandDescription(Categories.DeckCommon, "Flux State", TargetType.Track, null, typeof(EnumOutCommand<FluxState>))]
-        DeckCommon_FluxState = 2349,
-
-
-        [CommandDescription(Categories.TrackDeck, "Load", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        TrackDeck_Load = 2395,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Deck Pre-Fader Level (L)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_DeckPreFaderLevelL = 2688,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Deck Pre-Fader Level (R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_DeckPreFaderLevelR = 2689,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Deck Pre-Fader Level (L+R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_DeckPreFaderLevelLR = 2712,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Deck Post-Fader Level (L)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_DeckPostFaderLevelL = 2690,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Deck Post-Fader Level (R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_DeckPostFaderLevelR = 2691,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Deck Post-Fader Level (L+R)", TargetType.Track, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_DeckPostFaderLevelLR = 2713,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Mixer Level (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MixerLevelL = 2692,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Mixer Level (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MixerLevelR = 2693,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Master Out Level (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MasterOutLevelL = 2694,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Master Out Level (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MasterOutLevelR = 2695,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Master Out Level (L+R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MasterOutLevelLR = 2703,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Master Out Clip (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MasterOutClipL = 2696,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Master Out Clip (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MasterOutClipR = 2697,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Master Out Clip (L+R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_MasterOutClipLR = 2704,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Record Input Level (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_RecordInputLevelL = 2698,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Record Input Level (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_RecordInputLevelR = 2699,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Record Input Clip (L)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_RecordInputClipL = 2700,
-
-
-        [CommandDescription(Categories.Mixer_Meters, "Record Input Clip (R)", TargetType.Global, null, typeof(FloatOutCommand<FloatRangeRelative>))]
-        Mixer_Meters_RecordInputClipR = 2701,
-
-
-        [CommandDescription(Categories.Global, "Save Traktor Settings", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Global_SaveTraktorSettings = 3072,
-
-
-        [CommandDescription(Categories.Browser_List, "Expand Remix Set", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_List_ExpandRemixSet = 3223,
-
-
-        [CommandDescription(Categories.Browser_List, "Analysis Lock (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_List_AnalysisLock = 3231,
-
-
-        [CommandDescription(Categories.Browser_Tree, "Analysis Lock (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_Tree_AnalysisLock = 3477,
-
-
-        [CommandDescription(Categories.Browser_List, "Analysis Unlock (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_List_AnalysisUnlock = 3232,
-
-
-        [CommandDescription(Categories.Browser_Tree, "Analysis Unlock (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_Tree_AnalysisUnlock = 3478,
-
-
-        [CommandDescription(Categories.Browser_List, "Export As Remix Set", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
-        Browser_List_ExportAsRemixSet = 3475
-
-
-
-
+        RemixDeck_DirectMapping_Slot4_Slot4Cell16State = 728
+           
 
     }
 }
