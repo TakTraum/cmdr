@@ -5,6 +5,7 @@ namespace cmdr.TsiLib.Enums
     {
         InternalMode = 0,
         RelativeMode = 1,
-        AbsoluteMode = 2
+        AbsoluteMode = 2,
+        HapticMode = 3
     }
 }
