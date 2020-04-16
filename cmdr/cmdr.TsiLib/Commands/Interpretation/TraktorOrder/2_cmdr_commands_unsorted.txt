@@ -1097,7 +1097,7 @@
         [CommandDescription(Categories.Global, "Snap On", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         Global_SnapOn = 2311,
 
-        [CommandDescription(Categories.Global, "Quantize On (Global)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
+        [CommandDescription(Categories.Global, "Quant On (Global)", TargetType.Global, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
         Global_QuantizeOn = 2313,
 
         [CommandDescription(Categories.TrackDeck_Cue, "Map Hotcue", TargetType.Track, typeof(OnOffInCommand), typeof(EnumOutCommand<OnOff>))]
@@ -1166,7 +1166,7 @@
         [CommandDescription(Categories.DeckCommon_Loop, "Loop Out", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         DeckCommon_Loop_LoopOut = 2393,
 
-        [CommandDescription(Categories.TrackDeck, "Load", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.TrackDeck, "Load Loop and Play (Track Deck)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         TrackDeck_Load = 2395,
 
         [CommandDescription(Categories.TrackDeck, "Duplicate Track Deck A", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1317,7 +1317,7 @@
         [CommandDescription(Categories.Browser_Tree, "Check Consistency", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_CheckConsistency = 3077,
 
-        [CommandDescription(Categories.AudioRecorder, "Load Last Recording", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.AudioRecorder, "Load Last Recording (Audio Recorder)", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         AudioRecorder_LoadLastRecording = 3084,
 
         [CommandDescription(Categories.PreviewPlayer, "Load Selected (Preview Player)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1326,7 +1326,7 @@
         [CommandDescription(Categories.PreviewPlayer, "Load Preview Player into Deck", TargetType.Track, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         PreviewPlayer_LoadPreviewPlayerIntoDeck = 3139,
 
-        [CommandDescription(Categories.Browser_List, "Consolidate", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Consolidate (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Consolidate = 3172,
 
         [CommandDescription(Categories.Browser_List, "Select Up/Down (Browser List)", TargetType.Global, typeof(EnumInCommand<ListNavigation>), typeof(EnumOutCommand<ListNavigation>))]
@@ -1347,7 +1347,7 @@
         [CommandDescription(Categories.Browser_List, "Select Extend Top/Bottom (Browser List)", TargetType.Global, typeof(EnumInCommand<TopBottom>), typeof(EnumOutCommand<TopBottom>))]
         Browser_List_SelectExtendTopBottom = 3205,
 
-        [CommandDescription(Categories.Browser_List, "Select All", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Select All (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SelectAll = 3206,
 
         [CommandDescription(Categories.Browser_List, "Delete (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1359,7 +1359,7 @@
         [CommandDescription(Categories.Browser_List, "Analyze (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Analyze = 3213,
 
-        [CommandDescription(Categories.Browser_Tree, "Save Collection", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Save Collection (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_SaveCollection = 3214,
 
         [CommandDescription(Categories.Browser_List, "Edit (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1371,10 +1371,10 @@
         [CommandDescription(Categories.Browser_List, "Add As Track To Collection", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_AddAsTrackToCollection = 3217,
 
-        [CommandDescription(Categories.Browser_List, "Search", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Search (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_Search = 3221,
 
-        [CommandDescription(Categories.Browser_List, "Search Clear", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Search Clear (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SearchClear = 3222,
 
         [CommandDescription(Categories.Browser_List, "Expand Remix Set", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1389,13 +1389,13 @@
         [CommandDescription(Categories.Browser_List, "Analysis Unlock (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_AnalysisUnlock = 3232,
 
-        [CommandDescription(Categories.Browser_Tree, "Refresh Explorer Folder Content", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Refresh Explorer Folder Content (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_RefreshExplorerFolderContent = 3233,
 
         [CommandDescription(Categories.Browser_Tree, "Select Up/Down (Browser Tree)", TargetType.Global, typeof(EnumInCommand<TreeNavigation>), typeof(EnumOutCommand<TreeNavigation>))]
         Browser_Tree_SelectUpDown = 3328,
 
-        [CommandDescription(Categories.Browser_Tree, "Select Expand/Collapse", TargetType.Global, typeof(EnumInCommand<ExpandCollapse>), typeof(EnumOutCommand<ExpandCollapse>))]
+        [CommandDescription(Categories.Browser_Tree, "Select Expand/Collapse (Browser Tree)", TargetType.Global, typeof(EnumInCommand<ExpandCollapse>), typeof(EnumOutCommand<ExpandCollapse>))]
         Browser_Tree_SelectExpandCollapse = 3329,
 
         [CommandDescription(Categories.Browser_Tree, "Delete (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1413,7 +1413,7 @@
         [CommandDescription(Categories.Browser_Tree, "Relocate (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_Relocate = 3340,
 
-        [CommandDescription(Categories.Browser_Tree, "Import Music Folders", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Import Music Folders (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_ImportMusicFolders = 3345,
 
         [CommandDescription(Categories.Browser_Tree, "Export (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1422,22 +1422,22 @@
         [CommandDescription(Categories.Browser_Tree, "Export Printable (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_ExportPrintable = 3348,
 
-        [CommandDescription(Categories.Browser_Tree, "Rename Playlist Or Folder", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Rename Playlist Or Folder (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_RenamePlaylistOrFolder = 3349,
 
-        [CommandDescription(Categories.Browser_Tree, "Import Collection", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Import Collection (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_ImportCollection = 3353,
 
-        [CommandDescription(Categories.Browser_List, "Search In Playlists", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Search In Playlists (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SearchInPlaylists = 3357,
 
-        [CommandDescription(Categories.Browser_List, "Show In Explorer", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Show In Explorer (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_ShowInExplorer = 3358,
 
-        [CommandDescription(Categories.Browser_List, "Jump To Current Track", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Jump To Current Track (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_JumpToCurrentTrack = 3366,
 
-        [CommandDescription(Categories.Browser_Tree, "Restore AutoGain", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_Tree, "Restore AutoGain (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_Tree_RestoreAutoGain = 3367,
 
         [CommandDescription(Categories.Browser_Tree, "Create Playlist", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
@@ -1476,16 +1476,16 @@
         [CommandDescription(Categories.Browser_List, "Add As One-Shot Sample To Collection", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_AddAsOneShotSampleToCollection = 3470,
 
-        [CommandDescription(Categories.Browser_List, "Set To Track", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Set To Track (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SetToTrack = 3472,
 
-        [CommandDescription(Categories.Browser_List, "Set To Looped Sample", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Set To Looped Sample (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SetToLoopedSample = 3473,
 
-        [CommandDescription(Categories.Browser_List, "Set To One-Shot Sample", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Set To One-Shot Sample (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_SetToOneShotSample = 3474,
 
-        [CommandDescription(Categories.Browser_List, "Export As Remix Set", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
+        [CommandDescription(Categories.Browser_List, "Export As Remix Set (Browser List)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]
         Browser_List_ExportAsRemixSet = 3475,
 
         [CommandDescription(Categories.Browser_Tree, "Analysis Lock (Browser Tree)", TargetType.Global, typeof(TriggerInCommand), typeof(TriggerOutCommand))]

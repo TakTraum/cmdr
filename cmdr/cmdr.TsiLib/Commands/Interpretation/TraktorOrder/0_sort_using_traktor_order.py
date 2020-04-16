@@ -3,6 +3,8 @@
 import sys
 from collections import defaultdict
  
+from yapu.imports.internal import * 
+ 
 """
 
 # Todo: improve this tool 
@@ -85,6 +87,11 @@ for line in cmdr_list:
     if line == "":
         continue
         
+    if "Analysis" in line:
+        #print(line)
+        pass
+        
+        
     if i == 1:
         line1 = line
         i = i+1
@@ -109,7 +116,6 @@ for line in cmdr_list:
         if key in c2.keys():
           print("duplicate keys: %s" % (key) )
         
-        c2[key].append(ret) #= ret
         c2[key].append(ret) #= ret
         
         
@@ -138,13 +144,20 @@ for key in c2.keys():
 f_out = open(file_out_sorted, "w")    
 
 c3 = c2.copy()
-not_matches = []
+txt_not_matches = []
 traktor_collisions = dict()
 for line in traktor_order:
     line = line.strip();
     #print(line)
     if line == "":
         continue
+        
+    if line.startswith("//"):
+        continue
+        
+    if line.startswith("#"):
+        continue
+         
         
     if ">" in line:
         line = line.split(">")[-1].strip()
@@ -163,12 +176,15 @@ for line in traktor_order:
           print_entry(result, f_out)
         del c3[line]
     else:
-        not_matches.append(line)
+        txt_not_matches.append(line)
+        
+        if "analysis" in line.lower():
+          print(result)
 
         #print(c3.keys())
         #sys.exit(0)
         
-# print remaining commands unsorted
+# print remaining commands that did not match as-is" (ie, unsorted
 print("\n\n//\n// remaining commands (unsorted). To sort them, add names to traktor_commands_sorted.txt\n//\n\n", file=f_out)
 for line in c3:
   for result in c3[line]:
@@ -177,48 +193,71 @@ for line in c3:
 f_out.close()
 print("Wrote: %s" % (file_out_sorted) )
 
+
+
 #########
+# print out a file showing the shorthands and the C# commands that did not match
 f_out = open(file_out_reference, "w")    
 
-to_write1=[]
+c_not_matches=[]
 for line in c3:
   if(len(c3[line]) > 1):
-    print(line)
+    #print(line)
+    pass
     
   for result in c3[line]:
     real = entry_to_real(result)
-    
+       
     if real_ignore_list(real):
       continue
   
-    to_write1.append(entry_to_real(result)) 
+    ret = entry_to_real(result)
+    
+    
+    if "analysis" in ret.lower():
+        print("")
+        print(ret)
+        print(result)
+        print("dede")
+        #sys.exit(0)
+        #sys.exit(0)
+     
+    c_not_matches.append(ret) 
 
-to_write1 = sorted(to_write1)
-not_matches = sorted(not_matches)
+sort_final_file = False
+if sort_final_file:
+  txt_not_matches = sorted(txt_not_matches)
+  c_not_matches = sorted(c_not_matches)
 
 
 def list_to_file(items, f_out):
   for item in items:
     print("%s" % (item) , file=f_out)
 
-list_to_file(not_matches, f_out)
+
+print("")
+
+print("sort names not matched:\n",  file=f_out)
+list_to_file(txt_not_matches, f_out)
   
 print("\n\n\n******\n\n\n\n",  file=f_out)
 
-list_to_file(to_write1, f_out)
+print("c# names not matched:\n",  file=f_out)
+list_to_file(c_not_matches, f_out)
+
 
 
  
 f_out.close()
 print("Wrote: %s" % (file_out_reference) )
 
- 
+
+#bp() 
 
 #a = open('cmdr_commands_sorted.txt').readlines()
 #data = open('cmdr_commands_sorted.txt').readlines()
 #data2  = [a for a in data if "typeof" in a][:10]
 #data3 = [a.split(',')[1].strip().strip()[1:-1] for a in data2]
-
 
     
 print("All done. Copy-paste the contents of %s into %s, and remove last comma" % (file_out_sorted, file_out_csharp))
