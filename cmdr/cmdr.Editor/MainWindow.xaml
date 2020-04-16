@@ -129,7 +129,11 @@
 
             <!--<MenuItem Header="_View" />
             <MenuItem Header="_Window" />-->
-
+            
+            <MenuItem Header="Reports">
+                <MenuItem Header="Show _Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
+                <MenuItem Header="Show _Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
+            </MenuItem>
 
             <MenuItem Header="Commands">
                 <MenuItem Header="Dec Command" Command="{Binding DecModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+5" />
@@ -151,7 +155,7 @@
                 <Separator/>
                 <MenuItem Header="Midi _Learn" Command="{Binding LearnCommand, Mode=OneTime}" InputGestureText="Ctrl+L" />
             </MenuItem>
-                
+            
             <MenuItem Header="Conditions">
                 <MenuItem Header="Dec Condition1 Key" Command="{Binding DecModifierCondition1, Mode=OneTime}" InputGestureText="Ctrl+1" />
                 <MenuItem Header="Dec Condition1 Value" Command="{Binding DecModifierConditionValue1, Mode=OneTime}" InputGestureText="Ctrl+Shift+1" />
@@ -164,11 +168,8 @@
                 <MenuItem Header="Inc Condition2 Value" Command="{Binding IncModifierConditionValue2, Mode=OneTime}" InputGestureText="Ctrl+Shift+4" />
                 <Separator/>
                 <MenuItem Header="Swap Conditions" Command="{Binding SwapConditions, Mode=OneTime}" InputGestureText="Ctrl+Tilde" />
-                <Separator/>
-                <MenuItem Header="Show _Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
             </MenuItem>
-                
-                
+
             <MenuItem Header="_Help">
                 <MenuItem Header="_Show Help" Command="{Binding HelpCommand, Mode=OneTime}" InputGestureText="F1" />
                 <MenuItem Header="_About" Command="{Binding AboutCommand, Mode=OneTime}" />

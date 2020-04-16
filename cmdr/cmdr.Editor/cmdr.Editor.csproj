@@ -426,6 +426,10 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Reports\" />
+    <Folder Include="Views\Reports\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>REM xcopy "$(TargetDir)*.*" "$(SolutionDir)Releases\$(TargetName)\" /E /Y /C</PostBuildEvent>

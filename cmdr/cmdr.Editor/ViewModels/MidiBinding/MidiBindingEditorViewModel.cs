@@ -647,6 +647,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 ChannelsMenu_shortcuts -= 1;
             }
 
+            if(_selectedChannels.Count == 0)
+            {
+                return;
+            }
 
             // else, create the selected channel options, one per channel. This list is already of unique channels
             _selectedChannelsMenuItem.Children = _selectedChannels.Select(c => new MenuItemViewModel { Text = c, Tag = c }).ToList();
@@ -689,6 +693,11 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var hasVariousNotesUnequalNull = (IsGenericMidi && !_selectedNotes.Where(n => n.ToString() != _note).Any()) ||
                 (!IsGenericMidi && !_selectedNotes.Cast<AMidiDefinition>().Where(n => n.Note != _note).Any());
 
+            if(_selectedNotes.Count == 0)
+            {
+                return;
+
+            }
 
             _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
 
