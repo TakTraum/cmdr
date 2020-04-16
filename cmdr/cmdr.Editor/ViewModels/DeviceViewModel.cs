@@ -2,6 +2,7 @@
 using cmdr.Editor.Metadata;
 using cmdr.Editor.Utils;
 using cmdr.Editor.ViewModels.Conditions;
+using cmdr.Editor.AppSettings;
 using cmdr.MidiLib;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
@@ -580,15 +581,15 @@ namespace cmdr.Editor.ViewModels
                 Commands.RemoveAt(Commands.Count - 1);
             }
 
+            // limit the list to the configure value
             int matches = limited_list.Count();
-            if (matches < 30)
+            int max_size = CmdrSettings.Instance.FilterMenuSize;
+            limited_list = limited_list.Take(max_size).ToList();
+
+            foreach (var item in limited_list)
             {
-                foreach (var item in limited_list)
-                {
-                    Commands.Add(item);
-                }
-            } 
-            return;
+                Commands.Add(item);
+            }
         }
 
 

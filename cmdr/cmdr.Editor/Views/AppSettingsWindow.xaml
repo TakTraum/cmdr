@@ -32,6 +32,9 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -86,6 +89,7 @@
                 <Button Grid.Column="1" Width="20" Height="20" Content="..." Command="{Binding BrowseFileCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=tbTraktorSettings}"/>
             </Grid>
 
+            <!-- Traktor Version -->
             <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
                 <Label Padding="5,0">Traktor version:</Label>
                 <Label Padding="5,0" FontSize="10">This is what is written into TSI files, so Traktor can check compatibility</Label>
@@ -117,19 +121,20 @@
                 <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" VerticalContentAlignment="Center" Content="Override" IsChecked="{Binding OverrideTraktorVersion, Mode=TwoWay}" IsEnabled="{Binding MustOverrideTraktorVersion, Converter={StaticResource invBoolConverter}}"/>
             </Grid>
 
-            <!-- Reload last MRU -->
+
+            <!-- Optimize TSI -->
             <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
-                <Label Padding="5,0">Load last TSI:</Label>
-                <Label Padding="5,0" FontSize="10">At startup loads the last used file</Label>
+                <Label Padding="5,0" Content="Optimize TSI:" />
+                <Label Padding="5,0" FontSize="10" Content="When loading, remove unused MIDI entries of the TSI" />
+                <Label Padding="5,0" FontSize="10" Content="This leads to faster loading and a much smaller TSI when saving"  />
             </StackPanel>
             <Grid Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">
                 <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" 
                           VerticalContentAlignment="Center" 
-                          Content="Load last file at Start-up" 
-                          IsChecked="{Binding LoadLastFileAtStartup, Mode=TwoWay}" 
+                          Content="Optimize TSI" 
+                          IsChecked="{Binding RemoveUnusedMIDIDefinitions, Mode=TwoWay}" 
                           IsEnabled="True" />
             </Grid>
-
             <!-- Reduce FX list  -->
             <StackPanel Grid.Row="5" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
                 <Label Padding="5,0" Content="Reduce FX List:" />
@@ -145,24 +150,22 @@
             </Grid>
 
 
-            <!-- Optimize TSI -->
+            <!-- Reload last MRU -->
             <StackPanel Grid.Row="6" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
-                <Label Padding="5,0" Content="Optimize TSI:" />
-                <Label Padding="5,0" FontSize="10" Content="When loading, remove unused MIDI entries of the TSI" />
-                <Label Padding="5,0" FontSize="10" Content="This leads to faster loading and a much smaller TSI when saving"  />
+                <Label Padding="5,0">Load last TSI:</Label>
+                <Label Padding="5,0" FontSize="10">At startup loads the last used file</Label>
             </StackPanel>
             <Grid Grid.Row="6" Grid.Column="1" VerticalAlignment="Center">
                 <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" 
                           VerticalContentAlignment="Center" 
-                          Content="Optimize TSI" 
-                          IsChecked="{Binding RemoveUnusedMIDIDefinitions, Mode=TwoWay}" 
+                          Content="Load last file at Start-up" 
+                          IsChecked="{Binding LoadLastFileAtStartup, Mode=TwoWay}" 
                           IsEnabled="True" />
             </Grid>
-
-
+            
             <!-- Show Decimal Notes -->
             <StackPanel Grid.Row="7" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
-                <Label Padding="5,0" Content="ShowDecimalNotes:" />
+                <Label Padding="5,0" Content="Show Decimal Notes:" />
                 <Label Padding="5,0" Content="Shows the decimal note value as well" FontSize="10" /> 
             </StackPanel>
             <Grid Grid.Row="7" Grid.Column="1" VerticalAlignment="Center">
@@ -172,6 +175,25 @@
                           IsChecked="{Binding ShowDecimalNotes, Mode=TwoWay}" 
                           IsEnabled="True" />
             </Grid>
+
+            <!-- Filter Menu Size -->
+            <StackPanel Grid.Row="8" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
+                <Label Padding="5,0" Content="Filter Menu Size:" />
+                <Label Padding="5,0" Content="Maximum number of Filtered entres on the IN/OUT menus" FontSize="10" />
+            </StackPanel>
+            <Grid Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border BorderThickness="1,1,0,1" BorderBrush="LightGray" Height="20"  Width="60">
+                    <TextBox x:Name="tbFilterMenuSize" Text="{Binding FilterMenuSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                   VerticalAlignment="Center" IsEnabled="True" IsReadOnly="False" />
+
+                </Border>
+
+            </Grid>
+
         </Grid>
 
     </DockPanel>

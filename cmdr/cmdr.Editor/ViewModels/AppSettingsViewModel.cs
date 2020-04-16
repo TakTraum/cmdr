@@ -59,7 +59,9 @@ namespace cmdr.Editor.ViewModels
         public string TraktorVersion
         {
             get { return _traktorVersion; }
-            set { SetProperty("TraktorVersion", ref _traktorVersion, ref value); }
+            set {
+                SetProperty("TraktorVersion", ref _traktorVersion, ref value);
+            }
         }
 
         private bool _optimizeFXList;
@@ -88,6 +90,22 @@ namespace cmdr.Editor.ViewModels
         {
             get { return _showDecimalNotes; }
             set { SetProperty("ShowDecimalNotes", ref _showDecimalNotes, ref value); }
+        }
+
+        private int _filterMenuSize;
+        public int FilterMenuSize
+        {
+            get
+            {
+                return _filterMenuSize;
+            }
+            set
+            {
+                // https://docs.microsoft.com/en-us/dotnet/framework/wpf/data/how-to-implement-property-change-notification
+                SetProperty("FilterMenuSize", ref _filterMenuSize, ref value);
+                IsChanged = true;
+                raisePropertyChanged("Title");
+            }
         }
 
         private bool _mustOverrideTraktorVersion;
@@ -128,7 +146,10 @@ namespace cmdr.Editor.ViewModels
         private ICommand _saveCommand;
         public ICommand SaveCommand
         {
-            get { return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => IsChanged && !IsInitializingTraktorSettings)); }
+            get
+            {
+                return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => IsChanged && !IsInitializingTraktorSettings));
+            }
         }
 
         private ICommand _browseFolderCommand;
@@ -158,6 +179,8 @@ namespace cmdr.Editor.ViewModels
             _removeUnusedMIDIDefinitions = CmdrSettings.Instance.RemoveUnusedMIDIDefinitions;
             _loadLastFileAtStartup = CmdrSettings.Instance.LoadLastFileAtStartup;
             _showDecimalNotes = CmdrSettings.Instance.ShowDecimalNotes;
+            _filterMenuSize = CmdrSettings.Instance.FilterMenuSize;
+
             
 
             if (TraktorSettings.Initialized)
@@ -234,6 +257,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.RemoveUnusedMIDIDefinitions = RemoveUnusedMIDIDefinitions;
             CmdrSettings.Instance.LoadLastFileAtStartup = LoadLastFileAtStartup;
             CmdrSettings.Instance.ShowDecimalNotes = ShowDecimalNotes;
+            CmdrSettings.Instance.FilterMenuSize = FilterMenuSize;
 
             CmdrSettings.Instance.Save();
 

@@ -110,6 +110,32 @@ namespace cmdr.Editor.AppSettings
                 setSetting("ShowDecimalNotes", ret);
             }
         }
+        
+        public int FilterMenuSize
+        {
+            get
+            {
+                string st = getSetting("FilterMenuSize");
+
+                if (Int32.TryParse(st, out int ret))
+                {
+                    return ret;
+                }
+                else
+                {
+                    return 20;
+                }
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("FilterMenuSize", ret);
+
+            }
+        }
+
+
         public MruSection MRU
         {
             get { return getSection<MruSection>(); }
