@@ -1,0 +1,52 @@
+﻿using cmdr.TsiLib.Conditions;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace cmdr.Editor.ViewModels.Conditions //Reports
+{
+    public class CommandsReportViewModel : ViewModelBase
+    {
+        private readonly List<MappingViewModel> _mappings;
+        private readonly ConditionTuple _conditionTuple;
+
+        public int Frequency
+        {
+            get
+            {
+                return _mappings.Count();
+            }
+        }
+
+        public string Expression
+        {
+            get
+            {
+                return _conditionTuple.ToString();
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return _conditionTuple.Name;
+            }
+            set
+            {
+                foreach (var m in _mappings)
+                {
+                    m.Conditions.Name = value;
+                    m.UpdateConditionExpression();
+                }
+                raisePropertyChanged("Description");
+            }
+        }
+
+
+        public CommandsReportViewModel(List<MappingViewModel> mappings)
+        {
+            _mappings = mappings;
+            _conditionTuple = _mappings.First().Conditions;
+        }
+    }
+}

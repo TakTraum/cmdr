@@ -234,6 +234,12 @@ namespace cmdr.Editor.ViewModels
             get { return _showConditionDescriptionsEditorCommand ?? (_showConditionDescriptionsEditorCommand = new CommandHandler(showConditionDescriptionsEditor)); }
         }
 
+        private ICommand _showCommandsReportEditorCommand;
+        public ICommand ShowCommandsReportEditorCommand
+        {
+            get { return _showCommandsReportEditorCommand ?? (_showCommandsReportEditorCommand = new CommandHandler(showCommandsReportEditor)); }
+        }
+
         private ICommand _refreshPortsCommand;
         public ICommand RefreshPortsCommand
         {
@@ -456,7 +462,15 @@ namespace cmdr.Editor.ViewModels
             .ShowDialog();
         }
 
-        
+        private void showCommandsReportEditor()
+        {
+            new Views.CommandsReportEditor
+            {
+                DataContext = new CommandsReportEditorViewModel(Mappings.Select(r => r.Item as MappingViewModel))
+            }
+            .ShowDialog();
+        }
+
         private void delete()
         {
             // already present?

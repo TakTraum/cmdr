@@ -152,8 +152,10 @@
     <Compile Include="Utils\MovingLogicHelper.cs" />
     <Compile Include="Utils\SerializationHelper.cs" />
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Conditions\ConditionTuplesEditorViewModel.cs" />
-    <Compile Include="ViewModels\Conditions\ConditionTupleViewModel.cs" />
+    <Compile Include="ViewModels\Reports\CommandsReportEditorViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ConditionTuplesEditorViewModel.cs" />
+    <Compile Include="ViewModels\Reports\CommandsReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ConditionTupleViewModel.cs" />
     <Compile Include="ViewModels\ControllerDefaultMappings.cs" />
     <Compile Include="ViewModels\EffectIdentificationViewModel.cs" />
     <Compile Include="ViewModels\Metadata\DeviceMetadataViewModel.cs" />
@@ -209,7 +211,10 @@
     <Compile Include="Views\CommentEditorView.xaml.cs">
       <DependentUpon>CommentEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConditionDescriptionsEditor.xaml.cs">
+    <Compile Include="Views\Reports\CommandsReportEditor.xaml.cs">
+      <DependentUpon>CommandsReportEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ConditionDescriptionsEditor.xaml.cs">
       <DependentUpon>ConditionDescriptionsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConditionsEditor.xaml.cs">
@@ -312,7 +317,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConditionDescriptionsEditor.xaml">
+    <Page Include="Views\Reports\CommandsReportEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Reports\ConditionDescriptionsEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -426,10 +435,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Reports\" />
-    <Folder Include="Views\Reports\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>REM xcopy "$(TargetDir)*.*" "$(SolutionDir)Releases\$(TargetName)\" /E /Y /C</PostBuildEvent>

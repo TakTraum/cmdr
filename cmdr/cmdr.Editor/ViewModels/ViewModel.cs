@@ -379,6 +379,12 @@ namespace cmdr.Editor.ViewModels
             get { return _showConditionsEditorCommand ?? (_showConditionsEditorCommand = new CommandHandler(showConditionsEditor,() => SelectedTsiFileModel != null && SelectedTsiFileModel.SelectedDevice != null)); }
         }
 
+        private ICommand _showCommandsReportEditorCommand;
+        public ICommand ShowCommandsReportEditorCommand
+        {
+            get { return _showCommandsReportEditorCommand ?? (_showCommandsReportEditorCommand = new CommandHandler(showCommandsReportEditor, () => SelectedTsiFileModel != null && SelectedTsiFileModel.SelectedDevice != null)); }
+        }
+
         #endregion
 
         private TsiFileViewModel _selectedTsiFileViewModel;
@@ -743,6 +749,11 @@ namespace cmdr.Editor.ViewModels
         private void showConditionsEditor()
         {
             SelectedTsiFileModel.SelectedDevice.ShowConditionDescriptionsEditorCommand.Execute(null);
+        }
+
+        private void showCommandsReportEditor()
+        {
+            SelectedTsiFileModel.SelectedDevice.ShowCommandsReportEditorCommand.Execute(null);
         }
 
         private void showSettings()

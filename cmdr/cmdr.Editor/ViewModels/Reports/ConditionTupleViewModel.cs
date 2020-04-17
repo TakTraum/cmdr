@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace cmdr.Editor.ViewModels.Conditions
 {
     public class ConditionTupleViewModel : ViewModelBase
@@ -11,19 +12,31 @@ namespace cmdr.Editor.ViewModels.Conditions
 
         public int Frequency
         {
-            get { return _mappings.Count(); }
+            get
+            {
+                return _mappings.Count();
+            }
         }
 
         public string Expression
         {
-            get { return _conditionTuple.ToString(); }
+            get
+            {
+                return _conditionTuple.ToString();
+            }
         }
 
         public string Description
         {
-            get { return _conditionTuple.Name; }
+            get
+            {
+                return _conditionTuple.Name;
+            }
             set
             {
+                return;
+
+                // this code is not finished yet
                 foreach (var m in _mappings)
                 {
                     m.Conditions.Name = value;

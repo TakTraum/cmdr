@@ -131,10 +131,10 @@
             <MenuItem Header="_Window" />-->
             
             <MenuItem Header="Reports">
-                <MenuItem Header="Show _Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
-                <MenuItem Header="Show _Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
-            </MenuItem>
-
+                <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
+                <MenuItem Header="Commands Report" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />
+            </MenuItem> 
+            
             <MenuItem Header="Commands">
                 <MenuItem Header="Dec Command" Command="{Binding DecModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+5" />
                 <MenuItem Header="Inc Command" Command="{Binding IncModifierCommand, Mode=OneTime}" InputGestureText="Ctrl+6" />
