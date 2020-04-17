@@ -3,17 +3,17 @@ namespace cmdr.TsiLib.Enums
 {
     public enum Favorite
     {
-        Favorite1 = 1,
-        Favorite2 = 2,
-        Favorite3 = 3,
-        Favorite4 = 4,
-        Favorite5 = 5,
-        Favorite6 = 6,
-        Favorite7 = 7,
-        Favorite8 = 8,
-        Favorite9 = 9,
-        Favorite10 = 10,
-        Favorite11 = 11,
-        Favorite12 = 12
+        Favorite1 = 0,
+        Favorite2 = 1,
+        Favorite3 = 2,
+        Favorite4 = 3,
+        Favorite5 = 4,
+        Favorite6 = 5,
+        Favorite7 = 6,
+        Favorite8 = 7,
+        Favorite9 = 7,
+        Favorite10 = 9,
+        Favorite11 = 10,
+        Favorite12 = 11
     }
 }
