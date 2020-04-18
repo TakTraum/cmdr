@@ -9,6 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 
 namespace cmdr.WpfControls.CustomDataGrid
 {
@@ -37,7 +40,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             }
 
         }
-        
+
         ///
         // private void remember_textbox_list(TextBox filterTextBox, DataGridColumnHeader header)
         // {
@@ -48,7 +51,49 @@ namespace cmdr.WpfControls.CustomDataGrid
         //
         // }
         // 
-         
+
+
+        /*
+       private void button1_Click_tmp(object sender, EventArgs e, DataGrid dataGridView1)
+       {
+           // https://stackoverflow.com/questions/56138612/c-sharp-save-datagridview-to-text-file
+           //This line of code creates a text file for the data export.
+           System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\\your_path_here\\sample.txt");
+           try
+           {
+               string sLine = "";
+
+               //This for loop loops through each row in the table
+               for (int r = 0; r <= dataGridView1.Rows.Count - 1; r++)
+               {
+                   //This for loop loops through each column, and the row number
+                   //is passed from the for loop above.
+                   for (int c = 0; c <= dataGridView1.Columns.Count - 1; c++)
+                   {
+                       sLine = sLine + dataGridView1.Rows[r].Cells[c].Value;
+                       if (c != dataGridView1.Columns.Count - 1)
+                       {
+                           //A comma is added as a text delimiter in order
+                           //to separate each field in the text file.
+                           //You can choose another character as a delimiter.
+                           sLine = sLine + ",";
+                       }
+                   }
+                   //The exported text is written to the text file, one line at a time.
+                   file.WriteLine(sLine);
+                   sLine = "";
+               }
+
+               file.Close();
+               System.Windows.Forms.MessageBox.Show("Export Complete.", "Program Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           }
+           catch (System.Exception err)
+           {
+               System.Windows.Forms.MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               file.Close();
+           }
+       }*/
+
 
         public void ClearFiltering()
         {
@@ -128,7 +173,8 @@ namespace cmdr.WpfControls.CustomDataGrid
         }
 
 
-
+        // This is how we link the mappings to the custom DataGrid
+        // Because this came from XML
         protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             base.OnItemsChanged(e);
@@ -138,7 +184,7 @@ namespace cmdr.WpfControls.CustomDataGrid
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     foreach (RowItemViewModel item in e.NewItems)
-                        item.ParentSelector = this;
+                        item.ParentSelector = this;    
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     foreach (RowItemViewModel item in Items)

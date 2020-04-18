@@ -66,12 +66,32 @@ Cant change code on the fly in the debugger:
  - ensure code is specifically 32 bit:
    -  https://stackoverflow.com/questions/10113532/how-do-i-fix-the-visual-studio-compile-error-mismatch-between-processor-archit
 
-RealClean extension (removes binaries as well)
-  https://marketplace.visualstudio.com/items?itemName=FlorentGoetz.RealCleanExt
+## Visual studio extensions 
+  
+   
+* RealClean extension: https://marketplace.visualstudio.com/items?itemName=FlorentGoetz.RealCleanExt
 
-SelectNext extension:
-  https://marketplace.visualstudio.com/items?itemName=thomaswelen.SelectNextOccurrence
+*SelectNext extension: https://marketplace.visualstudio.com/items?itemName=thomaswelen.SelectNextOccurrence
 
+*  MArkdown editor:
+  
+*  Indent Guides: 
+*  git hub support: 
+  
+  
+## C# Tutorials:
+*  XAML binding: https://www.c-sharpcorner.com/article/explain-binding-mode-in-wpf/
+*  sorting a aclasS: https://csharp.net-tutorials.com/linq/sorting-data-the-orderby-thenby-methods/
+*  Datagrid to text file: https://stackoverflow.com/questions/56138612/c-sharp-save-datagridview-to-text-file
+*  Filtering datagrid: https://www.codeproject.com/Articles/41755/Filtering-the-WPF-DataGrid-automatically-via-the-h
+  
+C# for python programmers:
+*  https://gist.github.com/mrkline/8302959
+*  https://www.neowin.net/forum/topic/1216223-going-to-c-from-heavy-python-experience/
+*  https://education.launchcode.org/skills-back-end-csharp/csharp4python/
+  
+  
+  
 Auto sync solution explorer:
   Tools->Options->Projects and Solutions->Track Active Item in Solution Explorer  
   

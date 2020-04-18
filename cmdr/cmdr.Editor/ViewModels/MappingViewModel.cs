@@ -1,6 +1,6 @@
 ﻿using ChangeTracking;
 using cmdr.Editor.Metadata;
-using cmdr.Editor.ViewModels.Conditions;
+using cmdr.Editor.ViewModels.Reports;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
@@ -10,6 +10,7 @@ using cmdr.TsiLib.Commands.Interpretation;
 using System;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace cmdr.Editor.ViewModels
 {
@@ -43,9 +44,11 @@ namespace cmdr.Editor.ViewModels
         public string Comment
         {
             get { return _mapping.Comment; }
-            set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }
+            set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }  //todo: why is comment special?
         }
 
+
+        // fixme: split condition1 and condition2
         public ConditionTuple Conditions { get { return _mapping.Conditions; } }
 
         public ACommand Command { get { return _mapping.Command; } }
@@ -226,10 +229,14 @@ namespace cmdr.Editor.ViewModels
             Assignment = assignment;
         }
 
-        private string getTraktorCommand()
+        private string getTraktorCommand(bool details = true)
         {
             StringBuilder sb = new StringBuilder(100);
             sb.Append(Command.Name);
+
+            if (!details) {
+                return sb.ToString();
+            }
 
             switch (_mapping.Command.InteractionMode)
             {
@@ -312,8 +319,53 @@ namespace cmdr.Editor.ViewModels
             var b = this._mapping;
 
             b.hack_modifier(new_id);
+        }
 
+        public List<string> get_csv_strings(int device_num, bool header = false)
+        {
+            List<string> ret = new List<string>();
 
+            if (header) {
+
+                // FIXME: how to write this in C# better ???
+                var tmp = new List<string>()
+                {
+                    "Device",
+                    "Id",
+                    "Type",
+                    "TraktorCommand",
+                    "AssignmentExpression",
+                    "ConditionExpression",
+                    "Interaction",
+                    "MappedTo",
+                    "Comment",
+                };
+
+                ret = tmp;
+            } else {
+                var tmp = new List<string>()
+                {
+                    device_num.ToString(),
+                    Id.ToString(),
+                    Type,
+                    TraktorCommand,
+                    AssignmentExpression,
+                    ConditionExpression,
+                    Interaction,
+                    MappedTo,
+                    Comment,
+                };
+                ret = tmp;
+            };
+
+            return ret;
+        }
+
+        public string get_csv_row(string sep, int device, bool header = false)
+        {
+            var l = get_csv_strings(device, header);
+            var st = String.Join(sep, l);
+            return st;
         }
 
 

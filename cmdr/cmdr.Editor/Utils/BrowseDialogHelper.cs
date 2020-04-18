@@ -18,7 +18,7 @@ namespace cmdr.Editor.Utils
             return null;
         }
 
-        public static string BrowseTsiFile(System.Windows.Window owner, bool isSaveDialog, string initialDirectory = null, string fileName = null)
+        public static string BrowseTsiFile(System.Windows.Window owner, bool isSaveDialog, string initialDirectory = null, string fileName = null, string type = "tsi")
         {
             VistaFileDialog dlg;
 
@@ -26,7 +26,8 @@ namespace cmdr.Editor.Utils
             {
                 dlg = new VistaSaveFileDialog
                 {
-                    DefaultExt = "tsi",
+
+                    DefaultExt = type,
                     AddExtension = true,
                     ValidateNames = true
                 };
@@ -38,7 +39,17 @@ namespace cmdr.Editor.Utils
                     Multiselect = false
                 };
             }
-            dlg.Filter = "TSI | *.tsi";
+
+            // fixme: make a class
+            switch (type)
+            {
+                case "tsi":
+                    dlg.Filter = "TSI | *.tsi";
+                    break;
+                case "csv":
+                    dlg.Filter = "CSV | *.csv";
+                    break;
+            }
             dlg.CheckPathExists = true;
 
             if (initialDirectory != null)

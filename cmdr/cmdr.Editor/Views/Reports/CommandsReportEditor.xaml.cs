@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace cmdr.Editor.Views
 {
-    /// <summary>
-    /// Interaktionslogik für ConditionDescriptionsEditor.xaml
-    /// </summary>
     public partial class CommandsReportEditor : Window
     {
         public CommandsReportEditor()

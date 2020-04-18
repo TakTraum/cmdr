@@ -247,6 +247,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             if (!IsGenericMidi)
                 return false;
 
+            //_hasCombo
             if (_hasCombo || !(_isCCs || _isNotes))
                 return false;
 
@@ -390,6 +391,9 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         private void updateBinding(AMidiDefinition definition = null)
         {
+            //if (_channel == "None")
+            //    _channel = null;  // this is to simplify the processing a lot
+
             string expression;
             AMidiDefinition tmpDefinition;
             foreach (var mapping in _mappings)
@@ -627,11 +631,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         private IEnumerable<MenuItemViewModel> generateChannelsMenu()
         {
-            return Enumerable.Range(1, 16).Select(c =>
+            var ret = Enumerable.Range(1, 16).Select(c =>
             {
                 var str = String.Format("Ch{0:00}", c);
                 return new MenuItemViewModel { Text = str, Tag = str };
             });
+
+            //ret.toList().Insert(0, new MenuItemViewModel { Text = "None", Tag = "None" });
+            return ret;
         }
 
 

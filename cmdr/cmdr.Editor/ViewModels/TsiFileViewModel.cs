@@ -2,6 +2,7 @@
 using cmdr.Editor.AppSettings;
 using cmdr.Editor.Utils;
 using cmdr.Editor.Views;
+using cmdr.Editor.ViewModels.Reports;
 using cmdr.TsiLib;
 using cmdr.TsiLib.EventArgs;
 using cmdr.WpfControls.Behaviors;
@@ -16,6 +17,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Text;
+using ExtensionMethods;
 
 namespace cmdr.Editor.ViewModels
 {
@@ -23,7 +26,7 @@ namespace cmdr.Editor.ViewModels
     {
         private readonly TsiFile _tsiFile;
 
-        
+
         public bool IsTraktorSettings { get { return _tsiFile.IsTraktorSettings; } }
 
         private string defaultTitle
@@ -86,6 +89,13 @@ namespace cmdr.Editor.ViewModels
             get { return _dropCommand ?? (_dropCommand = new CommandHandler<IDataObject>(drop)); }
         }
 
+        private ICommand _showCommandsReportEditorCommand;
+        public ICommand ShowCommandsReportEditorCommand
+        {
+            get { return _showCommandsReportEditorCommand ?? (_showCommandsReportEditorCommand = new CommandHandler(showCommandsReportEditor)); }
+        }
+
+
         #endregion
 
 
@@ -96,10 +106,8 @@ namespace cmdr.Editor.ViewModels
             // Is new file?
             if (tsiFile.Path == null)
                 IsChanged = true;
-            else
-            {
-                foreach (var device in _tsiFile.Devices)
-                {
+            else {
+                foreach (var device in _tsiFile.Devices) {
                     var dvm = new DeviceViewModel(device);
                     Devices.Add(dvm);
                     dvm.DirtyStateChanged += (s, a) => onDeviceChanged();
@@ -133,7 +141,84 @@ namespace cmdr.Editor.ViewModels
             return result;
         }
 
-        public async Task<bool> SaveAsync(string filepath)
+
+        public static string DataTable2CSV(DataGrid table, string separator = ",")
+        {
+            object[,] data; // = table.PrepareData();
+            StringBuilder builder = new StringBuilder(Convert.ToString((char)65279));
+
+            /*for (int k = 0; k < data.GetLength(0); k++)
+            {
+                List<string> tempList = new List<string>();
+                for (int l = 0; l < data.GetLength(1); l++)
+                    tempList.Add(data[k, l].ToString());
+                builder.Append(string.Join(separator, tempList)).Append(Environment.NewLine);
+            }
+            */
+            return builder.ToString();
+        }
+
+ 
+        public string generate_csv_string(string sep = ",")
+        {
+            StringBuilder sb = new StringBuilder(Convert.ToString((char)65279));
+
+            foreach (var dev in Devices)
+                dev.SaveMetadata();
+
+            bool header_printed = false;
+
+            Devices.Enumerate((dev, i) =>
+            {
+                string dev_name = dev.Comment;
+
+                sb.AppendFormat("#\n#Page {0}: ({1})\n#\n", i, dev_name);
+                foreach (var m in dev.Mappings) {
+                    var mvm = (MappingViewModel)m.Item;
+
+                    if (!header_printed) {
+                        sb.AppendFormat("{0}\n", mvm.get_csv_row(sep, i, true));
+                        header_printed = true;
+                    }
+
+                    sb.AppendFormat("{0}\n", mvm.get_csv_row(sep, i));
+                }
+            });
+
+            return sb.ToString();
+        }
+
+        private bool WriteToXls(string filepath, string dataToWrite )
+        {
+            try
+            {
+                FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.Write);
+                StreamWriter objWrite = new StreamWriter(fs);
+                objWrite.Write(dataToWrite);
+                objWrite.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+        public async Task<bool> SaveAsyncCsv(string filepath)
+        {
+            AcceptChanges();
+            App.SetStatus("Saving " + filepath + " ...");
+
+            var data = generate_csv_string(",");
+
+            bool success = WriteToXls(filepath, data);
+
+            App.ResetStatus();
+            return success;
+        }
+
+        public async Task<bool> SaveAsyncTsi(string filepath)
         {
             AcceptChanges();
             App.SetStatus("Saving " + filepath + " ...");
@@ -155,6 +240,33 @@ namespace cmdr.Editor.ViewModels
             return success;
         }
 
+        private void showCommandsReportEditor()
+        {
+            var rows = new List<CommandsReportViewModel>();
+            foreach (var dev in Devices)
+            {
+                string dev_name = dev.Comment;
+                List<String> commands = dev.Mappings.Select(m => (m.Item as MappingViewModel).Command.Name).ToList();
+
+                // https://stackoverflow.com/questions/17434119/how-to-get-frequency-of-elements-from-list-in-c-sharp
+                foreach (var grp in commands.GroupBy(i => i))
+                {
+                    CommandsReportViewModel row = new CommandsReportViewModel(dev_name, grp.Key, grp.Count());
+                    rows.Add(row);
+                }
+            }
+
+            // sort by "Command"
+            rows = rows.OrderBy(r => r.Command).ToList();
+
+            var dc = new CommandsReportEditorViewModel(rows);
+            var new_window = new Views.CommandsReportEditor
+            {
+                DataContext = dc
+            };
+            new_window.ShowDialog();
+
+        }
 
         protected override void Accept()
         {

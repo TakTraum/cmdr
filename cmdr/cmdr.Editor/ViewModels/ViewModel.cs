@@ -73,6 +73,12 @@ namespace cmdr.Editor.ViewModels
             get { return _saveAsCommand ?? (_saveAsCommand = new CommandHandler(saveAs, () => SelectedTsiFileModel != null)); }
         }
 
+        private ICommand _saveAsCsvCommand;
+        public ICommand SaveAsCsvCommand
+        {
+            get { return _saveAsCsvCommand ?? (_saveAsCsvCommand = new CommandHandler(saveAsCsv, () => SelectedTsiFileModel != null)); }
+        }
+
         private ICommand _closeCommand;
         public ICommand CloseCommand
         {
@@ -174,7 +180,6 @@ namespace cmdr.Editor.ViewModels
             get { return _debugDoAction ?? (_debugDoAction = new CommandHandler(() => debugDoAction(), null )); } 
         }
 
-        // Rotate assigments
         private ICommand _decAssignment;
         public ICommand DecAssignment
         {
@@ -458,6 +463,10 @@ namespace cmdr.Editor.ViewModels
             await saveAs(SelectedTsiFileModel);
         }
 
+        private async void saveAsCsv()
+        {
+            await saveAs(SelectedTsiFileModel, "csv");
+        }
 
         private void close()
         {
@@ -753,7 +762,7 @@ namespace cmdr.Editor.ViewModels
 
         private void showCommandsReportEditor()
         {
-            SelectedTsiFileModel.SelectedDevice.ShowCommandsReportEditorCommand.Execute(null);
+            SelectedTsiFileModel.ShowCommandsReportEditorCommand.Execute(null);
         }
 
         private void showSettings()
@@ -878,20 +887,37 @@ namespace cmdr.Editor.ViewModels
             if (vm.Path == null)
                 return await saveAs(vm);
             else
-                return await vm.SaveAsync(vm.Path);
+                return await vm.SaveAsyncTsi(vm.Path);
         }
 
-        private async Task<bool> saveAs(TsiFileViewModel vm)
+        private async Task<bool> saveAs(TsiFileViewModel vm, string type = "tsi")
         {
             string initialDirectory = null;
             if (!String.IsNullOrEmpty(CmdrSettings.Instance.DefaultWorkspace))
                 initialDirectory = CmdrSettings.Instance.DefaultWorkspace;
 
-            string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, true, initialDirectory, vm.Title);
+            string path = BrowseDialogHelper.BrowseTsiFile(App.Current.MainWindow, true, initialDirectory, vm.Title, type);
             if (!String.IsNullOrEmpty(path))
-                return await vm.SaveAsync(path);
+            {
+                switch(type) {
+                    case "tsi":
+                        return await vm.SaveAsyncTsi(path);
+                    case "csv":
+                        return await vm.SaveAsyncCsv(path);
+                }
+            }
 
             return false;
+        }
+
+        private async Task<bool> saveAsTsi(TsiFileViewModel vm)
+        {
+            return await saveAs(vm, "tsi");
+        }
+
+        private async Task<bool> saveAsCsv(TsiFileViewModel vm)
+        {
+            return await saveAs(vm, "csv");
         }
 
         private void close(TsiFileViewModel vm)

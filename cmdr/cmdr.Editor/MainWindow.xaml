@@ -94,6 +94,8 @@
 
                 <MenuItem Header="_Exit" Command="{Binding ExitCommand, Mode=OneTime}" InputGestureText="Alt+F4"/>
             </MenuItem>
+            
+            
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Cut" Command="{Binding CutCommand, Mode=OneTime}" InputGestureText="Ctrl+X" >
                     <!--<MenuItem.Icon>
@@ -133,6 +135,7 @@
             <MenuItem Header="Reports">
                 <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
                 <MenuItem Header="Commands Report" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />
+                <MenuItem Header="Save as CSV" Command="{Binding SaveAsCsvCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+C"/>
             </MenuItem> 
             
             <MenuItem Header="Commands">

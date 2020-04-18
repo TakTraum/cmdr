@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace cmdr.Editor.ViewModels.Conditions
+namespace cmdr.Editor.ViewModels.Reports
 {
     public class ConditionTupleViewModel : ViewModelBase
     {

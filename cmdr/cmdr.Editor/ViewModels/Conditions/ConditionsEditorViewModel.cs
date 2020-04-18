@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace cmdr.Editor.ViewModels.Conditions
+namespace cmdr.Editor.ViewModels.Reports
 {
     public class ConditionsEditorViewModel : ViewModelBase
     {
@@ -230,7 +230,6 @@ namespace cmdr.Editor.ViewModels.Conditions
 
             items.Add(SEPARATOR);
             items.Add(new MenuItemViewModel { Text = "None" });
-            //items.Add(SEPARATOR);
 
             items = simplifyConditionsContextMenu(items);
             return items;

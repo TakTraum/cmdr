@@ -2,51 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace cmdr.Editor.ViewModels.Conditions //Reports
+namespace cmdr.Editor.ViewModels.Reports
 {
     public class CommandsReportViewModel : ViewModelBase
     {
-        private readonly List<MappingViewModel> _mappings;
-        private readonly ConditionTuple _conditionTuple;
-
-        public int Frequency
+        
+        private string _device;
+        public string Device
         {
             get
             {
-                return _mappings.Count();
-            }
-        }
-
-        public string Expression
-        {
-            get
-            {
-                return _conditionTuple.ToString();
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return _conditionTuple.Name;
+                return _device;
             }
             set
             {
-                foreach (var m in _mappings)
-                {
-                    m.Conditions.Name = value;
-                    m.UpdateConditionExpression();
-                }
-                raisePropertyChanged("Description");
+
+            }
+
+        }
+
+        private string _command;
+        public string Command
+        {
+            get
+            {
+                return _command;
+            }
+            set
+            {
+            }
+        }
+
+        private int _count;
+        public int Count
+        {
+            get
+            {
+                return _count;
             }
         }
 
 
-        public CommandsReportViewModel(List<MappingViewModel> mappings)
+        public CommandsReportViewModel(string device, string command, int count)
         {
-            _mappings = mappings;
-            _conditionTuple = _mappings.First().Conditions;
+            _device = device;
+            _command = command;
+            _count = count;
         }
     }
 }

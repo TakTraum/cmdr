@@ -1,7 +1,7 @@
 ﻿using ChangeTracking;
 using cmdr.Editor.Metadata;
 using cmdr.Editor.Utils;
-using cmdr.Editor.ViewModels.Conditions;
+using cmdr.Editor.ViewModels.Reports;
 using cmdr.Editor.AppSettings;
 using cmdr.MidiLib;
 using cmdr.TsiLib;
@@ -464,11 +464,7 @@ namespace cmdr.Editor.ViewModels
 
         private void showCommandsReportEditor()
         {
-            new Views.CommandsReportEditor
-            {
-                DataContext = new CommandsReportEditorViewModel(Mappings.Select(r => r.Item as MappingViewModel))
-            }
-            .ShowDialog();
+
         }
 
         private void delete()

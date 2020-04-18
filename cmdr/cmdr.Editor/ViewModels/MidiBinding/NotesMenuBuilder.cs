@@ -33,6 +33,9 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         {
             MenuItemViewModel root = new MenuItemViewModel();
 
+            // None
+            root.Children.Add(new MenuItemViewModel { Text = "None", Tag = "None" });
+
             #region CC
 
             MenuItemViewModel rangeMenu = null;

@@ -1,6 +1,6 @@
 ﻿using cmdr.Editor.Utils;
 using cmdr.Editor.ViewModels.Comment;
-using cmdr.Editor.ViewModels.Conditions;
+using cmdr.Editor.ViewModels.Reports;
 using cmdr.Editor.ViewModels.MidiBinding;
 using cmdr.Editor.ViewModels.Settings;
 using cmdr.TsiLib.Enums;
