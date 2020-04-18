@@ -40,61 +40,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             }
 
         }
-
-        ///
-        // private void remember_textbox_list(TextBox filterTextBox, DataGridColumnHeader header)
-        // {
-        //     int i = 9;
-        //     List<TextBox> new_list = new List<TextBox>();/
-        //
-        //     m_filtertb.Add(filterTextBox);  //pestrela: clear filter feature
-        //
-        // }
-        // 
-
-
-        /*
-       private void button1_Click_tmp(object sender, EventArgs e, DataGrid dataGridView1)
-       {
-           // https://stackoverflow.com/questions/56138612/c-sharp-save-datagridview-to-text-file
-           //This line of code creates a text file for the data export.
-           System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\\your_path_here\\sample.txt");
-           try
-           {
-               string sLine = "";
-
-               //This for loop loops through each row in the table
-               for (int r = 0; r <= dataGridView1.Rows.Count - 1; r++)
-               {
-                   //This for loop loops through each column, and the row number
-                   //is passed from the for loop above.
-                   for (int c = 0; c <= dataGridView1.Columns.Count - 1; c++)
-                   {
-                       sLine = sLine + dataGridView1.Rows[r].Cells[c].Value;
-                       if (c != dataGridView1.Columns.Count - 1)
-                       {
-                           //A comma is added as a text delimiter in order
-                           //to separate each field in the text file.
-                           //You can choose another character as a delimiter.
-                           sLine = sLine + ",";
-                       }
-                   }
-                   //The exported text is written to the text file, one line at a time.
-                   file.WriteLine(sLine);
-                   sLine = "";
-               }
-
-               file.Close();
-               System.Windows.Forms.MessageBox.Show("Export Complete.", "Program Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-           }
-           catch (System.Exception err)
-           {
-               System.Windows.Forms.MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-               file.Close();
-           }
-       }*/
-
-
+        
         public void ClearFiltering()
         {
             var a = filtering_textBoxes;
@@ -120,30 +66,6 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             ApplyFilters();
         }
-
-
-        /* 
-        public void ClearFiltering_list()
-        {
-
-            // version using a list. This had memory leak problems
-            for (int i = 0; i < m_filtertb.Count; i++)
-            // foreach (TextBox tb in m_filtertb.Select(x => x))
-            {
-                TextBox tb = m_filtertb[i];
-                String a = tb.Text ;
-                // tb.Text = string.Empty;
-                tb.Text = "";
-            }
-
-            //if (this.view != null)
-            //    this.view.Filter = null;
-
-            //columnFilters = new Dictionary<string, string>();
-
-            // remove list
-            m_filtertb.Clear();
-          }        */
         
 
         #endregion
@@ -227,15 +149,15 @@ namespace cmdr.WpfControls.CustomDataGrid
         // Filtering was made based on this article:
         // https://www.codeproject.com/Articles/41755/Filtering-the-WPF-DataGrid-automatically-via-the-h
 
-        /// <summary>
-        /// This dictionary will have a list of all applied filters
-        /// </summary>
-        private Dictionary<string, ColumnFilter> columnFilters;
-        /// <summary>
-        /// Cache with properties for better performance
-        /// </summary>
-        private Dictionary<string, PropertyInfo> propertyCache;
+        // This is the patch by TomWeps:
+        // https://github.com/TakTraum/cmdr/compare/master...TomWeps:feature/filtering
 
+
+        /// This dictionary will have a list of all applied filters
+        private Dictionary<string, ColumnFilter> columnFilters;
+
+        /// Cache with properties for better performance
+        private Dictionary<string, PropertyInfo> propertyCache;
  
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {

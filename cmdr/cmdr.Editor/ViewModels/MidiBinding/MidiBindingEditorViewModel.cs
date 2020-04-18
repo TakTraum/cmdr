@@ -128,8 +128,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         public ObservableCollection<MenuItemViewModel> IncDecMenu { get; private set; }
 
-        private bool _isCCs = false;
-        private bool _isNotes = false;
+        private bool _isCCs = false;   // is ONLY CCs
+        private bool _isNotes = false;  // is ONLY notes
         private bool _hasCombo = false;
         private int _min = 0;
         private int _max = 0;
@@ -257,17 +257,12 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return 127 >= _max + step;
         }
 
-
-        ////////////
-        // pestrela: inc channel
         public void IncDecCh(int step)
         {
             foreach (var mapping in _mappings)
             {
-                if (_isCCs)
-                    incDecCC_Ch(mapping, step);
-                else if (_isNotes)
-                    incDecNote_Ch(mapping, step);
+                incDec_Ch(mapping, step);
+
             }
 
             analyzeSelection(true);
@@ -282,7 +277,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             if (!IsGenericMidi)
                 return false;
 
-            if (_hasCombo || !(_isCCs || _isNotes))
+            //_hasCombo ||
+            if ( !(_isCCs || _isNotes))
                 return false;
 
             if ((_min_ch + step) < 1)
@@ -537,6 +533,43 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, newCh, oldBinding.KeyText));
         }
 
+        // note1: "mapping.MidiBinding" comes without type by some reason, so we make an workaround of inspecting the types
+        // note2: type is "in"/"out". It is not a c# type!
+        private AGenericMidiDefinition incDecGeneric_ch(AGenericMidiDefinition old, int step)
+        {
+            if (old is ComboMidiDefinition) {
+                var specific = (ComboMidiDefinition)old;
+
+                return new ComboMidiDefinition(
+                        incDecGeneric_ch(specific.MidiDefinition1, step),
+                        incDecGeneric_ch(specific.MidiDefinition2, step));
+            }
+
+            // at this stage we always have a channel
+            var oldCh = old.Channel;
+            var newCh = incDec_channel(oldCh, step);
+
+            if (old is NoteMidiDefinition) {
+                var specific = (NoteMidiDefinition)old;
+                return new NoteMidiDefinition(old.Type, newCh, specific.KeyText);
+            }
+
+            if (old is ControlChangeMidiDefinition) {
+                var specific = (ControlChangeMidiDefinition)old;
+                return new ControlChangeMidiDefinition(old.Type, newCh, specific.Cc);
+            }
+
+            // should never be reached!
+            return null;
+        }
+
+        private void incDec_Ch(MappingViewModel mapping, int step)
+        {
+            var oldBinding = mapping.MidiBinding as AGenericMidiDefinition;
+
+            mapping.SetBinding(incDecGeneric_ch(oldBinding, step));
+        }
+
         ////////////
 
 
@@ -637,6 +670,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return new MenuItemViewModel { Text = str, Tag = str };
             });
 
+            // Add a "None" entry to the channels
             //ret.toList().Insert(0, new MenuItemViewModel { Text = "None", Tag = "None" });
             return ret;
         }
