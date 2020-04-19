@@ -308,10 +308,14 @@ namespace cmdr.Editor.ViewModels
                 SelectedMappings.Add(Mappings.First());
                 updateAddMappingContextMenus();
 
-                Mappings.First().ClearFiltering();  // this was NOT enough to fix the grid duplication bug at init. see "hack" below            
+                ClearFiltering();
             }
         }
 
+        public void ClearFiltering()
+        {
+            Mappings.First().ClearFiltering();
+        }
 
         public void SaveMetadata()
         {
@@ -469,10 +473,15 @@ namespace cmdr.Editor.ViewModels
 
         private void delete()
         {
-            // already present?
-
-            //copy();
+            // is this function already present?
             removeMappings(_selectedMappings);
+        }
+
+        private void OnModification()
+        {
+            if (CmdrSettings.Instance.ClearFilterAtModifications) {
+                ClearFiltering();
+            }
         }
 
         private void duplicate()
@@ -510,6 +519,8 @@ namespace cmdr.Editor.ViewModels
                 insertMapping(index++, mapping.Copy(true));
 
             _selectedMappings.Last().BringIntoView();
+
+            OnModification();
         }
 
 
@@ -699,6 +710,8 @@ namespace cmdr.Editor.ViewModels
             _mappings.Insert(index, row);
 
             SelectedMappings.Add(row);
+
+            OnModification();
         }
 
         private void addMapping(MenuItemViewModel item)
@@ -733,6 +746,8 @@ namespace cmdr.Editor.ViewModels
                 _mappings.Remove(m);
                 _device.RemoveMapping((m.Item as MappingViewModel).Id);
             }
+
+            OnModification();
         }
 
         private void updatePorts(Device device)

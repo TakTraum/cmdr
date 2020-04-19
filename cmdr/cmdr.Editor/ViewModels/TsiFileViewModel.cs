@@ -56,6 +56,10 @@ namespace cmdr.Editor.ViewModels
             set {
                 _selectedDevice = value;
                 raisePropertyChanged("SelectedDevice");
+
+                if (CmdrSettings.Instance.ClearFilterAtPageChanges) {
+                    SelectedDevice.ClearFiltering();
+                }
             }
         }
 

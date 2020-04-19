@@ -92,6 +92,21 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("ShowDecimalNotes", ref _showDecimalNotes, ref value); }
         }
 
+        private bool _clearFilterAtPageChanges;
+        public bool ClearFilterAtPageChanges
+        {
+            get { return _clearFilterAtPageChanges; }
+            set { SetProperty("ClearFilterAtPageChanges", ref _clearFilterAtPageChanges, ref value); }
+        }
+
+        private bool _clearFilterAtModifications;
+        public bool ClearFilterAtModifications
+        {
+            get { return _clearFilterAtModifications; }
+            set { SetProperty("ClearFilterAtModification", ref _clearFilterAtModifications, ref value); }
+        }
+
+
         private int _filterMenuSize;
         public int FilterMenuSize
         {
@@ -179,6 +194,8 @@ namespace cmdr.Editor.ViewModels
             _removeUnusedMIDIDefinitions = CmdrSettings.Instance.RemoveUnusedMIDIDefinitions;
             _loadLastFileAtStartup = CmdrSettings.Instance.LoadLastFileAtStartup;
             _showDecimalNotes = CmdrSettings.Instance.ShowDecimalNotes;
+            _clearFilterAtModifications = CmdrSettings.Instance.ClearFilterAtModifications;
+            _clearFilterAtPageChanges = CmdrSettings.Instance.ClearFilterAtPageChanges;
             _filterMenuSize = CmdrSettings.Instance.FilterMenuSize;
 
             
@@ -257,9 +274,11 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.RemoveUnusedMIDIDefinitions = RemoveUnusedMIDIDefinitions;
             CmdrSettings.Instance.LoadLastFileAtStartup = LoadLastFileAtStartup;
             CmdrSettings.Instance.ShowDecimalNotes = ShowDecimalNotes;
+            CmdrSettings.Instance.ClearFilterAtPageChanges = ClearFilterAtPageChanges;
+            CmdrSettings.Instance.ClearFilterAtModifications = ClearFilterAtModifications;
             CmdrSettings.Instance.FilterMenuSize = FilterMenuSize;
 
-            CmdrSettings.Instance.Save();
+            CmdrSettings.Instance.Save(); 
 
             if (CloseAction != null)
                 CloseAction();

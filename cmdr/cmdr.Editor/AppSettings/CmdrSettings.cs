@@ -110,6 +110,38 @@ namespace cmdr.Editor.AppSettings
                 setSetting("ShowDecimalNotes", ret);
             }
         }
+
+        public bool ClearFilterAtModifications
+        {
+            get
+            {
+                string ret = getSetting("ClearFilterAtModifications");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ClearFilterAtModifications", ret);
+            }
+        }
+
+        public bool ClearFilterAtPageChanges
+        {
+            get
+            {
+                string ret = getSetting("ClearFilterAtPageChanges");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ClearFilterAtPageChanges", ret);
+            }
+        }
+
+
         
         public int FilterMenuSize
         {

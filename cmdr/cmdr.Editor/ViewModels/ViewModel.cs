@@ -179,10 +179,10 @@ namespace cmdr.Editor.ViewModels
         }
 
         /////////
-        private ICommand _removeFiltering;
-        public ICommand RemoveFiltering
+        private ICommand _clearFiltering;
+        public ICommand ClearFiltering
         {
-            get { return _removeFiltering ?? (_removeFiltering = new CommandHandler(() => removeFiltering(), () => canRemoveFiltering())); }
+            get { return _clearFiltering ?? (_clearFiltering = new CommandHandler(() => clearFiltering(), () => canClearFiltering())); }
         }
 
 
@@ -623,16 +623,16 @@ namespace cmdr.Editor.ViewModels
 
         }
 
-        private void removeFiltering()
+        private void clearFiltering()
         {
-            if(canRemoveFiltering())
+            if(canClearFiltering())
             {
                 var dev = SelectedTsiFileModel.SelectedDevice;
                 dev.Mappings.First().ClearFiltering();
             }
         }
 
-        private bool canRemoveFiltering()
+        private bool canClearFiltering()
         {
             if(is_dev_loaded())
             {

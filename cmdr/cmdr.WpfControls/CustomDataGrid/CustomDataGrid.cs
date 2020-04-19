@@ -295,11 +295,7 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             int c2 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
 
-            //ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
-            // aqui ja tem 2x no inicio
-
-            //_changing_page = false;
-
+            // Avoid infinite recursion here
             if (!_changing_page) {
                 _changing_page = true;
                 ApplyFilters();         //This is because triggering this triggers the event again
