@@ -304,8 +304,16 @@ namespace cmdr.Editor.ViewModels
 
             var conditions_editor = this.ConditionsEditor;
             var conditions_list = conditions_editor.Conditions;
- 
-            var modifier_list = conditions_list.Where(x => x.Text == "Modifier").First().Children;
+
+            var first_modifier = conditions_list.FirstOrDefault(x => x.Text == "Modifier");
+                
+            // FIXME: this broken because of the tree removal
+            if(first_modifier == null) {
+                return;
+
+            };
+
+            var modifier_list = first_modifier.Children;
 
             foreach (var mapping in _mappings)
             {

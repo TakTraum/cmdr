@@ -55,7 +55,7 @@
                 <Run Text="{Binding Path=SelectedItems.Count, ElementName=MappingsGrid, Mode=OneWay}" />
                 <Run Text="selected /" />
                 <Run Text="{Binding Path=Items.Count, ElementName=MappingsGrid, Mode=OneWay}" />
-                <Run Text="filtered /" />
+                <Run Text="visible /" />
                 <Run Text="{Binding Path=ItemsSource.Count, ElementName=MappingsGrid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" />
                 <Run Text="total" />
 
@@ -72,7 +72,7 @@
                                          ItemsSource="{Binding OutCommands}"
                                          Command="{Binding AddMappingCommand}"
                                          Width="75" Margin="0,0,5,0"/>
-                <controls:FilterControl Width="100" DataContext="{Binding FilterCmdViewModel, Mode=OneWay}" />
+                <controls:FilterControl Width="150" DataContext="{Binding FilterCmdViewModel, Mode=OneWay}" />
                 
             </StackPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">

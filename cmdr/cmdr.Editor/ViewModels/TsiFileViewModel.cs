@@ -53,7 +53,10 @@ namespace cmdr.Editor.ViewModels
         public DeviceViewModel SelectedDevice
         {
             get { return _selectedDevice; }
-            set { _selectedDevice = value; raisePropertyChanged("SelectedDevice"); }
+            set {
+                _selectedDevice = value;
+                raisePropertyChanged("SelectedDevice");
+            }
         }
 
         private static ObservableCollection<MenuItemViewModel> _addDeviceMenuItems;

@@ -510,8 +510,6 @@ namespace cmdr.Editor.ViewModels
                 insertMapping(index++, mapping.Copy(true));
 
             _selectedMappings.Last().BringIntoView();
-
-            Mappings.First().ClearFiltering();   // HACK: investigate why there is a duplication on the very first paste or "add-in". Clearing grid filters avoids this bug
         }
 
 
@@ -719,8 +717,6 @@ namespace cmdr.Editor.ViewModels
 
             selectExclusive(row);
             row.BringIntoView();
-
-            row.ClearFiltering();   // HACK: investigate why there is a duplication on the very first paste or "add-in". Clearing grid filters avoids this bug
         }
 
         private void selectExclusive(RowItemViewModel row)

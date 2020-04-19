@@ -24,6 +24,20 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         #region clear_filtering
 
+        /*
+         *  some notes:
+          viewmodel
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null);
+                    (TsiFileViewModel) (DeviceViewModel)
+
+
+                 views:
+              TSIfileview = whole thing, (it calls MLV) 
+
+              mappingListView - the grid and bottom buttons
+              mappingeditor - right side
+            */
+
         private Dictionary<string, TextBox> filtering_textBoxes;
 
         private void RememberTextbox(TextBox textBox, DataGridColumnHeader header)
@@ -66,9 +80,27 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             ApplyFilters();
         }
-        
+
 
         #endregion
+        /*
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            var i = 9;
+            var ee = e; ///.PropertyName;
+
+        }
+        
+        public CustomDataGrid() {
+            PropertyChanged += (s1, e1) => {
+                var ss = s;
+                var e2 = e1;
+                var e3 = e2.PropertyName;
+
+                var i = 9;
+            };
+
+           */
 
         public CustomDataGrid()
         {
@@ -79,7 +111,7 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             // Add a handler for all text changes
             AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(OnTextChanged), false);
-            // Datacontext changed, so clear the cache
+            // Add an event for Datacontext changes (to clear the cache)
             DataContextChanged += new DependencyPropertyChangedEventHandler(FilteringDataGrid_DataContextChanged);
         }
 
@@ -91,29 +123,21 @@ namespace cmdr.WpfControls.CustomDataGrid
         /// <param name="e"></param>
         private void FilteringDataGrid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            //ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
+            //int i = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+
+
             propertyCache.Clear();
-        }
+            return;
 
-
-        // This is how we link the mappings to the custom DataGrid
-        // Because this came from XML
-        protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            base.OnItemsChanged(e);
-
-            switch (e.Action)
-            {
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    foreach (RowItemViewModel item in e.NewItems)
-                        item.ParentSelector = this;    
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
-                    foreach (RowItemViewModel item in Items)
-                        item.ParentSelector = this;
-                    break;
-                default:
-                    break;
+            // Add option to clean filter when changing pages here
+            //reapply filters here?
+            bool clear_filters = true;
+            clear_filters = false;
+            if (clear_filters) {
+                ClearFiltering();
+            } else {
+                ApplyFilters();
             }
         }
 
@@ -192,6 +216,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             ColumnFilter filter;
             if(!columnFilters.TryGetValue(columnName, out filter))
             {
+                // this code runs when we see a new filter
                 var dataGridBoundColumn = header.Column as DataGridBoundColumn;
                 if (dataGridBoundColumn != null)
                 {
@@ -222,6 +247,7 @@ namespace cmdr.WpfControls.CustomDataGrid
         /// <param name="border"></param>
         private void ApplyFilters()
         {
+
             // Get the view
             ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
             if (view != null)
@@ -254,6 +280,45 @@ namespace cmdr.WpfControls.CustomDataGrid
                     // Return if it's visible or not
                     return show;
                 };
+            }
+        }
+
+        private bool _changing_page = false;
+        
+        // This is how we link the mappings to the custom DataGrid
+        // Because this came from XML
+        protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            int c1 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+
+            base.OnItemsChanged(e);
+
+            int c2 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+
+            //ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
+            // aqui ja tem 2x no inicio
+
+            //_changing_page = false;
+
+            if (!_changing_page) {
+                _changing_page = true;
+                ApplyFilters();         //This is because triggering this triggers the event again
+                _changing_page = false;
+
+            }
+
+            switch (e.Action) {
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
+                    foreach (RowItemViewModel item in e.NewItems)
+                        item.ParentSelector = this;
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+                    foreach (RowItemViewModel item in Items)
+                        item.ParentSelector = this;
+                    break;
+                default:
+                    break;
             }
         }
 

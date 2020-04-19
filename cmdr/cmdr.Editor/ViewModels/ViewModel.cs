@@ -24,6 +24,18 @@ namespace cmdr.Editor.ViewModels
         private MdiContainer<MdiChild<TsiFileView, TsiFileViewModel>, TsiFileView, TsiFileViewModel> _mdiContainer;
         private ObservableCollection<TsiFileViewModel> _tsiFileViewModels = new ObservableCollection<TsiFileViewModel>();
 
+        private TsiFileViewModel _selectedTsiFileViewModel;
+        public TsiFileViewModel SelectedTsiFileModel
+        {
+            get { return _selectedTsiFileViewModel; }
+            set
+            {
+                _selectedTsiFileViewModel = value;
+                raisePropertyChanged("SelectedTsiFileViewModel");
+                refreshAppTitle();
+            }
+        }
+
         private bool _isExiting;
 
 
@@ -392,12 +404,6 @@ namespace cmdr.Editor.ViewModels
 
         #endregion
 
-        private TsiFileViewModel _selectedTsiFileViewModel;
-        public TsiFileViewModel SelectedTsiFileModel
-        {
-            get { return _selectedTsiFileViewModel; }
-            set { _selectedTsiFileViewModel = value; raisePropertyChanged("SelectedTsiFileViewModel"); refreshAppTitle(); }
-        }
 
 
         public ViewModel(DockingManager dockingManager)
@@ -595,7 +601,6 @@ namespace cmdr.Editor.ViewModels
                 return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDecCh(step);
             return false;
         }
-
 
 
         // The grid always has CTRL+a. This is when the focus is elsewhere
@@ -806,8 +811,15 @@ namespace cmdr.Editor.ViewModels
         private void openTab(TsiFileViewModel vm)
         {
             var mdiChild = new MdiChild<TsiFileView, TsiFileViewModel>(new TsiFileView(), vm, vm.Title + (vm.IsChanged ? "*" : ""));
+
             // bind viewmodel's title to MDI child title
-            vm.PropertyChanged += (s, e) => { if (e.PropertyName == "Title" || e.PropertyName == "IsChanged") mdiChild.Title = vm.Title + (vm.IsChanged ? "*" : ""); refreshAppTitle(); };
+            vm.PropertyChanged += (s, e) => {
+                // this is called in EVERY property change!
+                // do  function for this
+                if (e.PropertyName == "Title" || e.PropertyName == "IsChanged")
+                    mdiChild.Title = vm.Title + (vm.IsChanged ? "*" : "");
+                refreshAppTitle();
+            };
             _mdiContainer.AddMdiChild(mdiChild);
         }
 
@@ -817,12 +829,6 @@ namespace cmdr.Editor.ViewModels
                 AppTitle = String.Format("{0} - {1}", APPNAME, _mdiContainer.SelectedMdiChild.Title);
             else
                 AppTitle = APPNAME;
-
-            // pestrela: avoid confusion by removing grid filtering always
-            // it would be better to reaply filtering in the new device list
-            //
-            // note2: check later if we can call this less often. For example not in "add command"
-            removeFiltering();
 
         }
 
