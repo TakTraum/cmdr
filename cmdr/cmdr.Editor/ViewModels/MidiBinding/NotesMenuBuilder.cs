@@ -29,24 +29,15 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         }
 
 
-        public List<MenuItemViewModel> BuildGenericMidiMenu()
+        private MenuItemViewModel BuildGenericMidiMenuCC(MenuItemViewModel root)
         {
-            MenuItemViewModel root = new MenuItemViewModel();
-
-            // None
-            root.Children.Add(new MenuItemViewModel { Text = "None", Tag = "None" });
-
-            #region CC
-
             MenuItemViewModel rangeMenu = null;
             int part = 0;
             int limit = 0;
             string ccNumString;
             string ccString;
-            for (int i = 0; i < CC_MAX; i++)
-            {
-                if (i == limit)
-                {
+            for (int i = 0; i < CC_MAX; i++) {
+                if (i == limit) {
                     part++;
                     limit = CC_PART * part;
                     rangeMenu = new MenuItemViewModel { Text = String.Format("CC {0} - {1}", i, limit - 1) };
@@ -58,34 +49,32 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 rangeMenu.Children.Add(new MenuItemViewModel { Text = ccNumString, Tag = ccString });
             }
 
-            #endregion
+            return root;
+        }
 
-            #region Notes
-            
+        private MenuItemViewModel BuildGenericMidiMenuNotes(MenuItemViewModel root)
+        {
+
             bool add_count = CmdrSettings.Instance.ShowDecimalNotes;
             int count = 0;
             int maxOctave;
             var specialNotes = new[] { "G#", "A", "A#", "B" };
             MenuItemViewModel noteMenu = null;
-            foreach (var note in NOTENAMES)
-            {
+            foreach (var note in NOTENAMES) {
                 noteMenu = new MenuItemViewModel { Text = note };
                 root.Children.Add(noteMenu);
 
                 maxOctave = specialNotes.Contains(note) ? 8 : 9;
 
-                for (int i = -1; i <= maxOctave; i++)
-                {
+                for (int i = -1; i <= maxOctave; i++) {
                     String text;
                     String tag;
 
-                    if (add_count)
-                    {
+                    if (add_count) {
                         text = String.Format("{0} ({1})", i.ToString(), count);
                         //tag = String.Format("Note.{0} ({1})", note + i, count);
                         tag = String.Format("Note.{0}", note + i);
-                    }
-                    else {
+                    } else {
                         text = String.Format("{0}", i.ToString());
                         tag = String.Format("Note.{0}", note + i);
 
@@ -96,9 +85,25 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 }
             }
 
-            #endregion
+            return root;
+        }
 
-            // PitchBend
+        public List<MenuItemViewModel> BuildGenericMidiMenu()
+        {
+            MenuItemViewModel root = new MenuItemViewModel();
+
+            // None
+            root.Children.Add(new MenuItemViewModel { Text = "None", Tag = "None" });
+
+            if (CmdrSettings.Instance.ShowNotesBeforeCC) {
+                root = BuildGenericMidiMenuNotes(root);
+                root = BuildGenericMidiMenuCC(root);
+            } else {
+                root = BuildGenericMidiMenuCC(root);
+                root = BuildGenericMidiMenuNotes(root);
+            }
+
+            // PitchBend at the end
             root.Children.Add(new MenuItemViewModel { Text = "PitchBend", Tag = "PitchBend" });
 
             return root.Children;

@@ -153,6 +153,7 @@
                 <Separator/>
                 <MenuItem Header="Dec Channel" Command="{Binding DecChCommand, Mode=OneTime}" InputGestureText="Ctrl+8" />
                 <MenuItem Header="Inc Channel" Command="{Binding IncChCommand, Mode=OneTime}" InputGestureText="Ctrl+9" />
+                <Separator/>
                 <MenuItem Header="Dec Assignment" Command="{Binding DecAssignment, Mode=OneTime}" InputGestureText="Ctrl+Shift+8" />
                 <MenuItem Header="Inc Assignment" Command="{Binding IncAssignment, Mode=OneTime}" InputGestureText="Ctrl+Shift+9" />
                 <Separator/>

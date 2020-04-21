@@ -71,6 +71,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("OptimizeFXList", ref _optimizeFXList, ref value); }
         }
 
+        private bool _showNotesBeforeCC;
+        public bool ShowNotesBeforeCC
+        {
+            get { return _showNotesBeforeCC; }
+            set { SetProperty("ShowNotesBeforeCC", ref _showNotesBeforeCC, ref value); }
+        }
+
         private bool _removeUnusedMIDIDefinitions;
         public bool RemoveUnusedMIDIDefinitions
         {
@@ -197,6 +204,7 @@ namespace cmdr.Editor.ViewModels
             _clearFilterAtModifications = CmdrSettings.Instance.ClearFilterAtModifications;
             _clearFilterAtPageChanges = CmdrSettings.Instance.ClearFilterAtPageChanges;
             _filterMenuSize = CmdrSettings.Instance.FilterMenuSize;
+            _showNotesBeforeCC = CmdrSettings.Instance.ShowNotesBeforeCC;
 
             
 

@@ -193,26 +193,39 @@ release 0.10.1 - TBD
 These are in addition to the IN shortcut on the OUT menu
 for now this is on the old search box
 
+bugfixes filtering. 2x new settings
+reports
+* more increment commands
+* favorite start at 0
+  - new report: what is where!
+clear filtering settings (change pages, modifications)
+  see None on conditions to add to midi
+  
+* inc/dec is now generic to Combos, CCs, Notes
+
     
 ## 2020 WishList
 
-* inc/dec Combos and mixture of notes
+
+  add shortcut do "duplicate" and to "delete"
+* remmeber last window position / maximize <<<<<
+
+add red color for bacground for filtering
+  add program icon!
+
+  
+add red color for bacground for filtering
 
 
 * show / hide columns (+preferences)
-* remmeber last window position / maximize
 
 * seperate condition columns into cond1+cond2
 
-* more increment commands
-* favorite start at 0
 
 * moving mappings up and down (IDs?)
 
-  - new report: what is where!
   - add decimal to notes (optional column) for XDJ-XZ
-  - add new column with translation table (text file loaded seperately)
-  add shortcut do "duplicate" and to "delete"
+  - add new column with translation table (text file loaded seperately)  <<<<<
 
 
 

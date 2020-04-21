@@ -175,7 +175,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         private ICommand _incDecCommand;
         public ICommand IncDecCommand
         {
-            get { return _incDecCommand ?? (_incDecCommand = new CommandHandler<MenuItemViewModel>(item => IncDec((int)item.Tag), () => CanIncDec())); }
+            get { return _incDecCommand ?? (_incDecCommand = new CommandHandler<MenuItemViewModel>(item => IncDecNumber((int)item.Tag), () => CanIncDecNumber())); }
         }
 
         private ICommand _applyMidiRangeCommand;
@@ -228,27 +228,38 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             updateMenus();
         }
 
-        public void IncDec(int step)
+        private void incDecMapping(MappingViewModel mapping, int step, IncDecWhat what)
+        {
+            var oldBinding = mapping.MidiBinding as AGenericMidiDefinition;
+            if(oldBinding != null)
+                mapping.SetBinding(incDecGeneric(oldBinding, step, what));
+        }
+
+        public void IncDecMappings(int step, IncDecWhat what)
         {
             foreach (var mapping in _mappings)
             {
-                if (_isCCs)
-                    incDecCC(mapping, step);
-                else if (_isNotes)
-                    incDecNote(mapping, step);
+                incDecMapping(mapping, step, what);
             }
 
             analyzeSelection(true);
             updateMenus(false, true);
         }
 
-        public bool CanIncDec(int step = 0)
+        public void IncDecNumber(int step)
+        {
+            IncDecMappings(step, IncDecWhat.Number);
+        }
+
+        public bool CanIncDecNumber(int step = 0)
         {
             if (!IsGenericMidi)
                 return false;
 
+            return true;
+
             //_hasCombo
-            if (_hasCombo || !(_isCCs || _isNotes))
+            if ( !(_isCCs || _isNotes))
                 return false;
 
             if (step < 0)
@@ -257,24 +268,19 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return 127 >= _max + step;
         }
 
-        public void IncDecCh(int step)
+        public void IncDecChannel(int step)
         {
-            foreach (var mapping in _mappings)
-            {
-                incDec_Ch(mapping, step);
-
-            }
-
-            analyzeSelection(true);
-            updateMenus(false, true);
+            IncDecMappings(step, IncDecWhat.Channel);
         }
 
-        public bool CanIncDecCh(int step = 0)
+        public bool CanIncDecChannel(int step = 0)
         {
-            if (!_allBound)
+            if (!IsGenericMidi)
                 return false;
 
-            if (!IsGenericMidi)
+            return true;
+
+            if (!_allBound)
                 return false;
 
             //_hasCombo ||
@@ -320,7 +326,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
                 _allBound = notes.All(n => n != null);
                 _isCCs = _allBound && notes.All(n => n.Contains("CC"));
-                _isNotes = _allBound && notes.All(n => n.Contains("Note"));
+                _isNotes = _allBound && notes.All(n => n.Contains("Note"));  //Newer code checks explicitelly for types
                 _hasCombo = _allBound && notes.Any(n => n.Contains("+"));
 
                 if (_isCCs)
@@ -481,6 +487,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             return !(String.IsNullOrEmpty(Note) || Note.Contains("+") || VariousChannels);
         }
 
+        /*
         private void incDecCC(MappingViewModel mapping, int step)
         {
             var oldBinding = mapping.MidiBinding as ControlChangeMidiDefinition;
@@ -502,79 +509,93 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             int newKey = oldKey + step;
 
             mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, oldBinding.Channel, keyConverter.GetKeyTextIPN(newKey)));
+        }*/
+
+        /////// channels
+        public enum IncDecWhat
+        {
+            Channel,
+            Number,
+        }
+
+        // note: channels do not wrap around on purpose
+        private int incDec_channel(int old, int step, IncDecWhat what)
+        {
+            if (what != IncDecWhat.Channel) {
+                step = 0;
+            }
+            return old + step;
+        }
+
+        private int incDec_note(int old, int step, IncDecWhat what)
+        {
+            if (what != IncDecWhat.Number) {
+                step = 0;
+            }
+            return old + step;
         }
 
 
-        // pestrela: manipulate channel
-        // private String incDec_channel(String oldCh, int step)
-        private int incDec_channel(int oldCh, int step)
+        /*
+         * Note1: 
+         *   "Mapping.MidiBinding" comes without type by some reason. 
+         *   Workaound inspects the types explicitelly
+         *   We could use AGenericMidiDefinition.Parse but then we had to generte the string by hand
+         *
+         * Note2: 
+         *   "Type" is not C#. Its about traktor "in"/"out"
+         * 
+         */
+        private AGenericMidiDefinition incDecGeneric(AGenericMidiDefinition old, int step, IncDecWhat what)
         {
-            return oldCh + step;
-        }
 
-
-        private void incDecCC_Ch(MappingViewModel mapping, int step)
-        {
-            var oldBinding = mapping.MidiBinding as ControlChangeMidiDefinition;
-
-            var oldCh = oldBinding.Channel;
-            var newCh = incDec_channel(oldCh, step);
-
-            mapping.SetBinding(new ControlChangeMidiDefinition(oldBinding.Type, newCh, oldBinding.Cc));
-        }
-
-        private void incDecNote_Ch(MappingViewModel mapping, int step)
-        {
-            var oldBinding = mapping.MidiBinding as NoteMidiDefinition;
-
-            var oldCh = oldBinding.Channel;
-            var newCh = incDec_channel(oldCh, step);
-            
-            mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, newCh, oldBinding.KeyText));
-        }
-
-        // note1: "mapping.MidiBinding" comes without type by some reason, so we make an workaround of inspecting the types
-        // note2: type is "in"/"out". It is not a c# type!
-        private AGenericMidiDefinition incDecGeneric_ch(AGenericMidiDefinition old, int step)
-        {
             if (old is ComboMidiDefinition) {
                 var specific = (ComboMidiDefinition)old;
 
                 return new ComboMidiDefinition(
-                        incDecGeneric_ch(specific.MidiDefinition1, step),
-                        incDecGeneric_ch(specific.MidiDefinition2, step));
+                        incDecGeneric(specific.MidiDefinition1, step, what),
+                        incDecGeneric(specific.MidiDefinition2, step, what));
             }
 
             // at this stage we always have a channel
-            var oldCh = old.Channel;
-            var newCh = incDec_channel(oldCh, step);
+            int old_channel = old.Channel;
+            int new_channel = incDec_channel(old_channel, step, what);
 
             if (old is NoteMidiDefinition) {
                 var specific = (NoteMidiDefinition)old;
-                return new NoteMidiDefinition(old.Type, newCh, specific.KeyText);
+                var keyConverter = new MidiLib.Utils.KeyConverter();
+
+                int old_value = keyConverter.ToKeyIPN(specific.KeyText);
+                int new_value = incDec_note(old_value, step, IncDecWhat.Number);
+                string new_note = keyConverter.GetKeyTextIPN(new_value);
+
+                return new NoteMidiDefinition(old.Type, new_channel, new_note);
             }
 
             if (old is ControlChangeMidiDefinition) {
                 var specific = (ControlChangeMidiDefinition)old;
-                return new ControlChangeMidiDefinition(old.Type, newCh, specific.Cc);
+
+                int new_value = incDec_note(specific.Cc, step, IncDecWhat.Number);
+
+                return new ControlChangeMidiDefinition(old.Type, new_channel, new_value);
             }
 
-            // should never be reached!
+            // this should never be reached!
             return null;
         }
 
-        private void incDec_Ch(MappingViewModel mapping, int step)
-        {
-            var oldBinding = mapping.MidiBinding as AGenericMidiDefinition;
 
-            mapping.SetBinding(incDecGeneric_ch(oldBinding, step));
-        }
+       
 
         ////////////
 
 
+
+
         private void applyMidiRange()
         {
+
+
             var templateBinding = _mappings.First().MidiBinding as AGenericMidiDefinition;
 
             var isCC = templateBinding is ControlChangeMidiDefinition;
@@ -784,7 +805,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 if (item.IsSeparator)
                     continue;
 
-                item.IsEnabled = CanIncDec((int)item.Tag);
+                item.IsEnabled = CanIncDecNumber((int)item.Tag);
             }
         }
 

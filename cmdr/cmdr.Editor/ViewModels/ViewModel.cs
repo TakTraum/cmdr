@@ -139,43 +139,42 @@ namespace cmdr.Editor.ViewModels
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(learn, canLearn)); }
         }
 
-        // pestrela: Increment Note 
         private ICommand _incOneCommand;
         public ICommand IncOneCommand
         {
-            get { return _incOneCommand ?? (_incOneCommand = new CommandHandler(() => incDec(1), () => canIncDec(1))); }
+            get { return _incOneCommand ?? (_incOneCommand = new CommandHandler(() => incDecNumber(1), () => canIncDecNumber(1))); }
         }
 
         private ICommand _decOneCommand;
         public ICommand DecOneCommand
         {
-            get { return _decOneCommand ?? (_decOneCommand = new CommandHandler(() => incDec(-1), () => canIncDec(-1))); }
+            get { return _decOneCommand ?? (_decOneCommand = new CommandHandler(() => incDecNumber(-1), () => canIncDecNumber(-1))); }
         }
 
         // pestrela: Increment Pad feature
         private ICommand _incPadCommand;
         public ICommand IncPadCommand
         {
-            get { return _incPadCommand ?? (_incPadCommand = new CommandHandler(() => incDec(8), () => canIncDec(8))); }
+            get { return _incPadCommand ?? (_incPadCommand = new CommandHandler(() => incDecNumber(8), () => canIncDecNumber(8))); }
         }
 
         private ICommand _decPadCommand;
         public ICommand DecPadCommand
         {
-            get { return _decPadCommand ?? (_decPadCommand = new CommandHandler(() => incDec(-8), () => canIncDec(-8))); }
+            get { return _decPadCommand ?? (_decPadCommand = new CommandHandler(() => incDecNumber(-8), () => canIncDecNumber(-8))); }
         }
 
         // pestrela: Increment Channel feature
         private ICommand _incChCommand;
         public ICommand IncChCommand
         {
-            get { return _incChCommand ?? (_incChCommand = new CommandHandler(() => incDecCh(1), () => canIncDecCh(1))); }
+            get { return _incChCommand ?? (_incChCommand = new CommandHandler(() => incDecChannel(1), () => canIncDecChannel(1))); }
         }
 
         private ICommand _decChCommand;
         public ICommand DecChCommand
         {
-            get { return _decChCommand ?? (_decChCommand = new CommandHandler(() => incDecCh(-1), () => canIncDecCh(-1))); }
+            get { return _decChCommand ?? (_decChCommand = new CommandHandler(() => incDecChannel(-1), () => canIncDecChannel(-1))); }
         }
 
         /////////
@@ -572,33 +571,33 @@ namespace cmdr.Editor.ViewModels
             return is_mvm_loaded();
         }
 
-        private void incDec(int step)
+        private void incDecNumber(int step)
         {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDec(step);
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecNumber(step);
         }
 
-        private bool canIncDec(int step)
+        private bool canIncDecNumber(int step)
         {
             if (SelectedTsiFileModel != null
                 && SelectedTsiFileModel.SelectedDevice != null
                 && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel != null
                 && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null)
-                return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDec(step);
+                return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDecNumber(step);
             return false;
         }
 
-        private void incDecCh(int step)
+        private void incDecChannel(int step)
         {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecCh(step);
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecChannel(step);
         }
 
-        private bool canIncDecCh(int step)
+        private bool canIncDecChannel(int step)
         {
             if (SelectedTsiFileModel != null
                 && SelectedTsiFileModel.SelectedDevice != null
                 && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel != null
                 && SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null)
-                return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDecCh(step);
+                return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDecChannel(step);
             return false;
         }
 

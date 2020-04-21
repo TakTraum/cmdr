@@ -35,6 +35,9 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -221,6 +224,20 @@
                 </Border>
 
             </Grid>
+
+            <!-- Clear Filter At Modifications -->
+            <StackPanel Grid.Row="11" Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
+                <Label Padding="5,0" Content="Show Notes before CCs:" />
+                <Label Padding="5,0" Content="On the values submenu, put Notes before CCs" FontSize="10" />
+            </StackPanel>
+            <Grid Grid.Row="11" Grid.Column="1" VerticalAlignment="Center">
+                <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" 
+                          VerticalContentAlignment="Center" 
+                          Content="Show Notes before CCs:" 
+                          IsChecked="{Binding ShowNotesBeforeCC, Mode=TwoWay}" 
+                          IsEnabled="True" />
+            </Grid>
+
 
         </Grid>
 

@@ -141,8 +141,22 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
+        public bool ShowNotesBeforeCC
+        {
+            get
+            {
+                string ret = getSetting("ShowNotesBeforeCC");
+                return (ret == "True");
 
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ShowNotesBeforeCC", ret);
+            }
+        }
         
+
         public int FilterMenuSize
         {
             get
