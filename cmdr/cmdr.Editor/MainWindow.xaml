@@ -31,7 +31,7 @@
         <KeyBinding Key="Q" Modifiers="Control+Shift" Command="{Binding BringIntoViewTop, Mode=OneTime}"/>
         <KeyBinding Key="A" Modifiers="Control+Shift" Command="{Binding BringIntoViewBottom, Mode=OneTime}"/>
 
-        <KeyBinding Key="Q" Modifiers="Control" Command="{Binding RemoveFiltering, Mode=OneTime}"/>
+        <KeyBinding Key="Q" Modifiers="Control" Command="{Binding ClearFiltering, Mode=OneTime}"/>
         <KeyBinding Key="E" Modifiers="Control" Command="{Binding DebugDoAction, Mode=OneTime}"/>
         <KeyBinding Key="A" Modifiers="Control" Command="{Binding SelectAll, Mode=OneTime}"/>
 
@@ -126,7 +126,7 @@
                 <MenuItem Header="Goto Top" Command="{Binding BringIntoViewTop, Mode=OneTime}" InputGestureText="Alt+Q" />
                 <MenuItem Header="Goto Bottom" Command="{Binding BringIntoViewBottom, Mode=OneTime}" InputGestureText="Alt+A" />
                 <Separator/>
-                <MenuItem Header="Clear Grid Filtering" Command="{Binding RemoveFiltering, Mode=OneTime}" InputGestureText="Ctrl+Q" />
+                <MenuItem Header="Clear Grid Filtering" Command="{Binding ClearFiltering, Mode=OneTime}" InputGestureText="Ctrl+Q" />
             </MenuItem>
 
             <!--<MenuItem Header="_View" />

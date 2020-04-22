@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Windows.Media;
 
 namespace cmdr.WpfControls.CustomDataGrid
 {
@@ -25,13 +26,13 @@ namespace cmdr.WpfControls.CustomDataGrid
         #region clear_filtering
 
         /*
-         *  some notes:
+         * some notes:
+         * 
           viewmodel
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor != null);
                     (TsiFileViewModel) (DeviceViewModel)
 
-
-                 views:
+           views:
               TSIfileview = whole thing, (it calls MLV) 
 
               mappingListView - the grid and bottom buttons
@@ -182,7 +183,21 @@ namespace cmdr.WpfControls.CustomDataGrid
 
         /// Cache with properties for better performance
         private Dictionary<string, PropertyInfo> propertyCache;
- 
+
+        // https://stackoverflow.com/questions/979876/set-background-color-of-wpf-textbox-in-c-sharp-code
+        private void SetSearchBackground(TextBox t)
+        {
+            if(t.Text.Trim() == "") {
+                var bc = new BrushConverter();
+                t.Background = (Brush)bc.ConvertFrom("#FFF5F5F5");
+
+            } else {
+                //var prev = t.Background;
+                t.Background = Brushes.Yellow;
+            }
+        }
+
+
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
             // Get the textbox
@@ -193,6 +208,7 @@ namespace cmdr.WpfControls.CustomDataGrid
            
             if (header != null)
             {
+                SetSearchBackground(filterTextBox);
                 RememberTextbox(filterTextBox, header);
                 UpdateFilter(filterTextBox, header);
                 ApplyFilters();

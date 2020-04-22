@@ -202,13 +202,14 @@ clear filtering settings (change pages, modifications)
   see None on conditions to add to midi
   
 * inc/dec is now generic to Combos, CCs, Notes
+added CMDR icon
 
     
 ## 2020 WishList
 
 
   add shortcut do "duplicate" and to "delete"
-* remmeber last window position / maximize <<<<<
+* remember last window position / maximize <<<<<
 
 add red color for bacground for filtering
   add program icon!

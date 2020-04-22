@@ -62,6 +62,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         #region Channel
 
+        private List<string> _selectedStrings;
         private List<string> _selectedChannels;
         private MenuItemViewModel _selectedChannelsMenuItem = new MenuItemViewModel { Text = "Selected Channels" };
 
@@ -96,16 +97,15 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _note; }
             set
             {
-                if (ComboMode && !String.IsNullOrEmpty(value))
-                {
+                if (ComboMode && !String.IsNullOrEmpty(value)) {
                     _note += "+" + value;
                     ComboMode = false;
-                }
-                else
+                } else {
                     _note = value;
-
-                if (IsGenericMidi)
+                }
+                if (IsGenericMidi) {
                     updateBinding();
+                }
 
                 raisePropertyChanged("NoteString");
             }
@@ -301,6 +301,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         {
             var bindings = _mappings.Select(mvm => mvm.MidiBinding).Distinct();
             var notes = bindings.Select(b => (b != null) ? b.Note : null).Distinct();
+            _selectedStrings = notes.Where(c => c != null).ToList();
+
 
             if (IsGenericMidi)
             {
@@ -391,6 +393,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             raisePropertyChanged("NoteString");
         }
 
+
+        // This is when we select a new Channel or Note
         private void updateBinding(AMidiDefinition definition = null)
         {
             //if (_channel == "None")
@@ -419,7 +423,13 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                             var channel = mapping.MidiBinding.Note.Substring(0, 4);
                             expression = channel + "." + _note.Replace("+", "+" + channel + ".");
                         }
+
+                        // special tags
+                        if(Note[0] == '_') {
+                            expression = _note.Substring(1);
+                        }
                     }
+
 
                     if (expression != null)
                         tmpDefinition = AGenericMidiDefinition.Parse(mapping.Command.MappingType, expression);
@@ -487,29 +497,6 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             return !(String.IsNullOrEmpty(Note) || Note.Contains("+") || VariousChannels);
         }
 
-        /*
-        private void incDecCC(MappingViewModel mapping, int step)
-        {
-            var oldBinding = mapping.MidiBinding as ControlChangeMidiDefinition;
-            
-            var oldCC = oldBinding.Cc;
-            var newCC = oldCC + step;
-
-            var new_CC_def = new ControlChangeMidiDefinition(oldBinding.Type, oldBinding.Channel, newCC);
-
-            mapping.SetBinding(new_CC_def);
-        }
-
-        private void incDecNote(MappingViewModel mapping, int step)
-        {
-            var oldBinding = mapping.MidiBinding as NoteMidiDefinition;
-
-            var keyConverter = new MidiLib.Utils.KeyConverter();
-            var oldKey = keyConverter.ToKeyIPN(oldBinding.KeyText);
-            int newKey = oldKey + step;
-
-            mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, oldBinding.Channel, keyConverter.GetKeyTextIPN(newKey)));
-        }*/
 
         /////// channels
         public enum IncDecWhat
@@ -672,8 +659,9 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     updateIncDecMenu();
             }
 
-            if (notes)
+            if (notes) {
                 updateNotesMenu(_selectedNotes);
+            }
         }
 
         #region Channels
@@ -736,9 +724,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 // it's ok to set a reference here, as there should be a single definition per note anyway
                 updateBinding(definition);
                 Note = definition.Note;
-            }
-            else // generic midi
+            } else {
+                // generic midi
                 Note = item.Tag.ToString();
+            }
         }
 
         private void updateNotesMenu(IEnumerable<object> selectedNotes)
@@ -765,6 +754,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
             foreach(var item in _selectedNotesMenuItem.Children)
             {
+                NotesMenu.Insert(0, item);
+                NotesMenu_shortcuts += 1;
+            }
+
+            //_selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
+            //if (!(_selectedstrings == null)) {
+            foreach (var st in _selectedStrings) {
+                var item = new MenuItemViewModel { Text = st, Tag = "_" + st };  //special tags start with "_"
                 NotesMenu.Insert(0, item);
                 NotesMenu_shortcuts += 1;
             }
