@@ -285,6 +285,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.ClearFilterAtPageChanges = ClearFilterAtPageChanges;
             CmdrSettings.Instance.ClearFilterAtModifications = ClearFilterAtModifications;
             CmdrSettings.Instance.FilterMenuSize = FilterMenuSize;
+            CmdrSettings.Instance.ShowNotesBeforeCC = ShowNotesBeforeCC;
 
             CmdrSettings.Instance.Save(); 
 

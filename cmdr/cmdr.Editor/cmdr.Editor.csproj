@@ -76,6 +76,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cmdr_icon_.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ChangeTracking">
       <HintPath>lib\ChangeTracking.dll</HintPath>
@@ -96,6 +99,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -418,10 +422,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\cmdr_icon.ico" />
     <Resource Include="Assets\donate_pp.png" />
     <Resource Include="Assets\CREDITS.txt" />
     <Resource Include="Assets\flaticons\number-one-in-a-circle.png" />
     <Resource Include="Assets\flaticons\number-two-in-a-circle.png" />
+    <Resource Include="cmdr_icon.ico" />
+    <Resource Include="cmdr_icon_.ico" />
     <Content Include="lib\ChangeTracking.dll" />
     <Content Include="lib\SettingControlLibrary.dll" />
     <Content Include="lib\TMS.Controls.SearchTextBox.dll" />
