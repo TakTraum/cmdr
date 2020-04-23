@@ -139,6 +139,22 @@ namespace cmdr.Editor.ViewModels
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(learn, canLearn)); }
         }
 
+        private ICommand _quadruplicateCommand;
+        public ICommand QuadruplicateCommand
+        {
+            get {
+                 return _quadruplicateCommand ?? (_quadruplicateCommand = new CommandHandler(() => quadruplicateCommand(), () => is_mvm_loaded()));
+            }
+        }
+
+        private ICommand _octuplicateCommand;
+        public ICommand OctuplicateCommand
+        {
+            get {
+                 return _octuplicateCommand ?? (_octuplicateCommand = new CommandHandler(() => octuplicateCommand(), () => is_mvm_loaded()));
+            }
+        }
+
         private ICommand _removeBindingCommand;
         public ICommand RemoveBindingCommand
         {
@@ -553,6 +569,16 @@ namespace cmdr.Editor.ViewModels
         private void removeBinding()
         {
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.RemoveBinding.Execute(null);
+        }
+
+        private void quadruplicateCommand()
+        {
+            SelectedTsiFileModel.SelectedDevice.QuadruplicateCommand();
+        }
+        
+        private void octuplicateCommand()
+        {
+            SelectedTsiFileModel.SelectedDevice.OctuplicateCommand();
         }
 
 

@@ -210,18 +210,21 @@ filter columns are now yellow
 search commands (like notes)
 * dedicated editor for same condition, but different values (eg: is in active loop) 
 * see which commands are in which pages (collapsed, ie 10x modifier 1 = appears once)
+CTRL+R: remove binding
+
 
 
     
 ## 2020 WishList
 
+* remember last window position / maximize <<<<<
+* moving mappings up and down (IDs?)
+
 
 
   add shortcut do "duplicate" and to "delete"
-* remember last window position / maximize <<<<<
-* show / hide columns (+preferences)
-* moving mappings up and down (IDs?)
-
+show / hide columns (+preferences)
+* 
   - add new column with translation table (text file loaded seperately)  <<<<<
 * option to alphabetically sort commands (except tree)
 
@@ -239,5 +242,11 @@ search commands (like notes)
 * See also the TakTraum/cmdr issue list: https://github.com/TakTraum/cmdr/issues
 * See also the old Codeplex issue list (ignore the chrome warning):  https://archive.codeplex.com/?p=cmdr  
  
+  
+  
+  
+extensions: 
+  Disable No Source Available Tab
+
   
   

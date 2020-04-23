@@ -160,6 +160,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(toggleLearn, canLearn));}
         }
 
+        // fixme: these two commands are the same!
         private ICommand _removeBinding;
         public ICommand RemoveBinding
         {
@@ -308,10 +309,16 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var bindings = _mappings.Select(mvm => mvm.MidiBinding).Distinct();
             var notes = bindings.Select(b => (b != null) ? b.Note : null).Distinct();
             _selectedStrings = notes.Where(c => c != null).ToList();
-
+            _selectedStrings.Sort();
+            _selectedStrings.Reverse();
 
             if (IsGenericMidi)
             {
+                // This is a shorthand for the notes menu
+                if (_selectedStrings.Count() == 0) {
+                    _selectedStrings.Add("Ch01.Note.C0");
+                }
+
                 var parts = notes.Select(n =>
                 {
                     if (n == null)
@@ -380,7 +387,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             }
 
 
-            // pestrea: why is this duplicated?
+            // pestrela: why is this duplicated?
             _variousNotes = notes.Count() > 1;
             if (!_variousNotes && (String.IsNullOrEmpty(_note) || allowOverrideNote))
                 setNote(notes.Single());
@@ -528,7 +535,17 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             if (what != IncDecWhat.Channel) {
                 step = 0;
             }
-            return old + step;
+
+            int new_i = old + step;
+            if(new_i <= 1) {
+                new_i = 1;
+            }
+
+            if(new_i > 16) {
+                new_i = 16;
+            }
+
+            return new_i;
         }
 
         private int incDec_note(int old, int step, IncDecWhat what)
@@ -536,9 +553,18 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             if (what != IncDecWhat.Number) {
                 step = 0;
             }
-            return old + step;
-        }
 
+            int new_i = old + step;
+            if (new_i < 0) {
+                new_i = 0;
+            }
+
+            if (new_i > 127) {
+                new_i = 127;
+            }
+
+            return new_i;
+        }
 
         /*
          * Note1: 
@@ -570,7 +596,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 var keyConverter = new MidiLib.Utils.KeyConverter();
 
                 int old_value = keyConverter.ToKeyIPN(specific.KeyText);
-                int new_value = incDec_note(old_value, step, IncDecWhat.Number);
+                int new_value = incDec_note(old_value, step, what);
                 string new_note = keyConverter.GetKeyTextIPN(new_value);
 
                 return new NoteMidiDefinition(old.Type, new_channel, new_note);
@@ -579,7 +605,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             if (old is ControlChangeMidiDefinition) {
                 var specific = (ControlChangeMidiDefinition)old;
 
-                int new_value = incDec_note(specific.Cc, step, IncDecWhat.Number);
+                int new_value = incDec_note(specific.Cc, step, what);
 
                 return new ControlChangeMidiDefinition(old.Type, new_channel, new_value);
             }
@@ -676,7 +702,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     updateIncDecMenu();
             }
 
-            if (notes) {
+            /// check-me
+            if (notes || true) {
                 updateNotesMenu(_selectedNotes);
             }
         }
@@ -761,22 +788,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var hasVariousNotesUnequalNull = (IsGenericMidi && !_selectedNotes.Where(n => n.ToString() != _note).Any()) ||
                 (!IsGenericMidi && !_selectedNotes.Cast<AMidiDefinition>().Where(n => n.Note != _note).Any());
 
-            if(_selectedNotes.Count == 0)
-            {
-                return;
-
-            }
-
             _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
-
             foreach(var item in _selectedNotesMenuItem.Children)
             {
                 NotesMenu.Insert(0, item);
                 NotesMenu_shortcuts += 1;
             }
 
-            //_selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
-            //if (!(_selectedstrings == null)) {
+            // note: this is already reverse sorted
             foreach (var st in _selectedStrings) {
                 var item = new MenuItemViewModel { Text = st, Tag = "_" + st };  //special tags start with "_"
                 NotesMenu.Insert(0, item);
