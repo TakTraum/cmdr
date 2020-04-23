@@ -148,23 +148,6 @@ namespace cmdr.Editor.ViewModels
             return result;
         }
 
-
-        public static string DataTable2CSV(DataGrid table, string separator = ",")
-        {
-            object[,] data; // = table.PrepareData();
-            StringBuilder builder = new StringBuilder(Convert.ToString((char)65279));
-
-            /*for (int k = 0; k < data.GetLength(0); k++)
-            {
-                List<string> tempList = new List<string>();
-                for (int l = 0; l < data.GetLength(1); l++)
-                    tempList.Add(data[k, l].ToString());
-                builder.Append(string.Join(separator, tempList)).Append(Environment.NewLine);
-            }
-            */
-            return builder.ToString();
-        }
-
  
         public string generate_csv_string(string sep = ",")
         {

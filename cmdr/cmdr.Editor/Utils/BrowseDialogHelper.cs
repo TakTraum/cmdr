@@ -26,7 +26,6 @@ namespace cmdr.Editor.Utils
             {
                 dlg = new VistaSaveFileDialog
                 {
-
                     DefaultExt = type,
                     AddExtension = true,
                     ValidateNames = true

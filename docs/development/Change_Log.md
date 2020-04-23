@@ -212,16 +212,26 @@ search commands (like notes)
 * see which commands are in which pages (collapsed, ie 10x modifier 1 = appears once)
 CTRL+R: remove binding
 
+CTRL+T: quaduplicate: creates 4 channels and 4 assigments in a single go
+CTRL+SHIFT+T: octoplicate: creates 8 pads in single go
+
+
+fixed rotate chanel and notes errors
+added shortcut when no bindings to popup
+sorted long strings on popup
+
+
+* confirmation on deleting devices and large amount of mappings
 
 
     
 ## 2020 WishList
 
+
+
 * remember last window position / maximize <<<<<
+
 * moving mappings up and down (IDs?)
-
-
-
   add shortcut do "duplicate" and to "delete"
 show / hide columns (+preferences)
 * 
@@ -230,11 +240,12 @@ show / hide columns (+preferences)
 
 * dark mode
 * undo
-* confirmation on deleting devices and large amount of mappings
+
+
 * Ensure focus always on main grid
 * Separate column condition1 and condition2 
 * arrows = move selected row into view        
-* better clear grid (CTRL+Q)
+
 
 
 ## Old Wishlists
