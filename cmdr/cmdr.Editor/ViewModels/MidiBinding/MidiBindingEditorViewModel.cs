@@ -160,6 +160,12 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(toggleLearn, canLearn));}
         }
 
+        private ICommand _removeBinding;
+        public ICommand RemoveBinding
+        {
+            get { return _removeBinding ?? (_removeBinding = new CommandHandler(removeBinding));}
+        }
+
         private ICommand _resetCommand;
         public ICommand ResetCommand
         {
@@ -402,6 +408,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
             string expression;
             AMidiDefinition tmpDefinition;
+            bool needs_cleanup = false;
             foreach (var mapping in _mappings)
             {
                 expression = null;
@@ -427,6 +434,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                         // special tags
                         if(Note[0] == '_') {
                             expression = _note.Substring(1);
+                            needs_cleanup = true;
                         }
                     }
 
@@ -442,6 +450,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
                 mapping.SetBinding(tmpDefinition);
             }
+
+            if (needs_cleanup) {
+                _note = _note.Substring(6);   //this is just to display correctly in the textbox
+            };
 
             analyzeSelection();
             updateMenus();
@@ -479,6 +491,11 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return _midiLearner.CanLearn();
             else
                 return _midiLearner.CanLearn(_device.InPort);
+        }
+
+        private void removeBinding()
+        {
+            reset();
         }
 
         private void toggleCombo()

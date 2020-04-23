@@ -203,53 +203,35 @@ clear filtering settings (change pages, modifications)
   
 * inc/dec is now generic to Combos, CCs, Notes
 added CMDR icon
+added full strings to drop-down notes menu
+filter columns are now yellow
+ - add decimal to notes (optional column) for XDJ-XZ
+ 
+search commands (like notes)
+* dedicated editor for same condition, but different values (eg: is in active loop) 
+* see which commands are in which pages (collapsed, ie 10x modifier 1 = appears once)
+
 
     
 ## 2020 WishList
 
 
+
   add shortcut do "duplicate" and to "delete"
 * remember last window position / maximize <<<<<
-
-add red color for bacground for filtering
-  add program icon!
-
-  
-add red color for bacground for filtering
-
-
 * show / hide columns (+preferences)
-
-* seperate condition columns into cond1+cond2
-
-
 * moving mappings up and down (IDs?)
 
-  - add decimal to notes (optional column) for XDJ-XZ
   - add new column with translation table (text file loaded seperately)  <<<<<
-
-
-
-
-
 * option to alphabetically sort commands (except tree)
-* search commands (like notes)
-* see which commands are in which pages (collapsed, ie 10x modifier 1 = appears once)
 
-* cleanup huge list of unused midi bindings
 * dark mode
 * undo
 * confirmation on deleting devices and large amount of mappings
-
 * Ensure focus always on main grid
 * Separate column condition1 and condition2 
-* pop up with selected comments (similar to selected notes)
-* dedicated editor for same condition, but different values (eg: is in active loop) 
-* search for a command in all pages 
 * arrows = move selected row into view        
 * better clear grid (CTRL+Q)
-
-* preferences slow: https://www.native-instruments.com/forum/threads/whats-your-traktor-pro-preferences-load-time.143612/
 
 
 ## Old Wishlists

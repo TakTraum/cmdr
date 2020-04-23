@@ -31,8 +31,8 @@
         <KeyBinding Key="Q" Modifiers="Control+Shift" Command="{Binding BringIntoViewTop, Mode=OneTime}"/>
         <KeyBinding Key="A" Modifiers="Control+Shift" Command="{Binding BringIntoViewBottom, Mode=OneTime}"/>
 
+        <KeyBinding Key="R" Modifiers="Control" Command="{Binding RemoveBindingCommand, Mode=OneTime}"/>
         <KeyBinding Key="Q" Modifiers="Control" Command="{Binding ClearFiltering, Mode=OneTime}"/>
-        <KeyBinding Key="E" Modifiers="Control" Command="{Binding DebugDoAction, Mode=OneTime}"/>
         <KeyBinding Key="A" Modifiers="Control" Command="{Binding SelectAll, Mode=OneTime}"/>
 
         <KeyBinding Key="Oemtilde" Modifiers="Control" Command="{Binding SwapConditions, Mode=OneTime}"/>
@@ -157,6 +157,7 @@
                 <MenuItem Header="Dec Assignment" Command="{Binding DecAssignment, Mode=OneTime}" InputGestureText="Ctrl+Shift+8" />
                 <MenuItem Header="Inc Assignment" Command="{Binding IncAssignment, Mode=OneTime}" InputGestureText="Ctrl+Shift+9" />
                 <Separator/>
+                <MenuItem Header="Remove Binding" Command="{Binding RemoveBindingCommand, Mode=OneTime}" InputGestureText="Ctrl+R" />
                 <MenuItem Header="Midi _Learn" Command="{Binding LearnCommand, Mode=OneTime}" InputGestureText="Ctrl+L" />
             </MenuItem>
             

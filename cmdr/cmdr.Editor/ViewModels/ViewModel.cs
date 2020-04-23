@@ -139,6 +139,14 @@ namespace cmdr.Editor.ViewModels
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(learn, canLearn)); }
         }
 
+        private ICommand _removeBindingCommand;
+        public ICommand RemoveBindingCommand
+        {
+            get {
+                 return _removeBindingCommand ?? (_removeBindingCommand = new CommandHandler(() => removeBinding(), () => is_mvm_loaded()));
+            }
+        }
+
         private ICommand _incOneCommand;
         public ICommand IncOneCommand
         {
@@ -182,13 +190,6 @@ namespace cmdr.Editor.ViewModels
         public ICommand ClearFiltering
         {
             get { return _clearFiltering ?? (_clearFiltering = new CommandHandler(() => clearFiltering(), () => canClearFiltering())); }
-        }
-
-
-        private ICommand _debugDoAction;
-        public ICommand DebugDoAction
-        {
-            get { return _debugDoAction ?? (_debugDoAction = new CommandHandler(() => debugDoAction(), null )); } 
         }
 
         private ICommand _decAssignment;
@@ -356,13 +357,11 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-
         private ICommand _selectAllToggle;
         public ICommand SelectAllToggle
         {
             get { return _selectAllToggle ?? (_selectAllToggle = new CommandHandler(() => selectAllToggle(), () => canSelectAllToggle())); }
         }
-
 
 
         private ICommand _helpCommand;
@@ -551,6 +550,12 @@ namespace cmdr.Editor.ViewModels
             return false;
         }
 
+        private void removeBinding()
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.RemoveBinding.Execute(null);
+        }
+
+
         private void bringIntoViewTop()
         {
             SelectedTsiFileModel.SelectedDevice.BringIntoView(0);
@@ -612,16 +617,7 @@ namespace cmdr.Editor.ViewModels
         {
             return is_mvm_loaded();
         }
-
-
-        // this is a dummy action triggered by a shortcut
-        // its only here to inspect the pointers of *this in a debugger.
-        private void debugDoAction()
-        {
-            
-
-        }
-
+ 
         private void clearFiltering()
         {
             if(canClearFiltering())
@@ -1026,5 +1022,7 @@ namespace cmdr.Editor.ViewModels
         }
 
         #endregion
+
     }
 }
+
