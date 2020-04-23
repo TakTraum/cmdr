@@ -134,10 +134,11 @@
             <!--<MenuItem Header="_View" />
             <MenuItem Header="_Window" />-->
             
-            <MenuItem Header="Reports">
-                <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
-                <MenuItem Header="Commands Report" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />
+            <MenuItem Header="Automations">
                 <MenuItem Header="Save as CSV" Command="{Binding SaveAsCsvCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+C"/>
+                <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
+                <MenuItem Header="Commands Overview" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />
+                <Separator/>
                 <MenuItem Header="Quadruplicate Channel" Command="{Binding QuadruplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+T" />
                 <MenuItem Header="Octuplicate Pad" Command="{Binding OctuplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+T" />
 

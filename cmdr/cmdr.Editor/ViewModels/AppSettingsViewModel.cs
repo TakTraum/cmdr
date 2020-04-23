@@ -121,6 +121,22 @@ namespace cmdr.Editor.ViewModels
         }
 
 
+        private int _confirmDeleteMappingsSize;
+        public int ConfirmDeleteMappingsSize
+        {
+            get
+            {
+                return _confirmDeleteMappingsSize;
+            }
+            set
+            {
+                // https://docs.microsoft.com/en-us/dotnet/framework/wpf/data/how-to-implement-property-change-notification
+                SetProperty("ConfirmDeleteMappingsSize", ref _confirmDeleteMappingsSize, ref value);
+                IsChanged = true;
+                raisePropertyChanged("Title");
+            }
+        }
+
         private int _filterMenuSize;
         public int FilterMenuSize
         {
@@ -213,8 +229,9 @@ namespace cmdr.Editor.ViewModels
             _filterMenuSize = CmdrSettings.Instance.FilterMenuSize;
             _showNotesBeforeCC = CmdrSettings.Instance.ShowNotesBeforeCC;
             _confirmDeleteDevices = CmdrSettings.Instance.ConfirmDeleteDevices;
+            _confirmDeleteMappingsSize = CmdrSettings.Instance.ConfirmDeleteMappingsSize;
 
-            
+
 
             if (TraktorSettings.Initialized)
                 _overrideTraktorVersion = !_traktorVersion.Equals(TraktorSettings.Instance.TraktorVersion);
@@ -295,6 +312,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.FilterMenuSize = FilterMenuSize;
             CmdrSettings.Instance.ShowNotesBeforeCC = ShowNotesBeforeCC;
             CmdrSettings.Instance.ConfirmDeleteDevices = ConfirmDeleteDevices;
+            CmdrSettings.Instance.ConfirmDeleteMappingsSize = ConfirmDeleteMappingsSize;
 
             CmdrSettings.Instance.Save(); 
 

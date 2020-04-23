@@ -439,7 +439,7 @@ namespace cmdr.Editor.ViewModels
             int id = device.Id;
 
             if (CmdrSettings.Instance.ConfirmDeleteDevices) {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
+                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure to delete this device?", "Delete Confirmation", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.No)
                     return;
 

@@ -156,7 +156,7 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
-         public bool ConfirmDeleteDevices
+        public bool ConfirmDeleteDevices
         {
             get
             {
@@ -171,6 +171,27 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
+        public int ConfirmDeleteMappingsSize
+        {
+            get
+            {
+                string st = getSetting("ConfirmDeleteMappingsSize");
+
+                if (Int32.TryParse(st, out int ret)) {
+                    return ret;
+                } else {
+                    return 20;
+                }
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ConfirmDeleteMappingsSize", ret);
+
+            }
+        }
+        
         public int FilterMenuSize
         {
             get

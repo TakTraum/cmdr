@@ -774,15 +774,18 @@ private void selectExclusive(RowItemViewModel row)
 private void removeMappings(IEnumerable<RowItemViewModel> mappings)
 {
     var selected = new List<RowItemViewModel>(mappings);
+    var count = selected.Count();
 
-    // fixme: add a safety here?
-    /*
-    if (CmdrSettings.Instance.ConfirmDeleteDevices) {
-        MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
-        if (messageBoxResult == MessageBoxResult.No)
+
+    if ((CmdrSettings.Instance.ConfirmDeleteMappingsSize > 0) &&
+        (count > CmdrSettings.Instance.ConfirmDeleteMappingsSize)
+        ) {
+        string msg = String.Format("Are you sure to delete {0} mappings?", count);
+
+        MessageBoxResult messageBoxResult = MessageBox.Show(msg, "Delete Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.No)
             return;
-
-    };*/
+    }
 
 
     foreach (var m in selected)
