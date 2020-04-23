@@ -78,6 +78,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("ShowNotesBeforeCC", ref _showNotesBeforeCC, ref value); }
         }
 
+        private bool _confirmDeleteDevices;
+        public bool ConfirmDeleteDevices
+        {
+            get { return _confirmDeleteDevices; }
+            set { SetProperty("ConfirmDeleteDevices", ref _confirmDeleteDevices, ref value); }
+        }
+
         private bool _removeUnusedMIDIDefinitions;
         public bool RemoveUnusedMIDIDefinitions
         {
@@ -205,6 +212,7 @@ namespace cmdr.Editor.ViewModels
             _clearFilterAtPageChanges = CmdrSettings.Instance.ClearFilterAtPageChanges;
             _filterMenuSize = CmdrSettings.Instance.FilterMenuSize;
             _showNotesBeforeCC = CmdrSettings.Instance.ShowNotesBeforeCC;
+            _confirmDeleteDevices = CmdrSettings.Instance.ConfirmDeleteDevices;
 
             
 
@@ -286,6 +294,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.ClearFilterAtModifications = ClearFilterAtModifications;
             CmdrSettings.Instance.FilterMenuSize = FilterMenuSize;
             CmdrSettings.Instance.ShowNotesBeforeCC = ShowNotesBeforeCC;
+            CmdrSettings.Instance.ConfirmDeleteDevices = ConfirmDeleteDevices;
 
             CmdrSettings.Instance.Save(); 
 

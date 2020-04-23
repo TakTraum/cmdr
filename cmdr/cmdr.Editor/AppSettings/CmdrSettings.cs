@@ -155,7 +155,21 @@ namespace cmdr.Editor.AppSettings
                 setSetting("ShowNotesBeforeCC", ret);
             }
         }
-        
+
+         public bool ConfirmDeleteDevices
+        {
+            get
+            {
+                string ret = getSetting("ConfirmDeleteDevices");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ConfirmDeleteDevices", ret);
+            }
+        }
 
         public int FilterMenuSize
         {

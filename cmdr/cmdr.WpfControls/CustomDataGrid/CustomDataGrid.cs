@@ -305,11 +305,13 @@ namespace cmdr.WpfControls.CustomDataGrid
         // Because this came from XML
         protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            int c1 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+            // this is just for debugging
+            //int c1 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
 
             base.OnItemsChanged(e);
 
-            int c2 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+            // this is just for debugging
+            //int c2 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
 
             // Avoid infinite recursion here
             if (!_changing_page) {

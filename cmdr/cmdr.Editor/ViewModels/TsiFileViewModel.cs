@@ -437,6 +437,14 @@ namespace cmdr.Editor.ViewModels
         private void removeDevice(DeviceViewModel device)
         {
             int id = device.Id;
+
+            if (CmdrSettings.Instance.ConfirmDeleteDevices) {
+                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.No)
+                    return;
+
+            };
+
             Devices.Remove(device);
             _tsiFile.RemoveDevice(id);
         }

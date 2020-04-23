@@ -788,11 +788,13 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             var hasVariousNotesUnequalNull = (IsGenericMidi && !_selectedNotes.Where(n => n.ToString() != _note).Any()) ||
                 (!IsGenericMidi && !_selectedNotes.Cast<AMidiDefinition>().Where(n => n.Note != _note).Any());
 
-            _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
-            foreach(var item in _selectedNotesMenuItem.Children)
-            {
-                NotesMenu.Insert(0, item);
-                NotesMenu_shortcuts += 1;
+            if (selectedNotes.Count() > 0) {
+                // todo: do real C# code here
+                _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
+                foreach (var item in _selectedNotesMenuItem.Children) {
+                    NotesMenu.Insert(0, item);
+                    NotesMenu_shortcuts += 1;
+                }
             }
 
             // note: this is already reverse sorted

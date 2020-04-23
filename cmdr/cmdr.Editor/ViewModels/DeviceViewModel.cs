@@ -774,6 +774,17 @@ private void selectExclusive(RowItemViewModel row)
 private void removeMappings(IEnumerable<RowItemViewModel> mappings)
 {
     var selected = new List<RowItemViewModel>(mappings);
+
+    // fixme: add a safety here?
+    /*
+    if (CmdrSettings.Instance.ConfirmDeleteDevices) {
+        MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
+        if (messageBoxResult == MessageBoxResult.No)
+            return;
+
+    };*/
+
+
     foreach (var m in selected)
     {
         _mappings.Remove(m);
