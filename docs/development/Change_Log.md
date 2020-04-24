@@ -16,6 +16,31 @@
   
 ## Recent changes
 
+release 0.10.1 - 24 April 2020
+* New features:
+  * Can now AutoGenerate 32x copies per command (4 channels/assignments times 8 pads)
+  * New reports: where is my command, do I have free modifiers
+  * Can now Filter the command tree
+  * Removed sub-sub-trees in pop-ups (Commands and conditions). 
+  * Can now specify channel and Note in a single go (pupup)
+  * Export to CSV (useful to grep and diff)
+* Changes to existing features:
+  * Filtering: Shows filtered columns in yellow; show count of filtered rows 
+  * MIDIOut boxes are finally a simple list. No more manul scroll!
+  * added "_I" identifier for inverted MIDI codes
+  * keyboard shortcuts to duplicate mappings and select all
+  * added program icon
+* Bug fixes:
+  * rotate now generalized to more commands
+  * fixes to filtering
+  * added several missing commands and correct enums (thanks ErikMinekus)
+  * Now finally everything is in exact Traktor order (thanks Tijn71)
+  * Can now change channel to Combos   
+* New Settings:
+  * Reload last TSI; Decimal notes; Clear filter at changes or switching pages; safety delete devices or commands  
+  
+
+
 release 0.10.0 - 13 January 2020
 * New features:
   * s4mk3, s2mk4 and s8 support
@@ -174,54 +199,6 @@ v0.6 - TakTraum April 2016
 -------------
 -------------
  
-release 0.10.1 - TBD
-
-* CTRL+D: duplicate mappings
-* CTRL+Shift+tilde: select all 
-* ctrl+shift+ plus minus: decPad/incPad
-* added "_I" identifier for inverted MIDI codes
-* Just in time debugger now works again
-* New setting: Load Last File At Startup
-* replaced MIDI out non-editable textboxes with a simple list (with scrollbar)
-* added 2x missing commands (semitone up down / add or remove prep list)
-
-* simplified selectedNotes/selectedchannels sub menus
-* added show decimal note setting
-* generalized rotate command to more commands
-
-* first cut of a filter on the IN/OUT menus. 
-These are in addition to the IN shortcut on the OUT menu
-for now this is on the old search box
-
-bugfixes filtering. 2x new settings
-reports
-* more increment commands
-* favorite start at 0
-  - new report: what is where!
-clear filtering settings (change pages, modifications)
-  see None on conditions to add to midi
-  
-* inc/dec is now generic to Combos, CCs, Notes
-added CMDR icon
-added full strings to drop-down notes menu
-filter columns are now yellow
- - add decimal to notes (optional column) for XDJ-XZ
- 
-search commands (like notes)
-* dedicated editor for same condition, but different values (eg: is in active loop) 
-* see which commands are in which pages (collapsed, ie 10x modifier 1 = appears once)
-CTRL+R: remove binding
-
-CTRL+T: quaduplicate: creates 4 channels and 4 assigments in a single go
-CTRL+SHIFT+T: octoplicate: creates 8 pads in single go
-
-
-fixed rotate chanel and notes errors
-added shortcut when no bindings to popup
-sorted long strings on popup
-
-
-* confirmation on deleting devices and large amount of mappings
 
 
     
