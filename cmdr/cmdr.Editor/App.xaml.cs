@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+//using WindowPlacement;
 
 namespace cmdr.Editor
 {
@@ -48,5 +49,19 @@ namespace cmdr.Editor
                 MainViewModel.StatusText = null;
             }), DispatcherPriority.Background);
         }
+
+        /*
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Settings.Default.MainWindowPlacement = this.GetPlacement();
+            Settings.Default.Save();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            this.SetPlacement(Settings.Default.MainWindowPlacement);
+        }*/
+
     }
 }
