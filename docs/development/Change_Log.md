@@ -24,6 +24,7 @@ release 0.10.1 - 24 April 2020
   * Removed sub-sub-trees in pop-ups (Commands and conditions). 
   * Can now specify channel and Note in a single go (pupup)
   * Export to CSV (useful to grep and diff)
+  * Ctrl_shift+R: Search/replace in comments
 * Changes to existing features:
   * Filtering: Shows filtered columns in yellow; show count of filtered rows 
   * MIDIOut boxes are finally a simple list. No more manul scroll!

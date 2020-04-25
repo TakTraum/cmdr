@@ -77,7 +77,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>cmdr_icon.ico</ApplicationIcon>
+    <ApplicationIcon>cmdr_icon2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ChangeTracking">
@@ -437,6 +437,7 @@
     <Resource Include="Assets\flaticons\number-two-in-a-circle.png" />
     <Resource Include="cmdr_icon.ico" />
     <Resource Include="cmdr_icon_.ico" />
+    <Resource Include="cmdr_icon2.ico" />
     <Content Include="lib\ChangeTracking.dll" />
     <Content Include="lib\SettingControlLibrary.dll" />
     <Content Include="lib\TMS.Controls.SearchTextBox.dll" />
