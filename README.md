@@ -38,8 +38,6 @@ Consult the [changelog](docs/development/Change_Log.md) for complete details
 
 ![cmdr_reports](docs/pics/cmdr_reports.png?raw=true "")
 ![cmdr_csv_export](docs/pics/cmdr_csv_export.png?raw=true "")
-
-
 ![cmdr_keyboard_shortcuts](docs/pics/cmdr_keyboard_shortcuts.png?raw=true "")
 
 ![cmdr_settings](docs/pics/cmdr_settings.png?raw=true "dede")

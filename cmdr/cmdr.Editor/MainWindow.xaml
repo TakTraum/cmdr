@@ -34,6 +34,7 @@
         <KeyBinding Key="R" Modifiers="Control" Command="{Binding RemoveBindingCommand, Mode=OneTime}"/>
         <KeyBinding Key="T" Modifiers="Control" Command="{Binding QuadruplicateCommand, Mode=OneTime}"/>
         <KeyBinding Key="T" Modifiers="Control+Shift" Command="{Binding OctuplicateCommand, Mode=OneTime}"/>
+        <KeyBinding Key="R" Modifiers="Control+Shift" Command="{Binding SedCommentsCommand, Mode=OneTime}"/>
         <KeyBinding Key="Q" Modifiers="Control" Command="{Binding ClearFiltering, Mode=OneTime}"/>
         <KeyBinding Key="A" Modifiers="Control" Command="{Binding SelectAll, Mode=OneTime}"/>
 
@@ -141,6 +142,8 @@
                 <Separator/>
                 <MenuItem Header="Quadruplicate Channel" Command="{Binding QuadruplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+T" />
                 <MenuItem Header="Octuplicate Pad" Command="{Binding OctuplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+T" />
+                <Separator/>
+                <MenuItem Header="Replace in Comments" Command="{Binding SedCommentsCommand, Mode=OneTime}" InputGestureText="CtrlShift+R" />
 
             </MenuItem> 
             

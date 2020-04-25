@@ -236,5 +236,7 @@ show / hide columns (+preferences)
 extensions: 
   Disable No Source Available Tab
 
+WPF FAQ:
+  https://social.msdn.microsoft.com/Forums/en-US/a2988ae8-e7b8-4a62-a34f-b851aaf13886/windows-presentation-foundation-faq?forum=wpf#search_text
   
   

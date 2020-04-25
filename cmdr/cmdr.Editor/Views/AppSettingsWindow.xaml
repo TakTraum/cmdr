@@ -236,7 +236,7 @@
             <Grid Grid.Row="11" Grid.Column="1" VerticalAlignment="Center">
                 <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" 
                           VerticalContentAlignment="Center" 
-                          Content="Show Notes before CCs:" 
+                          Content="Show Notes before CCs" 
                           IsChecked="{Binding ShowNotesBeforeCC, Mode=TwoWay}" 
                           IsEnabled="True" />
             </Grid>
@@ -249,7 +249,7 @@
             <Grid Grid.Row="12" Grid.Column="1" VerticalAlignment="Center">
                 <CheckBox Grid.Column="1" Margin="10,0" Width="Auto" Height="20" 
                           VerticalContentAlignment="Center" 
-                          Content="Confirm delete devices:" 
+                          Content="Confirm delete devices" 
                           IsChecked="{Binding ConfirmDeleteDevices, Mode=TwoWay}" 
                           IsEnabled="True" />
             </Grid>

@@ -156,6 +156,9 @@
     <Compile Include="Utils\MessageBoxHelper.cs" />
     <Compile Include="Utils\MovingLogicHelper.cs" />
     <Compile Include="Utils\SerializationHelper.cs" />
+    <Compile Include="Utils\SedWindow.xaml.cs">
+      <DependentUpon>SedWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
     <Compile Include="ViewModels\Reports\CommandsReportEditorViewModel.cs" />
     <Compile Include="ViewModels\Reports\ConditionTuplesEditorViewModel.cs" />
@@ -278,6 +281,10 @@
     <Page Include="Styles\Themes\Light.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Utils\SedWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutWindow.xaml">
       <SubType>Designer</SubType>

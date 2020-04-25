@@ -139,6 +139,14 @@ namespace cmdr.Editor.ViewModels
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(learn, canLearn)); }
         }
 
+        private ICommand _sedCommentsCommand;
+        public ICommand SedCommentsCommand
+        {
+            get {
+                 return _sedCommentsCommand ?? (_sedCommentsCommand = new CommandHandler(() => sedCommentsCommand(), () => is_mvm_loaded()));
+            }
+        }
+
         private ICommand _quadruplicateCommand;
         public ICommand QuadruplicateCommand
         {
@@ -569,6 +577,11 @@ namespace cmdr.Editor.ViewModels
         private void removeBinding()
         {
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.RemoveBinding.Execute(null);
+        }
+
+        private void sedCommentsCommand()
+        {
+            SelectedTsiFileModel.SelectedDevice.SedCommentsCommand();
         }
 
         private void quadruplicateCommand()

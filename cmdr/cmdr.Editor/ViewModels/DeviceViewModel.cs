@@ -3,6 +3,7 @@ using cmdr.Editor.Metadata;
 using cmdr.Editor.Utils;
 using cmdr.Editor.ViewModels.Reports;
 using cmdr.Editor.AppSettings;
+using cmdr.Editor.Utils;
 using cmdr.MidiLib;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
@@ -260,6 +261,25 @@ namespace cmdr.Editor.ViewModels
 
         #endregion
 
+        /*
+        * search and replace across all selected comments
+        */
+        public void SedCommentsCommand()
+        {
+            var selected = this.SelectedMappings;
+
+            SedResult sed = SedWindow.Prompt();
+            if(sed == null) {
+                return;
+            }
+
+            foreach (var m in SelectedMappings.Select(m => m.Item as MappingViewModel)) {
+                String cur = m.Comment;
+                String new_st = cur.Replace((String)sed._search, (String)sed._replace); //, true);
+                m.Comment = new_st;
+            }
+        }
+
 
         /*
         * this command duplicates a Selection for all 4 channels:
@@ -274,7 +294,7 @@ namespace cmdr.Editor.ViewModels
         */
         public void QuadruplicateCommand()
         {
-            for(int i=2; i <= 4; i++) {
+            for (int i = 2; i <= 4; i++) {
                 // todo: check if commands are chanell1/DeckA ?
                 duplicate();
                 MappingEditorViewModel.MidiBindingEditor.IncDecChannel(1);
