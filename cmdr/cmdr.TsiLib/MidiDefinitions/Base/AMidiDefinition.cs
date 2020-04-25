@@ -48,6 +48,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
                 (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
                 (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
                 (deviceTypeStr == "Traktor.Kontrol S8") ||
+                (deviceTypeStr == "Pioneer.DDJ-T1") ||
                 false
                 )
                 return AProprietaryMidiDefinition.Parse(deviceTypeStr, definition);

@@ -216,6 +216,20 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
+        public bool VerboseExceptions
+        {
+            get
+            {
+                string ret = getSetting("VerboseExceptions");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("VerboseExceptions", ret);
+            }
+        }
 
         public MruSection MRU
         {

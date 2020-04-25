@@ -222,15 +222,16 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                         (ResetCommand as CommandHandler).UpdateCanExecuteState();
                     }));
                 });
-            }
-            else
+
+                NotesMenu.Insert(0, SEPARATOR);
+                ChannelsMenu.Insert(0, SEPARATOR);
+
+            } else
             {
                 _canOverrideFactoryMap = _mappings.Any(m => m.CanOverrideFactoryMap);
                 NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note)));
             }
 
-            NotesMenu.Insert(0, SEPARATOR);
-            ChannelsMenu.Insert(0, SEPARATOR);
 
             updateMenus();
         }

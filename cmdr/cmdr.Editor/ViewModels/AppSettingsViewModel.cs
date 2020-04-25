@@ -85,6 +85,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("ConfirmDeleteDevices", ref _confirmDeleteDevices, ref value); }
         }
 
+        private bool _verboseExceptions;
+        public bool VerboseExceptions
+        {
+            get { return _verboseExceptions; }
+            set { SetProperty("VerboseExceptions", ref _verboseExceptions, ref value); }
+        }
+
         private bool _removeUnusedMIDIDefinitions;
         public bool RemoveUnusedMIDIDefinitions
         {
@@ -230,6 +237,7 @@ namespace cmdr.Editor.ViewModels
             _showNotesBeforeCC = CmdrSettings.Instance.ShowNotesBeforeCC;
             _confirmDeleteDevices = CmdrSettings.Instance.ConfirmDeleteDevices;
             _confirmDeleteMappingsSize = CmdrSettings.Instance.ConfirmDeleteMappingsSize;
+            _verboseExceptions = CmdrSettings.Instance.VerboseExceptions;
 
 
 
@@ -313,6 +321,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.ShowNotesBeforeCC = ShowNotesBeforeCC;
             CmdrSettings.Instance.ConfirmDeleteDevices = ConfirmDeleteDevices;
             CmdrSettings.Instance.ConfirmDeleteMappingsSize = ConfirmDeleteMappingsSize;
+            CmdrSettings.Instance.VerboseExceptions = VerboseExceptions;
 
             CmdrSettings.Instance.Save(); 
 

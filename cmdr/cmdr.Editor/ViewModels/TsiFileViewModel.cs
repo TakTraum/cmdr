@@ -140,6 +140,7 @@ namespace cmdr.Editor.ViewModels
             TsiFileViewModel result = null;
             App.SetStatus("Opening " + filePath + " ...");
             TsiFile.EffectIdentificationRequest += onEffectIdentificationRequest;
+
             var tsiFile = await loadTsiAsync(filePath);
             if (tsiFile != null)
                 result = new TsiFileViewModel(tsiFile);
@@ -450,7 +451,23 @@ namespace cmdr.Editor.ViewModels
 
         private static async Task<TsiFile> loadTsiAsync(string filePath)
         {
-            return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath, CmdrSettings.Instance.RemoveUnusedMIDIDefinitions));
+            try {
+                return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(
+                    CmdrSettings.Instance.TraktorVersion, 
+                    filePath, 
+                    CmdrSettings.Instance.RemoveUnusedMIDIDefinitions,
+                    false
+                    ));
+            }
+            catch (Exception e) {
+                String ret = e.ToString();
+
+                if (CmdrSettings.Instance.VerboseExceptions) {
+                    MessageBoxHelper.ShowCrashInfo("Error loading " + filePath, ret);
+                }
+                return null;
+            }
+
         }
 
         #region Events

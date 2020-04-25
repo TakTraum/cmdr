@@ -82,6 +82,7 @@ namespace cmdr.TsiLib
                     (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
                     (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
                     (deviceTypeStr == "Traktor.Kontrol S8") ||
+                    (deviceTypeStr == "Pioneer.DDJ-T1") ||
                     false
                     )
                     return Proprietary_Controller_DeviceType.Default;

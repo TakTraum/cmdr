@@ -3,6 +3,7 @@ namespace cmdr.TsiLib.Enums
 {
     public enum Favorite
     {
+        Favorite_neg = -1,  ///fixme
         Favorite1 = 0,
         Favorite2 = 1,
         Favorite3 = 2,
@@ -14,6 +15,7 @@ namespace cmdr.TsiLib.Enums
         Favorite9 = 7,
         Favorite10 = 9,
         Favorite11 = 10,
-        Favorite12 = 11
+        Favorite12 = 11,
+        Favorite13 = 12,   //fixme
     }
 }

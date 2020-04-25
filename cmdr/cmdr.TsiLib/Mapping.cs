@@ -50,6 +50,10 @@ namespace cmdr.TsiLib
         internal Mapping(Device device, Format.Mapping rawMapping)
             : this(rawMapping)
         {
+            if(Command == null) {  //pestrela: favorites crash
+                return;
+            }
+
             Attach(device);
 
             if (Id >= 0)
@@ -73,7 +77,7 @@ namespace cmdr.TsiLib
             Command = Commands.All.GetCommandProxy(_rawMapping.TraktorControlId, _rawMapping.Type).Create(_rawMapping.Settings);
             if (Command == null)
             {
-
+                return; // null;   ////pestrela: favorites crash
             }
 
             if (originalHasValueUI != _rawMapping.Settings.HasValueUI)

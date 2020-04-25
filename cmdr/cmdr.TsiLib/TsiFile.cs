@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Runtime.ExceptionServices;
 
 /*
  * Terminology about FX list
@@ -74,24 +75,28 @@ namespace cmdr.TsiLib
         /// <exception cref="System.Exception">Thrown when file cannot be loaded or parsed.</exception>
         /// <param name="traktorVersion">The targeted Traktor Version. The version of the file is checked against it.</param>
         /// <param name="filePath">Path of the file.</param>
-        public static TsiFile Load(string traktorVersion, string filePath, bool RemoveUnusedMIDIDefinitions)
+        public static TsiFile Load(string traktorVersion, string filePath, bool RemoveUnusedMIDIDefinitions, bool ignoreExceptions = true)
         {
             TsiFile file = new TsiFile(traktorVersion);
             file.Path = filePath;
-            try
-            {
+            try {
                 TsiXmlDocument xml = new TsiXmlDocument(filePath);
                 file.load(xml, RemoveUnusedMIDIDefinitions);
                 return file;
             }
-            catch (Exception e)
-            {
-                String ret = e.ToString();
-                //System.Windows.Forms.MessageBox.ShowError("Cannot open file."+ret);   // How to pass an exception string to the message box to the user?
-                return null;
+            catch (AggregateException ex) {
+                if (ignoreExceptions) {
+                    return null;
+                } else {
+                    // Preserves the stack trace 
+                    // https://stackoverflow.com/questions/57383/how-to-rethrow-innerexception-without-losing-stack-trace-in-c
+                    ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+
+                    // This is just to please the compiler
+                    throw ex;
+                }
             }
         }
-
 
         public Device CreateDevice(string deviceTypeStr)
         {

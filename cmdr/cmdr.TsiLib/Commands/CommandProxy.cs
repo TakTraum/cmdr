@@ -29,6 +29,7 @@ namespace cmdr.TsiLib.Commands
             MappingType = mappingType;
         }
 
+        static Type prev_maketype = null;
 
         internal ACommand Create(MappingSettings rawSettings)
         {
@@ -41,8 +42,44 @@ namespace cmdr.TsiLib.Commands
                 makeType = _description.OutCommandType;
             else
                 throw new Exception(String.Format("Command not supported:{0}-{1}", MappingType, _description.Id));
-           
-            return (ACommand)Activator.CreateInstance(makeType, _flags, null, new object[] { _description.Id, _description.Name, _description.TargetType, settings }, _culture);
+
+
+            string n1 = makeType.Name;
+            string n2 = makeType.FullName;
+            string actual = "";
+
+            try {
+                actual = makeType.FullName.Split('[')[2].Split(' ')[0];
+            }catch(Exception e) {
+
+            }
+
+            Console.WriteLine(n1);
+            Console.WriteLine(n2);
+
+            if (_description.Id == 3456) {
+                var i = 9;
+
+            } else {
+                var i = 0;
+
+            }
+
+            // DDJ-T1: ArgumentException: An item with the same key has already been added.
+            var new_obj = new object[] { _description.Id, _description.Name, _description.TargetType, settings };
+
+            ACommand ret;
+            //try {
+                ret = (ACommand)Activator.CreateInstance(makeType, _flags, null, new_obj, _culture);
+                prev_maketype = makeType;  //this is to delete after debug
+                return ret;
+
+            /*} 
+            catch(Exception e) {
+
+                return null;
+
+            }*/
         }
     }
 }

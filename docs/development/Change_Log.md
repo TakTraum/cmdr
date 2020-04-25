@@ -201,6 +201,9 @@ v0.6 - TakTraum April 2016
 -------------
  
 
+next version done:
+ added verbose exceptions to debug crashes
+
 
     
 ## 2020 WishList
@@ -233,8 +236,13 @@ show / hide columns (+preferences)
  
   
   
-  
-extensions: 
+tutorial:
+  debugger: https://docs.microsoft.com/en-us/visualstudio/debugger/debugger-tips-and-tricks?view=vs-2019
+    https://devblogs.microsoft.com/visualstudio/7-lesser-known-hacks-for-debugging-in-visual-studio/
+    https://devblogs.microsoft.com/visualstudio/7-hidden-gems-in-visual-studio-2017/
+    
+    
+VS extensions: 
   Disable No Source Available Tab
 
 WPF FAQ:

@@ -872,14 +872,13 @@ namespace cmdr.Editor.ViewModels
             if (mdiChild == null)
             {
                 TsiFileViewModel vm = await TsiFileViewModel.LoadAsync(path);
-                if (vm != null)
-                {
+                if (vm != null) {
                     _tsiFileViewModels.Add(vm);
                     openTab(vm);
                     _mru.Add(path);
+                } else {
+                    MessageBoxHelper.ShowError("Cannot open file.\nPlease confirm it opens in Traktor, and then upload the TSI to https://github.com/pestrela/cmdr/issues");
                 }
-                else
-                    MessageBoxHelper.ShowError("Cannot open file.\nPlease upload the TSI in https://github.com/pestrela/cmdr/issues");
             }
             else
                 _mdiContainer.SelectMdiChild(mdiChild.Id);
@@ -972,9 +971,11 @@ namespace cmdr.Editor.ViewModels
             {
                 App.SetStatus("Initializing App Settings ...");
                 MessageBoxHelper.ShowInfo(
-                    "UPDATE JAN 2020:\n" +
+                    "UPDATE MAY 2020:\n" +
                     "****************\n "+
-                    " Please see the new features in the changelog: https://github.com/pestrela/cmdr/blob/master/docs/development/Change_Log.md\n" +
+                    " Please see the new features in the changelog:\n" +
+                    "https://github.com/pestrela/cmdr#2020-improvements\n" +
+                    "https://github.com/pestrela/cmdr/blob/master/docs/development/Change_Log.md\n" +
                     "\n\n" +
                     "Original Message:\n"+
                     "******************\n" +

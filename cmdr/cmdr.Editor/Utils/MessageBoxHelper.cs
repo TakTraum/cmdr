@@ -37,6 +37,27 @@ namespace cmdr.Editor.Utils
             return MessageBox.Show(App.Current.MainWindow, message, title ?? "Question", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
         }
 
+        // shows somthing to the user and copies that to the clipboard
+        public static void ShowCrashInfo(string summary, string stack_trace, string title = null)
+        {
+            var st = summary 
+                + "\n\nPress OK to copy this info to the Clipboard\n" 
+                + "and then create an issue on https://github.com/pestrela/cmdr/issues\n\n" 
+                + "Exception Stack Trace:\n" 
+                + stack_trace + "\n\n";
+
+            var result = MessageBox.Show(App.Current.MainWindow, st, title ?? "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            switch (result) {
+                case MessageBoxResult.OK: {
+                        //https://stackoverflow.com/questions/4809520/how-to-allow-copying-message-on-messagebox
+                        Clipboard.SetText(st);
+                    }
+                    return;
+                default:
+                    return;
+            }
+        }
+
         public static bool? ShowCancellableQuestion(string message, string title = null)
         {
             var result = MessageBox.Show(App.Current.MainWindow, message, title ?? "Question", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
