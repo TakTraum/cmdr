@@ -438,6 +438,26 @@ namespace cmdr.Editor.ViewModels
                 // This is just a placeholder
 
                 ////// Start of Auto generated code
+            } else if (type_name.Contains("Enums.CaptureSource")) {
+                var command2 = (EnumCondition<CaptureSource>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.CueLoopMoveMode")) {
+                var command2 = (EnumCondition<CueLoopMoveMode>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.DeckFlavor")) {
+                var command2 = (EnumCondition<DeckFlavor>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.FXUnitMode")) {
+                var command2 = (EnumCondition<FXUnitMode>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
             } else if (type_name.Contains("Enums.HotcueType")) {
                 var command2 = (EnumCondition<HotcueType>)command;
                 var cur_value = command2.Value;
@@ -448,10 +468,46 @@ namespace cmdr.Editor.ViewModels
                 var cur_value = command2.Value;
                 command2.Value = cur_value.EnumRotate(step);
 
+            } else if (type_name.Contains("Enums.OnOff")) {
+                var command2 = (EnumCondition<OnOff>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.PlayMode")) {
+                var command2 = (EnumCondition<PlayMode>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.Sample")) {
+                var command2 = (EnumCondition<Sample>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.SamplePage")) {
+                var command2 = (EnumCondition<SamplePage>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.SlotCellState")) {
+                var command2 = (EnumCondition<SlotCellState>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.SlotState")) {
+                var command2 = (EnumCondition<SlotState>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.SlotTriggerType")) {
+                var command2 = (EnumCondition<SlotTriggerType>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
             } else if (type_name.Contains("Enums.TempoRange")) {
                 var command2 = (EnumCondition<TempoRange>)command;
                 var cur_value = command2.Value;
                 command2.Value = cur_value.EnumRotate(step);
+
             }
             ////// End of Auto generated code
 

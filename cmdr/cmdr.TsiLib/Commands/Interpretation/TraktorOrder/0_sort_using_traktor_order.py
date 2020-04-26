@@ -61,6 +61,9 @@ file_out_sorted  = '3_cmdr_commands_sorted.txt'
 file_out_reference = '4_traktor_commands_final.txt'
 file_out_rotates = '5_traktor_rotates.txt'
 
+file_in_conditions = '8_cmdr_conditions.txt'
+file_out_conditions = '9_cmdr_conditions_out.txt'
+
 file_out_csharp  = 'KnownCommands.cs'
 
 with open(file_in_sorted) as f:
@@ -71,54 +74,64 @@ with open(file_in_unsorted) as f:
   print("Opening: %s" % (file_in_unsorted))
   cmdr_list = f.readlines()
 
-     
-c2 = defaultdict(list)
-i=1
-for line in cmdr_list:
-    line = line.strip();
-    #print_line(line)
-    
-    # ignore comments
-    if line.startswith("//"):
-        continue
-        
-    if line.startswith("#"):
-        continue
-        
-    if line == "":
-        continue
-        
-    if "Analysis" in line:
-        #print(line)
-        pass
-        
-        
-    if i == 1:
-        line1 = line
-        i = i+1
-        continue
-        
-    else:
-        i = 1
-        line2 = line
-        
-        #print_line(line1)
-        key = line1.split('"')[1].lower()
-        #key = remove_parentheses(key)  
+  
+  
+def read_traktor(cmdr_list):    
+  c2 = defaultdict(list)
+  i=1
+  for line in cmdr_list:
+      #print_line(line)
+      line = line.strip();
+      #line = line.strip();
+      #print_line(line)
+      
+      # ignore comments
+      if line.startswith("//"):
+          continue
           
-        
-        #print(line, key)
-        ret = (line1, line2)
-        
-        # hack!
-        #while key in c2:
-        #  key = key + "."
-        
-        if key in c2.keys():
-          print("duplicate keys: %s" % (key) )
-        
-        c2[key].append(ret) #= ret
-        
+      if line.startswith("#"):
+          continue
+          
+      if line == "":
+          continue
+          
+      #print("__", line)
+      #sys.exit(0)
+          
+      if "Analysis" in line:
+          #print(line)
+          pass
+          
+          
+      if i == 1:
+          line1 = line
+          i = i+1
+          continue
+          
+      else:
+          i = 1
+          line2 = line
+          
+          #print_line(line1)
+          #print("_", line1)
+          #print("_", line)
+          key = line1.split('"')[1].lower()
+          #key = remove_parentheses(key)  
+            
+          
+          #print(line, key)
+          ret = (line1, line2)
+          
+          # hack!
+          #while key in c2:
+          #  key = key + "."
+          
+          if key in c2.keys():
+            print("duplicate keys: %s" % (key) )
+          
+          c2[key].append(ret) #= ret
+         
+  return c2
         
 def hasNumbers(inputString):
   return any(char.isdigit() for char in inputString)
@@ -127,31 +140,38 @@ def hasNumbers(inputString):
 ## generate rotatevalues 
 
 
-enum_list = set()
-onoff_list = set()
 
-for v1 in c2.values():
-  v2 = v1[0][0]
-  #//print(v2)
-  v3 = v2.split(',')[3]
-  #print(v3)
-  if ("typeof" in v3) and ('<' in v3):
-    if "float" in v3.lower():
-      continue
-    
-    v4 = v3.split('<')[1]
-    v5 = v4.split('>')[0]
-    #print(v5)
-    enum_list.add(v5)
-  else:
-    onoff_list.add(v3)
+def get_enums(c2):
+
+  enum_list = set()
+  onoff_list = set()
+  for v1 in c2.values():
+    v2 = v1[0][0]
+    #//print(v2)
+    v3 = v2.split(',')[3]
+    #print(v3)
+    if ("typeof" in v3) and ('<' in v3):
+      if "float" in v3.lower():
+        continue
       
+      v4 = v3.split('<')[1]
+      v5 = v4.split('>')[0]
+      #print(v5)
+      enum_list.add(v5)
+    else:
+      onoff_list.add(v3)
+      
+  return (enum_list, onoff_list)
 
-print("rotate (non-enums)")      
+'''
+c2 = read_traktor(cmdr_list)
+(enum_list, onoff_list) = get_enums(c2)
+  
+""""
+print("rotate (non-enums)")
 for v in onoff_list:
   print(v)
-  
-#sys.exit(0)
+"""
       
 enum_list = sorted(list(enum_list))
 
@@ -169,7 +189,45 @@ with open(file_out_rotates, "w") as f_out:
   print('}', file=f_out)
   print('////// End of Auto generated code', file=f_out)
 
+ 
+## conditions enums follows:
+ 
+'''  
+
+  
+with open(file_in_conditions) as f:
+  print("Opening: %s" % (file_in_conditions))
+  conditions_list = f.readlines()
+
+
+conditions_data = read_traktor(conditions_list)
+(enum_list, onoff_list) = get_enums(conditions_data)
+  
+print("rotate (non-enums)")      
+for v in onoff_list:
+  print(v)
+  
+      
+enum_list = sorted(list(enum_list))
+
     
+with open(file_out_conditions, "w") as f_out:
+  print('////// Start of Auto generated code', file=f_out)
+  for v5 in enum_list:
+    print('} else if (type_name.Contains("Enums.%s")) {' % ( v5) , file=f_out)
+    print('   var command2 = (EnumCondition<%s>)command;' % ( v5), file=f_out)
+    print('   var cur_value = command2.Value;', file=f_out)
+    print('   command2.Value = cur_value.EnumRotate(step);', file=f_out)
+    print('', file=f_out)
+    #break
+    
+  print('}', file=f_out)
+  print('////// End of Auto generated code', file=f_out)
+  
+        
+        
+        
+  
 sys.exit(0)
   
   
