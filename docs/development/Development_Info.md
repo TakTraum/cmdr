@@ -66,17 +66,25 @@ Cant change code on the fly in the debugger:
  - ensure code is specifically 32 bit:
    -  https://stackoverflow.com/questions/10113532/how-do-i-fix-the-visual-studio-compile-error-mismatch-between-processor-archit
 
+     
+Auto sync solution explorer:
+  Tools->Options->Projects and Solutions->Track Active Item in Solution Explorer  
+
+  
+   
 ## Visual studio extensions 
   
    
 * RealClean extension: https://marketplace.visualstudio.com/items?itemName=FlorentGoetz.RealCleanExt
 
-*SelectNext extension: https://marketplace.visualstudio.com/items?itemName=thomaswelen.SelectNextOccurrence
+* SelectNext extension: https://marketplace.visualstudio.com/items?itemName=thomaswelen.SelectNextOccurrence
 
-*  MArkdown editor:
+* MArkdown editor:
   
-*  Indent Guides: 
-*  git hub support: 
+* Indent Guides: 
+* github support: 
+
+* Disable No Source Available Tab
   
   
 ## C# Tutorials:
@@ -91,9 +99,17 @@ C# for python programmers:
 *  https://education.launchcode.org/skills-back-end-csharp/csharp4python/
   
   
+    
+## Visual Studio debugger tutorial:
+* https://docs.microsoft.com/en-us/visualstudio/debugger/debugger-tips-and-tricks?view=vs-2019
+* https://devblogs.microsoft.com/visualstudio/7-lesser-known-hacks-for-debugging-in-visual-studio/
+* https://devblogs.microsoft.com/visualstudio/7-hidden-gems-in-visual-studio-2017/
+    
+
+WPF FAQ:
+  https://social.msdn.microsoft.com/Forums/en-US/a2988ae8-e7b8-4a62-a34f-b851aaf13886/windows-presentation-foundation-faq?forum=wpf#search_text
   
-Auto sync solution explorer:
-  Tools->Options->Projects and Solutions->Track Active Item in Solution Explorer  
+  
   
 DotNet Fiddle:
   https://dotnetfiddle.net/  
@@ -104,11 +120,9 @@ This is how the filtering remote branch was merged.
   git clone "https://github.com/TomWeps/cmdr.git"
   git branch -a -vv
   git checkout remotes/origin/feature/filtering  
-    
 
-
-	
-## WPF Filtering
+  
+## WPF Filtering feature
 
 pull request: https://github.com/pestrela/cmdr/commit/b7b6312bf4e9fe7649e1d8a88d6b71a910489465
 original WPF example: https://www.codeproject.com/Articles/41755/Filtering-the-WPF-DataGrid-automatically-via-the-h

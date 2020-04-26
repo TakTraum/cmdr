@@ -460,10 +460,9 @@ namespace cmdr.Editor.ViewModels
                     ));
             }
             catch (Exception e) {
-                String ret = e.ToString();
 
                 if (CmdrSettings.Instance.VerboseExceptions) {
-                    MessageBoxHelper.ShowCrashInfo("Error loading " + filePath, ret);
+                    MessageBoxHelper.ShowException("Error loading " + filePath, e);
                 }
                 return null;
             }

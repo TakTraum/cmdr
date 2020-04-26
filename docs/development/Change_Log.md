@@ -200,9 +200,11 @@ v0.6 - TakTraum April 2016
 -------------
 -------------
  
+release 0.10.2 - TBD
 
-next version done:
- added verbose exceptions to debug crashes
+* added verbose exceptions to debug crashes
+* fixed favorites crash
+* added DDJ-T1 support
 
 
     
@@ -235,17 +237,5 @@ show / hide columns (+preferences)
 * See also the old Codeplex issue list (ignore the chrome warning):  https://archive.codeplex.com/?p=cmdr  
  
   
-  
-tutorial:
-  debugger: https://docs.microsoft.com/en-us/visualstudio/debugger/debugger-tips-and-tricks?view=vs-2019
-    https://devblogs.microsoft.com/visualstudio/7-lesser-known-hacks-for-debugging-in-visual-studio/
-    https://devblogs.microsoft.com/visualstudio/7-hidden-gems-in-visual-studio-2017/
-    
-    
-VS extensions: 
-  Disable No Source Available Tab
 
-WPF FAQ:
-  https://social.msdn.microsoft.com/Forums/en-US/a2988ae8-e7b8-4a62-a34f-b851aaf13886/windows-presentation-foundation-faq?forum=wpf#search_text
-  
   

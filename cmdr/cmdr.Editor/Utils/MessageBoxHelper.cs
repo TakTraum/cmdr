@@ -38,13 +38,17 @@ namespace cmdr.Editor.Utils
         }
 
         // shows somthing to the user and copies that to the clipboard
-        public static void ShowCrashInfo(string summary, string stack_trace, string title = null)
+        public static void ShowException(string summary, Exception e, string title = null)
         {
-            var st = summary 
-                + "\n\nPress OK to copy this info to the Clipboard\n" 
-                + "and then create an issue on https://github.com/pestrela/cmdr/issues\n\n" 
+            var st = "\n\n" 
+                +  summary 
+                + "\n\nPress OK to copy this info to the Clipboard\n"
+                + "\n" 
+                + "and then create an issue on https://github.com/pestrela/cmdr/issues\n"
+                + "\n\n" 
                 + "Exception Stack Trace:\n" 
-                + stack_trace + "\n\n";
+                + e.ToString().Replace('\r', ' ').Replace('\n', ' ')
+                + "\n\n";
 
             var result = MessageBox.Show(App.Current.MainWindow, st, title ?? "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question);
             switch (result) {

@@ -774,7 +774,17 @@ private void addMapping(MenuItemViewModel item)
         index = _mappings.IndexOf(_selectedMappings.Last()) + 1;
 
     var proxy = item.Tag as CommandProxy;
-    var m = _device.CreateMapping(proxy);
+
+    Mapping m;
+    try {
+        m = _device.CreateMapping(proxy);
+    } catch(Exception e) {
+        if (true || CmdrSettings.Instance.VerboseExceptions) {
+            MessageBoxHelper.ShowException("Error adding mapping "+item.Text, e);
+        }
+        return;
+    }
+    
     _device.InsertMapping(index, m);      // this is to add the mapping itelf
 
     var mvm = new MappingViewModel(_device, m);
