@@ -555,7 +555,7 @@ namespace cmdr.Editor.ViewModels
 
 
 
-        public void try_rotate_value(MappingViewModel m, int step, KnownCommands start_c, KnownCommands end_c)
+        public void try_rotate_value(MappingViewModel m, int step)
         {
             var command = m.Command;
             Type type = command.GetType();
@@ -819,38 +819,10 @@ namespace cmdr.Editor.ViewModels
         {
 
             foreach (var m in _mappings) {
-                try_rotate_value(m, step]);
+                try_rotate_value(m, step);
             }
         }
 
-
-        public void rotateModifierValue_to_delete(int step)
-        {
-            foreach (var m in _mappings) 
-{
-
-                var command = m.Command;
-                KnownCommands cur_id = (KnownCommands)m.Command.Id;
-
-
-                if (!(
-                    (cur_id >= KnownCommands.Modifier_Modifier1) &&
-                    (cur_id <= KnownCommands.Modifier_Modifier8)
-                    )) 
-{
-                    continue;
-                }
-
-                var command2 = (cmdr.TsiLib.Commands.EnumInCommand<cmdr.TsiLib.Enums.ModifierValue>)command;
-                ModifierValue cur_value = (ModifierValue)command2.Value;
-                int cur_value_int = cur_value - ModifierValue._0;
-                int new_value_int = rotate_modifier_value_int(cur_value_int, step);
-                var new_value = ModifierValue._0 + new_value_int;
-                command2.Value = new_value;
-
-                m.UpdateInteraction();
-            }
-        }
 
         //////////
         //////////
