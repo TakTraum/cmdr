@@ -221,7 +221,7 @@ namespace cmdr.Editor.ViewModels
         {
             get {
                     return _decAssignment ?? (
-                        _decAssignment= new CommandHandler(() => rotateAssignment(-1), () => canRotateAssignment(-1) ));
+                        _decAssignment= new CommandHandler(() => rotateAssignment(-1), () => is_mvm_loaded()));
             }
         }
 
@@ -230,7 +230,7 @@ namespace cmdr.Editor.ViewModels
         {
             get {
                 return _incAssignment?? (
-                    _incAssignment= new CommandHandler(() => rotateAssignment(1), () => canRotateAssignment(1)));
+                    _incAssignment= new CommandHandler(() => rotateAssignment(1), () => is_mvm_loaded() ));
             }
         }
 
@@ -240,7 +240,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _incModifierCommand ?? (
-                    _incModifierCommand = new CommandHandler(() => rotateModifierCommand(1), () => canRotateModifierCommand(1)));
+                    _incModifierCommand = new CommandHandler(() => rotateCommandItself(1), () => is_mvm_loaded() ));
             }
         }
 
@@ -250,7 +250,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _decModifierCommand ?? (
-                    _decModifierCommand = new CommandHandler(() => rotateModifierCommand(-1), () => canRotateModifierCommand(-1)));
+                    _decModifierCommand = new CommandHandler(() => rotateCommandItself(-1), () => is_mvm_loaded() ));
             }
         }
 
@@ -268,13 +268,14 @@ namespace cmdr.Editor.ViewModels
         }
 
 
+        ///////////////// Rotates
         private ICommand _incModifierValue;
         public ICommand IncModifierValue
         {
             get
             {
                 return _incModifierValue ?? (
-                    _incModifierValue = new CommandHandler(() => rotateModifierValue(1), () => canRotateModifierValue(1)));
+                    _incModifierValue = new CommandHandler(() => rotateCommandValue(1), () => is_mvm_loaded() ));
             }
         }
 
@@ -284,7 +285,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _decModifierValue ?? (
-                    _decModifierValue = new CommandHandler(() => rotateModifierValue(-1), () => canRotateModifierValue(-1)));
+                    _decModifierValue = new CommandHandler(() => rotateCommandValue(-1), () => is_mvm_loaded() ));
             }
         }
 
@@ -294,7 +295,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _incModifierCondition1 ?? (
-                    _incModifierCondition1 = new CommandHandler(() => rotateModifierCondition(1, 1), () => canRotateModifierCondition(1, 1)));
+                    _incModifierCondition1 = new CommandHandler(() => rotateConditionItself(1, 1), () => is_mvm_loaded() ));
             }
         }
 
@@ -304,7 +305,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _decModifierCondition1 ?? (
-                    _decModifierCondition1 = new CommandHandler(() => rotateModifierCondition(1, -1), () => canRotateModifierCondition(1, -1)));
+                    _decModifierCondition1 = new CommandHandler(() => rotateConditionItself(1, -1), () => is_mvm_loaded() ));
             }
         }
 
@@ -314,22 +315,9 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _incModifierConditionValue1 ?? (
-                    _incModifierConditionValue1 = new CommandHandler(() => rotateModifierConditionValue(1, 1), () => canRotateModifierConditionValue(1, 1)));
+                    _incModifierConditionValue1 = new CommandHandler(() => rotateConditionValue(1, 1), () => is_mvm_loaded() ));
             }
         }
-
-        private ICommand _decModifierConditionValue1;
-        public ICommand DecModifierConditionValue1
-        {
-            get
-            {
-                return _decModifierConditionValue1 ?? (
-                    _decModifierConditionValue1 = new CommandHandler(() => rotateModifierConditionValue(1, -1), () => canRotateModifierConditionValue(1, -1)));
-            }
-        }
-
-
-
 
         private ICommand _incModifierCondition2;
         public ICommand IncModifierCondition2
@@ -337,7 +325,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _incModifierCondition2 ?? (
-                    _incModifierCondition2 = new CommandHandler(() => rotateModifierCondition(2, 1), () => canRotateModifierCondition(2, 1)));
+                    _incModifierCondition2 = new CommandHandler(() => rotateConditionItself(2, 1), () => is_mvm_loaded() ));
             }
         }
 
@@ -347,7 +335,18 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _decModifierCondition2 ?? (
-                    _decModifierCondition2 = new CommandHandler(() => rotateModifierCondition(2,-1), () => canRotateModifierCondition(2,-1)));
+                    _decModifierCondition2 = new CommandHandler(() => rotateConditionItself(2,-1), () => is_mvm_loaded() ));
+            }
+        }
+
+
+        private ICommand _decModifierConditionValue1;
+        public ICommand DecModifierConditionValue1
+        {
+            get
+            {
+                return _decModifierConditionValue1 ?? (
+                    _decModifierConditionValue1 = new CommandHandler(() => rotateConditionValue(1, -1), () => is_mvm_loaded()));
             }
         }
 
@@ -359,7 +358,7 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _incModifierConditionValue2 ?? (
-                    _incModifierConditionValue2 = new CommandHandler(() => rotateModifierConditionValue(2, 1), () => canRotateModifierConditionValue(2, 1)));
+                    _incModifierConditionValue2 = new CommandHandler(() => rotateConditionValue(2, 1), () => is_mvm_loaded() ));
             }
         }
 
@@ -369,9 +368,10 @@ namespace cmdr.Editor.ViewModels
             get
             {
                 return _decModifierConditionValue2 ?? (
-                    _decModifierConditionValue2 = new CommandHandler(() => rotateModifierConditionValue(2, -1), () => canRotateModifierConditionValue(2, -1)));
+                    _decModifierConditionValue2 = new CommandHandler(() => rotateConditionValue(2, -1), () => is_mvm_loaded() ));
             }
         }
+        /////////////// end rotates
 
 
         private ICommand _swapConditions;
@@ -615,6 +615,39 @@ namespace cmdr.Editor.ViewModels
             return is_mvm_loaded();
         }
 
+
+        // The grid always has CTRL+a. This is when the focus is elsewhere
+        private void selectAllToggle()
+        {
+            SelectedTsiFileModel.SelectedDevice.selectAllToggle();
+        }
+
+        private bool canSelectAllToggle()
+        {
+            return is_mvm_loaded();
+        }
+
+        private void clearFiltering()
+        {
+            if (canClearFiltering()) {
+                var dev = SelectedTsiFileModel.SelectedDevice;
+                dev.Mappings.First().ClearFiltering();
+            }
+        }
+
+        private bool canClearFiltering()
+        {
+            if (is_dev_loaded()) {
+                var tsi = SelectedTsiFileModel.SelectedDevice;
+                if (tsi.Mappings.Count() > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+
         private void incDecNumber(int step)
         {
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.IncDecNumber(step);
@@ -644,74 +677,33 @@ namespace cmdr.Editor.ViewModels
                 return SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.MidiBindingEditor.CanIncDecChannel(step);
             return false;
         }
-
-
-        // The grid always has CTRL+a. This is when the focus is elsewhere
-        private void selectAllToggle()
-        {
-            SelectedTsiFileModel.SelectedDevice.selectAllToggle();
-        }
-
-        private bool canSelectAllToggle()
-        {
-            return is_mvm_loaded();
-        }
- 
-        private void clearFiltering()
-        {
-            if(canClearFiltering())
-            {
-                var dev = SelectedTsiFileModel.SelectedDevice;
-                dev.Mappings.First().ClearFiltering();
-            }
-        }
-
-        private bool canClearFiltering()
-        {
-            if(is_dev_loaded())
-            {
-                var tsi = SelectedTsiFileModel.SelectedDevice;
-                if (tsi.Mappings.Count() > 0)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool canRotateAssignment(int step)
-        {
-            return is_mvm_loaded();
-        }
-
+        //////////////
 
         private void rotateAssignment(int step)
         {
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateAssignment(step);
         }
 
-
-        private bool canRotateModifierCommand(int step)
+        private void rotateCommandItself(int step)
         {
-            return is_mvm_loaded();
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateCommandItself(step);
+        }
+        
+        private void rotateCommandValue(int step)
+        {
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateCommandValue(step);
         }
 
-
-        private void rotateModifierCommand(int step)
+        //////
+        
+        private void rotateConditionItself(int which, int step)
         {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateCommand(step);
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateConditionItself(which, step);
         }
-
-
-        private bool canRotateModifierValue(int step)
+         
+        private void rotateConditionValue(int which, int step)
         {
-            return is_mvm_loaded();
-        }
-
-
-        private void rotateModifierValue(int step)
-        {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateValue(step);
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateConditionValue(which, step);
         }
 
 
@@ -720,34 +712,9 @@ namespace cmdr.Editor.ViewModels
             return is_mvm_loaded();
         }
 
-
         private void swapConditions()
         {
             SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.swapConditions();
-        }
-
-
-        private bool canRotateModifierCondition(int which, int step)
-        {
-            return is_mvm_loaded();
-        }
-
-
-        private void rotateModifierCondition(int which, int step)
-        {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierCondition(which, step);
-        }
-
-
-        private bool canRotateModifierConditionValue(int which, int step)
-        {
-            return is_mvm_loaded();
-        }
-
-        
-        private void rotateModifierConditionValue(int which, int step)
-        {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierConditionValue(which, step);
         }
 
 

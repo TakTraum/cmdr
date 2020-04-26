@@ -296,8 +296,8 @@ namespace cmdr.Editor.ViewModels
             return new_modifier;
         }
 
-        // code based on conditionsEditorViewMode::setCondition()
-        public void rotateModifierCondition(int which, int step)
+        // code was based on conditionsEditorViewMode::setCondition()
+        public void rotateConditionItself(int which, int step)
         {
             ConditionNumber number;
             if (which == 1)
@@ -313,7 +313,6 @@ namespace cmdr.Editor.ViewModels
             // FIXME: this broken because of the tree removal
             if(first_modifier == null) {
                 return;
-
             };
 
             var modifier_list = first_modifier.Children;
@@ -364,7 +363,7 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-        public void rotateModifierConditionValue(int which, int step)
+        public void rotateConditionValue_to_delete(int which, int step)
         {
             var conditions_editor = this.ConditionsEditor;
             var conditions_list = conditions_editor.Conditions;
@@ -399,6 +398,69 @@ namespace cmdr.Editor.ViewModels
         }
 
 
+        public void rotateConditionValue(int which, int step)
+        {
+            var conditions_editor = this.ConditionsEditor;
+            var conditions_list = conditions_editor.Conditions;
+            var modifier_list = conditions_list[2].Children;
+
+            foreach (var mapping in _mappings)
+            {
+                ACondition cur_condition;
+                if (which == 1)
+                    cur_condition = mapping.Conditions.Condition1;
+                else
+                    cur_condition = mapping.Conditions.Condition2;
+
+                if (cur_condition == null)
+                    continue;       // ignore no condition
+
+                try_rotate_condition_value(cur_condition, step);
+
+
+                mapping.UpdateConditionExpression();
+            }
+            conditions_editor.Refresh();
+        }
+
+
+        // fixme: changes to assigment change conditions as well
+        public void try_rotate_condition_value(ACondition command, int step)
+        {
+            Type type = command.GetType();
+            string type_name = type.FullName;
+
+            //if (command.MappingType == MappingType.Out) {
+            //    return;
+            //}
+
+            if (false) {
+                // This is just a placeholder
+
+                ////// Start of Auto generated code
+            } else if (type_name.Contains("Enums.HotcueType")) {
+                var command2 = (EnumCondition<HotcueType>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.ModifierValue")) {
+                var command2 = (EnumCondition<ModifierValue>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+
+            } else if (type_name.Contains("Enums.TempoRange")) {
+                var command2 = (EnumCondition<TempoRange>)command;
+                var cur_value = command2.Value;
+                command2.Value = cur_value.EnumRotate(step);
+            }
+            ////// End of Auto generated code
+
+        }
+
+
+        ///////////
+        ///////////
+        ///////////
         public bool is_range_id(KnownCommands cur_id, KnownCommands start, KnownCommands end)
         {
             return ((cur_id >= start) &&
@@ -413,13 +475,14 @@ namespace cmdr.Editor.ViewModels
             bool done_replace = false;
             var sb = new    StringBuilder();
             for (var i = 0; i < text.Length - 0; i++) 
-{
+                {
                 if (char.IsDigit(text[i])) 
-{
+                {
                     if (!done_replace) 
-{
+                    {
                         string to_add = string.Format("{0}", new_int);
                         sb.Append(to_add);
+
                     }
                     done_replace = true;
                 } 
@@ -534,15 +597,15 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-        public void rotateCommand(int step)
+        public void rotateCommandItself(int step)
         {
             var possibilities = get_rotatable_commands();
 
             foreach (var m in _mappings) 
-{
+            {
                 // take elements two-by-two
                 for (var i = 0; i < possibilities.Count(); i = i + 2) 
-{
+                {
                     try_rotate_command(m, step, possibilities[i], possibilities[i + 1]);
                 }
             }
@@ -554,19 +617,10 @@ namespace cmdr.Editor.ViewModels
         //////////
 
 
-
-        public void try_rotate_value(MappingViewModel m, int step)
+        public void try_rotate_command_value(ACommand command, int step)
         {
-            var command = m.Command;
             Type type = command.GetType();
             string type_name = type.FullName;
-
-            /*
-            KnownCommands cur_id = (KnownCommands)m.Command.Id;
-
-            if (!is_range_id(cur_id, start_c, end_c)) {
-                return;
-            }*/
 
             if (command.MappingType == MappingType.Out) {
                 return;
@@ -812,18 +866,16 @@ namespace cmdr.Editor.ViewModels
             }
             ////// End of Auto generated code
 
-            m.UpdateInteraction();
         }
 
-        public void rotateValue(int step)
+        public void rotateCommandValue(int step)
         {
-
             foreach (var m in _mappings) {
-                try_rotate_value(m, step);
+                try_rotate_command_value(m.Command, step);
+                m.UpdateInteraction();
+
             }
         }
-
-
         //////////
         //////////
         //////////
