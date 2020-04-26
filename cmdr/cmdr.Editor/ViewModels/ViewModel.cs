@@ -699,7 +699,7 @@ namespace cmdr.Editor.ViewModels
 
         private void rotateModifierCommand(int step)
         {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierCommand(step);
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateCommand(step);
         }
 
 
@@ -711,7 +711,7 @@ namespace cmdr.Editor.ViewModels
 
         private void rotateModifierValue(int step)
         {
-            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateModifierValue(step);
+            SelectedTsiFileModel.SelectedDevice.MappingEditorViewModel.rotateValue(step);
         }
 
 

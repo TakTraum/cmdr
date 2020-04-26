@@ -206,7 +206,7 @@ release 0.10.2 - TBD
 * fixed favorites crash
 * added DDJ-T1 support
 
-
+ 
     
 ## 2020 WishList
 

@@ -114,6 +114,14 @@ WPF FAQ:
 DotNet Fiddle:
   https://dotnetfiddle.net/  
   
+## C# 7.3 info
+
+* https://stackoverflow.com/questions/203377/getting-the-max-value-of-an-enum 
+* https://www.davidyardy.com/blog/visual-studio%E2%80%93how-to-target-differentlatest-c-version-net-core-3-and-c-8/
+* https://devblogs.microsoft.com/dotnet/a-belated-welcome-to-c-7-3/
+
+        
+  
 ## git cheatsheet
 
 This is how the filtering remote branch was merged.
@@ -127,4 +135,16 @@ This is how the filtering remote branch was merged.
 pull request: https://github.com/pestrela/cmdr/commit/b7b6312bf4e9fe7649e1d8a88d6b71a910489465
 original WPF example: https://www.codeproject.com/Articles/41755/Filtering-the-WPF-DataGrid-automatically-via-the-h
 unchanged datagrid tutorial: https://www.wpftutorial.net/DataGrid.html 
+
+
+keybaord shortcuts
+  CTRL+J - find references
+  CTRL+SHIFT+J - search files
+  CTRL+G - format document
+  CTRL+B  - breakpoint
+  CTRL+E, C - comment
+  CTRL+E, U - uncomment
+  
+  
+  
 

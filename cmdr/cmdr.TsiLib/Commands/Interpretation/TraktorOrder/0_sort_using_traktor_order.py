@@ -59,6 +59,7 @@ file_in_sorted   = 'sorted_commands/traktor_commands_sorted.txt'
 file_in_unsorted = '2_cmdr_commands_unsorted.txt'
 file_out_sorted  = '3_cmdr_commands_sorted.txt'
 file_out_reference = '4_traktor_commands_final.txt'
+file_out_rotates = '5_traktor_rotates.txt'
 
 file_out_csharp  = 'KnownCommands.cs'
 
@@ -122,6 +123,57 @@ for line in cmdr_list:
 def hasNumbers(inputString):
   return any(char.isdigit() for char in inputString)
 
+  
+## generate rotatevalues 
+
+
+enum_list = set()
+onoff_list = set()
+
+for v1 in c2.values():
+  v2 = v1[0][0]
+  #//print(v2)
+  v3 = v2.split(',')[3]
+  #print(v3)
+  if ("typeof" in v3) and ('<' in v3):
+    if "float" in v3.lower():
+      continue
+    
+    v4 = v3.split('<')[1]
+    v5 = v4.split('>')[0]
+    #print(v5)
+    enum_list.add(v5)
+  else:
+    onoff_list.add(v3)
+      
+
+print("rotate (non-enums)")      
+for v in onoff_list:
+  print(v)
+  
+#sys.exit(0)
+      
+enum_list = sorted(list(enum_list))
+
+    
+with open(file_out_rotates, "w") as f_out:
+  print('////// Start of Auto generated code', file=f_out)
+  for v5 in enum_list:
+    print('} else if (type_name.Contains("Enums.%s")) {' % ( v5) , file=f_out)
+    print('   var command2 = (EnumInCommand<%s>)command;' % ( v5), file=f_out)
+    print('   var cur_value = command2.Value;', file=f_out)
+    print('   command2.Value = cur_value.EnumRotate(step);', file=f_out)
+    print('', file=f_out)
+    #break
+    
+  print('}', file=f_out)
+  print('////// End of Auto generated code', file=f_out)
+
+    
+sys.exit(0)
+  
+  
+  
 ranges = []  
 for key in c2.keys():
   if hasNumbers(key):
