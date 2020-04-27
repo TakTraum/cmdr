@@ -164,7 +164,7 @@ namespace cmdr.Editor.ViewModels
         public void rotateAssignment(int step)
         {
             foreach (var m in _mappings) 
-                {
+            {
                 var assignmentOptions = m.Command.AssignmentOptions;
                 var target =  m.TargetType;
 
@@ -363,41 +363,7 @@ namespace cmdr.Editor.ViewModels
         }
 
 
-        public void rotateConditionValue_to_delete(int which, int step)
-        {
-            var conditions_editor = this.ConditionsEditor;
-            var conditions_list = conditions_editor.Conditions;
-            var modifier_list = conditions_list[2].Children;
-
-            foreach (var mapping in _mappings)
-            {
-                ACondition cur_condition;
-                if (which == 1)
-                    cur_condition = mapping.Conditions.Condition1;
-                else
-                    cur_condition = mapping.Conditions.Condition2;
-
-                if (cur_condition == null)
-                    continue;       // ignore no condition
-
-                KnownCommands id = (KnownCommands)cur_condition.Id;
-                if (!((id >= KnownCommands.Modifier_Modifier1) &&
-                      (id <= KnownCommands.Modifier_Modifier8)))
-                    continue;       // ignore non-modifiers
-
-                ModifierValue cur_value = (ModifierValue)cur_condition.GetValue();
-                int cur_value_int = cur_value - ModifierValue._0;
-
-                int new_value_int = rotate_modifier_value_int(cur_value_int, step);
-                var new_value = ModifierValue._0 + new_value_int;
-                cur_condition.SetValue(new_value);
-
-                mapping.UpdateConditionExpression();
-            }
-            conditions_editor.Refresh();
-        }
-
-
+    
         public void rotateConditionValue(int which, int step)
         {
             var conditions_editor = this.ConditionsEditor;
