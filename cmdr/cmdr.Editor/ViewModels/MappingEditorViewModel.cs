@@ -267,9 +267,9 @@ namespace cmdr.Editor.ViewModels
             return new_modifier;
         }
 
+
         int rotate_modifier_value_int(int cur_modifier, int step)
         {
-
             int new_modifier = 1;
             if (step > 0) 
                 {
@@ -308,14 +308,15 @@ namespace cmdr.Editor.ViewModels
             var conditions_editor = this.ConditionsEditor;
             var conditions_list = conditions_editor.Conditions;
 
-            var first_modifier = conditions_list.FirstOrDefault(x => x.Text == "Modifier");
+            var first_modifier = conditions_list.FirstOrDefault(x => x.Text == "M1");
 
             // FIXME: this broken because of the tree removal
             if(first_modifier == null) {
                 return;
             };
 
-            var modifier_list = first_modifier.Children;
+            int location = conditions_list.IndexOf(first_modifier);
+            var modifier_list = conditions_list.Skip(location).Take(8).ToList();
 
             foreach (var mapping in _mappings) 
 {
@@ -526,14 +527,13 @@ namespace cmdr.Editor.ViewModels
                 return;
             }
 
-
             int cur_modifier = cur_id - start_c + 1;
 
             int start_i = 1;
             int end_i = 8;
 
             switch (end_c) 
-{
+            {
                 case KnownCommands.FXUnit_Button3:
                 case KnownCommands.FXUnit_Effect3Selector:
                 case KnownCommands.FXUnit_Knob3:
