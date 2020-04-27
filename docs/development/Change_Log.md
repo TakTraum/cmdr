@@ -16,6 +16,18 @@
   
 ## Recent changes
 
+release 0.10.2 - 27 April 2020
+new features:
+* added DDJ-T1 support
+* added rotates of values and condition values for all cases
+* Ctrl_shift+R: Search/replace in comments
+
+bug fixes:
+* fixed favorites crash
+* added verbose exceptions to debug crashes
+* fixed rotation of condition modifiers
+
+
 release 0.10.1 - 24 April 2020
 * New features:
   * Can now AutoGenerate 32x copies per command (4 channels/assignments times 8 pads)
@@ -24,7 +36,6 @@ release 0.10.1 - 24 April 2020
   * Removed sub-sub-trees in pop-ups (Commands and conditions). 
   * Can now specify channel and Note in a single go (pupup)
   * Export to CSV (useful to grep and diff)
-  * Ctrl_shift+R: Search/replace in comments
 * Changes to existing features:
   * Filtering: Shows filtered columns in yellow; show count of filtered rows 
   * MIDIOut boxes are finally a simple list. No more manul scroll!
@@ -200,11 +211,7 @@ v0.6 - TakTraum April 2016
 -------------
 -------------
  
-release 0.10.2 - TBD
-
-* added verbose exceptions to debug crashes
-* fixed favorites crash
-* added DDJ-T1 support
+release 0.10.3 - 
 
  
     
