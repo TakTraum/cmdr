@@ -45,11 +45,11 @@
         <KeyBinding Key="OemPlus" Modifiers="Control" Command="{Binding IncOneCommand, Mode=OneTime}"/>
         <KeyBinding Key="OemMinus" Modifiers="Control+Shift" Command="{Binding DecPadCommand, Mode=OneTime}"/>
         <KeyBinding Key="OemPlus" Modifiers="Control+Shift" Command="{Binding IncPadCommand, Mode=OneTime}"/>
-
-        <KeyBinding Key="D8" Modifiers="Control" Command="{Binding DecChCommand, Mode=OneTime}"/>
-        <KeyBinding Key="D9" Modifiers="Control" Command="{Binding IncChCommand, Mode=OneTime}"/>
-        <KeyBinding Key="D8" Modifiers="Control+Shift" Command="{Binding DecAssignment, Mode=OneTime}"/>
-        <KeyBinding Key="D9" Modifiers="Control+Shift" Command="{Binding IncAssignment, Mode=OneTime}"/>
+        
+        <KeyBinding Key="D9" Modifiers="Control" Command="{Binding DecChCommand, Mode=OneTime}"/>
+        <KeyBinding Key="D0" Modifiers="Control" Command="{Binding IncChCommand, Mode=OneTime}"/>
+        <KeyBinding Key="D9" Modifiers="Control+Shift" Command="{Binding DecAssignment, Mode=OneTime}"/>
+        <KeyBinding Key="D0" Modifiers="Control+Shift" Command="{Binding IncAssignment, Mode=OneTime}"/>
 
         <KeyBinding Key="D5" Modifiers="Control" Command="{Binding DecModifierCommand, Mode=OneTime}"/>
         <KeyBinding Key="D6" Modifiers="Control" Command="{Binding IncModifierCommand, Mode=OneTime}"/>
