@@ -123,39 +123,15 @@ namespace cmdr.WpfControls.CustomDataGrid
         }
 
 
-        // https://stackoverflow.com/questions/1458748/wpf-onkeydown-not-being-called-for-space-key-in-control-derived-from-wpf-text/17628655
-        /*
-        // https://stackoverflow.com/questions/25229503/findvisualchild-reference-issue
-        public static DataGridCell GetCell(DataGrid dataGrid, DataGridRow rowContainer, int column)
-        {
-            if (rowContainer != null) {
-                DataGridCellsPresenter presenter = FindVisualChild<DataGridCellsPresenter>(rowContainer);
-                if (presenter == null) {
-                    /* if the row has been virtualized away, call its ApplyTemplate() method 
-                     * to build its visual tree in order for the DataGridCellsPresenter
-                     * and the DataGridCells to be created *
-                    rowContainer.ApplyTemplate();
-                    presenter = FindVisualChild<DataGridCellsPresenter>(rowContainer);
-                }
-                if (presenter != null) {
-                    DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(column) as DataGridCell;
-                    if (cell == null) {
-                        /* bring the column into view
-                         * in case it has been virtualized away *
-                        dataGrid.ScrollIntoView(rowContainer, dataGrid.Columns[column]);
-                        cell = presenter.ItemContainerGenerator.ContainerFromIndex(column) as DataGridCell;
-                    }
-                    return cell;
-                }
-            }
-            return null;
-        } */
-
-        //private DataGridCellInfo _last = null;
-
         void move_focus(FocusNavigationDirection focusDirection)
         {
-            // https://docs.microsoft.com/en-us/dotnet/api/system.windows.input.focusnavigationdirection?view=netcore-3.1 
+            // solution with "tab" focus: 
+            //   https://docs.microsoft.com/en-us/dotnet/api/system.windows.input.focusnavigationdirection?view=netcore-3.1 
+            //
+            // also tried:
+            //   https://stackoverflow.com/questions/1458748/wpf-onkeydown-not-being-called-for-space-key-in-control-derived-from-wpf-text/17628655
+            //   https://stackoverflow.com/questions/25229503/findvisualchild-reference-issue
+
 
             // MoveFocus takes a TraveralReqest as its argument.
             TraversalRequest request = new TraversalRequest(focusDirection);
@@ -163,16 +139,15 @@ namespace cmdr.WpfControls.CustomDataGrid
             // Gets the element with keyboard focus.
             UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
 
-            // Change keyboard focus.
+            // Do actual change keyboard focus.
             if (elementWithFocus != null) {
                 elementWithFocus.MoveFocus(request);
             }
-
         }
 
         public void HandleHandledKeyDown(object sender, RoutedEventArgs e)
         {
-   
+
             KeyEventArgs ke = e as KeyEventArgs;
 
             if (e.OriginalSource is TextBox) {
@@ -187,68 +162,16 @@ namespace cmdr.WpfControls.CustomDataGrid
 
                 }
             }
-
-            return;
-        
-            int rowIndex;
-            rowIndex = 1;
-            var row2 = (DataGridRow)this.ItemContainerGenerator.ContainerFromIndex(rowIndex);
-            if (row2.IsFocused) {
-                var i = 0;
-
-            }
-
-            IEnumerable<int> enumerable = Enumerable.Range(1, 300);
-            List<int> asList = enumerable.ToList();
-
-            var s = this.SelectedCells;
-            //_last = s[0];
-
-
-            KeyEventArgs ke2 = e as KeyEventArgs;
-            if (ke.Key == Key.Down) {
-                if(e.OriginalSource is TextBox) {
-                    //_last.Focus();
-                    return;
-
-                    int a = 0;
-                    RowItemViewModel this_row = (this.Items.CurrentItem as RowItemViewModel);
-                    // this.Focus();
-                    //this_row.BringIntoView();
-                    //this_row.Focus();
-
-                    var c = 0;
-                    var b = this.ItemsSource.GetType().Name;
-
-                    //ToList().First();
-                    //b.Focus();
-
-                    //.ToList();
-
-                    rowIndex = this.SelectedIndex;
-                    rowIndex = 1;
-
-                    var row = (DataGridRow)this.ItemContainerGenerator.ContainerFromIndex(rowIndex);
-                    row.Focus();
-
-
-                    //this.SelectedItems.Clear();
-                    /* set the SelectedItem property */
-                    //object item = this.Items[0]; // = Product X
-                    //this.SelectedItem = item;
-
-                }
-            }
         }
 
 
-            /// <summary>
-            /// Clear the property cache if the datacontext changes.
-            /// This could indicate that an other type of object is bound.
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            private void FilteringDataGrid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        /// Clear the property cache if the datacontext changes.
+        /// This could indicate that an other type of object is bound.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FilteringDataGrid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             //ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
             //int i = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
