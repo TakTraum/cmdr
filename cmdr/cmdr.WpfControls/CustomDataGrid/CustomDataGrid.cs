@@ -83,6 +83,18 @@ namespace cmdr.WpfControls.CustomDataGrid
             }
 
             ApplyFilters();
+
+            /*
+            // fix focus
+            foreach (KeyValuePair<string, TextBox> entry in filtering_textBoxes) {
+                TextBox tb = entry.Value;
+
+                tb.Focus();
+            }
+                        move_focus(FocusNavigationDirection.Down);
+
+            */
+
         }
 
 
@@ -176,19 +188,8 @@ namespace cmdr.WpfControls.CustomDataGrid
             //ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
             //int i = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
 
-
             propertyCache.Clear();
-            return;
 
-            // Add option to clean filter when changing pages here
-            //reapply filters here?
-            bool clear_filters = true;
-            clear_filters = false;
-            if (clear_filters) {
-                ClearFiltering();
-            } else {
-                ApplyFilters();
-            }
         }
 
         protected override void OnSorting(DataGridSortingEventArgs eventArgs)

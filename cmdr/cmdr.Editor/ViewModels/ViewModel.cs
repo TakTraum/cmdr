@@ -213,7 +213,7 @@ namespace cmdr.Editor.ViewModels
         private ICommand _clearFiltering;
         public ICommand ClearFiltering
         {
-            get { return _clearFiltering ?? (_clearFiltering = new CommandHandler(() => clearFiltering(), () => canClearFiltering())); }
+            get { return _clearFiltering ?? (_clearFiltering = new CommandHandler(() => clearFilteringCommand(), () => canClearFiltering())); }
         }
 
         private ICommand _decAssignment;
@@ -627,11 +627,11 @@ namespace cmdr.Editor.ViewModels
             return is_mvm_loaded();
         }
 
-        private void clearFiltering()
+        private void clearFilteringCommand()
         {
             if (canClearFiltering()) {
                 var dev = SelectedTsiFileModel.SelectedDevice;
-                dev.Mappings.First().ClearFiltering();
+                dev.ClearFiltering();
             }
         }
 
