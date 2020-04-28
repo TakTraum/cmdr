@@ -144,6 +144,8 @@ keybaord shortcuts
   CTRL+B  - breakpoint
   CTRL+E, C - comment
   CTRL+E, U - uncomment
+  CTRL+O - Options
+  CTRL+; - go to soltion explorer
   
   
   

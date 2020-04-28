@@ -132,7 +132,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Settings.cs" />
-    <Compile Include="Utils\ExtensionsMethods.cs" />
     <Compile Include="Utils\Configuration\ConfigurationElementAttribute.cs" />
     <Compile Include="Utils\Configuration\ConfigurationSectionAttribute.cs" />
     <Compile Include="AppSettings\CmdrSettings.cs" />
