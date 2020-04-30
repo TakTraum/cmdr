@@ -58,8 +58,10 @@ namespace cmdr.Editor.Utils
                 dlg.FileName = Path.Combine(dlg.InitialDirectory, " ");
             }
 
-            if (fileName != null)
+            if (fileName != null) {
+                fileName = System.IO.Path.ChangeExtension(fileName, "." + type);
                 dlg.FileName = fileName;
+            }
 
             if (dlg.ShowDialog(owner).GetValueOrDefault())
                 return dlg.FileName;

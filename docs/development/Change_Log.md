@@ -20,7 +20,7 @@ release 0.10.2 - 27 April 2020
 new features:
 * added DDJ-T1 support
 * added rotates of values and condition values for all cases
-* Ctrl_shift+R: Search/replace in comments
+* Ctrl+Shift+R: Search/replace in comments
 
 bug fixes:
 * fixed favorites crash
@@ -213,6 +213,9 @@ v0.6 - TakTraum April 2016
  
 release 0.10.3 - 
 
+- bugfixes 0.10.2 features
+- 
+ 
  
     
 ## 2020 WishList
@@ -223,9 +226,9 @@ release 0.10.3 -
 
 * moving mappings up and down (IDs?)
   add shortcut do "duplicate" and to "delete"
-show / hide columns (+preferences)
-* 
-  - add new column with translation table (text file loaded seperately)  <<<<<
+* show / hide columns (+preferences)
+
+* add new column with translation table (text file loaded seperately)  <<<<<
 * option to alphabetically sort commands (except tree)
 
 * dark mode

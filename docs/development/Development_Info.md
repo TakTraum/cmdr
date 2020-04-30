@@ -137,7 +137,7 @@ original WPF example: https://www.codeproject.com/Articles/41755/Filtering-the-W
 unchanged datagrid tutorial: https://www.wpftutorial.net/DataGrid.html 
 
 
-keybaord shortcuts
+VS2017 Keyboard shortcuts
   CTRL+J - find references
   CTRL+SHIFT+J - search files
   CTRL+G - format document
@@ -145,8 +145,26 @@ keybaord shortcuts
   CTRL+E, C - comment
   CTRL+E, U - uncomment
   CTRL+O - Options
-  CTRL+; - go to soltion explorer
+  CTRL+; - go to solution explorer
   
   
+Traktor global midi controls:  
+  https://djtechtools.com/2015/09/08/traktor-global-midi-control-control-multiple-midi-devices-one-controller/
   
+WPF tutorial:
 
+  https://docs.microsoft.com/en-us/dotnet/framework/wpf/getting-started/walkthrough-my-first-wpf-desktop-application
+
+    Canvas - children positied by coordinates relative to the Canvas area.
+    DockPanel - child elements arranged horizontally or vertically relative to each other.
+    Grid - Organizes columns and rows.
+    StackPanel - Children are a single horizontal or vertical line 
+    VirtualizingStackPanel - ?
+    WrapPanel - child in sequential position from left to right, breaking content to the next line 
+
+datagrid tutorial:
+  https://www.wpftutorial.net/DataGrid.html    
+  fundamentals: https://www.wpftutorial.net/ArchitecturePattern.html
+
+
+ 

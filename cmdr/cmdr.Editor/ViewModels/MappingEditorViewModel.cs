@@ -19,7 +19,6 @@ using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.TsiLib.MidiDefinitions;
-using ExtensionMethods;
 
 namespace cmdr.Editor.ViewModels
 {

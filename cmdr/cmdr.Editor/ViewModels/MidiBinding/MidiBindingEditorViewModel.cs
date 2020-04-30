@@ -424,7 +424,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
                 if (IsGenericMidi)
                 {
-                    if (!String.IsNullOrEmpty(_channel))
+                    // special HACK follows
+                    if (!String.IsNullOrEmpty(_note) && _note[0] == '_') {
+
+                        // remove the initial '_', but keep it for further processing
+                        // the expression is already complete - doesn't need manipulations
+                        expression = _note.Substring(1);
+
+                    } else if (!String.IsNullOrEmpty(_channel))
                     {
                         if (!String.IsNullOrEmpty(_note))
                             expression = _channel + "." + _note.Replace("+", "+" + _channel + ".");
@@ -435,17 +442,12 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     {
                         if (mapping.MidiBinding != null)
                         {
+
                             var channel = mapping.MidiBinding.Note.Substring(0, 4);
                             expression = channel + "." + _note.Replace("+", "+" + channel + ".");
                         }
 
-                        // special tags
-                        if(Note[0] == '_') {
-                            expression = _note.Substring(1);
-                            needs_cleanup = true;
-                        }
                     }
-
 
                     if (expression != null)
                         tmpDefinition = AGenericMidiDefinition.Parse(mapping.Command.MappingType, expression);
@@ -800,7 +802,9 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
             // note: this is already reverse sorted
             foreach (var st in _selectedStrings) {
-                var item = new MenuItemViewModel { Text = st, Tag = "_" + st };  //special tags start with "_"
+
+                // FIXME: Hack: we use '_' to signifify that it has channel+note
+                var item = new MenuItemViewModel { Text = st, Tag = '_' + st };  //special tags start with '_'
                 NotesMenu.Insert(0, item);
                 NotesMenu_shortcuts += 1;
             }

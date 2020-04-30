@@ -165,12 +165,16 @@ namespace cmdr.WpfControls.CustomDataGrid
             if (e.OriginalSource is TextBox) {
                 if (ke.Key == Key.Down) {
                     move_focus(FocusNavigationDirection.Down);
-
+                
+                /*
+                 * this breaks editing the texboxes
+                 * for this, use Tab / ShiftTab
                 } else if (ke.Key == Key.Left) {
                     move_focus(FocusNavigationDirection.Left);
 
                 } else if (ke.Key == Key.Right) {
                     move_focus(FocusNavigationDirection.Right);
+                */
 
                 }
             }

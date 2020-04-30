@@ -16,6 +16,16 @@
         Foreground="Black">
 
     <Window.InputBindings>
+        <!-- 
+        Use this program to test shortcuts:
+           https://tyrrrz.me/blog/hotkey-editor-control-in-wpf
+        
+        Beware that some shortcuts are catched by Widnows or other Programs:
+           https://github.com/Tyrrrz/LightBulb/issues/149
+           https://excelatfinance.com/xlf18/xlf-change-key-sequence.php
+        -->
+        
+        
         <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewCommand, Mode=OneTime}"/>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand, Mode=OneTime}"/>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand, Mode=OneTime}"/>
