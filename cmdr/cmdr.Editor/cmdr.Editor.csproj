@@ -165,7 +165,6 @@
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
     <Compile Include="ViewModels\Reports\CommandsReportEditorViewModel.cs" />
     <Compile Include="ViewModels\Reports\ConditionTuplesEditorViewModel.cs" />
-    <Compile Include="ViewModels\Reports\CommandsReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ConditionTupleViewModel.cs" />
     <Compile Include="ViewModels\ControllerDefaultMappings.cs" />
     <Compile Include="ViewModels\EffectIdentificationViewModel.cs" />

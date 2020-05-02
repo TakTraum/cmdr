@@ -8,6 +8,8 @@ using cmdr.TsiLib.EventArgs;
 using cmdr.WpfControls.Behaviors;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
+using cmdr.WpfControls.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

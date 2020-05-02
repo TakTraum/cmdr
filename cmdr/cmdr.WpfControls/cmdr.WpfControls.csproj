@@ -99,6 +99,7 @@
     <Compile Include="Behaviors\DraggableRowsBehavior.cs" />
     <Compile Include="Adorners\InsertAdorner.cs" />
     <Compile Include="Behaviors\MultiSelectorBehavior.cs" />
+    <Compile Include="ViewModels\CommandsReportViewModel.cs" />
     <Compile Include="ViewModels\RowItemViewModel.cs" />
     <Compile Include="Utils\TwoListSynchronizer.cs" />
     <Compile Include="CustomListBox\CustomListBox.cs" />

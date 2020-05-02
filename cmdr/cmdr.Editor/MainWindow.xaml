@@ -148,6 +148,7 @@
             <MenuItem Header="Automations">
                 <MenuItem Header="Save as CSV" Command="{Binding SaveAsCsvCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+C"/>
                 <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
+                <Separator/>
                 <MenuItem Header="Commands Overview" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />
                 <Separator/>
                 <MenuItem Header="Quadruplicate Channel" Command="{Binding QuadruplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+T" />

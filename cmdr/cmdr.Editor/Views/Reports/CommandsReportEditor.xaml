@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cdg="clr-namespace:cmdr.WpfControls.CustomDataGrid;assembly=cmdr.WpfControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="600" Title="Commands Report">
     <Grid>
-        <DataGrid ItemsSource="{Binding Rows}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <cdg:CustomDataGrid 
+            
+                  ItemsSource="{Binding Rows}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   AutoGenerateColumns="True" 
                   CanUserAddRows="False"
                   CanUserDeleteRows="False" 
@@ -22,6 +25,6 @@
                 <DataGridTextColumn Header="Count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="*" />
             </DataGrid.Columns>
             -->
-        </DataGrid>
+        </cdg:CustomDataGrid>
     </Grid>
 </Window>

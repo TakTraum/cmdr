@@ -332,7 +332,7 @@ namespace cmdr.WpfControls.CustomDataGrid
                     // Loop filters
                     foreach (var filter in columnFilters.Values)
                     {
-                        object property = GetPropertyValue(item as RowItemViewModel, filter.ColumnBinding);
+                        object property = GetPropertyValue(item, filter.ColumnBinding);
                         if (property != null)
                         {
                             string propertyValue = property.ToString();
@@ -375,22 +375,45 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             }
 
+
             switch (e.Action) {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    foreach (RowItemViewModel item in e.NewItems)
-                        item.ParentSelector = this;
+                    foreach (var item in e.NewItems) {
+                       /*if(item is RowItemViewModel) {
+                            ((RowItemViewModel)item).ParentSelector = this;
+                        }
+                        /*if(item is CommandsReportViewModel) {
+                            ((CommandsReportViewModel)item).ParentSelector = this;
+
+                        }*/
+                        add_parent_selector(item);
+                    }
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
-                    foreach (RowItemViewModel item in Items)
-                        item.ParentSelector = this;
+                    foreach (var item in Items) {
+                        add_parent_selector(item);
+                    }
+                    //item.ParentSelector = this;
                     break;
                 default:
                     break;
             }
         }
 
-        private object GetPropertyValue(RowItemViewModel row, Binding binding)
+        private void add_parent_selector(object item)
+        {
+            if (item is RowItemViewModel) {
+                ((RowItemViewModel)item).ParentSelector = this;
+            }
+            /*if (item is CommandsReportViewModel) {
+                ((CommandsReportViewModel)item).ParentSelector = this;
+
+            }*/
+
+        }
+
+        private object GetPropertyValue_rivm(RowItemViewModel row, Binding binding)
         {
             object item = row.Item;
             string[] propertyNamePath = binding.Path.Path
@@ -405,6 +428,57 @@ namespace cmdr.WpfControls.CustomDataGrid
             return item;
         }
 
+        private object GetPropertyValue_crvm(CommandsReportViewModel row, Binding binding)
+        {
+            //object item = row.Item;
+            object item = row;
+
+            string[] propertyNamePath = binding.Path.Path
+                                        .Split('.');
+
+            foreach(string name in propertyNamePath)
+            {
+                item = GetPropertyValue(item, name);
+            }
+
+            return item;
+            return null;
+        }
+
+
+        private object GetPropertyValue_ok(object row, Binding binding)
+        {
+            if(row is RowItemViewModel) {
+
+                return GetPropertyValue_rivm(row as RowItemViewModel, binding);
+            } else {
+
+                if (row is CommandsReportViewModel) 
+                {
+                    return GetPropertyValue_crvm(row as CommandsReportViewModel, binding);
+                }
+            }
+            return null;
+        }
+
+
+        private object GetPropertyValue(object row, Binding binding)
+        {
+            object item = row;
+            string path = binding.Path.Path;
+
+            if (row is RowItemViewModel) {
+                item = ((RowItemViewModel)row).Item;
+                path = path.Remove(0, "item.".Length);
+            } 
+
+            string[] propertyNamePath = path.Split('.');
+            
+            foreach (string name in propertyNamePath) {
+                item = GetPropertyValue(item, name);
+            }
+            return item;
+        }
 
         /// <summary>
         /// Get the value of a property
