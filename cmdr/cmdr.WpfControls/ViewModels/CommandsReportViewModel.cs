@@ -42,6 +42,20 @@ namespace cmdr.WpfControls.ViewModels
             }
         }
 
+        //this is a second copy of command, to enable easy "OR" greps
+        private string _command2;
+        public string Command2
+        {
+            get
+            {
+                return _command2;
+            }
+            set
+            {
+            }
+        }
+
+
         private string _type;
         public string Type
         {
@@ -67,6 +81,7 @@ namespace cmdr.WpfControls.ViewModels
         {
             _device = device;
             _command = command;
+            _command2 = command;
             _type = type;
             _count = count;
         }

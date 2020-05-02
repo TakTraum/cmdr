@@ -157,25 +157,35 @@ namespace cmdr.WpfControls.CustomDataGrid
             }
         }
 
+
+
         public void HandleHandledKeyDown(object sender, RoutedEventArgs e)
         {
-
             KeyEventArgs ke = e as KeyEventArgs;
+            TextBox filterTextBox = e.OriginalSource as TextBox;
+            if(filterTextBox == null) {
+                return;
+            }
+            string text = filterTextBox.Text;
+
 
             if (e.OriginalSource is TextBox) {
                 if (ke.Key == Key.Down) {
                     move_focus(FocusNavigationDirection.Down);
-                
-                /*
-                 * this breaks editing the texboxes
-                 * for this, use Tab / ShiftTab
-                } else if (ke.Key == Key.Left) {
-                    move_focus(FocusNavigationDirection.Left);
 
-                } else if (ke.Key == Key.Right) {
-                    move_focus(FocusNavigationDirection.Right);
-                */
+                } else {
+                    // only apply these actions for empty textboxes
+                    if (!string.IsNullOrEmpty(text)){
+                        return;
+                    }
 
+                    if (ke.Key == Key.Left) {
+                        move_focus(FocusNavigationDirection.Left);
+
+                    } else if (ke.Key == Key.Right) {
+                        move_focus(FocusNavigationDirection.Right);
+
+                    }
                 }
             }
         }
@@ -380,13 +390,6 @@ namespace cmdr.WpfControls.CustomDataGrid
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     foreach (var item in e.NewItems) {
-                       /*if(item is RowItemViewModel) {
-                            ((RowItemViewModel)item).ParentSelector = this;
-                        }
-                        /*if(item is CommandsReportViewModel) {
-                            ((CommandsReportViewModel)item).ParentSelector = this;
-
-                        }*/
                         add_parent_selector(item);
                     }
                     break;
@@ -406,62 +409,10 @@ namespace cmdr.WpfControls.CustomDataGrid
             if (item is RowItemViewModel) {
                 ((RowItemViewModel)item).ParentSelector = this;
             }
-            /*if (item is CommandsReportViewModel) {
-                ((CommandsReportViewModel)item).ParentSelector = this;
 
-            }*/
 
         }
-
-        private object GetPropertyValue_rivm(RowItemViewModel row, Binding binding)
-        {
-            object item = row.Item;
-            string[] propertyNamePath = binding.Path.Path
-                                    .Remove(0, "item.".Length)
-                                    .Split('.');
-
-            foreach(string name in propertyNamePath)
-            {
-                item = GetPropertyValue(item, name);
-            }
-
-            return item;
-        }
-
-        private object GetPropertyValue_crvm(CommandsReportViewModel row, Binding binding)
-        {
-            //object item = row.Item;
-            object item = row;
-
-            string[] propertyNamePath = binding.Path.Path
-                                        .Split('.');
-
-            foreach(string name in propertyNamePath)
-            {
-                item = GetPropertyValue(item, name);
-            }
-
-            return item;
-            return null;
-        }
-
-
-        private object GetPropertyValue_ok(object row, Binding binding)
-        {
-            if(row is RowItemViewModel) {
-
-                return GetPropertyValue_rivm(row as RowItemViewModel, binding);
-            } else {
-
-                if (row is CommandsReportViewModel) 
-                {
-                    return GetPropertyValue_crvm(row as CommandsReportViewModel, binding);
-                }
-            }
-            return null;
-        }
-
-
+               
         private object GetPropertyValue(object row, Binding binding)
         {
             object item = row;
