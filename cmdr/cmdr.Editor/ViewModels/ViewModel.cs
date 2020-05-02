@@ -85,6 +85,12 @@ namespace cmdr.Editor.ViewModels
             get { return _saveAsCommand ?? (_saveAsCommand = new CommandHandler(saveAs, () => SelectedTsiFileModel != null)); }
         }
 
+        private ICommand _backupVersionedCommand;
+        public ICommand BackupVersionedCommand
+        {
+            get { return _backupVersionedCommand ?? (_backupVersionedCommand = new CommandHandler(backupVersionedCommand, () => SelectedTsiFileModel != null)); }
+        }
+
         private ICommand _saveAsCsvCommand;
         public ICommand SaveAsCsvCommand
         {
@@ -491,6 +497,11 @@ namespace cmdr.Editor.ViewModels
             await saveAs(SelectedTsiFileModel);
         }
 
+        private async void backupVersionedCommand()
+        {
+            await backupVersionedCommand(SelectedTsiFileModel);
+        }
+
         private async void saveAsCsv()
         {
             await saveAs(SelectedTsiFileModel, "csv");
@@ -886,6 +897,17 @@ namespace cmdr.Editor.ViewModels
                     cancel = true;
             }
             return false;
+        }
+
+        private async Task<bool> backupVersionedCommand(TsiFileViewModel vm)
+        {
+            if (vm.Path == null) {
+                return await saveAs(vm);
+            } else {
+                string new_path = BrowseDialogHelper.MakeUnique(vm.Path);
+
+                return await vm.SaveAsyncTsi(new_path, true);
+            }
         }
 
         private async Task<bool> save(TsiFileViewModel vm)

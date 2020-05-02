@@ -22,17 +22,14 @@ namespace cmdr.Editor.Utils
         {
             VistaFileDialog dlg;
 
-            if (isSaveDialog)
-            {
+            if (isSaveDialog) {
                 dlg = new VistaSaveFileDialog
                 {
                     DefaultExt = type,
                     AddExtension = true,
                     ValidateNames = true
                 };
-            }
-            else
-            {
+            } else {
                 dlg = new VistaOpenFileDialog
                 {
                     Multiselect = false
@@ -40,8 +37,7 @@ namespace cmdr.Editor.Utils
             }
 
             // fixme: make a class
-            switch (type)
-            {
+            switch (type) {
                 case "tsi":
                     dlg.Filter = "TSI | *.tsi";
                     break;
@@ -51,8 +47,7 @@ namespace cmdr.Editor.Utils
             }
             dlg.CheckPathExists = true;
 
-            if (initialDirectory != null)
-            {
+            if (initialDirectory != null) {
                 dlg.InitialDirectory = initialDirectory;
                 // workaround to set InitialDirectory
                 dlg.FileName = Path.Combine(dlg.InitialDirectory, " ");
@@ -66,6 +61,20 @@ namespace cmdr.Editor.Utils
             if (dlg.ShowDialog(owner).GetValueOrDefault())
                 return dlg.FileName;
             return null;
+        }
+
+        public static string MakeUnique(string path)
+        {
+            string dir = Path.GetDirectoryName(path);
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            string fileExt = Path.GetExtension(path);
+
+            for (int i = 1; ; ++i) {
+                if (!File.Exists(path))
+                    return path;
+
+                path = Path.Combine(dir, fileName + " (Backup " + i + ")" + fileExt);
+            }
         }
     }
 }

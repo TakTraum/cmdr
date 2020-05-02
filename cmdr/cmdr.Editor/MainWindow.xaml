@@ -30,6 +30,7 @@
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand, Mode=OneTime}"/>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand, Mode=OneTime}"/>
         <KeyBinding Key="S" Modifiers="Control+Shift" Command="{Binding SaveAsCommand, Mode=OneTime}"/>
+        <KeyBinding Key="B" Modifiers="Control" Command="{Binding BackupVersionedCommand, Mode=OneTime}"/>
         <KeyBinding Key="W" Modifiers="Control" Command="{Binding CloseCommand, Mode=OneTime}"/>
         <KeyBinding Key="X" Modifiers="Control" Command="{Binding CutCommand, Mode=OneTime}" />
         <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopyCommand, Mode=OneTime}"/>
@@ -147,6 +148,8 @@
             
             <MenuItem Header="Automations">
                 <MenuItem Header="Save as CSV" Command="{Binding SaveAsCsvCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+C"/>
+                <MenuItem Header="Backup TSI (versioned)" Command="{Binding BackupVersionedCommand, Mode=OneTime}" InputGestureText="Ctrl+B"/>
+                <Separator/>
                 <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
                 <Separator/>
                 <MenuItem Header="Commands Overview" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />

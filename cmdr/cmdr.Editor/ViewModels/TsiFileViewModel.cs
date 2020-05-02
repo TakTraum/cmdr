@@ -210,24 +210,24 @@ namespace cmdr.Editor.ViewModels
             return success;
         }
 
-        public async Task<bool> SaveAsyncTsi(string filepath)
+        public async Task<bool> SaveAsyncTsi(string filepath, bool backup = false)
         {
             AcceptChanges();
             App.SetStatus("Saving " + filepath + " ...");
 
             // save metadata
-            foreach (var dev in Devices)
+            foreach (var dev in Devices) {
                 dev.SaveMetadata();
+            }
 
-            bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath, CmdrSettings.Instance.OptimizeFXList));
+            bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath, CmdrSettings.Instance.OptimizeFXList, backup));
 
-            if (success)
-            {
+            if (success) {
                 raisePropertyChanged("Path");
                 raisePropertyChanged("Title");
-            }
-            else
+            } else {
                 IsChanged = true;
+            }
             App.ResetStatus();
             return success;
         }

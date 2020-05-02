@@ -127,7 +127,7 @@ namespace cmdr.TsiLib
             _devicesContainer.Devices.List.Remove(device.RawDevice);
         }
 
-        public bool Save(string filePath, bool optimizeFXList)
+        public bool Save(string filePath, bool optimizeFXList, bool backup = false)
         {
             // workaround to save indices (position on a list) instead of ids (actual command)
             var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
@@ -178,7 +178,9 @@ namespace cmdr.TsiLib
                 return false;
             }
 
-            Path = filePath;
+            if (!backup) {
+                Path = filePath;
+            }
             return true;
         }
 
