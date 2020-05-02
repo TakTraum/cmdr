@@ -162,27 +162,24 @@ namespace cmdr.WpfControls.CustomDataGrid
         public void HandleHandledKeyDown(object sender, RoutedEventArgs e)
         {
             KeyEventArgs ke = e as KeyEventArgs;
-            TextBox filterTextBox = e.OriginalSource as TextBox;
-            if(filterTextBox == null) {
-                return;
-            }
-            string text = filterTextBox.Text;
-
 
             if (e.OriginalSource is TextBox) {
+                TextBox filterTextBox = e.OriginalSource as TextBox;
+                string text = filterTextBox.Text;
+
                 if (ke.Key == Key.Down) {
                     move_focus(FocusNavigationDirection.Down);
 
                 } else {
                     // only apply these actions for empty textboxes
                     if (!string.IsNullOrEmpty(text)){
-                        return;
+                        //return;
                     }
 
-                    if (ke.Key == Key.Left) {
+                    if (ke.Key == Key.Left && filterTextBox.SelectionStart == 0) {
                         move_focus(FocusNavigationDirection.Left);
 
-                    } else if (ke.Key == Key.Right) {
+                    } else if (ke.Key == Key.Right && filterTextBox.SelectionStart == text.Length) {
                         move_focus(FocusNavigationDirection.Right);
 
                     }
