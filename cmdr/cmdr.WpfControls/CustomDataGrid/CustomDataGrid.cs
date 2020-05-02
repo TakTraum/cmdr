@@ -52,11 +52,11 @@ namespace cmdr.WpfControls.CustomDataGrid
                                         header.DataContext.ToString() : "";
 
             TextBox filter;
-            if (!filtering_textBoxes.TryGetValue(columnName, out filter))
-            {
+            if (!filtering_textBoxes.TryGetValue(columnName, out filter)) {
                 filtering_textBoxes.Add(columnName, textBox);
             }
-
+            filtering_textBoxes[columnName] = textBox;
+            
         }
         
         public void ClearFiltering()
@@ -64,7 +64,8 @@ namespace cmdr.WpfControls.CustomDataGrid
             var a = filtering_textBoxes;
            
             // clear the text boxes
-            foreach (KeyValuePair<string, TextBox> entry in filtering_textBoxes)
+            // https://stackoverflow.com/questions/6177697/c-sharp-collection-was-modified-enumeration-operation-may-not-execute
+            foreach (KeyValuePair<string, TextBox> entry in filtering_textBoxes.ToArray())
             {
                 String key = entry.Key;
                 TextBox tb = entry.Value;
