@@ -33,6 +33,16 @@ namespace cmdr.Editor.ViewModels.Reports
             }
         }
 
+        private string _type;
+        public string Type
+        {
+            get
+            {
+                return _type;
+            }
+        }
+
+
         private int _count;
         public int Count
         {
@@ -43,10 +53,12 @@ namespace cmdr.Editor.ViewModels.Reports
         }
 
 
-        public CommandsReportViewModel(string device, string command, int count)
+
+        public CommandsReportViewModel(string device, string command, string type, int count)
         {
             _device = device;
             _command = command;
+            _type = type;
             _count = count;
         }
     }

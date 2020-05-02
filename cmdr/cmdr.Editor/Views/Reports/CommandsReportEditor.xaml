@@ -7,18 +7,21 @@
              d:DesignHeight="300" d:DesignWidth="300" Width="600" Title="Commands Report">
     <Grid>
         <DataGrid ItemsSource="{Binding Rows}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  AutoGenerateColumns="False" 
+                  AutoGenerateColumns="True" 
                   CanUserAddRows="False"
                   CanUserDeleteRows="False" 
                   CanUserReorderColumns="False"
                   CanUserResizeRows="False"
                   CanUserResizeColumns="True"
                   >
+            
+            <!--
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Command" Binding="{Binding Command, Mode=OneWay}" IsReadOnly="True" Width="*" />
                 <DataGridTextColumn Header="Device" Binding="{Binding Device, Mode=OneWay}" IsReadOnly="True" Width="150" />
                 <DataGridTextColumn Header="Count" Binding="{Binding Count, Mode=OneWay}" IsReadOnly="True" Width="*" />
             </DataGrid.Columns>
+            -->
         </DataGrid>
     </Grid>
 </Window>

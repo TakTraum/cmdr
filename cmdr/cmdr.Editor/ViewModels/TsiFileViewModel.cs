@@ -230,20 +230,68 @@ namespace cmdr.Editor.ViewModels
             return success;
         }
 
+        /*
+        class Person
+        {
+            internal int id;
+            internal string car;
+            internal string type;
+        }
+
+        public static void test_linq_groupby()
+        {
+            List<Person> persons = new List<Person>();
+            persons.Add(new Person { id = 1, car = "Ferrari", type = "convertible" });
+            persons.Add(new Person { id = 1, car = "BMW", type = "convertible" });
+            persons.Add(new Person { id = 1, car = "Audi", type = "utility" });
+            persons.Add(new Person { id = 2, car = "Audi", type = "utility" });
+
+
+            // https://stackoverflow.com/questions/847066/group-by-multiple-columns
+            var results = from p in persons
+                          group p.car 
+                          by new { p.id, p.type } into g
+                          select new
+                          {
+                              g.Key.id,
+                              g.Key.type,
+                              quantity = g.Count()
+                          };
+
+            foreach (var p in results) {
+                Console.WriteLine("{0} {1} {2} ",
+                                  p.id,
+                                  p.type,
+                                  p.quantity);
+            }
+
+        }
+        */
+
         private void showCommandsReportEditor()
         {
             var rows = new List<CommandsReportViewModel>();
             foreach (var dev in Devices)
             {
                 string dev_name = dev.Comment;
-                List<String> commands = dev.Mappings.Select(m => (m.Item as MappingViewModel).Command.Name).ToList();
 
-                // https://stackoverflow.com/questions/17434119/how-to-get-frequency-of-elements-from-list-in-c-sharp
-                foreach (var grp in commands.GroupBy(i => i))
-                {
-                    CommandsReportViewModel row = new CommandsReportViewModel(dev_name, grp.Key, grp.Count());
-                    rows.Add(row);
-                }
+                // https://stackoverflow.com/questions/847066/group-by-multiple-columns
+                var commands1 = dev.Mappings
+                    .Select(m => (m.Item as MappingViewModel))
+                    .Select(m => new { command = m.Command.Name, type = m.Type });
+
+                var commands2 = from c in commands1
+                              group c.command
+                              by new { c.command, c.type } into g
+                              select new
+                              {
+                                  g.Key.command,
+                                  type = g.Key.type,
+                                  count = g.Count()
+                              };
+
+                var new_rows = commands2.Select(c => new CommandsReportViewModel(dev_name, c.command, c.type, c.count));
+                rows.AddRange(new_rows);
             }
 
             // sort by "Command"
