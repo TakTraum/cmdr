@@ -24,9 +24,10 @@
            https://github.com/Tyrrrz/LightBulb/issues/149
            https://excelatfinance.com/xlf18/xlf-change-key-sequence.php
         -->
-        
-        
-        <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewCommand, Mode=OneTime}"/>
+
+
+        <KeyBinding Key="N" Modifiers="Control+Shift" Command="{Binding NewCommand, Mode=OneTime}"/>
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewMidiDevCommand, Mode=OneTime}"/>
         <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenCommand, Mode=OneTime}"/>
         <KeyBinding Key="S" Modifiers="Control" Command="{Binding SaveCommand, Mode=OneTime}"/>
         <KeyBinding Key="S" Modifiers="Control+Shift" Command="{Binding SaveAsCommand, Mode=OneTime}"/>
@@ -85,7 +86,7 @@
     <DockPanel LastChildFill="True">
         <Menu IsMainMenu="True" DockPanel.Dock="Top" Background="Transparent" Padding="10,5">
             <MenuItem Header="_File">
-                <MenuItem Header="_New..." Command="{Binding NewCommand, Mode=OneTime}" InputGestureText="Ctrl+N"/>
+                <MenuItem Header="_New..." Command="{Binding NewCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+N"/>
                 <Separator />
                 <MenuItem Header="_Open..." Command="{Binding OpenCommand, Mode=OneTime}" InputGestureText="Ctrl+O"/>
                 <MenuItem Header="Revert to Saved..." Command="{Binding RevertToSavedCommand, Mode=OneTime}"  />
@@ -152,8 +153,9 @@
                 <MenuItem Header="Backup TSI (versioned)" Command="{Binding BackupVersionedCommand, Mode=OneTime}" InputGestureText="Ctrl+B"/>
                 <Separator/>
                 <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
-                <Separator/>
                 <MenuItem Header="Commands Overview" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />
+                <Separator/>
+                <MenuItem Header="New MIDI Device" Command="{Binding NewMidiDevCommand, Mode=OneTime}" InputGestureText="Ctrl+N" />
                 <Separator/>
                 <MenuItem Header="Quadruplicate Channel" Command="{Binding QuadruplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+T" />
                 <MenuItem Header="Octuplicate Pad" Command="{Binding OctuplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+T" />

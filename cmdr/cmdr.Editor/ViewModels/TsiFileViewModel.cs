@@ -417,6 +417,10 @@ namespace cmdr.Editor.ViewModels
             return items.Union(defaults);
         }
 
+        public void addMidiDevice()
+        {
+            addDevice(new MenuItemViewModel { Text = Device.TYPE_STRING_GENERIC_MIDI });
+        }
 
         private async void addDevice(MenuItemViewModel item)
         {

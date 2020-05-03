@@ -68,6 +68,12 @@ namespace cmdr.Editor.ViewModels
             get { return _newCommand ?? (_newCommand = new CommandHandler(@new)); }
         }
 
+        private ICommand _newMidiDevCommand;
+        public ICommand NewMidiDevCommand
+        {
+            get { return _newMidiDevCommand ?? (_newMidiDevCommand = new CommandHandler(newMidiDevice)); }
+        }
+
         private ICommand _openCommand;
         public ICommand OpenCommand
         {
@@ -463,6 +469,10 @@ namespace cmdr.Editor.ViewModels
             openTab(vm);
         }
 
+        private void newMidiDevice()
+        {
+            SelectedTsiFileModel.addMidiDevice();
+        }
 
         private void open_last_mru_file()
         {
