@@ -88,6 +88,7 @@
                 <MenuItem Header="_New..." Command="{Binding NewCommand, Mode=OneTime}" InputGestureText="Ctrl+N"/>
                 <Separator />
                 <MenuItem Header="_Open..." Command="{Binding OpenCommand, Mode=OneTime}" InputGestureText="Ctrl+O"/>
+                <MenuItem Header="Revert to Saved..." Command="{Binding RevertToSavedCommand, Mode=OneTime}"  />
                 <Separator />
                 <MenuItem Header="_Save" Command="{Binding SaveCommand, Mode=OneTime}" InputGestureText="Ctrl+S"/>
                 <MenuItem Header="_Save As..." Command="{Binding SaveAsCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+S"/>

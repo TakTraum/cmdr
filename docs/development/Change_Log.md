@@ -211,10 +211,12 @@ v0.6 - TakTraum April 2016
 -------------
 -------------
  
-release 0.10.3 - 
+release 0.10.3 - TBD
 
-- bugfixes 0.10.2 features
-- 
+- several bugfixes features (arrow keys, filtering)
+- CTRL+B: backup file (versioned)
+- add filtering grid to reports
+
  
  
     
@@ -223,21 +225,16 @@ release 0.10.3 -
 
 
 * remember last window position / maximize <<<<<
-
 * moving mappings up and down (IDs?)
   add shortcut do "duplicate" and to "delete"
 * show / hide columns (+preferences)
-
 * add new column with translation table (text file loaded seperately)  <<<<<
 * option to alphabetically sort commands (except tree)
 
 * dark mode
 * undo
-
-
 * Ensure focus always on main grid
 * Separate column condition1 and condition2 
-* arrows = move selected row into view        
 
 
 

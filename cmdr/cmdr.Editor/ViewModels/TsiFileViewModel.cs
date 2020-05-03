@@ -220,6 +220,15 @@ namespace cmdr.Editor.ViewModels
                 dev.SaveMetadata();
             }
 
+            if (CmdrSettings.Instance.RemoveUnusedMIDIDefinitions) {
+                foreach (var dev in Devices.ToArray()) {
+                    if (dev.Mappings.Any(){
+                        continue;
+                    }
+                    //dev.close();
+                }
+            }
+
             bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath, CmdrSettings.Instance.OptimizeFXList, backup));
 
             if (success) {

@@ -231,6 +231,21 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
+        public bool RemoveEmptyDevices
+        {
+            get
+            {
+                string ret = getSetting("RemoveEmptyDevices");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("RemoveEmptyDevices", ret);
+            }
+        }
+
         public MruSection MRU
         {
             get { return getSection<MruSection>(); }

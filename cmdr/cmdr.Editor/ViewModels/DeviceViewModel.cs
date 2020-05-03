@@ -524,6 +524,7 @@ private void showCommandsReportEditor()
 
 }
 
+// this is "mappings delete". it is not "device delete"
 private void delete()
 {
     // is this function already present?

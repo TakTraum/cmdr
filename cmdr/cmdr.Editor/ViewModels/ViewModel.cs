@@ -36,7 +36,8 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
-        private bool _isExiting;
+        private bool _isExiting = false;
+        private bool _isRevertingToSaved = false;   // hack ?
 
 
         private string _appTitle = APPNAME;
@@ -71,6 +72,12 @@ namespace cmdr.Editor.ViewModels
         public ICommand OpenCommand
         {
             get { return _openCommand ?? (_openCommand = new CommandHandler(() => open())); }
+        }
+
+        private ICommand _revertToSavedCommand;
+        public ICommand RevertToSavedCommand
+        {
+            get { return _revertToSavedCommand ?? (_revertToSavedCommand = new CommandHandler(revertToSavedCommand)); }
         }
 
         private ICommand _saveCommand;
@@ -476,6 +483,24 @@ namespace cmdr.Editor.ViewModels
             if (!String.IsNullOrEmpty(path))
                 await openFile(path);
         }
+
+        
+        private void revertToSavedCommand()
+        {
+            string path = SelectedTsiFileModel.Path;
+            if (true || CmdrSettings.Instance.ConfirmDeleteDevices) {
+                var ret = MessageBoxHelper.ShowQuestion("Going to RELOAD current TSI "+path+ ". Proceed? ", "WARNING");
+                if(ret != true) {
+                    return;
+                }
+            }
+
+            _isRevertingToSaved = true; 
+            close();
+            _isRevertingToSaved = false;
+            open_path(path);
+        }
+
 
         private async void open()
         {
@@ -883,10 +908,10 @@ namespace cmdr.Editor.ViewModels
             return !cancel;
         }
 
-        private bool savePendingChanges(TsiFileViewModel vm, out bool cancel)
+        private bool savePendingChanges(TsiFileViewModel vm, out bool cancel, in bool ignore_changes = false)
         {
             cancel = false;
-            if (vm.IsChanged && vm.Devices.Any())
+            if (vm.IsChanged && vm.Devices.Any() && _isRevertingToSaved == false)
             {
                 _mdiContainer.SelectMdiChild(_mdiContainer.MdiChildren.Single(m => m.Value.ViewModel.Equals(vm)).Key);
                 string msg = "'" + vm.Title + "' was changed. Do you want to save it before exit?";
@@ -1034,6 +1059,7 @@ namespace cmdr.Editor.ViewModels
 
             var mdiChild = _mdiContainer.MdiChildren[id];
             var vm = mdiChild.ViewModel;
+
             bool cancel;
             if (savePendingChanges(vm, out cancel))
                 await save(vm);

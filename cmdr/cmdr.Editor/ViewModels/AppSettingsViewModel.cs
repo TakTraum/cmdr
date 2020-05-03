@@ -92,6 +92,13 @@ namespace cmdr.Editor.ViewModels
             set { SetProperty("VerboseExceptions", ref _verboseExceptions, ref value); }
         }
 
+        private bool _removeEmptyDevices;
+        public bool RemoveEmptyDevices
+        {
+            get { return _removeEmptyDevices; }
+            set { SetProperty("RemoveEmptyDevices", ref _removeEmptyDevices, ref value); }
+        }
+
         private bool _removeUnusedMIDIDefinitions;
         public bool RemoveUnusedMIDIDefinitions
         {
@@ -238,7 +245,7 @@ namespace cmdr.Editor.ViewModels
             _confirmDeleteDevices = CmdrSettings.Instance.ConfirmDeleteDevices;
             _confirmDeleteMappingsSize = CmdrSettings.Instance.ConfirmDeleteMappingsSize;
             _verboseExceptions = CmdrSettings.Instance.VerboseExceptions;
-
+            _removeEmptyDevices = CmdrSettings.Instance.RemoveEmptyDevices;
 
 
             if (TraktorSettings.Initialized)
@@ -322,6 +329,7 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.ConfirmDeleteDevices = ConfirmDeleteDevices;
             CmdrSettings.Instance.ConfirmDeleteMappingsSize = ConfirmDeleteMappingsSize;
             CmdrSettings.Instance.VerboseExceptions = VerboseExceptions;
+            CmdrSettings.Instance.RemoveEmptyDevices = RemoveEmptyDevices;
 
             CmdrSettings.Instance.Save(); 
 
