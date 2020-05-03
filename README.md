@@ -4,23 +4,19 @@
 
 ## Description
 
-CMDR is a mappings editor for NI Traktor Pro.\
-It runs in Windows and is an alternative to [Xtrememapping](https://www.xtrememapping.com). 
-
+CMDR is a mappings editor for NI Traktor Pro. It runs in Windows and is an alternative to [Xtrememapping](https://www.xtrememapping.com).\
 Use it to edit TSI files with basic features that are missing in the built-in Controller Manager:
 * Copy-Paste
 * Mass-Edit
 * Automation
-* [plus much more]()
+* [plus much more](docs/development/change_log.md)
 
 ## Download and Installation
 
 The latest download is ALWAYS available in this page: 
-[![download](docs/pics/icon/download.png?raw=true)](https://github.com/pestrela/cmdr/releases/latest/download/cmdr_tsi_editor_latest.zip)
-
-No installation needed. Just unzip the file and start cmdr.exe.
-
-VirusTotal check: [0](https://www.virustotal.com/gui/file/ab1db0d627782cfd55867addbac61d55be9debed9c3483ee527733eecf7b6610/detection)
+[![download](docs/pics/icon/download.png?raw=true)](https://github.com/pestrela/cmdr/releases/latest/download/cmdr_tsi_editor_latest.zip)\
+No installation needed. Just unzip the file and start cmdr.exe.\
+VirusTotal check: [0 out of 72](https://www.virustotal.com/gui/file/ab1db0d627782cfd55867addbac61d55be9debed9c3483ee527733eecf7b6610/detection)
 
 ## Requirements
 
@@ -36,24 +32,15 @@ Please see [the docs folder](docs) to learn how to use CMDR:
 * [FAQ](docs/faq.md)
 
 If you are familiar with CMDR, check [this folder](docs/development) as well
-* [Change Log](docs/development/change_log.md)
+* [2020 improvements](#2020-improvements)
+* [Full Change Log](docs/development/change_log.md)
 * [Development Info](docs/development/development_info.md)
 
 ## Screenshot
 
 ![cmdr_summary](docs/pics/cmdr_summary.png?raw=true)
 
-## 2020 improvements
-
-Consult the [changelog](docs/development/Change_Log.md) for complete details.
-
-![cmdr_improvements1](docs/pics/cmdr_improvements1.png?raw=true "")
-![cmdr_improvements2](docs/pics/cmdr_improvements2.png?raw=true "")
-![cmdr_reports](docs/pics/cmdr_reports.png?raw=true "")
-![cmdr_csv_export](docs/pics/cmdr_csv_export.png?raw=true "")
-![cmdr_keyboard_shortcuts](docs/pics/cmdr_keyboard_shortcuts.png?raw=true "")
-![cmdr_settings](docs/pics/cmdr_settings.png?raw=true "dede")
-
+Be sure to see the [2020 updates as well](#2020-improvements)
 
 ## Disclaimer
 
@@ -83,3 +70,15 @@ Until the software has reached a stable state, it is recommended to work on copi
 
 If you like this piece of software, please make a donation to the original author: 
 [![Donate button](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9BNNTDQF4X782 "Donate")
+
+
+## 2020 improvements
+
+Consult the [changelog](docs/development/Change_Log.md) for complete details.
+
+![cmdr_improvements1](docs/pics/cmdr_improvements1.png?raw=true "")
+![cmdr_improvements2](docs/pics/cmdr_improvements2.png?raw=true "")
+![cmdr_reports](docs/pics/cmdr_reports.png?raw=true "")
+![cmdr_csv_export](docs/pics/cmdr_csv_export.png?raw=true "")
+![cmdr_keyboard_shortcuts](docs/pics/cmdr_keyboard_shortcuts.png?raw=true "")
+![cmdr_settings](docs/pics/cmdr_settings.png?raw=true "dede")
