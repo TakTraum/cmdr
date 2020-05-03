@@ -167,4 +167,9 @@ datagrid tutorial:
   fundamentals: https://www.wpftutorial.net/ArchitecturePattern.html
 
 
+## Github
+  how to get a staic download link to latets releae:
+    https://www.rarst.net/code/link-latest-github-release-binary/
+    
+  
  
