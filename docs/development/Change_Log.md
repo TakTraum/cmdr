@@ -16,6 +16,16 @@
   
 ## Recent changes
 
+
+release 0.10.3 - 3 May 2020
+
+- Several bugfixes on recent features (filtering, arrow keys)
+- Add filtering grid to reports
+- CTRL+N: new midi device
+- CTRL+B: backup file (versioned)
+- Revert to saved command; optimize TSI option deletes empty devices
+
+
 release 0.10.2 - 27 April 2020
 new features:
 * added DDJ-T1 support
@@ -211,11 +221,7 @@ v0.6 - TakTraum April 2016
 -------------
 -------------
  
-release 0.10.3 - TBD
-
-- several bugfixes features (arrow keys, filtering)
-- CTRL+B: backup file (versioned)
-- add filtering grid to reports
+release 0.10.4 - TBD
 
  
  
