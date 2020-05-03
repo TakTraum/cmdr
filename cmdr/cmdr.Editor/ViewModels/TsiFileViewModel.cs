@@ -212,21 +212,22 @@ namespace cmdr.Editor.ViewModels
 
         public async Task<bool> SaveAsyncTsi(string filepath, bool backup = false)
         {
-            AcceptChanges();
             App.SetStatus("Saving " + filepath + " ...");
+
+            if (CmdrSettings.Instance.RemoveUnusedMIDIDefinitions) {
+                foreach (var dev in Devices.ToArray()) {
+                    if (dev.Mappings.Any()) {
+                        continue;
+                    }
+                    removeDevice(dev, true);
+                }
+            }
+
+            AcceptChanges();
 
             // save metadata
             foreach (var dev in Devices) {
                 dev.SaveMetadata();
-            }
-
-            if (CmdrSettings.Instance.RemoveUnusedMIDIDefinitions) {
-                foreach (var dev in Devices.ToArray()) {
-                    if (dev.Mappings.Any(){
-                        continue;
-                    }
-                    //dev.close();
-                }
             }
 
             bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath, CmdrSettings.Instance.OptimizeFXList, backup));
@@ -475,12 +476,12 @@ namespace cmdr.Editor.ViewModels
             else
                 SelectedDevice = null;
         }
-
-        private void removeDevice(DeviceViewModel device)
+        
+        private void removeDevice(DeviceViewModel device, bool is_optimizing_tsi = false)
         {
             int id = device.Id;
 
-            if (CmdrSettings.Instance.ConfirmDeleteDevices) {
+            if (!is_optimizing_tsi && CmdrSettings.Instance.ConfirmDeleteDevices) {
                 MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure to delete this device?", "Delete Confirmation", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.No)
                     return;
