@@ -154,8 +154,9 @@
                 <MenuItem Header="Save as CSV" Command="{Binding SaveAsCsvCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+C"/>
                 <MenuItem Header="Backup TSI (versioned)" Command="{Binding BackupVersionedCommand, Mode=OneTime}" InputGestureText="Ctrl+B"/>
                 <Separator/>
-                <MenuItem Header="_Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
+                <MenuItem Header="Conditions Overview" Command="{Binding ShowConditionsEditorCommand, Mode=OneTime}" />
                 <MenuItem Header="Commands Overview" Command="{Binding ShowCommandsReportEditorCommand, Mode=OneTime}" />
+                <MenuItem Header="Mappings Overview" Command="{Binding ShowMappingsReportCommand, Mode=OneTime}" />
                 <Separator/>
                 <MenuItem Header="New MIDI Device" Command="{Binding NewMidiDevCommand, Mode=OneTime}" InputGestureText="Ctrl+N" />
                 <Separator/>

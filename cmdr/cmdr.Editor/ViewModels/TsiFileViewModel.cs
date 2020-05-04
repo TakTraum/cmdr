@@ -106,6 +106,11 @@ namespace cmdr.Editor.ViewModels
             get { return _showCommandsReportEditorCommand ?? (_showCommandsReportEditorCommand = new CommandHandler(showCommandsReportEditor)); }
         }
 
+        private ICommand _showMappingsReport;
+        public ICommand ShowMappingsReport
+        {
+            get { return _showMappingsReport ?? (_showMappingsReport = new CommandHandler(showMappingsReport)); }
+        }
 
         #endregion
 
@@ -306,6 +311,44 @@ namespace cmdr.Editor.ViewModels
                               };
 
                 var new_rows = commands2.Select(c => new CommandsReportViewModel(dev_name, c.command, c.type, c.count));
+                rows.AddRange(new_rows);
+            }
+
+            // sort by "Command"
+            rows = rows.OrderBy(r => r.Command).ToList();
+
+            var dc = new CommandsReportEditorViewModel(rows);
+            var new_window = new Views.CommandsReportEditor
+            {
+                DataContext = dc
+            };
+            new_window.ShowDialog();
+
+        }
+
+        private void showMappingsReport()
+        {
+            var rows = new List<CommandsReportViewModel>();
+            foreach (var dev in Devices) {
+                string dev_name = dev.Comment;
+
+                // https://stackoverflow.com/questions/847066/group-by-multiple-columns
+                var commands1 = dev.Mappings
+                    .Select(m => (m.Item as MappingViewModel))
+                    .Select(m => new { command = m.MappedTo, type = m.Type });
+
+                var commands2 = from c in commands1
+                                group c.command
+                                // by new { c.command, c.type } into g
+                                by new { c.command } into g
+                                select new
+                                {
+                                    g.Key.command,
+                                    // type = g.Key.type,
+                                    count = g.Count()
+                                };
+
+                var new_rows = commands2.Select(c => new CommandsReportViewModel(dev_name, c.command, null, c.count));
                 rows.AddRange(new_rows);
             }
 

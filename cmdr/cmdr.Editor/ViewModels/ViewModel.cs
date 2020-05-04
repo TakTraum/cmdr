@@ -449,6 +449,12 @@ namespace cmdr.Editor.ViewModels
             get { return _showCommandsReportEditorCommand ?? (_showCommandsReportEditorCommand = new CommandHandler(showCommandsReportEditor, () => SelectedTsiFileModel != null && SelectedTsiFileModel.SelectedDevice != null)); }
         }
 
+        private ICommand _showMappingsReportCommand;
+        public ICommand ShowMappingsReportCommand
+        {
+            get { return _showMappingsReportCommand ?? (_showMappingsReportCommand = new CommandHandler(showMappingsReport, () => SelectedTsiFileModel != null && SelectedTsiFileModel.SelectedDevice != null)); }
+        }
+
         #endregion
 
 
@@ -829,6 +835,11 @@ namespace cmdr.Editor.ViewModels
         private void showCommandsReportEditor()
         {
             SelectedTsiFileModel.ShowCommandsReportEditorCommand.Execute(null);
+        }
+
+        private void showMappingsReport()
+        {
+            SelectedTsiFileModel.ShowMappingsReport.Execute(null);
         }
 
         private void showSettings()

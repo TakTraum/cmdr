@@ -174,7 +174,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             DataContextChanged += new DependencyPropertyChangedEventHandler(FilteringDataGrid_DataContextChanged);
 
             // Support going down from TextBoxes
-            AddHandler(KeyDownEvent, new RoutedEventHandler(HandleHandledKeyDown), true);
+            AddHandler(PreviewKeyDownEvent, new RoutedEventHandler(HandleHandledKeyDown), true);
         }
 
 
@@ -201,10 +201,35 @@ namespace cmdr.WpfControls.CustomDataGrid
         }
 
 
+        public bool KeyboardShiftPressed()
+        {
+            return (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift));
+        }
 
+        public bool KeyboardCtrlPressed()
+        {
+            return (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
+        }
+
+        public bool KeyboardAltPressed()
+        {
+            return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt));
+        }
+
+        public bool KeyboardAnyModifierPressed()
+        {
+            return (KeyboardShiftPressed() || KeyboardCtrlPressed() || KeyboardAltPressed());
+        }
+        
+
+        // handles arrow keys
         public void HandleHandledKeyDown(object sender, RoutedEventArgs e)
         {
             KeyEventArgs ke = e as KeyEventArgs;
+
+            if (KeyboardAnyModifierPressed()) {
+                //return;
+            }
 
             if (e.OriginalSource is TextBox) {
                 TextBox filterTextBox = e.OriginalSource as TextBox;
@@ -226,11 +251,13 @@ namespace cmdr.WpfControls.CustomDataGrid
                         //return;
                     }
 
-                    if (ke.Key == Key.Left && filterTextBox.SelectionStart == 0) {
+                    if (ke.Key == Key.Left && filterTextBox.SelectionStart == 0 && !KeyboardAnyModifierPressed()) {
                         move_focus(FocusNavigationDirection.Left);
+                        e.Handled = true;
 
-                    } else if (ke.Key == Key.Right && filterTextBox.SelectionStart == text.Length) {
+                    } else if (ke.Key == Key.Right && filterTextBox.SelectionStart == text.Length && !KeyboardAnyModifierPressed()) {
                         move_focus(FocusNavigationDirection.Right);
+                        e.Handled = true;
 
                     }
                 }
@@ -417,7 +444,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             if (item is RowItemViewModel) {
                 ((RowItemViewModel)item).ParentSelector = this;
             } else {
-                throw new InvalidOperationException("add_parent_selector NOT on RowItemViewModel");
+                //throw new InvalidOperationException("add_parent_selector NOT on RowItemViewModel");
 
             }
         }

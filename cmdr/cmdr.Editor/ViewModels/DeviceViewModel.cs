@@ -261,6 +261,12 @@ namespace cmdr.Editor.ViewModels
             get { return _showCommandsReportEditorCommand ?? (_showCommandsReportEditorCommand = new CommandHandler(showCommandsReportEditor)); }
         }
 
+        private ICommand _showMappingsReportCommand;
+        public ICommand ShowMappingsReportCommand
+        {
+            get { return _showMappingsReportCommand ?? (_showMappingsReportCommand = new CommandHandler(showMappingsReportCommand)); }
+        }
+
         private ICommand _refreshPortsCommand;
         public ICommand RefreshPortsCommand
         {
@@ -402,48 +408,11 @@ private bool can_change_selection_automatically()
 public void ClearFiltering()
 {
     this.ParentSelector.ClearFiltering();
-    return;
-
-
-    // to delete!
-    if (!Mappings.Any()) {
-        return;
-    }
-
-
-    try
-    {
-        Mappings.First().ClearFiltering();
-    }
-    catch (Exception e) {
-        if (true || CmdrSettings.Instance.VerboseExceptions) {
-            MessageBoxHelper.ShowException("Error clearing filtering", e);
-        }
-        return;
-    }
 }
 
 public void ReApplyFiltering()
 {
     this.ParentSelector.ReApplyFiltering();
-    return;
-
-
-    // to delete
-
-    if (!Mappings.Any()) {
-         return;
-    }
-
-    try {
-        Mappings.First().ReApplyFiltering();
-    }
-    catch (Exception e) {
-        if (true || CmdrSettings.Instance.VerboseExceptions) {
-            MessageBoxHelper.ShowException("Error reapplying filtering", e);
-        }
-        return;
-    }
 }
 
 
@@ -601,7 +570,14 @@ private void showCommandsReportEditor()
 
 }
 
-// this is "mappings delete". it is not "device delete"
+private void showMappingsReportCommand()
+{
+
+}
+
+
+
+// this action is "delete mappings". it is not "delete a device"
 private void delete()
 {
     // is this function already present?
