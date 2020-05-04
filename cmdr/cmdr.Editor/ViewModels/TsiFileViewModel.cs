@@ -9,6 +9,7 @@ using cmdr.WpfControls.Behaviors;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
 using cmdr.WpfControls.ViewModels;
+using cmdr.WpfControls.CustomDataGrid;
 
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,8 @@ namespace cmdr.Editor.ViewModels
             set {
                 _selectedDevice = value;
                 raisePropertyChanged("SelectedDevice");
+
+                remember_cgd();
 
                 if (CmdrSettings.Instance.ClearFilterAtPageChanges) {
                     SelectedDevice.ClearFiltering();
@@ -116,7 +119,7 @@ namespace cmdr.Editor.ViewModels
                 IsChanged = true;
             else {
                 foreach (var device in _tsiFile.Devices) {
-                    var dvm = new DeviceViewModel(device);
+                    var dvm = new DeviceViewModel(device, this);
                     Devices.Add(dvm);
                     dvm.DirtyStateChanged += (s, a) => onDeviceChanged();
                 }
@@ -395,9 +398,111 @@ namespace cmdr.Editor.ViewModels
             SelectedDevice = selected;
         }
 
+
+        // pestrela 4 May 2020:
+        //   This is a link to the datagrid.
+        //   It was moved to the TSI level to be able to clear filtering with zero mappings.
+        //  hcnaging TSIs reconstructs the whole thing (?) so the filters are cleared
+        private CustomDataGrid _cdg_parent_selector = null;
+        public CustomDataGrid CDG_ParentSelector
+        {
+            get
+            {
+                return _cdg_parent_selector;
+            }
+            set
+            {
+                //empty setter on purpose
+            }
+        }
+
+        private bool remember_cgd_inner(bool debug = false)
+        {
+            if (debug) {
+                int i = 9;
+            }
+
+            if (SelectedDevice == null) {
+                return false;
+            }
+            if (!SelectedDevice.Mappings.Any()) {
+                return false;
+            }
+
+            var first_m = SelectedDevice.Mappings.First();
+            var first_p = SelectedDevice.Mappings.First().ParentSelector;
+
+            if (first_p == null) {
+                return false;
+            }
+
+            var what = SelectedDevice.Mappings.First().ParentSelector;
+            if (!(what is CustomDataGrid)) {
+                return false;
+            }
+
+
+            CustomDataGrid new_cdg = (CustomDataGrid)what;
+            if (_cdg_parent_selector == null) {
+                _cdg_parent_selector = new_cdg;
+                return true;
+            }
+
+            if (_cdg_parent_selector != new_cdg) {
+                return false;
+            }
+
+            // we remember the SAME datagrid. The only sane outcome
+            return true;
+        }
+
+        public void remember_cgd()
+        {
+            bool sucess = remember_cgd_inner();
+            if (!sucess) {
+                remember_cgd_inner(true);
+            }
+
+        }
+
+
+        public void ClearFiltering()
+        {
+            if (this.CDG_ParentSelector != null) {
+                this.CDG_ParentSelector.ClearFiltering();
+            } else {
+                var i = 9;
+                // warn user?
+            }
+        }
+
+        public bool HasFiltering()
+        {
+            if (this.CDG_ParentSelector != null) {
+                return this.CDG_ParentSelector.HasFiltering();
+            } else {
+                return true;  // be carefull by default!
+            }
+        }
+
+        public void ReApplyFiltering()
+        {
+            if (this.CDG_ParentSelector != null) {
+                this.CDG_ParentSelector.ReApplyFiltering();
+            } else {
+                var i = 9;
+                // warn user?
+            }
+        }
+
+
         private void onDeviceChanged()
         {
             IsChanged = Devices.Any(d => d.IsChanged);
+
+            // desperation starts to kick-in.
+            remember_cgd();
+
         }
 
         private static IEnumerable<MenuItemViewModel> generateAddDeviceMenuItems()
@@ -456,14 +561,14 @@ namespace cmdr.Editor.ViewModels
         private void addDevice(Device rawDevice)
         {
             _tsiFile.AddDevice(rawDevice);
-            var dvm = new DeviceViewModel(rawDevice);
+            var dvm = new DeviceViewModel(rawDevice, this);
             Devices.Add(dvm);
         }
 
         private void insertDevice(int index, Device rawDevice)
         {
             _tsiFile.InsertDevice(index, rawDevice);
-            var dvm = new DeviceViewModel(rawDevice);
+            var dvm = new DeviceViewModel(rawDevice, this);
             Devices.Insert(index, dvm);
         }
 

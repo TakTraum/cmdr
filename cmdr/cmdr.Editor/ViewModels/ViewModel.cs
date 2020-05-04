@@ -406,6 +406,12 @@ namespace cmdr.Editor.ViewModels
             get { return _selectAllToggle ?? (_selectAllToggle = new CommandHandler(() => selectAllToggle(), () => canSelectAllToggle())); }
         }
 
+        private ICommand _selectNone;
+        public ICommand SelectNone
+        {
+            get { return _selectNone ?? (_selectNone = new CommandHandler(() => selectNone(), () => canSelectAllToggle())); }
+        }
+
 
         private ICommand _helpCommand;
         public ICommand HelpCommand
@@ -666,6 +672,11 @@ namespace cmdr.Editor.ViewModels
         private void selectAllToggle()
         {
             SelectedTsiFileModel.SelectedDevice.selectAllToggle();
+        } 
+        
+        private void selectNone()
+        {
+            SelectedTsiFileModel.SelectedDevice.selectNone();
         }
 
         private bool canSelectAllToggle()
@@ -676,7 +687,8 @@ namespace cmdr.Editor.ViewModels
         private void clearFilteringCommand()
         {
             if (canClearFiltering()) {
-                var dev = SelectedTsiFileModel.SelectedDevice;
+                //var dev = SelectedTsiFileModel.SelectedDevice;
+                var dev = SelectedTsiFileModel;
                 dev.ClearFiltering();
             }
         }
@@ -684,6 +696,8 @@ namespace cmdr.Editor.ViewModels
         private bool canClearFiltering()
         {
             if (is_dev_loaded()) {
+                return true;
+
                 var tsi = SelectedTsiFileModel.SelectedDevice;
                 if (tsi.Mappings.Count() > 0) {
                     return true;
@@ -862,7 +876,7 @@ namespace cmdr.Editor.ViewModels
             // bind viewmodel's title to MDI child title
             vm.PropertyChanged += (s, e) => {
                 // this is called in EVERY property change!
-                // do  function for this
+                // do a seperate function for this
                 if (e.PropertyName == "Title" || e.PropertyName == "IsChanged")
                     mdiChild.Title = vm.Title + (vm.IsChanged ? "*" : "");
                 refreshAppTitle();

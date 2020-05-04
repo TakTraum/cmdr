@@ -20,8 +20,7 @@ Resources necessary to build it yourself: [Dev Info](development/development_inf
 
 If you used cmdr before, consult what changed recently: [Change Log](development/change_log.md)
 
-
-## Screens
+## ScreenShoots
 
 Screenshots are in [this folder](pics)
 

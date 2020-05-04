@@ -50,8 +50,9 @@
         <KeyBinding Key="Q" Modifiers="Control" Command="{Binding ClearFiltering, Mode=OneTime}"/>
         <KeyBinding Key="A" Modifiers="Control" Command="{Binding SelectAll, Mode=OneTime}"/>
 
-        <KeyBinding Key="Oemtilde" Modifiers="Control" Command="{Binding SwapConditions, Mode=OneTime}"/>
-        <KeyBinding Key="Oemtilde" Modifiers="Control+Shift" Command="{Binding SelectAllToggle, Mode=OneTime}"/>
+        <KeyBinding Key="D7" Modifiers="Control" Command="{Binding SwapConditions, Mode=OneTime}"/>
+        <KeyBinding Key="Oemtilde" Modifiers="Control" Command="{Binding SelectAllToggle, Mode=OneTime}"/>
+        <KeyBinding Key="Oemtilde" Modifiers="Control+Shift" Command="{Binding SelectNone, Mode=OneTime}"/>
 
         <KeyBinding Key="OemMinus" Modifiers="Control" Command="{Binding DecOneCommand, Mode=OneTime}"/>
         <KeyBinding Key="OemPlus" Modifiers="Control" Command="{Binding IncOneCommand, Mode=OneTime}"/>
@@ -138,7 +139,8 @@
             </MenuItem>
             
             <MenuItem Header="_Navigation">
-                <MenuItem Header="Select All (Toggle)" Command="{Binding SelectAllToggle, Mode=OneTime}" InputGestureText="Alt+Tilde" />
+                <MenuItem Header="Select All (Toggle)" Command="{Binding SelectAllToggle, Mode=OneTime}" InputGestureText="Ctrl+Tilde" />
+                <MenuItem Header="Select None" Command="{Binding SelectNone, Mode=OneTime}" InputGestureText="Ctrl+Shift+Tilde" />
                 <MenuItem Header="Goto Top" Command="{Binding BringIntoViewTop, Mode=OneTime}" InputGestureText="Alt+Q" />
                 <MenuItem Header="Goto Bottom" Command="{Binding BringIntoViewBottom, Mode=OneTime}" InputGestureText="Alt+A" />
                 <Separator/>
@@ -198,7 +200,7 @@
                 <MenuItem Header="Inc Condition2 Key" Command="{Binding IncModifierCondition2, Mode=OneTime}" InputGestureText="Ctrl+4" />
                 <MenuItem Header="Inc Condition2 Value" Command="{Binding IncModifierConditionValue2, Mode=OneTime}" InputGestureText="Ctrl+Shift+4" />
                 <Separator/>
-                <MenuItem Header="Swap Conditions" Command="{Binding SwapConditions, Mode=OneTime}" InputGestureText="Ctrl+Tilde" />
+                <MenuItem Header="Swap Conditions" Command="{Binding SwapConditions, Mode=OneTime}" InputGestureText="Ctrl+7" />
             </MenuItem>
 
             <MenuItem Header="_Help">

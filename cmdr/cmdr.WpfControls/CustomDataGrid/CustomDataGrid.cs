@@ -26,6 +26,16 @@ namespace cmdr.WpfControls.CustomDataGrid
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomDataGrid), new FrameworkPropertyMetadata(typeof(CustomDataGrid)));
         }
 
+        // trying to disable CTRL+V. Not finished yet
+        private void textBox_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy ||
+                e.Command == ApplicationCommands.Cut ||
+                e.Command == ApplicationCommands.Paste) {
+                e.Handled = true;
+            }
+        }
+
         #region clear_filtering
 
         /*
@@ -59,8 +69,40 @@ namespace cmdr.WpfControls.CustomDataGrid
             
         }
         
+        //
+        public void ReApplyFiltering()
+        {
+            ApplyFilters();
+        }
+
+        public bool HasFiltering()
+        {
+            bool ret = false;
+
+            foreach (KeyValuePair<string, TextBox> entry in filtering_textBoxes.ToArray()) {
+                String key = entry.Key;
+                TextBox tb = entry.Value;
+                if (tb.Text!= "") {
+                    ret = true;
+                }
+            }
+
+            // also check the internal filters (needed ???)
+            foreach (KeyValuePair<string, ColumnFilter> entry in columnFilters) {
+                String key = entry.Key;
+                ColumnFilter filter = entry.Value;
+
+                if(filter.FilterValue != "") {
+                    ret = true;
+                }
+            }
+            return ret;
+        }
+
         public void ClearFiltering()
         {
+            _changing_page = false;
+
             var a = filtering_textBoxes;
            
             // clear the text boxes
@@ -167,6 +209,13 @@ namespace cmdr.WpfControls.CustomDataGrid
             if (e.OriginalSource is TextBox) {
                 TextBox filterTextBox = e.OriginalSource as TextBox;
                 string text = filterTextBox.Text;
+
+               /*
+                * // https://stackoverflow.com/questions/5113722/how-to-disable-copy-paste-and-delete-features-on-a-textbox-using-c-sharp
+                if(ke.Key == Key.V) {
+                    e.Handled = true;
+                    return;
+                }*/
 
                 if (ke.Key == Key.Down) {
                     move_focus(FocusNavigationDirection.Down);
@@ -362,18 +411,42 @@ namespace cmdr.WpfControls.CustomDataGrid
         }
 
         private bool _changing_page = false;
-        
+
+        private void add_parent_selector(object item)
+        {
+            if (item is RowItemViewModel) {
+                ((RowItemViewModel)item).ParentSelector = this;
+            } else {
+                throw new InvalidOperationException("add_parent_selector NOT on RowItemViewModel");
+
+            }
+        }
+
+        private void regenerate_parent_selector()
+        {
+            if (ItemsSource != null) {
+                foreach (var item in ItemsSource) {
+                    add_parent_selector(item);
+                }
+            }
+        }
+
+
         // This is how we link the mappings to the custom DataGrid
         // Because this came from XML
         protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             // this is just for debugging
-            //int c1 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+            if (ItemsSource != null) {
+                int c1 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+            }
 
             base.OnItemsChanged(e);
 
             // this is just for debugging
-            //int c2 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+            if (ItemsSource != null) {
+                int c2 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;
+            }
 
             // Avoid infinite recursion here
             if (!_changing_page) {
@@ -390,26 +463,29 @@ namespace cmdr.WpfControls.CustomDataGrid
                     foreach (var item in e.NewItems) {
                         add_parent_selector(item);
                     }
+
+                    regenerate_parent_selector();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     foreach (var item in Items) {
                         add_parent_selector(item);
                     }
-                    //item.ParentSelector = this;
+                    regenerate_parent_selector();
+
                     break;
+
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                    regenerate_parent_selector();
+
+                    break;
+
+
                 default:
+                    var i = 9;
                     break;
             }
         }
 
-        private void add_parent_selector(object item)
-        {
-            if (item is RowItemViewModel) {
-                ((RowItemViewModel)item).ParentSelector = this;
-            }
-
-
-        }
                
         private object GetPropertyValue(object row, Binding binding)
         {

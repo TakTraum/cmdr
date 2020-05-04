@@ -26,6 +26,19 @@ namespace cmdr.Editor.ViewModels
 {
     public class DeviceViewModel : AReversible
     {
+        private TsiFileViewModel _parentSelector;
+        public TsiFileViewModel ParentSelector
+        {
+            get
+            {
+                return _parentSelector;
+            }
+            set
+            {
+                _parentSelector = value;
+            }
+        }
+
         public static readonly string ALL_PORTS = "All Ports";
         public static readonly string DEFAULT_PORT = "None";
 
@@ -138,7 +151,14 @@ namespace cmdr.Editor.ViewModels
         private ObservableCollection<RowItemViewModel> _selectedMappings = new ObservableCollection<RowItemViewModel>();
         public ObservableCollection<RowItemViewModel> SelectedMappings
         {
-            get { return _selectedMappings; }
+            get {
+                return _selectedMappings;
+            }
+            set {
+                // this is never called. Its the methods that change the collection
+                _selectedMappings = value;
+                //raisePropertyChanged("TBD");
+            }
         }
         
         private MappingEditorViewModel _mappingEditorViewModel;
@@ -331,8 +351,12 @@ public void BringIntoView(int what)
 
 }
 
-public DeviceViewModel(Device device)
+// Constructor
+public DeviceViewModel(Device device, TsiFileViewModel parent)
 {
+    // link to parent, used for the filtering operations
+    this.ParentSelector = parent;
+
     _device = device;
     _traktorVersion = _device.TraktorVersion;
 
@@ -361,14 +385,67 @@ public DeviceViewModel(Device device)
         SelectedMappings.Add(Mappings.First());
         updateAddMappingContextMenus();
 
-        ClearFiltering();
+        this.ParentSelector.ClearFiltering();
     }
+}
+
+
+// only allow messing with the selection if nothing is filtered. Too many corner cases
+private bool can_change_selection_automatically()
+{
+    bool has_filtering = this.ParentSelector.HasFiltering();
+    bool ret = !has_filtering;
+    //ret = false;
+    return ret; 
 }
 
 public void ClearFiltering()
 {
-    Mappings.First().ClearFiltering();
+    this.ParentSelector.ClearFiltering();
+    return;
+
+
+    // to delete!
+    if (!Mappings.Any()) {
+        return;
+    }
+
+
+    try
+    {
+        Mappings.First().ClearFiltering();
+    }
+    catch (Exception e) {
+        if (true || CmdrSettings.Instance.VerboseExceptions) {
+            MessageBoxHelper.ShowException("Error clearing filtering", e);
+        }
+        return;
+    }
 }
+
+public void ReApplyFiltering()
+{
+    this.ParentSelector.ReApplyFiltering();
+    return;
+
+
+    // to delete
+
+    if (!Mappings.Any()) {
+         return;
+    }
+
+    try {
+        Mappings.First().ReApplyFiltering();
+    }
+    catch (Exception e) {
+        if (true || CmdrSettings.Instance.VerboseExceptions) {
+            MessageBoxHelper.ShowException("Error reapplying filtering", e);
+        }
+        return;
+    }
+}
+
 
 public void SaveMetadata()
 {
@@ -528,15 +605,27 @@ private void showCommandsReportEditor()
 private void delete()
 {
     // is this function already present?
-    removeMappings(_selectedMappings);
+    removeMappings(SelectedMappings);
 }
 
-private void OnModification()
-{
-    if (CmdrSettings.Instance.ClearFilterAtModifications) {
-        ClearFiltering();
-    }
-}
+        private void OnModification()
+        {
+            var all_count = Mappings.Count;
+            var selected_count = SelectedMappings.Count;
+
+            
+            if (CmdrSettings.Instance.ClearFilterAtModifications) {
+                ClearFiltering();
+            } else {
+                // ReApplyFiltering(); // is this needed??
+            }
+
+            var all_count2 = Mappings.Count;
+            var selected_count2 = SelectedMappings.Count;
+
+            // pestrela: be extra carefull
+            updateEditor(null);  // is this needed?
+        }
 
 private void duplicate()
 {
@@ -547,7 +636,7 @@ private void duplicate()
 private void cut()
 {
     copy();
-    removeMappings(_selectedMappings);
+    removeMappings(SelectedMappings);
 }
 
 private void copy()
@@ -566,13 +655,22 @@ private void paste()
     if (_selectedMappings.Count > 0)
     {
         index = _mappings.IndexOf(sorted.Last()) + 1;
-        SelectedMappings.Clear();
+        if (can_change_selection_automatically()) {
+            SelectedMappings.Clear();
+        }
     }
 
-    foreach (var mapping in _mappingClipboard)
-        insertMapping(index++, mapping.Copy(true));
+    foreach (var mapping in _mappingClipboard) {
+        var new_map = mapping.Copy(true);
+        insertMapping(index++, new_map);
+    }
 
-    _selectedMappings.Last().BringIntoView();
+    if (can_change_selection_automatically()) {
+        _selectedMappings.Last().BringIntoView();
+    }
+
+    var all_mappings = _mappings.Count;
+    var all_selected_mappings = _selectedMappings.Count;
 
     OnModification();
 }
@@ -692,6 +790,8 @@ public void limit_add_mapping_menus(string SearchText)
 // This function is called everytime we select a new mapping. 
 // This is to put the shorthand of the current command in IN/OUT with a seperator 
 // This is ONLY for the OUT menu
+
+// FIXME: add IN shortcut as well 
 private void updateAddMappingContextMenus()
 {
 
@@ -763,7 +863,9 @@ private void insertMapping(int index, Mapping rawMapping)
     var row = new RowItemViewModel(mvm);
     _mappings.Insert(index, row);
 
-    SelectedMappings.Add(row);
+    if (can_change_selection_automatically()) {
+        SelectedMappings.Add(row);
+    }
 
     OnModification();
 }
@@ -798,8 +900,10 @@ private void addMapping(MenuItemViewModel item)
 
 private void selectExclusive(RowItemViewModel row)
 {
-    SelectedMappings.Clear();
-    SelectedMappings.Add(row);
+    if (can_change_selection_automatically()) {
+        SelectedMappings.Clear();
+        SelectedMappings.Add(row);
+    }
 }
 
 private void removeMappings(IEnumerable<RowItemViewModel> mappings)
@@ -807,6 +911,16 @@ private void removeMappings(IEnumerable<RowItemViewModel> mappings)
     var selected = new List<RowItemViewModel>(mappings);
     var count = selected.Count();
 
+
+    // debug purposes
+    var real_count = _mappings.Count;
+    if(count > real_count) {
+        int selected_count = _selectedMappings.Count();
+
+        MessageBoxHelper.ShowFailedAssert(
+             string.Format("Error while deleting mappings. Tried to delete {0} mappings, but only {1} exist.", count, real_count));
+        return;
+    }
 
     if ((CmdrSettings.Instance.ConfirmDeleteMappingsSize > 0) &&
         (count > CmdrSettings.Instance.ConfirmDeleteMappingsSize)
@@ -878,6 +992,8 @@ private void updateEditor(IList selection)
     // otherwise it's called too often because e.g. "select all" builds collection of selected items incrementally
     // should be called when selection is complete and not changing anymore. 
     // therefore it's better to use an EventTrigger on DataGrid's SelectionChanged
+
+    // pestrela: note that "selection" is not used. So we can call this from more places
 
     var selectedMappingViewModels = _selectedMappings.Select(m => m.Item as MappingViewModel);
     MappingEditorViewModel = new MappingEditorViewModel(this, selectedMappingViewModels);
@@ -953,6 +1069,7 @@ void Mappings_CollectionChanged(object sender, System.Collections.Specialized.No
     }
 
     IsChanged = true;
+    this.ParentSelector.remember_cgd();  // is this needed?
 }
 
 #endregion
