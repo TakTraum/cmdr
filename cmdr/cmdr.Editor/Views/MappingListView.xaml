@@ -37,7 +37,9 @@
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.Type, Mode=OneTime}" Header="I/O" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.TraktorCommand, Mode=OneWay}" Header="Command" Width="200" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.AssignmentExpression, Mode=OneWay}" Header="Assignment" Width="100" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Item.ConditionExpression, Mode=OneWay}" Header="Condition" Width="150" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.ConditionExpression, Mode=OneWay}" Header="Conditions" Width="150" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Condition1, Mode=OneWay}" Header="Condition1" Width="150" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Condition2, Mode=OneWay}" Header="Condition2" Width="150" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.Interaction, Mode=OneWay}" Header="Interaction" Width="100" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.MappedTo, Mode=OneWay}" Header="Mapped To" Width="100" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.Comment, UpdateSourceTrigger=PropertyChanged}" Header="Comment" MinWidth="75" Width="*"/>

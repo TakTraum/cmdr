@@ -39,7 +39,23 @@ namespace cmdr.Editor.ViewModels
 
         public string Interaction { get { return String.Format("{0} - {1}", Command.ControlType.ToDescriptionString(), Command.InteractionMode.ToDescriptionString()); } }
 
-        public string ConditionExpression { get { return Conditions.Name ?? Conditions.ToString(); } }
+        public string ConditionExpression {
+            get {
+                return Conditions.Name ?? Conditions.ToString();
+            }
+        }
+
+        public string Condition1 {
+            get {
+                return Conditions.Name ?? Conditions.ToString2("one");
+            }
+        }
+
+        public string Condition2 {
+            get {
+                return Conditions.Name ?? Conditions.ToString2("two");
+            }
+        }
 
         public string Comment
         {
@@ -325,6 +341,7 @@ namespace cmdr.Editor.ViewModels
         {
             List<string> ret = new List<string>();
 
+            // FIXME: generate union of condition1 and 2
             if (header) {
 
                 // FIXME: how to write this in C# better ???

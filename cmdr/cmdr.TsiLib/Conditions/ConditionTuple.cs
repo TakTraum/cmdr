@@ -60,13 +60,32 @@ namespace cmdr.TsiLib.Conditions
             SetCondition(rawSettings, ConditionNumber.Two, swap);
         }
 
-        // pestrela todo: break conditions into 2x entries again
-        public override string ToString()
+        // note: this override is needed to update the datagrid
+        public string ToString()
         {
-            var conditions = new[] { Condition1, Condition2 }.Where(c => c != null);
-            conditions.OrderBy(c => c.ToString());   // ???
-            return String.Join(" AND ", conditions.Select(c => c.ToString()));
-        } 
+            return this.ToString2("both");
+        }
+
+        public string ToString2(string what = "both")
+        {
+            //what = "both";
+            if (what == "one") {
+                return Condition1?.ToString() ?? "";
+
+            } else if (what == "two") {
+                return Condition2?.ToString() ?? "";
+
+            } else if (what == "both") {
+                var conditions = new[] { Condition1, Condition2 }.Where(c => c != null);
+                conditions.OrderBy(c => c.ToString());   // ???
+                return String.Join(" AND ", conditions.Select(c => c.ToString()));
+
+            } else {
+                throw new Exception("Invalid condition.toString()");
+            }
+
+            return "";
+        }
 
         public override bool Equals(object obj)
         {
