@@ -253,3 +253,17 @@ more bugfixes to filtering code. When filter is enabled, no changed to selection
   
 
   
+  new operators:
+   https://stackoverflow.com/questions/1660269/empty-string-if-null
+   https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-
+   https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator
+   
+   A ?? B 
+      ==>  if(A!=null) then A else B
+   A?.B 
+      ==>  if(A!=null) then A.B else NULL
+      
+   
+
+  
+  

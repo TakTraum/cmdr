@@ -156,6 +156,13 @@ namespace cmdr.TsiLib
             }
             catch (Exception ex)
             {
+                
+                // FIXME: show this to the user somehow
+                //   at least a show console option
+
+                // Exception thrown: 'System.OutOfMemoryException' in mscorlib.dll
+                // Error building controller config. Reason: Exception of type 'System.OutOfMemoryException' was thrown.
+
                 Debug.WriteLine("Error building controller config. Reason: " + ex.Message);
                 return false;
             }

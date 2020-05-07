@@ -222,6 +222,7 @@ namespace cmdr.Editor.ViewModels
         {
             App.SetStatus("Saving " + filepath + " ...");
 
+            // Remove EMPTY devices at save
             if (CmdrSettings.Instance.RemoveUnusedMIDIDefinitions) {
                 foreach (var dev in Devices.ToArray()) {
                     if (dev.Mappings.Any()) {

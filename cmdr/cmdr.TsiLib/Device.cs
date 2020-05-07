@@ -337,8 +337,7 @@ namespace cmdr.TsiLib
         private void reduceDefinitions2(MappingType what)
         {
             var deviceData = RawDevice.Data;
-            //var used_bindings = this.Mappings.Where(d => d.Type == what).Select(d => d.MidiBinding).Where(e => e != null).Select(d => d.Note).ToList();  //
-            var used_bindings = this.Mappings.Select(d => d.MidiBinding).Where(e => e != null).Where(d => d.Type == what).Select(d => d.Note).ToList();  //
+            var used_bindings = this.Mappings.Select(d => d.MidiBinding).Where(e => e != null).Where(d => d.Type == what).Select(d => d.Note).Distinct().ToList();
             List<MidiDefinition> cur_definitions = (what == MappingType.In) ? deviceData.MidiDefinitions.In.Definitions : deviceData.MidiDefinitions.Out.Definitions;
 
             List<MidiDefinition> new_definitions = new List<MidiDefinition>(); // = definitions.Where(d => false);   // just to get the structure
@@ -346,10 +345,14 @@ namespace cmdr.TsiLib
             foreach (var binding in used_bindings)
             {
                 var used_definitions = cur_definitions.Where(d => d.MidiNote == binding);
+                if (used_definitions.Any()) {
+                    // FIXME: see what we lose here (colisions)
+                    // FIXME: do this whole thing in pure LINQ
+                    
+                    // FIXME: also apply this at save time. Right now it is load time only.
 
-                foreach (var used_definition in used_definitions)
-                {
-                    new_definitions.Add(used_definition);   // TODO: check collisions
+                    new_definitions.Add(used_definitions.First());   
+     
                 }
 
             }

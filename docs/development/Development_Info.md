@@ -172,4 +172,24 @@ datagrid tutorial:
     https://www.rarst.net/code/link-latest-github-release-binary/
     
   
+# out of memory situations
+    https://stackoverflow.com/questions/1153702/system-outofmemoryexception-was-thrown-when-there-is-still-plenty-of-memory-fr
  
+    https://msdn.microsoft.com/en-us/library/system.outofmemoryexception(v=vs.110).aspx
+ 
+    https://www.codeproject.com/Questions/224672/Exception-of-type-System-OutOfMemoryException-was
+
+## What is the fastest way to edit mappings:
+
+I've found that the fastest to edit mappings is to directly edit your settings, having an empty collection, and restart whole traktor every time.
+
+Specific steps:
+- run CMDR first
+- open Traktor Settings.TSI directly
+- Use an empty collection (everything is backed-up on root/backups/collection)
+- create versioned backups of the TSI (CTRL+B)
+- Open traktor:
+  - Fix bgs in the mapping
+  - Only use the controller editor for on-off tests where you need to see the modifier state, etc
+  - When ready to retest, close tracktor and then save in CMDR
+  

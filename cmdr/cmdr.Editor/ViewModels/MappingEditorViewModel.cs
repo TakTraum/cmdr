@@ -908,11 +908,16 @@ namespace cmdr.Editor.ViewModels
             var conditions_list = conditions_editor.Conditions;
 
             foreach (var mapping in _mappings) 
-{
+            {
                 mapping.Conditions.Swap();
 
                 mapping.UpdateConditionExpression();
             }
+
+            raisePropertyChanged("Condition1");
+            raisePropertyChanged("Condition2");
+            raisePropertyChanged("ConditionExpression");
+
             conditions_editor.Refresh();
         }
 
