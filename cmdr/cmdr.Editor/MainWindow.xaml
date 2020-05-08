@@ -164,6 +164,8 @@
                 <MenuItem Header="Octuplicate Pad" Command="{Binding OctuplicateCommand, Mode=OneTime}" InputGestureText="Ctrl+Shift+T" />
                 <Separator/>
                 <MenuItem Header="Replace in Comments" Command="{Binding SedCommentsCommand, Mode=OneTime}" InputGestureText="CtrlShift+R" />
+                <Separator/>
+                <MenuItem Header="Generate Statistics" Command="{Binding DoStatsCommand, Mode=OneTime}" InputGestureText="" />
 
             </MenuItem> 
             

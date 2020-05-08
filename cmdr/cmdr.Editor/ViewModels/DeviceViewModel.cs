@@ -396,12 +396,13 @@ public DeviceViewModel(Device device, TsiFileViewModel parent)
 }
 
 
-// only allow messing with the selection if nothing is filtered. Too many corner cases
+// only allow messing with the selection if nothing is filtered. There is too many corner cases
 private bool can_change_selection_automatically()
 {
     bool has_filtering = this.ParentSelector.HasFiltering();
     bool ret = !has_filtering;
     //ret = false;
+
     return ret; 
 }
 

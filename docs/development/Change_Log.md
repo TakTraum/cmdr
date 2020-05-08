@@ -224,6 +224,9 @@ v0.6 - TakTraum April 2016
 release 0.10.4 - TBD
 
 more bugfixes to filtering code. When filter is enabled, no changed to selection
+ added a stats command
+
+ 
  
  
     

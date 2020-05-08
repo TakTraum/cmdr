@@ -334,6 +334,7 @@ namespace cmdr.TsiLib
 
         }
 
+        // note: the unused default entries are PER DEVICE
         private void reduceDefinitions2(MappingType what)
         {
             var deviceData = RawDevice.Data;

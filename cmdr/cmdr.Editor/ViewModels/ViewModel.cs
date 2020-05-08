@@ -174,6 +174,14 @@ namespace cmdr.Editor.ViewModels
             }
         }
 
+        private ICommand _doStatsCommand;
+        public ICommand DoStatsCommand
+        {
+            get {
+                 return _doStatsCommand ?? (_doStatsCommand = new CommandHandler(() => doStatsCommand(), () => is_mvm_loaded()));
+            }
+        }
+
         private ICommand _octuplicateCommand;
         public ICommand OctuplicateCommand
         {
@@ -646,12 +654,23 @@ namespace cmdr.Editor.ViewModels
         {
             SelectedTsiFileModel.SelectedDevice.QuadruplicateCommand();
         }
-        
+
         private void octuplicateCommand()
         {
             SelectedTsiFileModel.SelectedDevice.OctuplicateCommand();
         }
 
+        private void doStatsCommand()
+        {
+
+            int devices_count = SelectedTsiFileModel.Devices.Count(); //.Sum();
+            int mappings_count = SelectedTsiFileModel.Devices.Select(d => d.Mappings.Count()).Sum();
+
+            Console.WriteLine(String.Format("TSI: {0}  Devices: {1}  Mappings: {2}", 
+                SelectedTsiFileModel.Path,
+                devices_count,
+                mappings_count));
+        }
 
         private void bringIntoViewTop()
         {
