@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen" 
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanMinimize"
-        Title="Window1" Height="188" Width="369">
+        Title="Window1" Height="238" Width="369">
     <Grid Margin="0,0,4,0">
 
         <StackPanel Margin="5,5,4,0" RenderTransformOrigin="0.5,0.5">

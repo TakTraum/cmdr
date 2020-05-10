@@ -21,6 +21,15 @@ namespace cmdr.Editor.ViewModels.Comment
             get { return _selectCommentsCommand ?? (_selectCommentsCommand = new CommandHandler<MenuItemViewModel>(selectComments)); }
         }
 
+        private ICommand _sedCommentsCommand;
+        public ICommand SedCommentsCommand
+        {
+            get
+            {
+                return _sedCommentsCommand ?? (_sedCommentsCommand = new CommandHandler(() => sedCommentsCommand()));
+            }
+        }
+
         private List<string> _selectedComments;
         private MenuItemViewModel _selectedCommentsMenuItem = new MenuItemViewModel { Text = "Selected Comments" };
 
@@ -50,6 +59,20 @@ namespace cmdr.Editor.ViewModels.Comment
             Comment = item.Tag.ToString();
         }
 
+        public void sedCommentsCommand()
+        {
+            SedResult sed = SedWindow.Prompt();
+            if (sed == null) {
+                return;
+            }
+
+            foreach (var m in _mappings) {
+                String cur = m.Comment;
+                String new_st = cur.Replace((String)sed._search, (String)sed._replace); //, true);
+                m.Comment = new_st;
+            }
+        }
+        
         public CommentEditorViewModel(IEnumerable<MappingViewModel> mappings)
         {
             _mappings = mappings;

@@ -24,11 +24,16 @@
                                              MenuPlacement="Left"
                                              Command="{Binding SelectCommentsCommand, Mode=OneTime}" 
                                              ItemsSource="{Binding CommentsMenu, Mode=OneTime}"   />
+
+        <Button Content="S__n__R" HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Width="50"
+                Command="{Binding SedCommentsCommand, Mode=OneTime}"
+                />
+        
         <TextBox 
                Grid.Row="0" Grid.Column="1"
                 TextWrapping="Wrap" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" 
                 HorizontalAlignment="Left" Width="180" Margin="5,0,0,0"  />
-
+        
 
     </Grid>
 </UserControl>

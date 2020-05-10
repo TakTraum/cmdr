@@ -934,7 +934,13 @@ namespace cmdr.Editor.ViewModels
                     openTab(vm);
                     _mru.Add(path);
                 } else {
-                    MessageBoxHelper.ShowError("Cannot open file.\nPlease confirm it opens in Traktor, and then upload the TSI to https://github.com/pestrela/cmdr/issues");
+                    MessageBoxHelper.ShowError(
+                        String.Format(
+                            "Cannot open file: {0}.\n"+
+                            "\n"+
+                            "Please confirm the file opens correctly in Traktor, and then upload the TSI to https://github.com/pestrela/cmdr/issues",
+                            path
+                            ));
                 }
             }
             else

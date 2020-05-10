@@ -292,18 +292,9 @@ namespace cmdr.Editor.ViewModels
         */
         public void SedCommentsCommand()
         {
-            var selected = this.SelectedMappings;
+            //SelectedTsiFileModel.SelectedDevice.
+                MappingEditorViewModel.CommentEditor.sedCommentsCommand();
 
-            SedResult sed = SedWindow.Prompt();
-            if(sed == null) {
-                return;
-            }
-
-            foreach (var m in SelectedMappings.Select(m => m.Item as MappingViewModel)) {
-                String cur = m.Comment;
-                String new_st = cur.Replace((String)sed._search, (String)sed._replace); //, true);
-                m.Comment = new_st;
-            }
         }
 
 
