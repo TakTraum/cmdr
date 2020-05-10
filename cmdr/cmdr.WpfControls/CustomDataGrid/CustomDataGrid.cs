@@ -99,6 +99,39 @@ namespace cmdr.WpfControls.CustomDataGrid
             return ret;
         }
 
+        public void SplitConditions(bool do_split)
+        {
+            int c0 = this.Columns.Select(c => c.Header).ToList().IndexOf("Conditions");
+            int c1 = this.Columns.Select(c => c.Header).ToList().IndexOf("Condition1");
+            int c2 = this.Columns.Select(c => c.Header).ToList().IndexOf("Condition2");
+
+            if (c0 < 0) {
+                //not initialized case
+                return;
+            }
+
+            Visibility v0;
+            Visibility v1;
+            Visibility v2;
+
+            if (do_split) {
+                v0 = Visibility.Collapsed;
+                v1 = Visibility.Visible;
+                v2 = Visibility.Visible;
+
+            } else {
+                v0 = Visibility.Visible;
+                v1 = Visibility.Collapsed;
+                v2 = Visibility.Collapsed;
+
+            }
+
+            this.Columns[c0].Visibility = v0;
+            this.Columns[c1].Visibility = v1;
+            this.Columns[c2].Visibility = v2;
+
+        }
+
         public void ClearFiltering()
         {
             _changing_page = false;
@@ -438,6 +471,7 @@ namespace cmdr.WpfControls.CustomDataGrid
         }
 
         private bool _changing_page = false;
+        private bool _first_time = true;
 
         private void add_parent_selector(object item)
         {
@@ -458,11 +492,15 @@ namespace cmdr.WpfControls.CustomDataGrid
             }
         }
 
-
         // This is how we link the mappings to the custom DataGrid
         // Because this came from XML
         protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            if (_first_time) {
+                _first_time = false;
+                SplitConditions(false);
+            }
+
             // this is just for debugging
             if (ItemsSource != null) {
                 int c1 = ((ListCollectionView)(CollectionViewSource.GetDefaultView(ItemsSource))).Count;

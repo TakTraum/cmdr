@@ -75,7 +75,11 @@
                                          Command="{Binding AddMappingCommand}"
                                          Width="75" Margin="0,0,5,0"/>
                 <controls:FilterControl Width="150" DataContext="{Binding FilterCmdViewModel, Mode=OneWay}" />
-                
+                <CheckBox Content="Split Conditions" 
+                          VerticalContentAlignment="Center" 
+                          IsChecked="{Binding SplitConditions, Mode=TwoWay}" 
+                          IsEnabled="True" />
+
             </StackPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
                 <controls:SearchControl Width="100" DataContext="{Binding SearchViewModel, Mode=OneWay}" />

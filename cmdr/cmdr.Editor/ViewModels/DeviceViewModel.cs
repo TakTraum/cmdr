@@ -239,6 +239,19 @@ namespace cmdr.Editor.ViewModels
             get { return _addMappingCommand ?? (_addMappingCommand = new CommandHandler<MenuItemViewModel>(addMapping)); }
         }
 
+        private bool _splitConditions;
+        public bool SplitConditions
+        {
+            get {
+                return _splitConditions;
+            }
+            set {
+               //SetProperty("SplitConditions", ref _splitConditions, ref value);
+               _splitConditions = value;
+               doSplitConditions();
+            }
+        }
+
         private ICommand _removeMappingCommand;
         public ICommand RemoveMappingCommand
         {
@@ -407,6 +420,10 @@ public void ReApplyFiltering()
     this.ParentSelector.ReApplyFiltering();
 }
 
+public void doSplitConditions()
+{
+    this.ParentSelector.SplitConditions(_splitConditions);
+}
 
 public void SaveMetadata()
 {

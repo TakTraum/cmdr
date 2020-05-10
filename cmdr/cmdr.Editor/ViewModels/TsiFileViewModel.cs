@@ -509,6 +509,15 @@ namespace cmdr.Editor.ViewModels
 
         }
 
+        public void SplitConditions(bool what)
+        {
+            if (this.CDG_ParentSelector != null) {
+                this.CDG_ParentSelector.SplitConditions(what);
+            } else {
+                var i = 9;
+                // warn user?
+            }
+        }
 
         public void ClearFiltering()
         {
