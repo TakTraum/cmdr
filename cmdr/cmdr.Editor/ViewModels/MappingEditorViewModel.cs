@@ -517,19 +517,90 @@ namespace cmdr.Editor.ViewModels
             return sb.ToString();
         }
 
+
+        public bool try_rotate_command_exceptions(MappingViewModel m, int step)
+            // returns: handled
+        {
+            var command = m.Command;
+            KnownCommands cur_id = (KnownCommands)m.Command.Id;
+
+            int cur_modifier;
+
+            switch (cur_id) {
+                case KnownCommands.Mixer_FXUnit1On:
+                    cur_modifier = 1;
+                    break;
+
+                case KnownCommands.Mixer_FXUnit2On:
+                    cur_modifier = 2;
+                    break;
+
+                case KnownCommands.Mixer_FXUnit3On:
+                    cur_modifier = 3;
+                    break;
+                case KnownCommands.Mixer_FXUnit4On:
+                    cur_modifier = 4;
+                    break;
+
+                default:
+                    return false;
+            }
+
+            int start_i = 1;
+            int end_i = 4;
+
+            int new_modifier = rotate_modifier_key_int(cur_modifier, step, start_i, end_i);
+
+            string new_name = patch_command_name(command.Name, new_modifier);
+
+            KnownCommands new_id;
+
+            switch (new_modifier) {
+                case 1:
+                    new_id = KnownCommands.Mixer_FXUnit1On;
+                    break;
+
+                case 2:
+                    new_id = KnownCommands.Mixer_FXUnit2On;
+                    break;
+
+                case 3:
+                    new_id = KnownCommands.Mixer_FXUnit3On;
+                    break;
+
+                case 4:
+                    new_id = KnownCommands.Mixer_FXUnit4On;
+                    break;
+
+                default:
+                    return false;
+            };
+
+            // pestrela: this is a bit fragile, and should be improved
+            m.Command.hack_modifier(new_id, new_name);
+            m.hack_modifier(new_id);
+
+            m.UpdateInteraction();
+
+            return true;
+        }
+
+
+
+
         public void try_rotate_command(MappingViewModel m, int step, KnownCommands start_c, KnownCommands end_c)
         {
             var command = m.Command;
             KnownCommands cur_id = (KnownCommands)m.Command.Id;
 
             if (!is_range_id(cur_id, start_c, end_c)){
-                return;
+                //return;
             }
 
             int cur_modifier = cur_id - start_c + 1;
 
             int start_i = 1;
-            int end_i = 8;
+            int end_i;
 
             switch (end_c) 
             {
@@ -539,6 +610,9 @@ namespace cmdr.Editor.ViewModels
                     end_i = 3;
                     break;
 
+                case KnownCommands.Mixer_FXUnit4On:
+                    end_i = 4;
+                    break;
 
                 case KnownCommands.Global_MidiControls_Buttons_MidiButton8:
                 case KnownCommands.Global_MidiControls_Knobs_MidiFader8:
@@ -548,16 +622,27 @@ namespace cmdr.Editor.ViewModels
                     end_i = 8;
                     break;
 
-                case KnownCommands.Mixer_FXUnit4On:
-                    end_i = 4;
-                    break;
-
                 case KnownCommands.RemixDeck_StepSequencer_EnableStep16:
+                case KnownCommands.DeckCommon_FreezeMode_SliceTrigger16:
                     // needs bugfix?
                     //return;
 
                     end_i = 16;
                     break;
+
+                default:
+                    MessageBoxHelper.ShowError(String.Format("Rotating command - unknown command: {0}", end_c));
+                    return;
+            }
+
+            int distance_id = end_c - start_c + 1;
+            if(distance_id != end_i) {
+                MessageBoxHelper.ShowError(String.Format("Rotating command {0} has id_diff of {1}, but expected {2}", end_c, distance_id, end_i));
+                return;
+            }
+
+            if (!is_range_id(cur_id, start_c, end_c)) {
+                return;
             }
 
             int new_modifier = rotate_modifier_key_int(cur_modifier, step, start_i, end_i);
@@ -602,8 +687,6 @@ namespace cmdr.Editor.ViewModels
                     KnownCommands.Global_MidiControls_Knobs_MidiKnob1,
                     KnownCommands.Global_MidiControls_Knobs_MidiKnob8,
 
-                    KnownCommands.Mixer_FXUnit1On,
-                    KnownCommands.Mixer_FXUnit4On,
                     KnownCommands.Modifier_Modifier1,
                     KnownCommands.Modifier_Modifier8,
 
@@ -624,6 +707,10 @@ namespace cmdr.Editor.ViewModels
 
             foreach (var m in _mappings) 
             {
+                if(try_rotate_command_exceptions(m, step)){
+                    continue;
+                }
+
                 // take elements two-by-two
                 for (var i = 0; i < possibilities.Count(); i = i + 2) 
                 {
