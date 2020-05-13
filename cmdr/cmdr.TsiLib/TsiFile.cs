@@ -147,11 +147,13 @@ namespace cmdr.TsiLib
             }
 
             // build controller config (binary)
-            DeviceIoConfigController controllerConfig = null;
+            //DeviceIoConfigController controllerConfig = null;
+            DeviceIoConfigKeyboard controllerConfig = null;
             try
             {
                 string tsiData = getDataAsBase64String();
-                controllerConfig = new DeviceIoConfigController();
+                //controllerConfig = new DeviceIoConfigController();
+                controllerConfig = new DeviceIoConfigKeyboard();
                 controllerConfig.Value = tsiData;
             }
             catch (Exception ex)
@@ -207,7 +209,9 @@ namespace cmdr.TsiLib
             FxSettings = FxSettings.Load(xml);
 
             // devices
-            var controllerConfig = xml.GetEntry<DeviceIoConfigController>();
+            //var controllerConfig = xml.GetEntry<DeviceIoConfigController>();
+            var controllerConfig = xml.GetEntry<DeviceIoConfigKeyboard>();
+            
             if (controllerConfig != null)
             {
                 byte[] decoded = Convert.FromBase64String(controllerConfig.Value);

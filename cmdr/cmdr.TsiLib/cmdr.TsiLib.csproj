@@ -175,6 +175,7 @@
     <Compile Include="FormatXml\Interpretation\DefaultButtonFx.cs" />
     <Compile Include="FormatXml\Interpretation\DefaultParamFx.cs" />
     <Compile Include="FormatXml\Interpretation\AudioFxSelection.cs" />
+    <Compile Include="FormatXml\Interpretation\DeviceIoConfigKeyboard.cs" />
     <Compile Include="FormatXml\Interpretation\DeviceIoConfigController.cs" />
     <Compile Include="FormatXml\Interpretation\Flavour.cs" />
     <Compile Include="FormatXml\Interpretation\Version.cs" />

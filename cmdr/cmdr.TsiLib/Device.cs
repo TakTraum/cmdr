@@ -72,21 +72,33 @@ namespace cmdr.TsiLib
         private List<Mapping> _mappings = new List<Mapping>();
         public IReadOnlyCollection<Mapping> Mappings { get { return _mappings.AsReadOnly(); } }
 
+        public static bool isGenericMidiDevice(String deviceTypeStr)
+        {
+
+            if (
+                (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
+                (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
+                (deviceTypeStr == "Traktor.Kontrol S8") ||
+                (deviceTypeStr == "Pioneer.DDJ-T1") ||
+                (deviceTypeStr == "Generic Keyboard") ||
+                false
+                ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+
         public Proprietary_Controller_DeviceType ProprietaryControllerDeviceType
         {
             get
             {
                 // pestrela: this is to support CanOverrideFactoryMap for the new devices
                 var deviceTypeStr = TypeStr;
-                if (
-                    (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
-                    (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
-                    (deviceTypeStr == "Traktor.Kontrol S8") ||
-                    (deviceTypeStr == "Pioneer.DDJ-T1") ||
-                    false
-                    )
+                if (!Device.isGenericMidiDevice(deviceTypeStr))
                     return Proprietary_Controller_DeviceType.Default;
-
+                
 
                 if (TypeStr.EndsWith(".Default"))
                     return Proprietary_Controller_DeviceType.Default;

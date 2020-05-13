@@ -1,5 +1,6 @@
 ﻿using System;
 using cmdr.TsiLib.Enums;
+using cmdr.TsiLib;
 
 namespace cmdr.TsiLib.MidiDefinitions.Base
 {
@@ -43,14 +44,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
 
         internal static AMidiDefinition Parse(string deviceTypeStr, MappingType type, Format.MidiDefinition definition)
         {
-
-            if (
-                (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
-                (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
-                (deviceTypeStr == "Traktor.Kontrol S8") ||
-                (deviceTypeStr == "Pioneer.DDJ-T1") ||
-                false
-                )
+            if (!Device.isGenericMidiDevice(deviceTypeStr))
                 return AProprietaryMidiDefinition.Parse(deviceTypeStr, definition);
 
             if (definition.ControlId > -1)
