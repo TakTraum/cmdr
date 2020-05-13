@@ -100,7 +100,7 @@ namespace cmdr.TsiLib
 
         public Device CreateDevice(string deviceTypeStr)
         {
-            return new Device(createNewId(), deviceTypeStr, TraktorVersion, false);
+            return new Device(createNewId(), deviceTypeStr, TraktorVersion, false, false);
         }
 
         public void AddDevice(Device device)
@@ -147,14 +147,33 @@ namespace cmdr.TsiLib
             }
 
             // build controller config (binary)
-            //DeviceIoConfigController controllerConfig = null;
-            DeviceIoConfigKeyboard controllerConfig = null;
+            DeviceIoConfigController controllerConfigController = null;
+            DeviceIoConfigKeyboard controllerConfigKeyboard = null;
             try
             {
-                string tsiData = getDataAsBase64String();
-                //controllerConfig = new DeviceIoConfigController();
-                controllerConfig = new DeviceIoConfigKeyboard();
-                controllerConfig.Value = tsiData;
+                //
+                // HACK: could not filter inside the write() method
+                // instead, we mix and match the devices before calling write()
+                //
+                var all_devices = _devicesContainer.Devices.List.Select(d => d).ToList();
+                var only_keyboard = _devicesContainer.Devices.List.Where(d => (d.IsKeyboard == true)).ToList();
+                var only_controllers = _devicesContainer.Devices.List.Where(d => (d.IsKeyboard == false)).ToList();
+
+                if (only_controllers.Any()) {
+                    _devicesContainer.Devices.List.Clear();
+                    _devicesContainer.Devices.List.AddRange(only_controllers);
+                    string tsiDataController = getDataAsBase64String();
+                    controllerConfigController = new DeviceIoConfigController();
+                    controllerConfigController.Value = tsiDataController;
+                }
+
+                if (only_keyboard.Any()) {
+                    _devicesContainer.Devices.List.Clear();
+                    _devicesContainer.Devices.List.AddRange(only_keyboard);
+                    string tsiDataKeyboard = getDataAsBase64String();
+                    controllerConfigKeyboard = new DeviceIoConfigKeyboard();
+                    controllerConfigKeyboard.Value = tsiDataKeyboard;
+                }
             }
             catch (Exception ex)
             {
@@ -178,7 +197,14 @@ namespace cmdr.TsiLib
                 TsiXmlDocument xml = (Path != null) ? new TsiXmlDocument(Path) : new TsiXmlDocument();
                 if (FxSettings != null && (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any()))
                     FxSettings.Save(xml);
-                xml.SaveEntry(controllerConfig);
+
+                if (controllerConfigController != null) {
+                    xml.SaveEntry(controllerConfigController);
+                }
+                if (controllerConfigKeyboard != null) {
+                    xml.SaveEntry(controllerConfigKeyboard);
+                }
+
                 xml.Save(filePath);
             }
             catch (Exception ex)
@@ -193,6 +219,21 @@ namespace cmdr.TsiLib
             return true;
         }
 
+        int max_id = 0;
+
+        private void load_devices_xml(StringXmlEntry controllerConfig, bool RemoveUnusedMIDIDefinitions, bool isKeyboard)
+        {
+            // Hack: we create a list of this type (keyboard/controllers)
+            // and then we append the items to the whole list
+            if (controllerConfig != null) {
+                byte[] decoded = Convert.FromBase64String(controllerConfig.Value);
+                _devicesContainer = new DeviceMappingsContainer(new MemoryStream(decoded));
+                var _devices_tmp = _devicesContainer.Devices.List.Select(d => new Device(max_id++, d, RemoveUnusedMIDIDefinitions, isKeyboard)).ToList();
+
+                _devices.AddRange(_devices_tmp);
+            }
+ 
+        }
 
         private void load(TsiXmlDocument xml, bool RemoveUnusedMIDIDefinitions)
         {
@@ -205,50 +246,45 @@ namespace cmdr.TsiLib
                     TraktorVersion = m.Groups[1].Value;
             }
 
-            // effects, optional (FxSettings.Load may return null)
+            // Effects, optional (FxSettings.Load may return null)
+            // can this move below ?
             FxSettings = FxSettings.Load(xml);
 
-            // devices
-            //var controllerConfig = xml.GetEntry<DeviceIoConfigController>();
-            var controllerConfig = xml.GetEntry<DeviceIoConfigKeyboard>();
-            
-            if (controllerConfig != null)
-            {
-                byte[] decoded = Convert.FromBase64String(controllerConfig.Value);
-                _devicesContainer = new DeviceMappingsContainer(new MemoryStream(decoded));
-                int id = 0;
-                _devices = _devicesContainer.Devices.List.Select(d => new Device(id++, d, RemoveUnusedMIDIDefinitions)).ToList();
+            // Devices
+            StringXmlEntry controllerConfigController = xml.GetEntry<DeviceIoConfigController>();
+            StringXmlEntry controllerConfigKeyboard = xml.GetEntry<DeviceIoConfigKeyboard>();
+            load_devices_xml(controllerConfigController, RemoveUnusedMIDIDefinitions, false);
+            load_devices_xml(controllerConfigKeyboard, RemoveUnusedMIDIDefinitions, true);
 
-                var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
-                var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
-                if (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any())
+            // Effects
+            var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
+            var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
+            if (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any()) {
+                // need FxSettings for interpretation but not provided by file itself?
+                if (FxSettings == null) 
                 {
-                    // need FxSettings for interpretation but not provided by file itself?
-                    if (FxSettings == null)
+                    // call for help
+                    string rId = new FileInfo(Path).Name;
+                    var request = new EffectIdentificationRequest(rId);
+                    var handler = EffectIdentificationRequest;
+                    if (handler != null) 
                     {
-                        // call for help
-                        string rId = new FileInfo(Path).Name;
-                        var request = new EffectIdentificationRequest(rId);
-                        var handler = EffectIdentificationRequest;
-                        if (handler != null)
-                        {
-                            handler(this, request);
+                        handler(this, request);
 
-                            // wait for help
-                            while (!request.Handled)
-                                Thread.Sleep(100);
+                        // wait for help
+                        while (!request.Handled)
+                            Thread.Sleep(100);
 
-                            if (request.FxSettings != null)
-                                FxSettings = request.FxSettings;
-                        }
+                        if (request.FxSettings != null)
+                            FxSettings = request.FxSettings;
                     }
-
-                    // if possible, replace effect indices (position on a list) with ids (actual command)
-                    if (FxSettings != null)
-                        restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
-                    else
-                        _ignoreFx = true;
                 }
+
+                // if possible, replace effect indices (position on a list) with ids (actual command)
+                if (FxSettings != null)
+                    restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
+                else
+                    _ignoreFx = true;
             }
         }
 

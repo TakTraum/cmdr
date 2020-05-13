@@ -13,6 +13,18 @@ namespace cmdr.TsiLib
     {
         public static readonly string TYPE_STRING_GENERIC_MIDI = "Generic MIDI";
 
+        public bool IsKeyboard
+        {
+            get
+            {
+                return RawDevice.IsKeyboard;
+            }
+            set
+            {
+                RawDevice.IsKeyboard = value;
+            }
+        }
+
         internal Format.Device RawDevice;
 
         /// <summary>
@@ -128,20 +140,21 @@ namespace cmdr.TsiLib
 
         public bool RemoveUnusedMIDIDefinitions { get; set; }
 
-        internal Device(int id, string deviceTypeStr, string traktorVersion, bool removeUnusedMIDIDefinition)
-            : this(id, new Format.Device(deviceTypeStr, traktorVersion, removeUnusedMIDIDefinition), removeUnusedMIDIDefinition)
+        internal Device(int id, string deviceTypeStr, string traktorVersion, bool removeUnusedMIDIDefinition, bool isKeyboard)
+            : this(id, new Format.Device(deviceTypeStr, traktorVersion, removeUnusedMIDIDefinition, isKeyboard), removeUnusedMIDIDefinition, isKeyboard)
         {
             // workaround for Xtreme Mapping only: midi definitions must not be null!
             RawDevice.Data.MidiDefinitions = new MidiDefinitionsContainer();
         }
 
-        internal Device(int id, Format.Device rawDevice, bool removeUnusedMIDIDefinitions)
+        internal Device(int id, Format.Device rawDevice, bool removeUnusedMIDIDefinitions, bool isKeyboard)
         {
             RemoveUnusedMIDIDefinitions = removeUnusedMIDIDefinitions;
             Id = id;
             RawDevice = rawDevice;
 
-            
+            IsKeyboard = isKeyboard;
+
             if (RawDevice.Data.Mappings != null)
                 _mappings = RawDevice.Data.Mappings.List.Mappings.Select(m => new Mapping(this, m)).ToList();
 
@@ -207,7 +220,7 @@ namespace cmdr.TsiLib
             if (!includeMappings)
                 rawDeviceCopy.Data.Mappings = new MappingsContainer();
 
-            var copy = new Device(-1, rawDeviceCopy, RemoveUnusedMIDIDefinitions);
+            var copy = new Device(-1, rawDeviceCopy, RemoveUnusedMIDIDefinitions, this.IsKeyboard);
             copy.EncoderMode = EncoderMode; // encoder mode is not stored in Format.Device
             return copy;
         }
