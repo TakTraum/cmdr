@@ -109,21 +109,21 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             return root.Children;
         }
 
-        public List<MenuItemViewModel> BuildProprietaryMenu(IEnumerable<AMidiDefinition> proprietaryDefinitions)
+        public List<MenuItemViewModel> BuildProprietaryMenu(IEnumerable<AMidiDefinition> proprietaryDefinitions, Char split)
         {
             var itemBuilder = new Func<AMidiDefinition, MenuItemViewModel>(d => new MenuItemViewModel
             {
-                Text = d.Note.Split('.').Last().Trim(),
+                Text = d.Note.Split(split).Last().Trim(),
                 Tag = d
             });
 
-            return _proprietaryMenuBuilder.BuildTree(proprietaryDefinitions, itemBuilder, d => d.Note, ".", true).ToList();
+            return _proprietaryMenuBuilder.BuildTree(proprietaryDefinitions, itemBuilder, d => d.Note, split.ToString(), true).ToList();
         }
 
         public List<MenuItemViewModel> BuildSelectedNotesMenu(IEnumerable<object> selectedNotes)
         {
             if (selectedNotes.First() is AMidiDefinition)
-                return BuildProprietaryMenu(selectedNotes.Cast<AMidiDefinition>());
+                return BuildProprietaryMenu(selectedNotes.Cast<AMidiDefinition>(), '.');   //fixme: get right split char
             return _genericMenuBuilder.BuildList(selectedNotes.Cast<string>(), buildMenuItemSelected);  // , buildPath, ".", false);
         }
 

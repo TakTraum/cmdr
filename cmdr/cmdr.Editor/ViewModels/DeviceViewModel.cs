@@ -58,6 +58,8 @@ namespace cmdr.Editor.ViewModels
 
         public bool IsGenericMidi { get { return Type.Equals(Device.TYPE_STRING_GENERIC_MIDI); } }
 
+        public bool IsKeyboard { get { return _device.IsKeyboard; } }
+
         public int Revision { get { return _device.Revision; } }
 
         public string Comment

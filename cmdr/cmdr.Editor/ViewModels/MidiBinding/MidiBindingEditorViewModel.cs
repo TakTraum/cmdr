@@ -24,6 +24,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
 
         public bool IsGenericMidi { get { return _device.IsGenericMidi; } }
+        public bool IsKeyboard { get { return _device.IsKeyboard; } }
 
         private readonly bool _canOverrideFactoryMap;
         public bool CanOverrideFactoryMap { get { return _canOverrideFactoryMap; } }
@@ -229,7 +230,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             } else
             {
                 _canOverrideFactoryMap = _mappings.Any(m => m.CanOverrideFactoryMap);
-                NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note)));
+                Char split;
+                if (IsKeyboard) {
+                    split = '+';
+                } else {
+                    split = '.';
+                }
+                var tmp = NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note), split);
+                NotesMenu = new ObservableCollection<MenuItemViewModel>(tmp);
             }
 
 
