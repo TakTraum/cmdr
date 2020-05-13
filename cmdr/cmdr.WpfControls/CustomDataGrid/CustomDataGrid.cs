@@ -19,6 +19,18 @@ using System.Windows.Controls;
 
 namespace cmdr.WpfControls.CustomDataGrid
 {
+
+    // fixme: move this to its own file
+    public struct ShowColumns
+    {
+        public bool SplitConditions; //= false;
+        public bool ShowCommand2;// = false;
+        public bool ShowComment2;// = false;
+        public bool HideInteraction;// = false;
+        public bool ShowNote;// = false;
+
+    }
+    
     public class CustomDataGrid : DataGrid
     {
         static CustomDataGrid()
@@ -99,11 +111,11 @@ namespace cmdr.WpfControls.CustomDataGrid
             return ret;
         }
 
-        public void SplitConditions(bool do_split)
+        public void choose_visibility(bool what, String st0, String st1, String st2)
         {
-            int c0 = this.Columns.Select(c => c.Header).ToList().IndexOf("Conditions");
-            int c1 = this.Columns.Select(c => c.Header).ToList().IndexOf("Condition1");
-            int c2 = this.Columns.Select(c => c.Header).ToList().IndexOf("Condition2");
+            int c0 = this.Columns.Select(c => c.Header).ToList().IndexOf(st0);
+            int c1 = this.Columns.Select(c => c.Header).ToList().IndexOf(st1);
+            int c2 = this.Columns.Select(c => c.Header).ToList().IndexOf(st2);
 
             if (c0 < 0) {
                 //not initialized case
@@ -114,7 +126,7 @@ namespace cmdr.WpfControls.CustomDataGrid
             Visibility v1;
             Visibility v2;
 
-            if (do_split) {
+            if (!what) {
                 v0 = Visibility.Collapsed;
                 v1 = Visibility.Visible;
                 v2 = Visibility.Visible;
@@ -126,11 +138,28 @@ namespace cmdr.WpfControls.CustomDataGrid
 
             }
 
-            this.Columns[c0].Visibility = v0;
-            this.Columns[c1].Visibility = v1;
-            this.Columns[c2].Visibility = v2;
+            if (c0 >= 0) {
+                this.Columns[c0].Visibility = v0;
+            }
 
+            if (c1 >= 0) {
+                this.Columns[c1].Visibility = v1;
+            }
+
+            if (c2 >= 0) {
+                this.Columns[c2].Visibility = v2;
+            }
         }
+
+        public void updateShowColumns(ShowColumns showColumns)
+        {
+            choose_visibility(!showColumns.SplitConditions, "Conditions", "Condition1", "Condition2");
+            choose_visibility(showColumns.ShowCommand2, "Command2", null, null);
+            choose_visibility(showColumns.ShowComment2, "Comment2", null, null);
+            choose_visibility(showColumns.HideInteraction, "Interaction", null, null);
+            choose_visibility(showColumns.ShowNote, "Note", null, null);
+
+    }
 
         public void ClearFiltering()
         {
@@ -498,7 +527,7 @@ namespace cmdr.WpfControls.CustomDataGrid
         {
             if (_first_time) {
                 _first_time = false;
-                SplitConditions(false);
+                //SplitConditions(false);
             }
 
             // this is just for debugging

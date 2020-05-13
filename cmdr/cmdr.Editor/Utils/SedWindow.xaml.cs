@@ -16,15 +16,25 @@ using System.Windows.Shapes;
 namespace cmdr.Editor.Utils
 {
 
+    public enum SedOperation
+    {
+        regular,
+        start,
+        end,
+    }
+
     public class SedResult
     {
         public string _search;
         public string _replace;
 
-        public SedResult(string search, string replace)
+        public SedOperation _oper;
+
+        public SedResult(string search, string replace, SedOperation oper)
         {
             _search = search;
             _replace = replace;
+            _oper = oper;
         }
     }
 
@@ -57,7 +67,20 @@ namespace cmdr.Editor.Utils
             SedWindow inst = new SedWindow();
             inst.ShowDialog();
             if (inst.DialogResult == true) {
-                var ret = new SedResult(inst.SearchTB.Text, inst.ReplaceTB.Text);
+
+                SedOperation oper = SedOperation.regular;
+
+                if (inst.typeNormal.IsChecked == true) {
+                    oper = SedOperation.regular;
+                }
+                if (inst.typeStart.IsChecked == true) {
+                    oper = SedOperation.start;
+                }
+                if (inst.typeEnd.IsChecked == true) {
+                    oper = SedOperation.end;
+                }
+
+                var ret = new SedResult(inst.SearchTB.Text, inst.ReplaceTB.Text, oper);
                 return ret;
             }
             return null;

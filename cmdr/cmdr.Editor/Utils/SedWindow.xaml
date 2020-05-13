@@ -8,22 +8,21 @@
         WindowStartupLocation="CenterScreen" 
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanMinimize"
-        Title="Window1" Height="238" Width="369">
+        Title="Window1" Height="288" Width="369">
     <Grid Margin="0,0,4,0">
 
         <StackPanel Margin="5,5,4,0" RenderTransformOrigin="0.5,0.5">
-            <StackPanel.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="-0.497"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="-1.491"/>
-                </TransformGroup>
-            </StackPanel.RenderTransform>
             <TextBlock Text="Search Text:" Margin="5,5,253,5" Height="15"/>
             <TextBox Name="SearchTB" Margin="5,5,139,5" Height="29"/>
             <TextBlock Text="Replace Text:" Margin="5,5,276,5"/>
             <TextBox Name="ReplaceTB" Height="28" Margin="5,0,139,0" />
+            <TextBlock Text="Operation:" Margin="5,5,253,5" Height="15"/>
+
+            <RadioButton GroupName="type" Name="typeNormal" Content="Normal Search/Replace" IsChecked="True" />
+            <RadioButton GroupName="type" Name="typeStart" Content="Add to Start" />
+            <RadioButton GroupName="type" Name="typeEnd" Content="Add to End" />
+
+
             <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
                 <Button Content="   _OK   " IsDefault="True" Margin="5" Name="btnOk" Click="btnOk_Click" />
                 <Button Content=" _Cancel " IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />

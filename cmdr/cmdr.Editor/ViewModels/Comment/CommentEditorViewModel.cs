@@ -68,7 +68,24 @@ namespace cmdr.Editor.ViewModels.Comment
 
             foreach (var m in _mappings) {
                 String cur = m.Comment;
-                String new_st = cur.Replace((String)sed._search, (String)sed._replace); //, true);
+                String new_st = cur;
+                String search = (String)sed._search;
+                String replace = (String)sed._replace;
+
+                if (sed._oper == SedOperation.regular) {
+                    if (search != "") {
+                        new_st = cur.Replace(search, replace);
+                    }
+                } else if (sed._oper == SedOperation.start) {
+                    if (replace != "") {
+                        new_st = replace + " " +cur;
+                    }
+                } else if (sed._oper == SedOperation.end) {
+                    if (replace != "") {
+                        new_st = cur + " " + replace;
+                    }
+                }
+                new_st.Trim();
                 m.Comment = new_st;
             }
         }

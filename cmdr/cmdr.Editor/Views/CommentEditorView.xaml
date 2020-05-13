@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
-             d:DesignHeight="60" d:DesignWidth="247.5">
+             d:DesignHeight="60" d:DesignWidth="287.5">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -13,7 +13,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
 
@@ -32,7 +32,7 @@
         <TextBox 
                Grid.Row="0" Grid.Column="1"
                 TextWrapping="Wrap" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" 
-                HorizontalAlignment="Left" Width="180" Margin="5,0,0,0"  />
+                MinWidth="150" Margin="5,0,0,0"  />
         
 
     </Grid>

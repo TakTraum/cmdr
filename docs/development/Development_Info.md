@@ -166,6 +166,10 @@ datagrid tutorial:
   https://www.wpftutorial.net/DataGrid.html    
   fundamentals: https://www.wpftutorial.net/ArchitecturePattern.html
 
+  
+XAML designer info:
+  https://docs.microsoft.com/en-us/visualstudio/xaml-tools/creating-a-ui-by-using-xaml-designer-in-visual-studio?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev15.query%3FappId%3DDev15IDEF1%26l%3DEN-US%26k%3Dk(VS.XamlEditor);k(TargetFrameworkMoniker-.NETFramework,Version%3Dv4.5)%26rd%3Dtrue&view=vs-2019
+  
 
 ## Github
   how to get a staic download link to latets releae:

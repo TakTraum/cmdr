@@ -509,15 +509,18 @@ namespace cmdr.Editor.ViewModels
 
         }
 
-        public void SplitConditions(bool what)
+        // fixme: how to trigger this at startup?
+        // how to have a two-way syncronized value? so that the datagrid reads this value instead of the opposite
+        public void updateShowColumns(ShowColumns showColumns)
         {
             if (this.CDG_ParentSelector != null) {
-                this.CDG_ParentSelector.SplitConditions(what);
+                this.CDG_ParentSelector.updateShowColumns(showColumns);
             } else {
                 var i = 9;
                 // warn user?
             }
         }
+
 
         public void ClearFiltering()
         {

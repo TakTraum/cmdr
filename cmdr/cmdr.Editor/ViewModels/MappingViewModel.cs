@@ -25,6 +25,8 @@ namespace cmdr.Editor.ViewModels
 
         public string TraktorCommand { get { return getTraktorCommand(); } }
 
+        public string TraktorCommand2 { get { return getTraktorCommand(); } }
+
         public string Type { get { return Command.MappingType.ToString(); } }
 
         public TargetType TargetType { get { return Command.Target; } }
@@ -61,6 +63,12 @@ namespace cmdr.Editor.ViewModels
         {
             get { return _mapping.Comment; }
             set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }  //todo: why is comment special?
+        }
+
+        public string Comment2
+        {
+            get { return _mapping.Comment; }
+            //set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }  //todo: why is comment special?
         }
 
 

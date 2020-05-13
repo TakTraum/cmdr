@@ -13,6 +13,7 @@ using cmdr.WpfControls.Behaviors;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
 using cmdr.WpfControls.ViewModels;
+using cmdr.WpfControls.CustomDataGrid;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ using System.Globalization;
 
 namespace cmdr.Editor.ViewModels
 {
+
     public class DeviceViewModel : AReversible
     {
         private TsiFileViewModel _parentSelector;
@@ -239,18 +241,67 @@ namespace cmdr.Editor.ViewModels
             get { return _addMappingCommand ?? (_addMappingCommand = new CommandHandler<MenuItemViewModel>(addMapping)); }
         }
 
-        private bool _splitConditions;
+        private ShowColumns showColumns;
+
         public bool SplitConditions
         {
-            get {
-                return _splitConditions;
-            }
+            get {  return showColumns.SplitConditions;  }
             set {
-               //SetProperty("SplitConditions", ref _splitConditions, ref value);
-               _splitConditions = value;
-               doSplitConditions();
+                //SetProperty("SplitConditions", ref _splitConditions, ref value);
+                showColumns.SplitConditions = value;
+                updateShowColumns();
             }
         }
+
+        public bool ShowCommand2
+        {
+            get {
+                return showColumns.ShowCommand2;
+            }
+            set {
+                //SetProperty("SplitConditions", ref _splitConditions, ref value);
+                showColumns.ShowCommand2 = value;
+                updateShowColumns();
+            }
+        }
+
+        public bool ShowComment2
+        {
+            get {
+                return showColumns.ShowComment2;
+            }
+            set {
+                //SetProperty("SplitConditions", ref _splitConditions, ref value);
+                showColumns.ShowComment2 = value;
+                updateShowColumns();
+            }
+        }
+        
+        public bool HideInteraction
+        {
+            get {
+                return showColumns.HideInteraction;
+            }
+            set {
+                //SetProperty("SplitConditions", ref _splitConditions, ref value);
+                showColumns.HideInteraction = value;
+                updateShowColumns();
+            }
+        }
+
+        private bool _showNote;
+        public bool ShowNote
+        {
+            get {
+                return showColumns.ShowNote;
+            }
+            set {
+                //SetProperty("SplitConditions", ref _splitConditions, ref value);
+                showColumns.ShowNote = value;
+                updateShowColumns();
+            }
+        }
+
 
         private ICommand _removeMappingCommand;
         public ICommand RemoveMappingCommand
@@ -420,9 +471,10 @@ public void ReApplyFiltering()
     this.ParentSelector.ReApplyFiltering();
 }
 
-public void doSplitConditions()
+        
+public void updateShowColumns()
 {
-    this.ParentSelector.SplitConditions(_splitConditions);
+    this.ParentSelector.updateShowColumns(showColumns);
 }
 
 public void SaveMetadata()
