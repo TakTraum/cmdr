@@ -7,6 +7,7 @@ using cmdr.Editor.Utils;
 using cmdr.WpfControls.DropDownButton;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace cmdr.Editor.ViewModels.Comment
 {
@@ -85,7 +86,26 @@ namespace cmdr.Editor.ViewModels.Comment
                         new_st = cur + " " + replace;
                     }
                 }
-                new_st.Trim();
+
+                if (sed._capitalize == SedCapitalize.none) {
+                    // pass
+
+                } else if (sed._capitalize == SedCapitalize.lowercase) {
+                    new_st = new_st.ToLower();
+
+                } else if (sed._capitalize == SedCapitalize.uppercase) {
+                    new_st = new_st.ToUpper();
+
+                } else if (sed._capitalize == SedCapitalize.titlecase) {
+                    // https://stackoverflow.com/questions/1206019/converting-string-to-title-case
+                    new_st = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.
+                                ToTitleCase(new_st.ToLower());
+                    //new_st.ToTitleCase();
+                }
+
+                if (sed.do_trim) {
+                    new_st.Trim();
+                }
                 m.Comment = new_st;
             }
         }

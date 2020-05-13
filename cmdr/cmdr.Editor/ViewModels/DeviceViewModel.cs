@@ -356,8 +356,7 @@ namespace cmdr.Editor.ViewModels
         */
         public void SedCommentsCommand()
         {
-            //SelectedTsiFileModel.SelectedDevice.
-                MappingEditorViewModel.CommentEditor.sedCommentsCommand();
+             MappingEditorViewModel.CommentEditor.sedCommentsCommand();
 
         }
 

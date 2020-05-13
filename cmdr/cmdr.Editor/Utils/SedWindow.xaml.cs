@@ -23,18 +23,30 @@ namespace cmdr.Editor.Utils
         end,
     }
 
+    public enum SedCapitalize
+    {
+        none,
+        lowercase,
+        uppercase,
+        titlecase,
+    }
+
     public class SedResult
     {
         public string _search;
         public string _replace;
 
         public SedOperation _oper;
+        public SedCapitalize _capitalize;
 
-        public SedResult(string search, string replace, SedOperation oper)
+        public bool do_trim = true;
+
+        public SedResult(string search, string replace, SedOperation oper, SedCapitalize capitalize)
         {
             _search = search;
             _replace = replace;
             _oper = oper;
+            _capitalize = capitalize;
         }
     }
 
@@ -69,6 +81,7 @@ namespace cmdr.Editor.Utils
             if (inst.DialogResult == true) {
 
                 SedOperation oper = SedOperation.regular;
+                SedCapitalize cap = SedCapitalize.none;
 
                 if (inst.typeNormal.IsChecked == true) {
                     oper = SedOperation.regular;
@@ -80,7 +93,21 @@ namespace cmdr.Editor.Utils
                     oper = SedOperation.end;
                 }
 
-                var ret = new SedResult(inst.SearchTB.Text, inst.ReplaceTB.Text, oper);
+
+                if (inst.capitalizeNone.IsChecked == true) {
+                    cap = SedCapitalize.none;
+                }
+                if (inst.capitalizeLowerCase.IsChecked == true) {
+                    cap = SedCapitalize.lowercase;
+                }
+                if (inst.capitalizeUpperCase.IsChecked == true) {
+                    cap = SedCapitalize.uppercase;
+                }
+                if (inst.capitalizeTitleCase.IsChecked == true) {
+                    cap = SedCapitalize.titlecase;
+                }
+
+                var ret = new SedResult(inst.SearchTB.Text, inst.ReplaceTB.Text, oper, cap);
                 return ret;
             }
             return null;
