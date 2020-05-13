@@ -16,6 +16,18 @@
   
 ## Recent changes
 
+release 0.10.4 - 13 May 2020
+
+* Known issues:
+  * "Clear Filtering" and "ShowColumns" requires first to select a second device.
+  
+* New features
+  * New CheckBoxes: show/hide standard and extra columns for filtering purposes. Split Condition into 2 columns
+  * Search/Replace: added front/back operations
+  * Bugfixes: filtering, out-of-memory, command rotation
+  * Exceptions: dialog box copies to clipboard, to create issues 
+  * New download icon for latest release
+
 
 release 0.10.3 - 3 May 2020
 
@@ -221,12 +233,8 @@ v0.6 - TakTraum April 2016
 -------------
 -------------
  
-release 0.10.4 - TBD
 
-more bugfixes to filtering code. When filter is enabled, no changed to selection
- added a stats command
 
- 
  
  
     
