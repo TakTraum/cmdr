@@ -16,6 +16,16 @@
   
 ## Recent changes
 
+release 0.10.5 - 14 May 2020
+
+* Known issues:
+  * "Clear Filtering" and "ShowColumns" requires first to select a second device.
+
+* New features
+  * added Keyboard mappings support. Mixed TSIs also supported.
+  * added capitalization for search and Replace
+  
+ 
 release 0.10.4 - 13 May 2020
 
 * Known issues:
