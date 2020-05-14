@@ -212,5 +212,13 @@ namespace System
             Assert.Equal(new List<char> { 'c', 'd', 'e' }, li1.Slice(2, -2));
         }
         */
+
+
+        public static Char Next(this Char ch_in, int step=1)
+        {
+            Char ch_out = (char)(((int)ch_in) + step);
+            return ch_out;
+
+        }
     }
 }

@@ -376,11 +376,22 @@ namespace cmdr.Editor.ViewModels
         */
         public void QuadruplicateCommand()
         {
-            for (int i = 2; i <= 4; i++) {
+            for (int i = 1; i < 4; i++) {
                 // todo: check if commands are chanell1/DeckA ?
+
+                // Filter on: 
+                //   we manipulate the current selection over and over. Thats why we use step 1.
+                //   end result is decreasing order
+                //
+                // Filter off: 
+                //   we manipulate the copies
+                //   end result is increasing order
                 duplicate();
                 MappingEditorViewModel.MidiBindingEditor.IncDecChannel(1);
                 MappingEditorViewModel.rotateAssignment(1);
+
+                MappingEditorViewModel.CommentEditor.sedCommentsReplaceDeck(i);
+
             }
         }
 

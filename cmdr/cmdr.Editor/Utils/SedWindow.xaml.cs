@@ -41,7 +41,7 @@ namespace cmdr.Editor.Utils
 
         public bool do_trim = true;
 
-        public SedResult(string search, string replace, SedOperation oper, SedCapitalize capitalize)
+        public SedResult(string search, string replace, SedOperation oper = SedOperation.regular, SedCapitalize capitalize = SedCapitalize.none)
         {
             _search = search;
             _replace = replace;

@@ -60,12 +60,9 @@ namespace cmdr.Editor.ViewModels.Comment
             Comment = item.Tag.ToString();
         }
 
-        public void sedCommentsCommand()
+
+        public void sedCommentsDoSomething(SedResult sed)
         {
-            SedResult sed = SedWindow.Prompt();
-            if (sed == null) {
-                return;
-            }
 
             foreach (var m in _mappings) {
                 String cur = m.Comment;
@@ -73,17 +70,23 @@ namespace cmdr.Editor.ViewModels.Comment
                 String search = (String)sed._search;
                 String replace = (String)sed._replace;
 
+
                 if (sed._oper == SedOperation.regular) {
+                    // add whitespace, to remove later
+                    if (sed.do_trim) {
+                        new_st = String.Format(" {0} ", new_st);
+                    }
+
                     if (search != "") {
-                        new_st = cur.Replace(search, replace);
+                        new_st = new_st.Replace(search, replace);
                     }
                 } else if (sed._oper == SedOperation.start) {
                     if (replace != "") {
-                        new_st = replace + " " +cur;
+                        new_st = replace + " " + new_st;
                     }
                 } else if (sed._oper == SedOperation.end) {
                     if (replace != "") {
-                        new_st = cur + " " + replace;
+                        new_st = new_st + " " + replace;
                     }
                 }
 
@@ -104,12 +107,41 @@ namespace cmdr.Editor.ViewModels.Comment
                 }
 
                 if (sed.do_trim) {
-                    new_st.Trim();
+                    new_st = new_st.Trim();
                 }
                 m.Comment = new_st;
             }
         }
-        
+
+        // this opens the sed question window
+        public void sedCommentsCommand()
+        {
+            SedResult sed = SedWindow.Prompt();
+            if (sed != null) {
+                sedCommentsDoSomething(sed);
+            }
+
+        }
+
+        // automated search/replace
+        public void sedCommentsReplaceString(String st_in, String st_out)
+        {
+            SedResult sed = new SedResult(st_in, st_out);
+            sedCommentsDoSomething(sed);
+        }
+
+        public void sedCommentsReplaceDeck(int step)
+        {
+            Char ch_in = 'A'.Next(step - 1);
+            Char ch_out = ch_in.Next(1);
+
+            String st_in = String.Format(" {0} ", ch_in);
+            String st_out = String.Format(" {0} ", ch_out);
+
+            SedResult sed = new SedResult(st_in, st_out);
+            sedCommentsDoSomething(sed);
+        }
+
         public CommentEditorViewModel(IEnumerable<MappingViewModel> mappings)
         {
             _mappings = mappings;
