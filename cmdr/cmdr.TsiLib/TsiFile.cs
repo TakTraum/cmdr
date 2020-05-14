@@ -38,7 +38,8 @@ namespace cmdr.TsiLib
 
         public bool OptimizeFXList { get; private set; }
 
-        private DeviceMappingsContainer _devicesContainer;
+        private DeviceMappingsContainer _devicesContainerControllers;
+        private DeviceMappingsContainer _devicesContainerKeyboard;
 
         public string Path { get; private set; }
 
@@ -56,7 +57,8 @@ namespace cmdr.TsiLib
             OptimizeFXList = false;            // this ONLY gets the actual value on the SAVE command
 
             _devices = new List<Device>();
-            _devicesContainer = new DeviceMappingsContainer();
+            _devicesContainerControllers = new DeviceMappingsContainer();
+            _devicesContainerKeyboard = new DeviceMappingsContainer();
         }
 
 
@@ -124,7 +126,12 @@ namespace cmdr.TsiLib
         {
             var device = _devices.Single(d => d.Id == deviceId);
             _devices.Remove(device);
-            _devicesContainer.Devices.List.Remove(device.RawDevice);
+
+            if (device.IsKeyboard) {
+                _devicesContainerKeyboard.Devices.List.Remove(device.RawDevice);
+            } else {
+                _devicesContainerControllers.Devices.List.Remove(device.RawDevice);
+            }
         }
 
         public bool Save(string filePath, bool optimizeFXList, bool backup = false)
@@ -149,28 +156,21 @@ namespace cmdr.TsiLib
             // build controller config (binary)
             DeviceIoConfigController controllerConfigController = null;
             DeviceIoConfigKeyboard controllerConfigKeyboard = null;
-            try
-            {
-                //
-                // HACK: could not filter inside the write() method
-                // instead, we mix and match the devices before calling write()
-                //
-                var all_devices = _devicesContainer.Devices.List.Select(d => d).ToList();
-                var only_keyboard = _devicesContainer.Devices.List.Where(d => (d.IsKeyboard == true)).ToList();
-                var only_controllers = _devicesContainer.Devices.List.Where(d => (d.IsKeyboard == false)).ToList();
+
+            var all_devices = _devices.Select(d => d).ToList();
+            var only_keyboard = _devices.Where(d => (d.IsKeyboard == true)).ToList();
+            var only_controllers = _devices.Where(d => (d.IsKeyboard == false)).ToList();
+
+            try {
 
                 if (only_controllers.Any()) {
-                    _devicesContainer.Devices.List.Clear();
-                    _devicesContainer.Devices.List.AddRange(only_controllers);
-                    string tsiDataController = getDataAsBase64String();
+                    string tsiDataController = getDataAsBase64String(false);
                     controllerConfigController = new DeviceIoConfigController();
                     controllerConfigController.Value = tsiDataController;
                 }
 
                 if (only_keyboard.Any()) {
-                    _devicesContainer.Devices.List.Clear();
-                    _devicesContainer.Devices.List.AddRange(only_keyboard);
-                    string tsiDataKeyboard = getDataAsBase64String();
+                    string tsiDataKeyboard = getDataAsBase64String(true);
                     controllerConfigKeyboard = new DeviceIoConfigKeyboard();
                     controllerConfigKeyboard.Value = tsiDataKeyboard;
                 }
@@ -198,10 +198,10 @@ namespace cmdr.TsiLib
                 if (FxSettings != null && (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any()))
                     FxSettings.Save(xml);
 
-                if (controllerConfigController != null) {
+                if (only_controllers.Any()) {
                     xml.SaveEntry(controllerConfigController);
                 }
-                if (controllerConfigKeyboard != null) {
+                if (only_keyboard.Any()) {
                     xml.SaveEntry(controllerConfigKeyboard);
                 }
 
@@ -221,25 +221,13 @@ namespace cmdr.TsiLib
 
         int max_id = 0;
 
-        private void load_devices_xml(StringXmlEntry controllerConfig, bool RemoveUnusedMIDIDefinitions, bool isKeyboard)
-        {
-            // Hack: we create a list of this type (keyboard/controllers)
-            // and then we append the items to the whole list
-            if (controllerConfig != null) {
-                byte[] decoded = Convert.FromBase64String(controllerConfig.Value);
-                _devicesContainer = new DeviceMappingsContainer(new MemoryStream(decoded));
-                var _devices_tmp = _devicesContainer.Devices.List.Select(d => new Device(max_id++, d, RemoveUnusedMIDIDefinitions, isKeyboard)).ToList();
 
-                _devices.AddRange(_devices_tmp);
-            }
- 
-        }
 
         private void load(TsiXmlDocument xml, bool RemoveUnusedMIDIDefinitions)
         {
             // Traktor version, optional (only for "Traktor Settings.tsi")
             var browserDirRoot = xml.GetEntry<BrowserDirRoot>();
-            if (browserDirRoot != null)
+            if (browserDirRoot != null) 
             {
                 Match m = REGEX_TRAKTOR_FOLDER.Match(browserDirRoot.Value);
                 if (m.Success) // Overwrite version if possible
@@ -252,10 +240,32 @@ namespace cmdr.TsiLib
 
             // Devices
             StringXmlEntry controllerConfigController = xml.GetEntry<DeviceIoConfigController>();
-            StringXmlEntry controllerConfigKeyboard = xml.GetEntry<DeviceIoConfigKeyboard>();
-            load_devices_xml(controllerConfigController, RemoveUnusedMIDIDefinitions, false);
-            load_devices_xml(controllerConfigKeyboard, RemoveUnusedMIDIDefinitions, true);
+            if (controllerConfigController != null) {
+                byte[] decoded = Convert.FromBase64String(controllerConfigController.Value);
+                _devicesContainerControllers = new DeviceMappingsContainer(new MemoryStream(decoded));
+                var _devices_tmp = _devicesContainerControllers.Devices.List.Select(d => new Device(max_id++, d, RemoveUnusedMIDIDefinitions, false)).ToList();
 
+                // append to whole list
+                _devices.AddRange(_devices_tmp);
+            }
+
+            StringXmlEntry controllerConfigKeyboard = xml.GetEntry<DeviceIoConfigKeyboard>();
+            if (controllerConfigKeyboard != null) {
+
+                byte[] decoded = Convert.FromBase64String(controllerConfigKeyboard.Value);
+                _devicesContainerKeyboard = new DeviceMappingsContainer(new MemoryStream(decoded));
+                var _devices_tmp = _devicesContainerKeyboard.Devices.List.Select(d => new Device(max_id++, d, RemoveUnusedMIDIDefinitions, true)).ToList();
+
+                // append to whole list
+                _devices.AddRange(_devices_tmp);
+            }
+
+            load_FX();
+        }
+
+
+
+        private void load_FX() { 
             // Effects
             var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
             var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
@@ -382,13 +392,17 @@ namespace cmdr.TsiLib
             }
         }
 
-        private string getDataAsBase64String()
+        private string getDataAsBase64String(bool isKeyboard)
         {
             byte[] data = null;
             using (MemoryStream stream = new MemoryStream())
             {
                 // write DevicesContainer into memory stream
-                _devicesContainer.Write(new Writer(stream));
+                if (isKeyboard) {
+                    _devicesContainerKeyboard.Write(new Writer(stream));
+                } else {
+                    _devicesContainerControllers.Write(new Writer(stream));
+                }
 
                 // get all bytes from memory stream
                 data = stream.ToBytes();
@@ -424,15 +438,23 @@ namespace cmdr.TsiLib
             if (device.Id < 0 || !asIs)
                 device.Id = createNewId();
 
+            DeviceMappingsContainer container;
+            if (device.IsKeyboard) {
+                container = _devicesContainerKeyboard;
+            } else {
+                container = _devicesContainerControllers;
+            }
+
+            // todo: simplify this
             if (index == Devices.Count)
             {
                 _devices.Add(device);
-                _devicesContainer.Devices.List.Add(device.RawDevice);
+                container.Devices.List.Add(device.RawDevice);
             }
             else
             {
                 _devices.Insert(index, device);
-                _devicesContainer.Devices.List.Insert(index, device.RawDevice);
+                container.Devices.List.Insert(index, device.RawDevice);
             }
         }
     }
