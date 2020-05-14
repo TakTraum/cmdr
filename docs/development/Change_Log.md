@@ -24,6 +24,8 @@ release 0.10.5 - 14 May 2020
 * New features
   * added Keyboard mappings support. Mixed TSIs also supported.
   * added capitalization for search and Replace
+  * quaduplicate now updates the deck letter in comments as well. 
+     * To use this use " A " in your comments. Example: "DECK A JOG"
   
  
 release 0.10.4 - 13 May 2020
