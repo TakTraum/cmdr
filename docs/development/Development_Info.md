@@ -183,6 +183,13 @@ XAML designer info:
  
     https://www.codeproject.com/Questions/224672/Exception-of-type-System-OutOfMemoryException-was
 
+    
+## WPF C# console:
+  https://github.com/Iron-YeHong/.NETUtilities
+  http://www.programmersought.com/article/39642139957/
+  https://stackoverflow.com/questions/160587/no-output-to-console-from-a-wpf-application
+   
+    
 ## What is the fastest way to edit mappings:
 
 I've found that the fastest to edit mappings is to directly edit your settings, having an empty collection, and restart whole traktor every time.

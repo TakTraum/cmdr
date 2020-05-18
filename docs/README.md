@@ -31,3 +31,8 @@ Specific info on Effects is [here](effects.md)
 ## FAQ
 
 We collect questions that pop up regularly on the [faq](faq.md) page
+
+## MAC-OS
+
+Have a mac? see macOS specific info [here](running_on_macos.md).
+
