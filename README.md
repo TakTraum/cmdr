@@ -30,6 +30,7 @@ Please see [the docs folder](docs) to learn how to use CMDR:
 * [Midi Mapping](docs/midi_mapping.md) 
 * [Using Effects](docs/effects.md)
 * [FAQ](docs/faq.md)
+* [macOS usage](docsrunning_on_macos.md).
 
 If you are familiar with CMDR, check [this folder](docs/development) as well
 * [2020 improvements](#2020-improvements)
