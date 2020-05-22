@@ -28,14 +28,14 @@ VirusTotal check: [0 out of 72](https://www.virustotal.com/gui/file/ab1db0d62778
 Please see [the docs folder](docs) to learn how to use CMDR:
 * [User Guide](docs/user_guide.md)
 * [Midi Mapping](docs/midi_mapping.md) 
-* [Using Effects](docs/effects.md)
+* [Using Effects](docs/Effects.md)
 * [FAQ](docs/faq.md)
-* [macOS usage](docsrunning_on_macos.md).
+* [macOS usage](docs/running_on_macos.md).
 
 If you are familiar with CMDR, check [this folder](docs/development) as well
 * [2020 improvements](#2020-improvements)
-* [Full Change Log](docs/development/change_log.md)
-* [Development Info](docs/development/development_info.md)
+* [Full Change Log](docs/development/Change_Log.md)
+* [Development Info](docs/development/Development_Info.md)
 
 ## Screenshot
 
@@ -64,7 +64,7 @@ Until the software has reached a stable state, it is recommended to work on copi
 * Michael Rahier for creating this Program
 * Pedro Estrela for maitaining it since 2020
 * Ivan Zlatev, for [reverse engineering large parts of the TSI structure](https://github.com/ivanz/Traktor.Mapping).
-* [Native Instruments](www.native-instruments.com/) for providing the powerful DJ software Traktor Pro.
+* [Native Instruments](http://www.native-instruments.com/) for providing the powerful DJ software Traktor Pro.
 * [Acid Buddha](http://www.acidbuddha.com/) for testing and support. 
 
 ## Donation
