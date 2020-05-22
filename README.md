@@ -9,7 +9,7 @@ Use it to edit TSI files with basic features that are missing in the built-in Co
 * Copy-Paste
 * Mass-Edit
 * Automation
-* [plus much more](docs/development/change_log.md)
+* [plus much more](docs/development/Change_Log.md)
 
 ## Download and Installation
 
@@ -64,7 +64,7 @@ Until the software has reached a stable state, it is recommended to work on copi
 * Michael Rahier for creating this Program
 * Pedro Estrela for maitaining it since 2020
 * Ivan Zlatev, for [reverse engineering large parts of the TSI structure](https://github.com/ivanz/Traktor.Mapping).
-* [Native Instruments](http://www.native-instruments.com/) for providing the powerful DJ software Traktor Pro.
+* [Native Instruments](http://gitwww.native-instruments.com/) for providing the powerful DJ software Traktor Pro.
 * [Acid Buddha](http://www.acidbuddha.com/) for testing and support. 
 
 ## Donation
