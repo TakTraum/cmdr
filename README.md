@@ -14,7 +14,7 @@ Use it to edit TSI files with basic features that are missing in the built-in Co
 ## Download and Installation
 
 The latest download is ALWAYS available in this page: 
-[![download](docs/pics/icon/download.png?raw=true)](https://github.com/pestrela/cmdr/releases/latest/download/cmdr_tsi_editor_latest.zip)\
+[![download](docs/pics/icon/download.png?raw=true)](https://github.com/pestrela/cmdr/releases/latest/download/cmdr_tsi_editor_latest.zip)
 
 There is no installer yet. After download just unzip the file and start cmdr.exe.
 

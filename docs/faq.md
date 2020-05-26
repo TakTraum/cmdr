@@ -4,9 +4,7 @@ Frequently Asked questions
 
 ## #1 - CMDR.EXE disapears when I unpack the zip file
 
-
-
-if the EXE file disapears, this is because your anti-virus quarantined the file because it doesnt have a digital signature. 
+If the EXE file disapears, this is because your anti-virus quarantined the file because it doesnt have a digital signature. 
 In this case make an exception for CMDR.exe.
 
 CMDR has a perfect VirusTotal check: [0 out of 72](https://www.virustotal.com/gui/file/ab1db0d627782cfd55867addbac61d55be9debed9c3483ee527733eecf7b6610/detection)
