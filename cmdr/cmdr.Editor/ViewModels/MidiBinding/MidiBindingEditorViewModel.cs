@@ -24,6 +24,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
 
         public bool IsGenericMidi { get { return _device.IsGenericMidi; } }
+        public bool IsKeyboard { get { return _device.IsKeyboard; } }
 
         private readonly bool _canOverrideFactoryMap;
         public bool CanOverrideFactoryMap { get { return _canOverrideFactoryMap; } }
@@ -62,6 +63,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         #region Channel
 
+        private List<string> _selectedStrings;
         private List<string> _selectedChannels;
         private MenuItemViewModel _selectedChannelsMenuItem = new MenuItemViewModel { Text = "Selected Channels" };
 
@@ -78,6 +80,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         }
 
         public ObservableCollection<MenuItemViewModel> ChannelsMenu { get; private set; }
+        private int ChannelsMenu_shortcuts = 0;
 
         private bool _variousChannels;
         public bool VariousChannels { get { return _variousChannels; } }
@@ -95,16 +98,15 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _note; }
             set
             {
-                if (ComboMode && !String.IsNullOrEmpty(value))
-                {
+                if (ComboMode && !String.IsNullOrEmpty(value)) {
                     _note += "+" + value;
                     ComboMode = false;
-                }
-                else
+                } else {
                     _note = value;
-
-                if (IsGenericMidi)
+                }
+                if (IsGenericMidi) {
                     updateBinding();
+                }
 
                 raisePropertyChanged("NoteString");
             }
@@ -117,6 +119,8 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         public ObservableCollection<MenuItemViewModel> NotesMenu { get; private set; }
 
+        private int NotesMenu_shortcuts = 0;
+
         private bool _variousNotes;
         public bool VariousNotes
         {
@@ -125,11 +129,15 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         public ObservableCollection<MenuItemViewModel> IncDecMenu { get; private set; }
 
-        private bool _isCCs = false;
-        private bool _isNotes = false;
+        private bool _isCCs = false;   // is ONLY CCs
+        private bool _isNotes = false;  // is ONLY notes
         private bool _hasCombo = false;
         private int _min = 0;
         private int _max = 0;
+
+        private int _min_ch = 1;
+        private int _max_ch = 10;
+        private bool _allBound = false;
 
         #endregion
 
@@ -153,6 +161,13 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             get { return _learnCommand ?? (_learnCommand = new CommandHandler(toggleLearn, canLearn));}
         }
 
+        // fixme: these two commands are the same!
+        private ICommand _removeBinding;
+        public ICommand RemoveBinding
+        {
+            get { return _removeBinding ?? (_removeBinding = new CommandHandler(removeBinding));}
+        }
+
         private ICommand _resetCommand;
         public ICommand ResetCommand
         {
@@ -168,7 +183,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         private ICommand _incDecCommand;
         public ICommand IncDecCommand
         {
-            get { return _incDecCommand ?? (_incDecCommand = new CommandHandler<MenuItemViewModel>(item => IncDec((int)item.Tag), () => CanIncDec())); }
+            get { return _incDecCommand ?? (_incDecCommand = new CommandHandler<MenuItemViewModel>(item => IncDecNumber((int)item.Tag), () => CanIncDecNumber())); }
         }
 
         private ICommand _applyMidiRangeCommand;
@@ -208,37 +223,59 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                         (ResetCommand as CommandHandler).UpdateCanExecuteState();
                     }));
                 });
-            }
-            else
+
+                NotesMenu.Insert(0, SEPARATOR);
+                ChannelsMenu.Insert(0, SEPARATOR);
+
+            } else
             {
                 _canOverrideFactoryMap = _mappings.Any(m => m.CanOverrideFactoryMap);
-                NotesMenu = new ObservableCollection<MenuItemViewModel>(NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note)));
+                Char split;
+                if (IsKeyboard) {
+                    split = '+';
+                } else {
+                    split = '.';
+                }
+                var tmp = NotesMenuBuilder.Instance.BuildProprietaryMenu(_proprietaryDefinitions.DistinctBy(d => d.Note), split);
+                NotesMenu = new ObservableCollection<MenuItemViewModel>(tmp);
             }
+
 
             updateMenus();
         }
 
+        private void incDecMapping(MappingViewModel mapping, int step, IncDecWhat what)
+        {
+            var oldBinding = mapping.MidiBinding as AGenericMidiDefinition;
+            if(oldBinding != null)
+                mapping.SetBinding(incDecGeneric(oldBinding, step, what));
+        }
 
-        public void IncDec(int step)
+        public void IncDecMappings(int step, IncDecWhat what)
         {
             foreach (var mapping in _mappings)
             {
-                if (_isCCs)
-                    incDecCC(mapping, step);
-                else if (_isNotes)
-                    incDecNote(mapping, step);
+                incDecMapping(mapping, step, what);
             }
 
             analyzeSelection(true);
             updateMenus(false, true);
         }
 
-        public bool CanIncDec(int step = 0)
+        public void IncDecNumber(int step)
+        {
+            IncDecMappings(step, IncDecWhat.Number);
+        }
+
+        public bool CanIncDecNumber(int step = 0)
         {
             if (!IsGenericMidi)
                 return false;
 
-            if (_hasCombo || !(_isCCs || _isNotes))
+            return true;
+
+            //_hasCombo
+            if ( !(_isCCs || _isNotes))
                 return false;
 
             if (step < 0)
@@ -247,14 +284,50 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return 127 >= _max + step;
         }
 
+        public void IncDecChannel(int step)
+        {
+            IncDecMappings(step, IncDecWhat.Channel);
+        }
+
+        public bool CanIncDecChannel(int step = 0)
+        {
+            if (!IsGenericMidi)
+                return false;
+
+            return true;
+
+            if (!_allBound)
+                return false;
+
+            //_hasCombo ||
+            if ( !(_isCCs || _isNotes))
+                return false;
+
+            if ((_min_ch + step) < 1)
+                return false;
+            else if ((_max_ch + step) > 16)
+                return false;
+            else
+                return true;
+            
+        }
+
 
         private void analyzeSelection(bool allowOverrideNote = false)
         {
             var bindings = _mappings.Select(mvm => mvm.MidiBinding).Distinct();
             var notes = bindings.Select(b => (b != null) ? b.Note : null).Distinct();
+            _selectedStrings = notes.Where(c => c != null).ToList();
+            _selectedStrings.Sort();
+            _selectedStrings.Reverse();
 
             if (IsGenericMidi)
             {
+                // This is a shorthand for the notes menu
+                if (_selectedStrings.Count() == 0) {
+                    _selectedStrings.Add("Ch01.Note.C0");
+                }
+
                 var parts = notes.Select(n =>
                 {
                     if (n == null)
@@ -275,10 +348,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
                 _selectedNotes = notes.Where(n => n != null).OrderBy(n => n).Cast<object>().ToList();
 
-                bool allBound = notes.All(n => n != null);
-                _isCCs = allBound && notes.All(n => n.Contains("CC"));
-                _isNotes = allBound && notes.All(n => n.Contains("Note"));
-                _hasCombo = allBound && notes.Any(n => n.Contains("+"));
+                _allBound = notes.All(n => n != null);
+                _isCCs = _allBound && notes.All(n => n.Contains("CC"));
+                _isNotes = _allBound && notes.All(n => n.Contains("Note"));  //Newer code checks explicitelly for types
+                _hasCombo = _allBound && notes.Any(n => n.Contains("+"));
 
                 if (_isCCs)
                 {
@@ -298,15 +371,36 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     _min = 0;
                     _max = 127;
                 }
+
+                // pestrela: check we can inc/dec the channels
+                var channels2 = channels.Select(n => n.Substring(2, 2));
+                var channels3 = channels2.Select(n => Int32.Parse(n));
+                if (_allBound)
+                {
+                    _min_ch = channels3.Min();
+                    _max_ch = channels3.Max();
+                }
+                else
+                {
+                    _min_ch = 0;
+                    _max_ch = 0;
+                }
+
+                _variousChannels = channels.Count() > 1;
+                if (!_variousChannels && String.IsNullOrEmpty(_channel))
+                    setChannel(channels.Single());
             }
             else
             {
                 _selectedNotes = _proprietaryDefinitions.Where(n => notes.Contains(n.Note)).DistinctBy(d => d.Note).OrderBy(d => d.Note).Cast<object>().ToList();
             }
 
+
+            // pestrela: why is this duplicated?
             _variousNotes = notes.Count() > 1;
             if (!_variousNotes && (String.IsNullOrEmpty(_note) || allowOverrideNote))
                 setNote(notes.Single());
+                       
         }
 
         private void setChannel(string channel)
@@ -321,10 +415,16 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             raisePropertyChanged("NoteString");
         }
 
+
+        // This is when we select a new Channel or Note
         private void updateBinding(AMidiDefinition definition = null)
         {
+            //if (_channel == "None")
+            //    _channel = null;  // this is to simplify the processing a lot
+
             string expression;
             AMidiDefinition tmpDefinition;
+            bool needs_cleanup = false;
             foreach (var mapping in _mappings)
             {
                 expression = null;
@@ -332,7 +432,14 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
                 if (IsGenericMidi)
                 {
-                    if (!String.IsNullOrEmpty(_channel))
+                    // special HACK follows
+                    if (!String.IsNullOrEmpty(_note) && _note[0] == '_') {
+
+                        // remove the initial '_', but keep it for further processing
+                        // the expression is already complete - doesn't need manipulations
+                        expression = _note.Substring(1);
+
+                    } else if (!String.IsNullOrEmpty(_channel))
                     {
                         if (!String.IsNullOrEmpty(_note))
                             expression = _channel + "." + _note.Replace("+", "+" + _channel + ".");
@@ -343,9 +450,11 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     {
                         if (mapping.MidiBinding != null)
                         {
+
                             var channel = mapping.MidiBinding.Note.Substring(0, 4);
                             expression = channel + "." + _note.Replace("+", "+" + channel + ".");
                         }
+
                     }
 
                     if (expression != null)
@@ -359,6 +468,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
                 mapping.SetBinding(tmpDefinition);
             }
+
+            if (needs_cleanup) {
+                _note = _note.Substring(6);   //this is just to display correctly in the textbox
+            };
 
             analyzeSelection();
             updateMenus();
@@ -398,6 +511,11 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 return _midiLearner.CanLearn(_device.InPort);
         }
 
+        private void removeBinding()
+        {
+            reset();
+        }
+
         private void toggleCombo()
         {
             if (ComboMode)
@@ -414,29 +532,111 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             return !(String.IsNullOrEmpty(Note) || Note.Contains("+") || VariousChannels);
         }
 
-        private void incDecCC(MappingViewModel mapping, int step)
-        {
-            var oldBinding = mapping.MidiBinding as ControlChangeMidiDefinition;
-            
-            var oldCC = oldBinding.Cc;
-            var newCC = oldCC + step;
 
-            mapping.SetBinding(new ControlChangeMidiDefinition(oldBinding.Type, oldBinding.Channel, newCC));
+        /////// channels
+        public enum IncDecWhat
+        {
+            Channel,
+            Number,
         }
 
-        private void incDecNote(MappingViewModel mapping, int step)
+        // note: channels do not wrap around on purpose
+        private int incDec_channel(int old, int step, IncDecWhat what)
         {
-            var oldBinding = mapping.MidiBinding as NoteMidiDefinition;
+            if (what != IncDecWhat.Channel) {
+                step = 0;
+            }
 
-            var keyConverter = new MidiLib.Utils.KeyConverter();
-            var oldKey = keyConverter.ToKeyIPN(oldBinding.KeyText);
-            int newKey = oldKey + step;
+            int new_i = old + step;
+            if(new_i <= 1) {
+                new_i = 1;
+            }
 
-            mapping.SetBinding(new NoteMidiDefinition(oldBinding.Type, oldBinding.Channel, keyConverter.GetKeyTextIPN(newKey)));
+            if(new_i > 16) {
+                new_i = 16;
+            }
+
+            return new_i;
         }
+
+        private int incDec_note(int old, int step, IncDecWhat what)
+        {
+            if (what != IncDecWhat.Number) {
+                step = 0;
+            }
+
+            int new_i = old + step;
+            if (new_i < 0) {
+                new_i = 0;
+            }
+
+            if (new_i > 127) {
+                new_i = 127;
+            }
+
+            return new_i;
+        }
+
+        /*
+         * Note1: 
+         *   "Mapping.MidiBinding" comes without type by some reason. 
+         *   Workaound inspects the types explicitelly
+         *   We could use AGenericMidiDefinition.Parse but then we had to generte the string by hand
+         *
+         * Note2: 
+         *   "Type" is not C#. Its about traktor "in"/"out"
+         * 
+         */
+        private AGenericMidiDefinition incDecGeneric(AGenericMidiDefinition old, int step, IncDecWhat what)
+        {
+
+            if (old is ComboMidiDefinition) {
+                var specific = (ComboMidiDefinition)old;
+
+                return new ComboMidiDefinition(
+                        incDecGeneric(specific.MidiDefinition1, step, what),
+                        incDecGeneric(specific.MidiDefinition2, step, what));
+            }
+
+            // at this stage we always have a channel
+            int old_channel = old.Channel;
+            int new_channel = incDec_channel(old_channel, step, what);
+
+            if (old is NoteMidiDefinition) {
+                var specific = (NoteMidiDefinition)old;
+                var keyConverter = new MidiLib.Utils.KeyConverter();
+
+                int old_value = keyConverter.ToKeyIPN(specific.KeyText);
+                int new_value = incDec_note(old_value, step, what);
+                string new_note = keyConverter.GetKeyTextIPN(new_value);
+
+                return new NoteMidiDefinition(old.Type, new_channel, new_note);
+            }
+
+            if (old is ControlChangeMidiDefinition) {
+                var specific = (ControlChangeMidiDefinition)old;
+
+                int new_value = incDec_note(specific.Cc, step, what);
+
+                return new ControlChangeMidiDefinition(old.Type, new_channel, new_value);
+            }
+
+            // this should never be reached!
+            return null;
+        }
+
+
+       
+
+        ////////////
+
+
+
 
         private void applyMidiRange()
         {
+
+
             var templateBinding = _mappings.First().MidiBinding as AGenericMidiDefinition;
 
             var isCC = templateBinding is ControlChangeMidiDefinition;
@@ -513,8 +713,10 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                     updateIncDecMenu();
             }
 
-            if (notes)
+            /// check-me
+            if (notes || true) {
                 updateNotesMenu(_selectedNotes);
+            }
         }
 
         #region Channels
@@ -526,32 +728,42 @@ namespace cmdr.Editor.ViewModels.MidiBinding
 
         private IEnumerable<MenuItemViewModel> generateChannelsMenu()
         {
-            return Enumerable.Range(1, 16).Select(c =>
+            var ret = Enumerable.Range(1, 16).Select(c =>
             {
                 var str = String.Format("Ch{0:00}", c);
                 return new MenuItemViewModel { Text = str, Tag = str };
             });
+
+            // Add a "None" entry to the channels
+            //ret.toList().Insert(0, new MenuItemViewModel { Text = "None", Tag = "None" });
+            return ret;
         }
+
+
 
         private void updateChannelsMenu(IEnumerable<string> selectedChannels)
         {
-            if (!_selectedChannels.Where(c => c != _channel).Any())
+            // todo: merge this method with the notes one
+            // remove possible previous entries
+            while (ChannelsMenu_shortcuts > 0)
             {
-                if (ChannelsMenu.Contains(_selectedChannelsMenuItem))
-                {
-                    ChannelsMenu.Remove(SEPARATOR);
-                    ChannelsMenu.Remove(_selectedChannelsMenuItem);
-                }
-                
+                //OutCommands.Add(_separator);
+                ChannelsMenu.RemoveAt(0);
+                ChannelsMenu_shortcuts -= 1;
+            }
+
+            if(_selectedChannels.Count == 0)
+            {
                 return;
             }
 
+            // else, create the selected channel options, one per channel. This list is already of unique channels
             _selectedChannelsMenuItem.Children = _selectedChannels.Select(c => new MenuItemViewModel { Text = c, Tag = c }).ToList();
 
-            if (!ChannelsMenu.Contains(_selectedChannelsMenuItem))
+            foreach (var item in _selectedChannelsMenuItem.Children)
             {
-                ChannelsMenu.Add(SEPARATOR);
-                ChannelsMenu.Add(_selectedChannelsMenuItem);
+                ChannelsMenu.Insert(0, item);
+                ChannelsMenu_shortcuts += 1;
             }
         }
 
@@ -567,33 +779,42 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 // it's ok to set a reference here, as there should be a single definition per note anyway
                 updateBinding(definition);
                 Note = definition.Note;
-            }
-            else // generic midi
+            } else {
+                // generic midi
                 Note = item.Tag.ToString();
+            }
         }
 
         private void updateNotesMenu(IEnumerable<object> selectedNotes)
         {
+            // remove possible previous entries
+            while(NotesMenu_shortcuts > 0)
+            {
+                //OutCommands.Add(_separator);
+                NotesMenu.RemoveAt(0);
+                NotesMenu_shortcuts -= 1;
+            }
+
+            ////
             var hasVariousNotesUnequalNull = (IsGenericMidi && !_selectedNotes.Where(n => n.ToString() != _note).Any()) ||
                 (!IsGenericMidi && !_selectedNotes.Cast<AMidiDefinition>().Where(n => n.Note != _note).Any());
 
-            if (hasVariousNotesUnequalNull)
-            {
-                if (NotesMenu.Contains(_selectedNotesMenuItem))
-                {
-                    NotesMenu.Remove(SEPARATOR);
-                    NotesMenu.Remove(_selectedNotesMenuItem);
+            if (selectedNotes.Count() > 0) {
+                // todo: do real C# code here
+                _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
+                foreach (var item in _selectedNotesMenuItem.Children) {
+                    NotesMenu.Insert(0, item);
+                    NotesMenu_shortcuts += 1;
                 }
-
-                return;
             }
 
-            _selectedNotesMenuItem.Children = NotesMenuBuilder.Instance.BuildSelectedNotesMenu(selectedNotes);
+            // note: this is already reverse sorted
+            foreach (var st in _selectedStrings) {
 
-            if (!NotesMenu.Contains(_selectedNotesMenuItem))
-            {
-                NotesMenu.Add(SEPARATOR);
-                NotesMenu.Add(_selectedNotesMenuItem);
+                // FIXME: Hack: we use '_' to signifify that it has channel+note
+                var item = new MenuItemViewModel { Text = st, Tag = '_' + st };  //special tags start with '_'
+                NotesMenu.Insert(0, item);
+                NotesMenu_shortcuts += 1;
             }
         }
 
@@ -632,7 +853,7 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 if (item.IsSeparator)
                     continue;
 
-                item.IsEnabled = CanIncDec((int)item.Tag);
+                item.IsEnabled = CanIncDecNumber((int)item.Tag);
             }
         }
 

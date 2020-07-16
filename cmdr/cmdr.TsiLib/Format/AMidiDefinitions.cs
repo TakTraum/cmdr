@@ -6,7 +6,7 @@ namespace cmdr.TsiLib.Format
 {
     internal abstract class AMidiDefinitions : Frame
     {
-        public List<MidiDefinition> Definitions { get; private set; }
+        public List<MidiDefinition> Definitions { get;  set; }
 
 
         public AMidiDefinitions(string frameId)

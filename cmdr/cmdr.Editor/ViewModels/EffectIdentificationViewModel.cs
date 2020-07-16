@@ -125,7 +125,7 @@ namespace cmdr.Editor.ViewModels
                     {
                         try
                         {
-                            _request.FxSettings = TsiFile.Load(CmdrSettings.Instance.TraktorVersion, PathToTsi).FxSettings;
+                            _request.FxSettings = TsiFile.Load(CmdrSettings.Instance.TraktorVersion, PathToTsi, false).FxSettings;
                         }
                         catch (Exception ex)
                         {

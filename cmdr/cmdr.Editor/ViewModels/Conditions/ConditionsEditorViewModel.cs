@@ -8,10 +8,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace cmdr.Editor.ViewModels.Conditions
+namespace cmdr.Editor.ViewModels.Reports
 {
     public class ConditionsEditorViewModel : ViewModelBase
     {
+        private static readonly MenuItemViewModel SEPARATOR = MenuItemViewModel.Separator;
+
         private static List<MenuItemViewModel> _allConditions = null;
         private static readonly MenuBuilder<ConditionProxy> _proxyMenuBuilder = new MenuBuilder<ConditionProxy>();
         private static readonly MenuBuilder<ACondition> _conditionMenuBuilder = new MenuBuilder<ACondition>();
@@ -190,6 +192,29 @@ namespace cmdr.Editor.ViewModels.Conditions
             update();
         }
 
+        private static List<MenuItemViewModel> simplifyConditionsContextMenu(List<MenuItemViewModel> items)
+        {
+            /// simplifiy conditions menu by moving groups to root
+            /// 
+            /// I'm sure this code can be done in cleanly in LINQ
+            var to_simplify = new List<string>() { "FX Unit", "Modifier" };
+            foreach (var group in to_simplify)
+            {
+                int index = items.FindIndex(c => c.Text == group);
+                if (index != -1)
+                {
+                    foreach (var item in items[index].Children)
+                    {
+                        items.Add(item);
+                    }
+                    // remove whole group
+                    items.RemoveAt(index);
+                }
+            }
+
+            return items;
+        }
+
 
         private static List<MenuItemViewModel> generateConditionsContextMenu()
         {
@@ -201,8 +226,12 @@ namespace cmdr.Editor.ViewModels.Conditions
                 Tag = p
             });
 
-            var items = _proxyMenuBuilder.BuildTree(all, itemBuilder, a => a.Category.ToDescriptionString(), "->", false).ToList();            
+            var items = _proxyMenuBuilder.BuildTree(all, itemBuilder, a => a.Category.ToDescriptionString(), "->", false).ToList();
+
+            items.Add(SEPARATOR);
             items.Add(new MenuItemViewModel { Text = "None" });
+
+            items = simplifyConditionsContextMenu(items);
             return items;
         }
     }

@@ -13,11 +13,11 @@ namespace cmdr.TsiLib.Commands
         internal Format.MappingSettings RawSettings;
 
         public int Id { get; private set; }
-        
+
         public string Name { get; private set; }
-        
+
         public TargetType Target { get; private set; }
-        
+
         public MappingType MappingType { get; private set; }
 
         public Dictionary<MappingTargetDeck, string> AssignmentOptions { get; private set; }
@@ -36,7 +36,7 @@ namespace cmdr.TsiLib.Commands
             set
             {
                 RawSettings.ControlType = value;
-             
+
                 updateControlInteractionOptions();
                 if (!ControlInteractionOptions.ContainsKey(InteractionMode))
                     RawSettings.InteractionMode = ControlInteractionOptions.First().Key;
@@ -54,6 +54,32 @@ namespace cmdr.TsiLib.Commands
         }
 
         public AControl Control { get; private set; }
+
+
+        // pestrela: To recode!
+        public void hack_modifier(KnownCommands new_id, String new_name)
+        {
+            Id = (int)new_id;
+
+            Name = new_name;
+
+            updateAssignmentOptions();
+            updateControlTypeOptions();
+            updateControlInteractionOptions();
+            updateControl();
+        }
+
+        // this is the place the Property manager expects it
+        public MidiEncoderMode get_EncoderMode()
+        {
+            return RawSettings.EncoderMode2;
+
+        }
+
+        public void set_EncoderMode(MidiEncoderMode new_value)
+        {
+            RawSettings.EncoderMode2 = new_value;
+        }
 
 
         internal ACommand(int id, string name, TargetType target, MappingType mappingType, MappingSettings rawSettings)

@@ -21,7 +21,12 @@ namespace cmdr.Editor.AppSettings
             }
         }
 
-        public bool Initialized { get { return !String.IsNullOrEmpty(TraktorVersion); } }
+        public bool Initialized {
+            get {
+                bool ret = !String.IsNullOrEmpty(TraktorVersion);
+                return ret;
+            }
+        }
 
         public string DefaultWorkspace
         {
@@ -45,6 +50,200 @@ namespace cmdr.Editor.AppSettings
         {
             get { return getSetting("TraktorVersion"); }
             set { setSetting("TraktorVersion", value); }
+        }
+
+        public bool OptimizeFXList
+        {
+            get {
+                string ret = getSetting("OptimizeFXList");
+                return (ret == "True");
+
+                }
+            set {
+                string ret = value.ToString();
+                setSetting("OptimizeFXList", ret);
+            }
+        }
+
+        public bool RemoveUnusedMIDIDefinitions
+        {
+            get
+            {
+                string ret = getSetting("RemoveUnusedMIDIDefinitions");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("RemoveUnusedMIDIDefinitions", ret);
+            }
+        }
+
+        public bool LoadLastFileAtStartup
+        {
+            get
+            {
+                string ret = getSetting("LoadLastFileAtStartup");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("LoadLastFileAtStartup", ret);
+            }
+        }
+
+
+        public bool ShowDecimalNotes
+        {
+            get
+            {
+                string ret = getSetting("ShowDecimalNotes");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ShowDecimalNotes", ret);
+            }
+        }
+
+        public bool ClearFilterAtModifications
+        {
+            get
+            {
+                string ret = getSetting("ClearFilterAtModifications");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ClearFilterAtModifications", ret);
+            }
+        }
+
+        public bool ClearFilterAtPageChanges
+        {
+            get
+            {
+                string ret = getSetting("ClearFilterAtPageChanges");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ClearFilterAtPageChanges", ret);
+            }
+        }
+
+        public bool ShowNotesBeforeCC
+        {
+            get
+            {
+                string ret = getSetting("ShowNotesBeforeCC");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ShowNotesBeforeCC", ret);
+            }
+        }
+
+        public bool ConfirmDeleteDevices
+        {
+            get
+            {
+                string ret = getSetting("ConfirmDeleteDevices");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ConfirmDeleteDevices", ret);
+            }
+        }
+
+        public int ConfirmDeleteMappingsSize
+        {
+            get
+            {
+                string st = getSetting("ConfirmDeleteMappingsSize");
+
+                if (Int32.TryParse(st, out int ret)) {
+                    return ret;
+                } else {
+                    return 20;
+                }
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("ConfirmDeleteMappingsSize", ret);
+
+            }
+        }
+        
+        public int FilterMenuSize
+        {
+            get
+            {
+                string st = getSetting("FilterMenuSize");
+
+                if (Int32.TryParse(st, out int ret))
+                {
+                    return ret;
+                }
+                else
+                {
+                    return 20;
+                }
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("FilterMenuSize", ret);
+
+            }
+        }
+
+        public bool VerboseExceptions
+        {
+            get
+            {
+                string ret = getSetting("VerboseExceptions");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("VerboseExceptions", ret);
+            }
+        }
+
+        public bool RemoveEmptyDevices
+        {
+            get
+            {
+                string ret = getSetting("RemoveEmptyDevices");
+                return (ret == "True");
+
+            }
+            set
+            {
+                string ret = value.ToString();
+                setSetting("RemoveEmptyDevices", ret);
+            }
         }
 
         public MruSection MRU

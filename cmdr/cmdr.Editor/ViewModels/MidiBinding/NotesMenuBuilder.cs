@@ -1,4 +1,5 @@
-﻿using cmdr.TsiLib.MidiDefinitions.Base;
+﻿using cmdr.Editor.AppSettings;
+using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
 using System;
@@ -28,28 +29,19 @@ namespace cmdr.Editor.ViewModels.MidiBinding
         }
 
 
-        public List<MenuItemViewModel> BuildGenericMidiMenu()
+        private MenuItemViewModel BuildGenericMidiMenuCC(MenuItemViewModel root)
         {
-            MenuItemViewModel root = new MenuItemViewModel();
-
-            #region CC
-
-            var ccMenu = new MenuItemViewModel { Text = "CC" };
-            root.Children.Add(ccMenu);
-
             MenuItemViewModel rangeMenu = null;
             int part = 0;
             int limit = 0;
             string ccNumString;
             string ccString;
-            for (int i = 0; i < CC_MAX; i++)
-            {
-                if (i == limit)
-                {
+            for (int i = 0; i < CC_MAX; i++) {
+                if (i == limit) {
                     part++;
                     limit = CC_PART * part;
-                    rangeMenu = new MenuItemViewModel { Text = String.Format("{0} - {1}", i, limit - 1) };
-                    ccMenu.Children.Add(rangeMenu);
+                    rangeMenu = new MenuItemViewModel { Text = String.Format("CC {0} - {1}", i, limit - 1) };
+                    root.Children.Add(rangeMenu);
                 }
 
                 ccNumString = String.Format("{0:000}", i);
@@ -57,51 +49,82 @@ namespace cmdr.Editor.ViewModels.MidiBinding
                 rangeMenu.Children.Add(new MenuItemViewModel { Text = ccNumString, Tag = ccString });
             }
 
-            #endregion
+            return root;
+        }
 
-            #region Notes
-            
-            var notesMenu = new MenuItemViewModel { Text = "Note" };
-            root.Children.Add(notesMenu);
+        private MenuItemViewModel BuildGenericMidiMenuNotes(MenuItemViewModel root)
+        {
 
+            bool add_count = CmdrSettings.Instance.ShowDecimalNotes;
+            int count = 0;
             int maxOctave;
             var specialNotes = new[] { "G#", "A", "A#", "B" };
             MenuItemViewModel noteMenu = null;
-            foreach (var note in NOTENAMES)
-            {
+            foreach (var note in NOTENAMES) {
                 noteMenu = new MenuItemViewModel { Text = note };
-                notesMenu.Children.Add(noteMenu);
+                root.Children.Add(noteMenu);
 
                 maxOctave = specialNotes.Contains(note) ? 8 : 9;
 
-                for (int i = -1; i <= maxOctave; i++)
-                    noteMenu.Children.Add(new MenuItemViewModel { Text = i.ToString(), Tag = String.Format("Note.{0}", note + i) });
+                for (int i = -1; i <= maxOctave; i++) {
+                    String text;
+                    String tag;
+
+                    if (add_count) {
+                        text = String.Format("{0} ({1})", i.ToString(), count);
+                        //tag = String.Format("Note.{0} ({1})", note + i, count);
+                        tag = String.Format("Note.{0}", note + i);
+                    } else {
+                        text = String.Format("{0}", i.ToString());
+                        tag = String.Format("Note.{0}", note + i);
+
+                    }
+
+                    noteMenu.Children.Add(new MenuItemViewModel { Text = text, Tag = tag });
+                    count++;
+                }
             }
 
-            #endregion
+            return root;
+        }
 
-            // PitchBend
+        public List<MenuItemViewModel> BuildGenericMidiMenu()
+        {
+            MenuItemViewModel root = new MenuItemViewModel();
+
+            // None
+            root.Children.Add(new MenuItemViewModel { Text = "None", Tag = "None" });
+
+            if (CmdrSettings.Instance.ShowNotesBeforeCC) {
+                root = BuildGenericMidiMenuNotes(root);
+                root = BuildGenericMidiMenuCC(root);
+            } else {
+                root = BuildGenericMidiMenuCC(root);
+                root = BuildGenericMidiMenuNotes(root);
+            }
+
+            // PitchBend at the end
             root.Children.Add(new MenuItemViewModel { Text = "PitchBend", Tag = "PitchBend" });
 
             return root.Children;
         }
 
-        public List<MenuItemViewModel> BuildProprietaryMenu(IEnumerable<AMidiDefinition> proprietaryDefinitions)
+        public List<MenuItemViewModel> BuildProprietaryMenu(IEnumerable<AMidiDefinition> proprietaryDefinitions, Char split)
         {
             var itemBuilder = new Func<AMidiDefinition, MenuItemViewModel>(d => new MenuItemViewModel
             {
-                Text = d.Note.Split('.').Last().Trim(),
+                Text = d.Note.Split(split).Last().Trim(),
                 Tag = d
             });
 
-            return _proprietaryMenuBuilder.BuildTree(proprietaryDefinitions, itemBuilder, d => d.Note, ".", true).ToList();
+            return _proprietaryMenuBuilder.BuildTree(proprietaryDefinitions, itemBuilder, d => d.Note, split.ToString(), true).ToList();
         }
 
         public List<MenuItemViewModel> BuildSelectedNotesMenu(IEnumerable<object> selectedNotes)
         {
             if (selectedNotes.First() is AMidiDefinition)
-                return BuildProprietaryMenu(selectedNotes.Cast<AMidiDefinition>());
-            return _genericMenuBuilder.BuildTree(selectedNotes.Cast<string>(), buildMenuItem, buildPath, ".", false);
+                return BuildProprietaryMenu(selectedNotes.Cast<AMidiDefinition>(), '.');   //fixme: get right split char
+            return _genericMenuBuilder.BuildList(selectedNotes.Cast<string>(), buildMenuItemSelected);  // , buildPath, ".", false);
         }
 
 
@@ -135,6 +158,16 @@ namespace cmdr.Editor.ViewModels.MidiBinding
             else if (note.StartsWith("Note"))
                 text = Regex.Match(note, @"([-\d]+)").Groups[1].Value;
 
+            return new MenuItemViewModel
+            {
+                Text = text,
+                Tag = note
+            };
+        }
+
+        private MenuItemViewModel buildMenuItemSelected(string note)
+        {
+            string text = note;
             return new MenuItemViewModel
             {
                 Text = text,

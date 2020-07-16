@@ -166,8 +166,26 @@ namespace cmdr.WpfControls.Behaviors
             // this is essential for dragging multiple items, otherwise it's handled like clicking in a bunch of selected items.
             // since ctrl is used for copy operation, just make sure that the user can still alter the selection with shift.
             // ctrl for altering the selection is handled in ButtonUp event
-            if (!isShiftKeyPressed())
-                e.Handled = true;
+
+            /*
+             * pestrela 2019-12-27: this behavior worked for dragabbale rows, but introduced an annoying behaviour:
+             * selecting a new range would take the starting point of the last range instead of the last single selection
+             * example:
+             *   click row1
+             *   press shift
+             *   click row "5"
+             *   release shift
+             *   click row "3"
+             *   press shift
+             *   click row "5"
+             *   
+             *   watch as row1 is still selected
+             *
+             * As such, disabling drag and drop for now
+             * 
+             */
+            //if (!isShiftKeyPressed())
+            //    e.Handled = true;
         }
 
         private static void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

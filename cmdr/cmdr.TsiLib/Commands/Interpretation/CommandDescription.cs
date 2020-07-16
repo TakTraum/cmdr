@@ -31,7 +31,7 @@ namespace cmdr.TsiLib.Commands.Interpretation
 
             if (Description.InCommandType != null && !Description.InCommandType.InheritsOrImplements(typeof(ACommand)))
                 throw new ArgumentException("In Command Type must inherit from ACommand");
-            
+
             if (Description.OutCommandType != null && !Description.OutCommandType.InheritsOrImplements(typeof(ACommand)))
                 throw new ArgumentException("Out Command Type must inherit from ACommand");
         }

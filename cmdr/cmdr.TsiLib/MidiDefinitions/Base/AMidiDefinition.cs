@@ -1,5 +1,6 @@
 ﻿using System;
 using cmdr.TsiLib.Enums;
+using cmdr.TsiLib;
 
 namespace cmdr.TsiLib.MidiDefinitions.Base
 {
@@ -43,6 +44,9 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
 
         internal static AMidiDefinition Parse(string deviceTypeStr, MappingType type, Format.MidiDefinition definition)
         {
+            if (!Device.isGenericMidiDevice(deviceTypeStr))
+                return AProprietaryMidiDefinition.Parse(deviceTypeStr, definition);
+
             if (definition.ControlId > -1)
                 return AProprietaryMidiDefinition.Parse(deviceTypeStr, definition);
             else

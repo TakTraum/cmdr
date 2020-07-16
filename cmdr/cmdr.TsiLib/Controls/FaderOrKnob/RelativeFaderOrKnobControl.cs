@@ -16,6 +16,9 @@ namespace cmdr.TsiLib.Controls.FaderOrKnob
         /// </summary>
         public int RotaryAcceleration { get { return (int)Math.Round(_command.RawSettings.RotaryAcceleration * 100f); } set { _command.RawSettings.RotaryAcceleration = value/100f; } }
 
+        public int TestPedro{
+            get { return (int)Math.Round(_command.RawSettings.RotaryAcceleration * 100f); }
+            set { _command.RawSettings.RotaryAcceleration = value / 100f; } }
 
         internal RelativeFaderOrKnobControl(ACommand command)
             : base(command)

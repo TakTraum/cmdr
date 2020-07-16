@@ -253,12 +253,8 @@ namespace cmdr.TsiLib.Conditions.Interpretation
         [ConditionDescription(Categories.RemixDeck, "Sample Page Selector", TargetType.Remix, typeof(EnumCondition<SamplePage>))]
         RemixDeck_SamplePageSelector = 733,
 
-        #region new in Traktor 2.11
-
         [ConditionDescription(Categories.RemixDeck_StepSequencer, "Current Step", TargetType.Slot, typeof(EnumCondition<Sample>))]
         RemixDeck_StepSequencer_CurrentStep = 736,
-
-        #endregion
 
         [ConditionDescription(Categories.RemixDeck, "Capture Source", TargetType.Remix, typeof(EnumCondition<CaptureSource>))]
         RemixDeck_CaptureSource = 2002,
@@ -275,31 +271,33 @@ namespace cmdr.TsiLib.Conditions.Interpretation
         [ConditionDescription(Categories.DeckCommon, "Deck Flavor", TargetType.Track, typeof(EnumCondition<DeckFlavor>))]
         DeckCommon_DeckFlavor = 2302,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 1 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        // note: these conditions were moved from "TrackDeck_Cue" to "TrackDeck" to remove one level of the conditions menu
+
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 1 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue1Type = 2333,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 2 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 2 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue2Type = 2334,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 3 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 3 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue3Type = 2335,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 4 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 4 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue4Type = 2336,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 5 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 5 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue5Type = 2337,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 6 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 6 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue6Type = 2338,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 7 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 7 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue7Type = 2339,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Hotcue 8 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
+        [ConditionDescription(Categories.TrackDeck, "Hotcue 8 Type", TargetType.Track, typeof(EnumCondition<HotcueType>))]
         TrackDeck_Cue_Hotcue8Type = 2340,
 
-        [ConditionDescription(Categories.TrackDeck_Cue, "Cue/Loop Move Mode", TargetType.Track, typeof(EnumCondition<CueLoopMoveMode>))]
+        [ConditionDescription(Categories.TrackDeck, "Cue/Loop Move Mode", TargetType.Track, typeof(EnumCondition<CueLoopMoveMode>))]
         TrackDeck_Cue_LoopMoveMode = 2391,
 
         [ConditionDescription(Categories.Modifier, "M1", Enums.TargetType.Global, typeof(EnumCondition<ModifierValue>))]

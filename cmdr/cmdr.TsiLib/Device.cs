@@ -6,12 +6,24 @@ using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.Format;
 using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.TsiLib.Controls.Encoder;
-
+ 
 namespace cmdr.TsiLib
 {
     public class Device
     {
         public static readonly string TYPE_STRING_GENERIC_MIDI = "Generic MIDI";
+
+        public bool IsKeyboard
+        {
+            get
+            {
+                return RawDevice.IsKeyboard;
+            }
+            set
+            {
+                RawDevice.IsKeyboard = value;
+            }
+        }
 
         internal Format.Device RawDevice;
 
@@ -72,10 +84,35 @@ namespace cmdr.TsiLib
         private List<Mapping> _mappings = new List<Mapping>();
         public IReadOnlyCollection<Mapping> Mappings { get { return _mappings.AsReadOnly(); } }
 
+        public static bool isGenericMidiDevice(String deviceTypeStr)
+        {
+
+            if (
+                (deviceTypeStr == "Traktor.Kontrol S4 MK3") ||
+                (deviceTypeStr == "Traktor.Kontrol S2 MK3") ||
+                (deviceTypeStr == "Traktor.Kontrol S3") ||
+                (deviceTypeStr == "Traktor.Kontrol S8") ||
+                (deviceTypeStr == "Pioneer.DDJ-T1") ||
+                (deviceTypeStr == "Generic Keyboard") ||
+                false
+                ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+
         public Proprietary_Controller_DeviceType ProprietaryControllerDeviceType
         {
             get
             {
+                // pestrela: this is to support CanOverrideFactoryMap for the new devices
+                var deviceTypeStr = TypeStr;
+                if (!Device.isGenericMidiDevice(deviceTypeStr))
+                    return Proprietary_Controller_DeviceType.Default;
+                
+
                 if (TypeStr.EndsWith(".Default"))
                     return Proprietary_Controller_DeviceType.Default;
                 else
@@ -91,6 +128,7 @@ namespace cmdr.TsiLib
 
         // In Controller Manager, the encoder mode is shown among elements of MappingSettings, but not stored with them. Instead, it's stored in the MidiDefinition.
         // As the encoder mode is the same for all encoders of a controller, it should be handled by the device.
+        // pestrela 2020-01-10: moving this back to midi device
         /// <summary>
         /// Encoder mode, specific to a controller and uniform for all of its encoders. Either 3Fh/41h or 7Fh/01h. Only used for generic midi devices.
         /// </summary>
@@ -101,25 +139,33 @@ namespace cmdr.TsiLib
             set { _encoderMode = value; setEncoderModes(); }
         }
 
+        public bool RemoveUnusedMIDIDefinitions { get; set; }
 
-        internal Device(int id, string deviceTypeStr, string traktorVersion)
-            : this(id, new Format.Device(deviceTypeStr, traktorVersion))
+        internal Device(int id, string deviceTypeStr, string traktorVersion, bool removeUnusedMIDIDefinition, bool isKeyboard)
+            : this(id, new Format.Device(deviceTypeStr, traktorVersion, removeUnusedMIDIDefinition, isKeyboard), removeUnusedMIDIDefinition, isKeyboard)
         {
             // workaround for Xtreme Mapping only: midi definitions must not be null!
             RawDevice.Data.MidiDefinitions = new MidiDefinitionsContainer();
         }
 
-        internal Device(int id, Format.Device rawDevice)
+        internal Device(int id, Format.Device rawDevice, bool removeUnusedMIDIDefinitions, bool isKeyboard)
         {
+            RemoveUnusedMIDIDefinitions = removeUnusedMIDIDefinitions;
             Id = id;
             RawDevice = rawDevice;
 
-            updateMidiDefinitions();
+            IsKeyboard = isKeyboard;
 
             if (RawDevice.Data.Mappings != null)
                 _mappings = RawDevice.Data.Mappings.List.Mappings.Select(m => new Mapping(this, m)).ToList();
 
+            if(RemoveUnusedMIDIDefinitions)
+                reduceDefinitions();
+
+            updateMidiDefinitions();
+
             updateEncoderMode();
+
         }
 
 
@@ -175,7 +221,7 @@ namespace cmdr.TsiLib
             if (!includeMappings)
                 rawDeviceCopy.Data.Mappings = new MappingsContainer();
 
-            var copy = new Device(-1, rawDeviceCopy);
+            var copy = new Device(-1, rawDeviceCopy, RemoveUnusedMIDIDefinitions, this.IsKeyboard);
             copy.EncoderMode = EncoderMode; // encoder mode is not stored in Format.Device
             return copy;
         }
@@ -304,21 +350,82 @@ namespace cmdr.TsiLib
             }
         }
 
+        private void reduceDefinitions()
+        {
+            if (TypeStr != TYPE_STRING_GENERIC_MIDI)
+                return;
+
+            reduceDefinitions2(MappingType.In);
+            reduceDefinitions2(MappingType.Out);
+
+        }
+
+        // note: the unused default entries are PER DEVICE
+        private void reduceDefinitions2(MappingType what)
+        {
+            var deviceData = RawDevice.Data;
+            var used_bindings = this.Mappings.Select(d => d.MidiBinding).Where(e => e != null).Where(d => d.Type == what).Select(d => d.Note).Distinct().ToList();
+            List<MidiDefinition> cur_definitions = (what == MappingType.In) ? deviceData.MidiDefinitions.In.Definitions : deviceData.MidiDefinitions.Out.Definitions;
+
+            List<MidiDefinition> new_definitions = new List<MidiDefinition>(); // = definitions.Where(d => false);   // just to get the structure
+
+            foreach (var binding in used_bindings)
+            {
+                var used_definitions = cur_definitions.Where(d => d.MidiNote == binding);
+                if (used_definitions.Any()) {
+                    // FIXME: see what we lose here (colisions)
+                    // FIXME: do this whole thing in pure LINQ
+                    
+                    // FIXME: also apply this at save time. Right now it is load time only.
+
+                    new_definitions.Add(used_definitions.First());   
+     
+                }
+
+            }
+
+            // todo: remove colisions
+            if (what == MappingType.In)
+            {
+                RawDevice.Data.MidiDefinitions.In.Definitions = new_definitions;
+            } else
+            {
+                RawDevice.Data.MidiDefinitions.Out.Definitions = new_definitions;
+            }
+        }
+     
+
+        // pestrela: this is for the whole device. The new behaviour is per mapping (=per midibinding)
         private void updateEncoderMode()
         {
             if (TypeStr != TYPE_STRING_GENERIC_MIDI)
                 return;
 
-            _encoderMode = _mappings
+            //_encoderMode = _mappings
+            //    .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
+            //   .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
+            //    .FirstOrDefault();
+
+            var all_mappings = _mappings
                 .Where(m => m.Command.Control is EncoderControl && m.MidiBinding != null)
-                .Select(m => (m.MidiBinding as AGenericMidiDefinition).MidiEncoderMode)
-                .FirstOrDefault();
+                .Select(m => (m.MidiBinding as AGenericMidiDefinition));
+
+            var all_encoder_modes = all_mappings
+                .Select(m => m.MidiEncoderMode);
+
+            bool multiple_modes = all_encoder_modes.Count() > 1;
+            _encoderMode = all_encoder_modes.FirstOrDefault();
+            return;
+
         }
 
         private void setEncoderModes()
         {
             if (TypeStr != TYPE_STRING_GENERIC_MIDI)
                 return;
+
+            // this is when we change the encoder mode on the device settings page. This is now deprecated.
+            //return;
 
             foreach (var def in _midiInDefinitions.Values.Cast<AGenericMidiDefinition>())
                 def.MidiEncoderMode = EncoderMode;

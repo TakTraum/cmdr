@@ -48,23 +48,44 @@ namespace cmdr.TsiLib.Conditions
             Condition2 = c2;
         }
 
-
         public void Swap()
         {
             Format.MappingSettings rawSettings = (Condition1 != null) ? Condition1.RawSettings : (Condition2 != null) ? Condition2.RawSettings : null;
             if (rawSettings == null)
                 return;
 
-            var swap = Condition1;
+            ACondition swap = (Condition1 == null) ? null : Condition1.Copy(ConditionNumber.One);
+
             SetCondition(rawSettings, ConditionNumber.One, Condition2);
-            SetCondition(rawSettings, ConditionNumber.Two, swap);           
+            SetCondition(rawSettings, ConditionNumber.Two, swap);
         }
 
-        public override string ToString()
+        // note: this override is needed to update the datagrid
+        public string ToString()
         {
-            var conditions = new[] { Condition1, Condition2 }.Where(c => c != null).OrderBy(c => c.ToString());
-            return String.Join(" AND ", conditions.Select(c => c.ToString()));
-        } 
+            return this.ToString2("both");
+        }
+
+        public string ToString2(string what = "both")
+        {
+            //what = "both";
+            if (what == "one") {
+                return Condition1?.ToString() ?? "";
+
+            } else if (what == "two") {
+                return Condition2?.ToString() ?? "";
+
+            } else if (what == "both") {
+                var conditions = new[] { Condition1, Condition2 }.Where(c => c != null);
+                conditions.OrderBy(c => c.ToString());   // ???
+                return String.Join(" AND ", conditions.Select(c => c.ToString()));
+
+            } else {
+                throw new Exception("Invalid condition.toString()");
+            }
+
+            return "";
+        }
 
         public override bool Equals(object obj)
         {

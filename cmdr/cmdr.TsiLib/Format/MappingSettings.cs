@@ -28,6 +28,13 @@ namespace cmdr.TsiLib.Format
         /// Percentage Value between 0.0 and 1.0.
         /// </summary>
         public float RotaryAcceleration { get; set; }
+
+        public MidiEncoderMode EncoderMode2
+        {
+            get;
+            set;
+        }
+
         public bool HasValueUI { get; set; }
         public ValueUIType ValueUIType { get; set; }
         public byte[] SetValueTo { get; set; }

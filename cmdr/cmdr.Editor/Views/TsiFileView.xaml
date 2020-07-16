@@ -71,6 +71,7 @@
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
                                             <Style.Triggers>
+                                                <!-- this is for the 0 / 0 selected string ? -->
                                                 <DataTrigger Binding="{Binding SelectedMappings}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Hidden"/>
                                                 </DataTrigger>

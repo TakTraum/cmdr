@@ -1,0 +1,18 @@
+
+https://news.ycombinator.com/item?id=14006734
+	
+alexmullans on Apr 3, 2017 [-]
+
+Sorry for the delay - this response got caught up in the rate limiter.
+Yes, the archive functionality is available to everyone, and will export the source code, documentation, license, issues, and downloads.
+
+For source code history, it depends on the source code type. For Git and Mercurial projects, we'll include the .git/.hg folder so you have the full history; for TFS, it'll be just the snapshot as of read-only.
+
+
+	
+EvanAnderson on Apr 3, 2017 [-]
+
+Thanks very much for the answers. I really appreciate it!
+
+
+

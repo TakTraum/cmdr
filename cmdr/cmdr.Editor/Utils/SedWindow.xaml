@@ -1,0 +1,41 @@
+﻿<Window x:Class="cmdr.Editor.Utils.SedWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:cmdr.Editor.Utils"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanMinimize"
+        Title="Window1" Height="388" Width="369">
+    <Grid Margin="0,0,4,0">
+
+        <StackPanel Margin="5,5,4,0" RenderTransformOrigin="0.5,0.5">
+            <TextBlock Text="Search Text:" Margin="5,5,253,5" Height="15"/>
+            <TextBox Name="SearchTB" Margin="5,5,139,5" Height="29"/>
+            <TextBlock Text="Replace Text:" Margin="5,5,276,5"/>
+            <TextBox Name="ReplaceTB" Height="28" Margin="5,0,139,0" />
+            
+            <TextBlock Text="Operation:" Margin="5,5,253,5" Height="15"/>
+            <RadioButton GroupName="type" Name="typeNormal" Content="Normal Search/Replace" IsChecked="True" />
+            <RadioButton GroupName="type" Name="typeStart" Content="Add to Start" />
+            <RadioButton GroupName="type" Name="typeEnd" Content="Add to End" />
+            
+            <TextBlock Text="Case Conversion:" Margin="5,5,253,5" Height="15"/>
+            <RadioButton GroupName="case" Name="capitalizeNone" Content="No change" IsChecked="True" />
+            <RadioButton GroupName="case" Name="capitalizeLowerCase" Content="lowercase" />
+            <RadioButton GroupName="case" Name="capitalizeUpperCase" Content="UPPERCASE" />
+            <RadioButton GroupName="case" Name="capitalizeTitleCase" Content="Title Case" />
+
+
+            <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
+                <Button Content="   _OK   " IsDefault="True" Margin="5" Name="btnOk" Click="btnOk_Click" />
+                <Button Content=" _Cancel " IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+</Window>
+    
+     

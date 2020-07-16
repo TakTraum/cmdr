@@ -8,11 +8,24 @@ namespace cmdr.TsiLib.Format
         public string DeviceType { get; set; }
         public DeviceData Data { get; private set; }
 
+        private bool _isKeyboard;
+        public bool IsKeyboard
+        {
+            get
+            {
+                return _isKeyboard;
+            }
+            set
+            {
+                _isKeyboard = value;
+            }
+        }
 
-        public Device(string deviceType, string traktorVersion)
+        public Device(string deviceType, string traktorVersion, bool RemoveUnusedMIDIDefinition, bool isKeyboard)
             : base("DEVI")
         {
             DeviceType = deviceType;
+            IsKeyboard = isKeyboard;
             Data = new DeviceData(traktorVersion);
         }
 

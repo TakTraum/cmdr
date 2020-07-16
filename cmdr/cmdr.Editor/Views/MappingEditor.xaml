@@ -36,16 +36,16 @@
             <views:ConditionsEditor DataContext="{Binding ConditionsEditor, Mode=OneWay}" Margin="5,-3,5,10" />
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Visibility="{Binding IsCommandEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
+        <StackPanel Grid.Row="3" Visibility="{Binding IsBindingEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
+            <Label><Bold>Mapped To:</Bold></Label>
+            <views:MidiEditor DataContext="{Binding MidiBindingEditor, Mode=OneWay}" Margin="5,0,5,10" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="4" Visibility="{Binding IsCommandEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
             <Label>
                 <Bold>Settings:</Bold>
             </Label>
             <views:CommandEditor DataContext="{Binding CommandEditor, Mode=OneWay}" Margin="5,0,5,10" />
-        </StackPanel>
-        
-        <StackPanel Grid.Row="4" Visibility="{Binding IsBindingEnabled, Mode=OneWay, Converter={StaticResource boolToVisConverter}}">
-            <Label><Bold>Mapped To:</Bold></Label>
-            <views:MidiEditor DataContext="{Binding MidiBindingEditor, Mode=OneWay}" Margin="5,0,5,10" />
         </StackPanel>
     </Grid>
 </UserControl>

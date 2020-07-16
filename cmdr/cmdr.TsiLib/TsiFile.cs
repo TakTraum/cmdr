@@ -12,6 +12,16 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Runtime.ExceptionServices;
+
+/*
+ * Terminology about FX list
+ *                    
+ * indices - what is on the TSI. Relative to own file or Trakor settigs.TSI.
+ * id - actual effects, with string
+ * effects: what is on the file
+ * snapshots: the 43 effects
+ */
 
 namespace cmdr.TsiLib
 {
@@ -26,7 +36,10 @@ namespace cmdr.TsiLib
 
         public string TraktorVersion { get; private set; }
 
-        private DeviceMappingsContainer _devicesContainer;
+        public bool OptimizeFXList { get; private set; }
+
+        private DeviceMappingsContainer _devicesContainerControllers;
+        private DeviceMappingsContainer _devicesContainerKeyboard;
 
         public string Path { get; private set; }
 
@@ -41,9 +54,11 @@ namespace cmdr.TsiLib
         private TsiFile(string traktorVersion)
         {
             TraktorVersion = traktorVersion;
+            OptimizeFXList = false;            // this ONLY gets the actual value on the SAVE command
 
             _devices = new List<Device>();
-            _devicesContainer = new DeviceMappingsContainer();
+            _devicesContainerControllers = new DeviceMappingsContainer();
+            _devicesContainerKeyboard = new DeviceMappingsContainer();
         }
 
 
@@ -62,26 +77,32 @@ namespace cmdr.TsiLib
         /// <exception cref="System.Exception">Thrown when file cannot be loaded or parsed.</exception>
         /// <param name="traktorVersion">The targeted Traktor Version. The version of the file is checked against it.</param>
         /// <param name="filePath">Path of the file.</param>
-        public static TsiFile Load(string traktorVersion, string filePath)
+        public static TsiFile Load(string traktorVersion, string filePath, bool RemoveUnusedMIDIDefinitions, bool ignoreExceptions = true)
         {
             TsiFile file = new TsiFile(traktorVersion);
             file.Path = filePath;
-            try
-            {
+            try {
                 TsiXmlDocument xml = new TsiXmlDocument(filePath);
-                file.load(xml);
+                file.load(xml, RemoveUnusedMIDIDefinitions);
                 return file;
             }
-            catch (Exception)
-            {
-                return null;
+            catch (AggregateException ex) {
+                if (ignoreExceptions) {
+                    return null;
+                } else {
+                    // Preserves the stack trace 
+                    // https://stackoverflow.com/questions/57383/how-to-rethrow-innerexception-without-losing-stack-trace-in-c
+                    ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+
+                    // This is just to please the compiler
+                    throw ex;
+                }
             }
         }
 
-
         public Device CreateDevice(string deviceTypeStr)
         {
-            return new Device(createNewId(), deviceTypeStr, TraktorVersion);
+            return new Device(createNewId(), deviceTypeStr, TraktorVersion, false, false);
         }
 
         public void AddDevice(Device device)
@@ -105,14 +126,21 @@ namespace cmdr.TsiLib
         {
             var device = _devices.Single(d => d.Id == deviceId);
             _devices.Remove(device);
-            _devicesContainer.Devices.List.Remove(device.RawDevice);
+
+            if (device.IsKeyboard) {
+                _devicesContainerKeyboard.Devices.List.Remove(device.RawDevice);
+            } else {
+                _devicesContainerControllers.Devices.List.Remove(device.RawDevice);
+            }
         }
 
-        public bool Save(string filePath)
+        public bool Save(string filePath, bool optimizeFXList, bool backup = false)
         {
-            // workaround to save indices instead of ids
+            // workaround to save indices (position on a list) instead of ids (actual command)
             var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
             var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
+
+            OptimizeFXList = optimizeFXList;
 
             bool prepared = false;
 
@@ -126,15 +154,36 @@ namespace cmdr.TsiLib
             }
 
             // build controller config (binary)
-            DeviceIoConfigController controllerConfig = null;
-            try
-            {
-                string tsiData = getDataAsBase64String();
-                controllerConfig = new DeviceIoConfigController();
-                controllerConfig.Value = tsiData;
+            DeviceIoConfigController controllerConfigController = null;
+            DeviceIoConfigKeyboard controllerConfigKeyboard = null;
+
+            var all_devices = _devices.Select(d => d).ToList();
+            var only_keyboard = _devices.Where(d => (d.IsKeyboard == true)).ToList();
+            var only_controllers = _devices.Where(d => (d.IsKeyboard == false)).ToList();
+
+            try {
+
+                if (only_controllers.Any()) {
+                    string tsiDataController = getDataAsBase64String(false);
+                    controllerConfigController = new DeviceIoConfigController();
+                    controllerConfigController.Value = tsiDataController;
+                }
+
+                if (only_keyboard.Any()) {
+                    string tsiDataKeyboard = getDataAsBase64String(true);
+                    controllerConfigKeyboard = new DeviceIoConfigKeyboard();
+                    controllerConfigKeyboard.Value = tsiDataKeyboard;
+                }
             }
             catch (Exception ex)
             {
+                
+                // FIXME: show this to the user somehow
+                //   at least a show console option
+
+                // Exception thrown: 'System.OutOfMemoryException' in mscorlib.dll
+                // Error building controller config. Reason: Exception of type 'System.OutOfMemoryException' was thrown.
+
                 Debug.WriteLine("Error building controller config. Reason: " + ex.Message);
                 return false;
             }
@@ -148,7 +197,14 @@ namespace cmdr.TsiLib
                 TsiXmlDocument xml = (Path != null) ? new TsiXmlDocument(Path) : new TsiXmlDocument();
                 if (FxSettings != null && (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any()))
                     FxSettings.Save(xml);
-                xml.SaveEntry(controllerConfig);
+
+                if (only_controllers.Any()) {
+                    xml.SaveEntry(controllerConfigController);
+                }
+                if (only_keyboard.Any()) {
+                    xml.SaveEntry(controllerConfigKeyboard);
+                }
+
                 xml.Save(filePath);
             }
             catch (Exception ex)
@@ -157,64 +213,88 @@ namespace cmdr.TsiLib
                 return false;
             }
 
-            Path = filePath;
+            if (!backup) {
+                Path = filePath;
+            }
             return true;
         }
 
+        int max_id = 0;
 
-        private void load(TsiXmlDocument xml)
+
+
+        private void load(TsiXmlDocument xml, bool RemoveUnusedMIDIDefinitions)
         {
             // Traktor version, optional (only for "Traktor Settings.tsi")
             var browserDirRoot = xml.GetEntry<BrowserDirRoot>();
-            if (browserDirRoot != null)
+            if (browserDirRoot != null) 
             {
                 Match m = REGEX_TRAKTOR_FOLDER.Match(browserDirRoot.Value);
                 if (m.Success) // Overwrite version if possible
                     TraktorVersion = m.Groups[1].Value;
             }
 
-            // effects, optional (FxSettings.Load may return null)
+            // Effects, optional (FxSettings.Load may return null)
+            // can this move below ?
             FxSettings = FxSettings.Load(xml);
 
-            // devices
-            var controllerConfig = xml.GetEntry<DeviceIoConfigController>();
-            if (controllerConfig != null)
-            {
-                byte[] decoded = Convert.FromBase64String(controllerConfig.Value);
-                _devicesContainer = new DeviceMappingsContainer(new MemoryStream(decoded));
-                int id = 0;
-                _devices = _devicesContainer.Devices.List.Select(d => new Device(id++, d)).ToList();
+            // Devices
+            StringXmlEntry controllerConfigController = xml.GetEntry<DeviceIoConfigController>();
+            if (controllerConfigController != null) {
+                byte[] decoded = Convert.FromBase64String(controllerConfigController.Value);
+                _devicesContainerControllers = new DeviceMappingsContainer(new MemoryStream(decoded));
+                var _devices_tmp = _devicesContainerControllers.Devices.List.Select(d => new Device(max_id++, d, RemoveUnusedMIDIDefinitions, false)).ToList();
 
-                var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
-                var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
-                if (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any())
+                // append to whole list
+                _devices.AddRange(_devices_tmp);
+            }
+
+            StringXmlEntry controllerConfigKeyboard = xml.GetEntry<DeviceIoConfigKeyboard>();
+            if (controllerConfigKeyboard != null) {
+
+                byte[] decoded = Convert.FromBase64String(controllerConfigKeyboard.Value);
+                _devicesContainerKeyboard = new DeviceMappingsContainer(new MemoryStream(decoded));
+                var _devices_tmp = _devicesContainerKeyboard.Devices.List.Select(d => new Device(max_id++, d, RemoveUnusedMIDIDefinitions, true)).ToList();
+
+                // append to whole list
+                _devices.AddRange(_devices_tmp);
+            }
+
+            load_FX();
+        }
+
+
+
+        private void load_FX() { 
+            // Effects
+            var effectSelectorInCommands = getCriticalEffectSelectorInCommands();
+            var effectSelectorOutCommands = getCriticalEffectSelectorOutCommands();
+            if (effectSelectorInCommands.Any() || effectSelectorOutCommands.Any()) {
+                // need FxSettings for interpretation but not provided by file itself?
+                if (FxSettings == null) 
                 {
-                    // need FxSettings for interpretation but not provided by file itself?
-                    if (FxSettings == null)
+                    // call for help
+                    string rId = new FileInfo(Path).Name;
+                    var request = new EffectIdentificationRequest(rId);
+                    var handler = EffectIdentificationRequest;
+                    if (handler != null) 
                     {
-                        // call for help
-                        string rId = new FileInfo(Path).Name;
-                        var request = new EffectIdentificationRequest(rId);
-                        var handler = EffectIdentificationRequest;
-                        if (handler != null)
-                        {
-                            handler(this, request);
+                        handler(this, request);
 
-                            // wait for help
-                            while (!request.Handled)
-                                Thread.Sleep(100);
+                        // wait for help
+                        while (!request.Handled)
+                            Thread.Sleep(100);
 
-                            if (request.FxSettings != null)
-                                FxSettings = request.FxSettings;
-                        }
+                        if (request.FxSettings != null)
+                            FxSettings = request.FxSettings;
                     }
-
-                    // if possible, replace effect indices with ids
-                    if (FxSettings != null)
-                        restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
-                    else
-                        _ignoreFx = true;
                 }
+
+                // if possible, replace effect indices (position on a list) with ids (actual command)
+                if (FxSettings != null)
+                    restoreEffectSelectorCommands(effectSelectorInCommands, effectSelectorOutCommands);
+                else
+                    _ignoreFx = true;
             }
         }
 
@@ -245,7 +325,7 @@ namespace cmdr.TsiLib
         {
             prepareFxSettings(effectSelectorInCommands, effectSelectorOutCommands);
 
-            // replace ids with indices
+            // replace ids (actual FX) with indices (position on a list)
             foreach (var e in effectSelectorInCommands)
                 if (e.Value != Effect.NoEffect)
                     e.Value = (Effect)(FxSettings.Effects.IndexOf(e.Value) + 1);
@@ -289,12 +369,16 @@ namespace cmdr.TsiLib
             if (IsTraktorSettings)
                 usedSnapshots = FxSettings.Snapshots.Union(usedSnapshots).Distinct().ToDictionary(s => s.Key, s => s.Value);
 
-            FxSettings = new FxSettings(usedFx, usedSnapshots);
+
+            bool optimizeFXList = OptimizeFXList; // how to use  CmdrSettings.Instance.OptimizeFXList ?;
+            
+            if(optimizeFXList)
+                FxSettings = new FxSettings(usedFx, usedSnapshots);
         }
 
         private void restoreEffectSelectorCommands(IEnumerable<EffectSelectorInCommand> effectSelectorInCommands, IEnumerable<EffectSelectorOutCommand> effectSelectorOutCommands)
         {
-            // replace indices with ids
+            // replace indices (position on a list) with ids (actual FX)
             foreach (var e in effectSelectorInCommands)
                 if (e.Value != Effect.NoEffect)
                     e.Value = FxSettings.Effects[(int)e.Value - 1];
@@ -308,13 +392,17 @@ namespace cmdr.TsiLib
             }
         }
 
-        private string getDataAsBase64String()
+        private string getDataAsBase64String(bool isKeyboard)
         {
             byte[] data = null;
             using (MemoryStream stream = new MemoryStream())
             {
                 // write DevicesContainer into memory stream
-                _devicesContainer.Write(new Writer(stream));
+                if (isKeyboard) {
+                    _devicesContainerKeyboard.Write(new Writer(stream));
+                } else {
+                    _devicesContainerControllers.Write(new Writer(stream));
+                }
 
                 // get all bytes from memory stream
                 data = stream.ToBytes();
@@ -350,15 +438,23 @@ namespace cmdr.TsiLib
             if (device.Id < 0 || !asIs)
                 device.Id = createNewId();
 
+            DeviceMappingsContainer container;
+            if (device.IsKeyboard) {
+                container = _devicesContainerKeyboard;
+            } else {
+                container = _devicesContainerControllers;
+            }
+
+            // todo: simplify this
             if (index == Devices.Count)
             {
                 _devices.Add(device);
-                _devicesContainer.Devices.List.Add(device.RawDevice);
+                container.Devices.List.Add(device.RawDevice);
             }
             else
             {
                 _devices.Insert(index, device);
-                _devicesContainer.Devices.List.Insert(index, device.RawDevice);
+                container.Devices.List.Insert(index, device.RawDevice);
             }
         }
     }

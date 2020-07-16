@@ -50,6 +50,7 @@ namespace cmdr.Editor.AvalonDock
                 selectedId.IsSelected = true;
         }
 
+        // note: silent is always true 
         public void RemoveMdiChild(string id, bool silent = false)
         {
             var child = _internalMdiChildren.FirstOrDefault(c => c.ContentId == id);
@@ -72,7 +73,10 @@ namespace cmdr.Editor.AvalonDock
                 {
                     child.Close();
                 }
-                catch { }
+                catch {
+                    // FIXME: show stack here
+
+                }
             }
         }
 

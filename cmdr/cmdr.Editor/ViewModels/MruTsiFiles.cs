@@ -73,6 +73,12 @@ namespace cmdr.Editor.ViewModels
         }
 
 
+        public string get_last_file()
+        {
+            var ret = (_files.Count() > 0 ? _files[0] : null);
+            return ret;
+        }
+
         private void save()
         {
             if (_configSection == null)

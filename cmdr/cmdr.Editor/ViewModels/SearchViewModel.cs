@@ -54,9 +54,9 @@ namespace cmdr.Editor.ViewModels
              return hasNext;
          }
 
-         private void search()
+        private void search()
          {
-             if (string.IsNullOrEmpty(SearchText))
+            if (string.IsNullOrEmpty(SearchText))
              {
                  IsFound = true;
                  return;

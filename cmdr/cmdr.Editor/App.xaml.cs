@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+//using WindowPlacement;
 
 namespace cmdr.Editor
 {
@@ -19,6 +20,11 @@ namespace cmdr.Editor
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            String appTheme = "Light";
+            //String appTheme = "Dark";
+            this.Resources.MergedDictionaries[0].Source =
+                new Uri($"/Styles/Themes/{appTheme}.xaml", UriKind.Relative);
+
             MainWindow mainWindow = new MainWindow();
             MainViewModel = new ViewModels.ViewModel(mainWindow.dockingManager);
             mainWindow.DataContext = MainViewModel;
@@ -43,5 +49,19 @@ namespace cmdr.Editor
                 MainViewModel.StatusText = null;
             }), DispatcherPriority.Background);
         }
+
+        /*
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Settings.Default.MainWindowPlacement = this.GetPlacement();
+            Settings.Default.Save();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            this.SetPlacement(Settings.Default.MainWindowPlacement);
+        }*/
+
     }
 }

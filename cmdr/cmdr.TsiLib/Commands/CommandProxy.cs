@@ -29,6 +29,7 @@ namespace cmdr.TsiLib.Commands
             MappingType = mappingType;
         }
 
+        static Type prev_maketype = null;
 
         internal ACommand Create(MappingSettings rawSettings)
         {
@@ -41,8 +42,14 @@ namespace cmdr.TsiLib.Commands
                 makeType = _description.OutCommandType;
             else
                 throw new Exception(String.Format("Command not supported:{0}-{1}", MappingType, _description.Id));
-           
-            return (ACommand)Activator.CreateInstance(makeType, _flags, null, new object[] { _description.Id, _description.Name, _description.TargetType, settings }, _culture);
+
+
+            var new_obj = new object[] { _description.Id, _description.Name, _description.TargetType, settings };
+
+            ACommand ret;
+            ret = (ACommand)Activator.CreateInstance(makeType, _flags, null, new_obj, _culture);
+            return ret;
+
         }
     }
 }
