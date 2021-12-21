@@ -17,7 +17,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
             get { return _note; }
         }
 
-        internal MidiEncoderMode MidiEncoderMode
+        public MidiEncoderMode MidiEncoderMode
         {
             get
             {
@@ -35,7 +35,7 @@ namespace cmdr.TsiLib.MidiDefinitions.Base
         }
 
 
-        public AGenericMidiDefinition(MappingType type, int channel, string note, float minValue, float maxValue)
+         public AGenericMidiDefinition(MappingType type, int channel, string note, float minValue, float maxValue)
             : base(Device.TYPE_STRING_GENERIC_MIDI, type, new Format.MidiDefinition(
                     string.Format("Ch{0:00}.{1}", channel, note.Contains("+") ? note.Replace("+", string.Format("+Ch{0:00}.", channel)) : note),
                     (type == MappingType.In) ? MidiControlType.GenericIn : MidiControlType.Out,

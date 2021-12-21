@@ -37,6 +37,50 @@ namespace cmdr.Editor.Utils
             return MessageBox.Show(App.Current.MainWindow, message, title ?? "Question", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
         }
 
+        public static void ShowErrorClipboard(string st, string title = null)
+        {
+            var result = MessageBox.Show(App.Current.MainWindow, st, title ?? "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            switch (result) {
+                case MessageBoxResult.OK: {
+                        //https://stackoverflow.com/questions/4809520/how-to-allow-copying-message-on-messagebox
+                        Clipboard.SetText(st);
+                    }
+                    return;
+                default:
+                    return;
+            }
+        }
+
+
+        public static void ShowFailedAssert(string summary, string title = null)
+        {
+            var st = "PROGRAM ERROR\n"
+                + "\n\n"
+                + summary
+                + "\n\n"
+                + "Press OK to copy this info to the Clipboard\n"
+                + "and then create an issue on https://github.com/pestrela/cmdr/issues\n"
+                + "\n\n";
+
+            ShowErrorClipboard(st, title);
+        }
+
+        // shows something to the user and copies that to the clipboard
+        public static void ShowException(string summary, Exception e, string title = null)
+        {
+            var st = "\n\n" 
+                +  summary 
+                + "\n\nPress OK to copy this info to the Clipboard\n"
+                + "\n" 
+                + "and then create an issue on https://github.com/pestrela/cmdr/issues\n"
+                + "\n\n" 
+                + "Exception Stack Trace:\n" 
+                + e.ToString().Replace('\r', ' ').Replace('\n', ' ')
+                + "\n\n";
+
+            ShowErrorClipboard(st, title);
+        }
+
         public static bool? ShowCancellableQuestion(string message, string title = null)
         {
             var result = MessageBox.Show(App.Current.MainWindow, message, title ?? "Question", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);

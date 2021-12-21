@@ -2,3 +2,8 @@
 bin/
 obj/
 *.suo
+cmdr/.vs/
+cmdr/packages/
+.vs/
+tests/tmp/
+legacy/cmdr-codeplex-archive/

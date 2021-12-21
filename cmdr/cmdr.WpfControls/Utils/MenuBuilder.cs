@@ -7,12 +7,20 @@ namespace cmdr.WpfControls.Utils
 {
     public class MenuBuilder<T>
     {
-        public List<MenuItemViewModel> BuildList(IEnumerable<T> proxies, Func<T, MenuItemViewModel> proxyConverter)
+        public List<MenuItemViewModel> BuildList(IEnumerable<T> proxies, Func<T, MenuItemViewModel> proxyConverter, bool sort = true)
         {
-            return proxies.Select(p => proxyConverter(p)).OrderBy(m => m).ToList();
+            var ret = proxies.Select(p => proxyConverter(p));
+            if (sort)
+            {
+                // how do we do this optional step in LINQ?
+                ret = ret.OrderBy(m => m);
+            }
+
+            return ret.ToList();
         }
 
-        public List<MenuItemViewModel> BuildTree(IEnumerable<T> proxies, Func<T, MenuItemViewModel> proxyConverter, Func<T, string> pathSelector, string pathSeparator, bool pathIncludesLeafs)
+        public List<MenuItemViewModel> BuildTree(IEnumerable<T> proxies, Func<T, MenuItemViewModel> proxyConverter, Func<T, string> pathSelector, 
+            string pathSeparator, bool pathIncludesLeafs, bool sort=true)
         {
             var paths = proxies.Select(pathSelector);
             if (!pathIncludesLeafs)
@@ -37,10 +45,13 @@ namespace cmdr.WpfControls.Utils
                     target = target.Children.Single(ch => ch.Text == c);
                 }
 
-                target.Children.AddRange(BuildList(proxies.Where(i => pathSelector(i) == p), proxyConverter));
+                var children = BuildList(proxies.Where(i => pathSelector(i) == p), proxyConverter, sort = false);
+                target.Children.AddRange(children);
             }
 
-            sortTree(root);
+            // pestrela: made an option to sort the commands in the Traktor order
+            if(sort)
+                sortTree(root);
             return root.Children;
         }
 

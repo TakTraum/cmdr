@@ -3,9 +3,10 @@ namespace cmdr.TsiLib.Enums
 {
     public enum Layout
     {
-        Essential = 0,
-        Extended = 1,
-        Browser = 2,
-        Mixer = 3
+        // pestrela: todo: read this from TSI itself
+        Layout1 = 0,
+        Layout2 = 1,
+        Layout3 = 2,
+        Layout4 = 3
     }
 }

@@ -26,6 +26,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -96,6 +99,7 @@
     <Compile Include="Behaviors\DraggableRowsBehavior.cs" />
     <Compile Include="Adorners\InsertAdorner.cs" />
     <Compile Include="Behaviors\MultiSelectorBehavior.cs" />
+    <Compile Include="ViewModels\CommandsReportViewModel.cs" />
     <Compile Include="ViewModels\RowItemViewModel.cs" />
     <Compile Include="Utils\TwoListSynchronizer.cs" />
     <Compile Include="CustomListBox\CustomListBox.cs" />

@@ -17,16 +17,33 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,17 +54,44 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>cmdr.Editor.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cmdr_icon2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ChangeTracking">
       <HintPath>lib\ChangeTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ookii.Dialogs.Wpf">
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
@@ -59,8 +103,11 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -84,6 +131,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Settings.cs" />
     <Compile Include="Utils\Configuration\ConfigurationElementAttribute.cs" />
     <Compile Include="Utils\Configuration\ConfigurationSectionAttribute.cs" />
     <Compile Include="AppSettings\CmdrSettings.cs" />
@@ -111,15 +159,20 @@
     <Compile Include="Utils\MessageBoxHelper.cs" />
     <Compile Include="Utils\MovingLogicHelper.cs" />
     <Compile Include="Utils\SerializationHelper.cs" />
+    <Compile Include="Utils\SedWindow.xaml.cs">
+      <DependentUpon>SedWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Conditions\ConditionTuplesEditorViewModel.cs" />
-    <Compile Include="ViewModels\Conditions\ConditionTupleViewModel.cs" />
+    <Compile Include="ViewModels\Reports\CommandsReportEditorViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ConditionTuplesEditorViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ConditionTupleViewModel.cs" />
     <Compile Include="ViewModels\ControllerDefaultMappings.cs" />
     <Compile Include="ViewModels\EffectIdentificationViewModel.cs" />
     <Compile Include="ViewModels\Metadata\DeviceMetadataViewModel.cs" />
     <Compile Include="ViewModels\Metadata\MappingMetadataViewModel.cs" />
     <Compile Include="ViewModels\MidiBinding\NotesMenuBuilder.cs" />
     <Compile Include="ViewModels\MruTsiFiles.cs" />
+    <Compile Include="ViewModels\FilterCmdViewModel.cs" />
     <Compile Include="ViewModels\Settings\CommandEditorViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentEditorViewModel.cs" />
     <Compile Include="ViewModels\Conditions\ConditionsEditorViewModel.cs" />
@@ -168,7 +221,10 @@
     <Compile Include="Views\CommentEditorView.xaml.cs">
       <DependentUpon>CommentEditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConditionDescriptionsEditor.xaml.cs">
+    <Compile Include="Views\Reports\CommandsReportEditor.xaml.cs">
+      <DependentUpon>CommandsReportEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ConditionDescriptionsEditor.xaml.cs">
       <DependentUpon>ConditionDescriptionsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConditionsEditor.xaml.cs">
@@ -176,6 +232,9 @@
     </Compile>
     <Compile Include="Views\Controls\ConditionControl.xaml.cs">
       <DependentUpon>ConditionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\FilterControl.xaml.cs">
+      <DependentUpon>FilterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\SearchControl.xaml.cs">
       <DependentUpon>SearchControl.xaml</DependentUpon>
@@ -208,6 +267,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\WindowPlacement.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -215,6 +275,18 @@
     <Page Include="Styles\ResizeStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Themes\Dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Themes\Light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Utils\SedWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AboutWindow.xaml">
       <SubType>Designer</SubType>
@@ -260,7 +332,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConditionDescriptionsEditor.xaml">
+    <Page Include="Views\Reports\CommandsReportEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Reports\ConditionDescriptionsEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -269,6 +345,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\ConditionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\FilterControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -352,16 +432,27 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\cmdr_icon.ico" />
     <Resource Include="Assets\donate_pp.png" />
     <Resource Include="Assets\CREDITS.txt" />
     <Resource Include="Assets\flaticons\number-one-in-a-circle.png" />
     <Resource Include="Assets\flaticons\number-two-in-a-circle.png" />
+    <Resource Include="cmdr_icon.ico" />
+    <Resource Include="cmdr_icon_.ico" />
+    <Resource Include="cmdr_icon2.ico" />
     <Content Include="lib\ChangeTracking.dll" />
     <Content Include="lib\SettingControlLibrary.dll" />
     <Content Include="lib\TMS.Controls.SearchTextBox.dll" />
     <Content Include="LICENCE.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,7 @@
         <XmlDataProvider x:Key="aboutProvider" XPath="ApplicationInfo" IsAsynchronous="False" IsInitialLoadEnabled="True">
             <x:XData>
                 <ApplicationInfo xmlns="">
-                    <Link Uri="https://cmdr.codeplex.com/">More Info</Link>
+                    <Link Uri="https://github.com/pestrela/cmdr/tree/master/docs">More Info</Link>
                 </ApplicationInfo>
             </x:XData>
         </XmlDataProvider>
@@ -63,7 +63,13 @@
     </Window.Resources>
     <StackPanel x:Uid="clientArea" Style="{StaticResource BackgroundStyle}">
         <StackPanel x:Uid="displayArea" Style="{StaticResource DisplayAreaStyle}" 
-                    DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Mode=OneTime}">
+                    DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
+                    Mode=OneTime}" >
+            <StackPanel  HorizontalAlignment="right">
+                <!-- fixme: improve this aligment -->
+                <Image x:Name="aboutIcon" Height="100" Source="/cmdr;component/cmdr_icon_.ico" HorizontalAlignment="Right"/>
+            </StackPanel>
+
             <Label x:Name="productName" x:Uid="productName" 
                    Content="{Binding Mode=OneTime, Path=Product}" />
             <StackPanel x:Uid="versionArea" Orientation="Horizontal">

@@ -2,12 +2,14 @@
 using System;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using cmdr.WpfControls.CustomDataGrid;
 
 namespace cmdr.WpfControls.ViewModels
 {
     public class RowItemViewModel : ViewModelBase
     {
-        internal Selector ParentSelector;
+        //internal Selector ParentSelector;   // HACK to enable clear filtering with zero mappings
+        public Selector ParentSelector;
 
         private object _item;
         public object Item
@@ -34,7 +36,32 @@ namespace cmdr.WpfControls.ViewModels
             _item = item;
         }
 
+        public void check_parent_selector()
+        {
+            if (ParentSelector == null) {
+                throw new InvalidOperationException("Parent Selector is null");
+            }
+                
+            if (!(ParentSelector is CustomDataGrid.CustomDataGrid)) {
+                throw new InvalidOperationException("Target object has no ClearFiltering method");
+            }
+        }
 
+        public void ClearFiltering()
+        {
+           check_parent_selector();
+
+           (ParentSelector as CustomDataGrid.CustomDataGrid).ClearFiltering();
+        }
+
+        public void ReApplyFiltering()
+        {
+            check_parent_selector();
+
+            (ParentSelector as CustomDataGrid.CustomDataGrid).ReApplyFiltering();
+        }
+
+        // this was the only method made by TakTraum to access the datagrid
         public void BringIntoView()
         {
             if (ParentSelector == null)

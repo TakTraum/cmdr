@@ -4,6 +4,7 @@ using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
 using cmdr.TsiLib.MidiDefinitions;
+using cmdr.TsiLib.Commands.Interpretation;
 
 namespace cmdr.TsiLib
 {
@@ -49,6 +50,10 @@ namespace cmdr.TsiLib
         internal Mapping(Device device, Format.Mapping rawMapping)
             : this(rawMapping)
         {
+            if(Command == null) {  //pestrela: favorites crash
+                return;
+            }
+
             Attach(device);
 
             if (Id >= 0)
@@ -72,7 +77,7 @@ namespace cmdr.TsiLib
             Command = Commands.All.GetCommandProxy(_rawMapping.TraktorControlId, _rawMapping.Type).Create(_rawMapping.Settings);
             if (Command == null)
             {
-
+                return; // null;   ////pestrela: favorites crash
             }
 
             if (originalHasValueUI != _rawMapping.Settings.HasValueUI)
@@ -156,20 +161,30 @@ namespace cmdr.TsiLib
             {
                 // add midi definition to device, if it doesn't already exist
                 var matchingDefinitions = definitions.Where(d => d.MidiNote.Equals(midi.Note));
-                if (!matchingDefinitions.Any())
+                if (matchingDefinitions.Any() == false)
                 {
                     var definition = midi.RawDefinition;
 
                     // adapt encoder mode to device, if necessary
                     var genericDefinition = midi as AGenericMidiDefinition;
-                    if (genericDefinition != null && genericDefinition.MidiEncoderMode != device.EncoderMode)
+                    if (genericDefinition != null) //  && genericDefinition.MidiEncoderMode != device.EncoderMode)
                     {
                         genericDefinition = AGenericMidiDefinition.Parse(genericDefinition.Type, definition);
-                        genericDefinition.MidiEncoderMode = device.EncoderMode;
-                        definition = genericDefinition.RawDefinition;
+                        // genericDefinition.MidiEncoderMode = device.EncoderMode;
+                        genericDefinition.MidiEncoderMode =
+                            //this.MidiBinding.RawDefinition.MidiEncoderMode;
+                            this.Command.RawSettings.EncoderMode2;
+
+                        //genericDefinition.MidiEncoderMode = this.Command.Control.EncoderMode;
+
+                        definition = genericDefinition.RawDefinition;  // pestrela: this was unchanged
                     }
 
                     definitions.Add(definition);
+                } else
+                {
+                    // definition already exist. Update encoder 
+                    //matchingDefinitions.First().EncoderMode = this.MidiBinding.MidiEncoderMode;
                 }
 
                 // add midi binding to device
@@ -223,10 +238,15 @@ namespace cmdr.TsiLib
 
         internal void Attach(Device device)
         {
-            CanOverrideFactoryMap = (device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI && device.ProprietaryControllerDeviceType == Proprietary_Controller_DeviceType.Default);
+            CanOverrideFactoryMap = (
+               device.TypeStr != Device.TYPE_STRING_GENERIC_MIDI && device.ProprietaryControllerDeviceType == Proprietary_Controller_DeviceType.Default
+               );
         }
 
-
+        public void hack_modifier(KnownCommands new_id)
+        {
+            RawMapping.TraktorControlId = (int)new_id;
+        }
 
 
         private Format.MidiDefinition getMidiDefinition(Device device, MappingType type, int id)

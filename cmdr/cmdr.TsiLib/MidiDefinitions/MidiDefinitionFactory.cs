@@ -61,7 +61,7 @@ namespace cmdr.TsiLib.MidiDefinitions
 
             try
             {
-                TsiFile file = TsiFile.Load(String.Empty, tsiFile);
+                TsiFile file = TsiFile.Load(String.Empty, tsiFile, false);
                 if (type == MappingType.In)
                 {
                     result = file.Devices.SelectMany(dev =>

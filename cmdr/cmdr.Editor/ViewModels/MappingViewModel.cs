@@ -1,15 +1,16 @@
 ﻿using ChangeTracking;
 using cmdr.Editor.Metadata;
-using cmdr.Editor.ViewModels.Conditions;
+using cmdr.Editor.ViewModels.Reports;
 using cmdr.TsiLib;
 using cmdr.TsiLib.Commands;
 using cmdr.TsiLib.Conditions;
 using cmdr.TsiLib.Enums;
 using cmdr.TsiLib.MidiDefinitions.Base;
+using cmdr.TsiLib.Commands.Interpretation;
 using System;
 using System.Linq;
 using System.Text;
-
+using System.Collections.Generic;
 
 namespace cmdr.Editor.ViewModels
 {
@@ -23,6 +24,8 @@ namespace cmdr.Editor.ViewModels
         public int Id { get { return _mapping.Id; } }
 
         public string TraktorCommand { get { return getTraktorCommand(); } }
+
+        public string TraktorCommand2 { get { return getTraktorCommand(); } }
 
         public string Type { get { return Command.MappingType.ToString(); } }
 
@@ -38,23 +41,105 @@ namespace cmdr.Editor.ViewModels
 
         public string Interaction { get { return String.Format("{0} - {1}", Command.ControlType.ToDescriptionString(), Command.InteractionMode.ToDescriptionString()); } }
 
-        public string ConditionExpression { get { return Conditions.Name ?? Conditions.ToString(); } }
+        public string ConditionExpression {
+            get {
+                return Conditions.Name ?? Conditions.ToString();
+            }
+        }
+
+        public string Condition1 {
+            get {
+                return Conditions.Name ?? Conditions.ToString2("one");
+            }
+        }
+
+        public string Condition2 {
+            get {
+                return Conditions.Name ?? Conditions.ToString2("two");
+            }
+        }
 
         public string Comment
         {
             get { return _mapping.Comment; }
-            set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }
+            set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }  //todo: why is comment special?
         }
 
+        public string Comment2
+        {
+            get { return _mapping.Comment; }
+            //set { _mapping.Comment = value; raisePropertyChanged("Comment"); IsChanged = true; }  //todo: why is comment special?
+        }
+
+
+        // fixme: split condition1 and condition2
         public ConditionTuple Conditions { get { return _mapping.Conditions; } }
 
         public ACommand Command { get { return _mapping.Command; } }
 
         public AMidiDefinition MidiBinding { get { return _mapping.MidiBinding;} }
 
-        public string MappedTo { get { return (_mapping.MidiBinding != null) ? _mapping.MidiBinding.Note : String.Empty; } }
+        public string MappedTo
+        {
+            get
+            {
+                if(_mapping.MidiBinding == null)
+                {
+                    return String.Empty;
 
-        public bool CanOverrideFactoryMap { get { return _mapping.CanOverrideFactoryMap; } }
+                } else
+                {
+                    String ret = _mapping.MidiBinding.Note;
+
+                    // TODO: refresh this dynamically 
+                    bool invert = _mapping.Command.Control.Invert;
+                    if (invert)
+                    {
+                        ret = ret + "_I";
+                    }
+                    return ret;
+
+                }
+            }
+        }
+
+        public string MappedTo_OnlyNote
+        {
+            get
+            {
+                if (_mapping.MidiBinding == null)
+                    return String.Empty;
+
+                String note = _mapping.MidiBinding.Note;
+                int len = note.Length;
+
+                int i = note.IndexOf('.');
+                if (i == -1)
+                {
+                    return note;
+                }
+
+                String channel = note.Substring(0, i);
+                String rest = note.Substring(i + 1);
+
+                // TODO: refresh this dynamically 
+                bool invert = _mapping.Command.Control.Invert;
+                if (invert)
+                {
+                    rest = rest + "_I";
+                }
+
+                String ret = rest + "." + channel;
+                return ret;
+            }
+        }
+
+
+        public bool CanOverrideFactoryMap {
+            get {
+                return _mapping.CanOverrideFactoryMap;
+            }
+        }
 
         public bool OverrideFactoryMap
         {
@@ -84,6 +169,7 @@ namespace cmdr.Editor.ViewModels
             {
                 raisePropertyChanged("MidiBinding");
                 raisePropertyChanged("MappedTo");
+                raisePropertyChanged("MappedTo_OnlyNote");
                 IsChanged = true;
             }
         }
@@ -121,8 +207,23 @@ namespace cmdr.Editor.ViewModels
             return _mapping.Copy(includeMidiBinding);
         }
 
+        public void hack_encoder_mididefinition()
+        {
+            AGenericMidiDefinition midiBinding = (this._mapping.MidiBinding as AGenericMidiDefinition);
+            if(midiBinding == null)
+            {
+                return;    //nothing todo. We are not linked to a midi modifier yet
+            }
+
+            MidiEncoderMode actual_encoder_mode = _mapping.Command.get_EncoderMode();
+            midiBinding.MidiEncoderMode = actual_encoder_mode;
+        }
+
+
         public void UpdateInteraction()
         {
+            hack_encoder_mididefinition();
+
             raisePropertyChanged("Interaction");
             raisePropertyChanged("TraktorCommand");
             IsChanged = true;
@@ -152,10 +253,14 @@ namespace cmdr.Editor.ViewModels
             Assignment = assignment;
         }
 
-        private string getTraktorCommand()
+        private string getTraktorCommand(bool details = true)
         {
             StringBuilder sb = new StringBuilder(100);
             sb.Append(Command.Name);
+
+            if (!details) {
+                return sb.ToString();
+            }
 
             switch (_mapping.Command.InteractionMode)
             {
@@ -165,6 +270,9 @@ namespace cmdr.Editor.ViewModels
                     sb.Append(" [Toggle]");
                     break;
                 case MappingInteractionMode.Hold:
+                    sb.Append(" [Hold]");
+                    break;
+
                 case MappingInteractionMode.Direct:
                     break;
                 case MappingInteractionMode.Relative:
@@ -228,6 +336,61 @@ namespace cmdr.Editor.ViewModels
         protected override void Revert()
         {
 
+        }
+
+        public void hack_modifier(KnownCommands new_id)
+        {
+            var b = this._mapping;
+
+            b.hack_modifier(new_id);
+        }
+
+        public List<string> get_csv_strings(int device_num, bool header = false)
+        {
+            List<string> ret = new List<string>();
+
+            // FIXME: generate union of condition1 and 2
+            if (header) {
+
+                // FIXME: how to write this in C# better ???
+                var tmp = new List<string>()
+                {
+                    "Device",
+                    "Id",
+                    "Type",
+                    "TraktorCommand",
+                    "AssignmentExpression",
+                    "ConditionExpression",
+                    "Interaction",
+                    "MappedTo",
+                    "Comment",
+                };
+
+                ret = tmp;
+            } else {
+                var tmp = new List<string>()
+                {
+                    device_num.ToString(),
+                    Id.ToString(),
+                    Type,
+                    TraktorCommand,
+                    AssignmentExpression,
+                    ConditionExpression,
+                    Interaction,
+                    MappedTo,
+                    Comment,
+                };
+                ret = tmp;
+            };
+
+            return ret;
+        }
+
+        public string get_csv_row(string sep, int device, bool header = false)
+        {
+            var l = get_csv_strings(device, header);
+            var st = String.Join(sep, l);
+            return st;
         }
 
 

@@ -33,14 +33,22 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Id, Mode=OneTime}" Header="Id" Width="75" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Id, Mode=OneTime}" Header="Id" Width="35" IsReadOnly="True"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.Type, Mode=OneTime}" Header="I/O" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Item.TraktorCommand, Mode=OneWay}" Header="Command" Width="200" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.TraktorCommand, Mode=OneWay}" Header="Command" Width="150" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.TraktorCommand2, Mode=OneWay}" Header="Command2" Width="150" IsReadOnly="True" Visibility="Collapsed"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.AssignmentExpression, Mode=OneWay}" Header="Assignment" Width="100" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Item.ConditionExpression, Mode=OneWay}" Header="Condition" Width="150" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Interaction, Mode=OneWay}" Header="Interaction" Width="100" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.ConditionExpression, Mode=OneWay}" Header="Conditions" Width="150" IsReadOnly="True"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Condition1, Mode=OneWay}" Header="Condition1" Width="75" IsReadOnly="True" Visibility="Collapsed"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Condition2, Mode=OneWay}" Header="Condition2" Width="75" IsReadOnly="True" Visibility="Collapsed"/>
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Interaction, Mode=OneWay}" Header="Interaction" Width="150" IsReadOnly="True" Visibility="Collapsed"/>
                 <cdg:CustomDataGridTextColumn Binding="{Binding Item.MappedTo, Mode=OneWay}" Header="Mapped To" Width="100" IsReadOnly="True"/>
-                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Comment, UpdateSourceTrigger=PropertyChanged}" Header="Comment" MinWidth="75" Width="*"/>
+                
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Comment, UpdateSourceTrigger=PropertyChanged}" Header="Comment" Width="150" />
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.Comment2, UpdateSourceTrigger=PropertyChanged}" Header="Comment2" Width="150" Visibility="Collapsed" />
+                <cdg:CustomDataGridTextColumn Binding="{Binding Item.MappedTo_OnlyNote, Mode=OneWay}" Header="Note" Width="100" IsReadOnly="True" Visibility="Collapsed"/>
+
+                <!-- Width="*" minwidth="75" -->
             </DataGrid.Columns>
             <DataGrid.InputBindings>
                 <KeyBinding Key="C" Modifiers="Ctrl" Command="ApplicationCommands.NotACommand"/>
@@ -49,13 +57,15 @@
             </DataGrid.InputBindings>
         </cdg:CustomDataGrid>
 
-
         <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" LastChildFill="True">
             <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" FontSize="11">
                 <Run Text="{Binding Path=SelectedItems.Count, ElementName=MappingsGrid, Mode=OneWay}" />
-                <Run Text=" / " />
+                <Run Text="selected /" />
                 <Run Text="{Binding Path=Items.Count, ElementName=MappingsGrid, Mode=OneWay}" />
-                <Run Text=" selected" />
+                <Run Text="visible /" />
+                <Run Text="{Binding Path=ItemsSource.Count, ElementName=MappingsGrid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }" />
+                <Run Text="total" />
+
             </TextBlock>
         </DockPanel>
 
@@ -68,7 +78,34 @@
                 <ddButton:DropDownButton Content="Add Out" MenuPlacement="Top"
                                          ItemsSource="{Binding OutCommands}"
                                          Command="{Binding AddMappingCommand}"
-                                         Width="75"/>
+                                         Width="75" Margin="0,0,5,0"/>
+                <controls:FilterControl Width="150" DataContext="{Binding FilterCmdViewModel, Mode=OneWay}" />
+                
+                <CheckBox Content="Conditions "
+                          VerticalContentAlignment="Center" 
+                          IsChecked="{Binding SplitConditions, Mode=TwoWay}" 
+                          IsEnabled="True" />
+
+                <CheckBox Content="Command2 "
+                          VerticalContentAlignment="Center" 
+                          IsChecked="{Binding ShowCommand2, Mode=TwoWay}" 
+                          IsEnabled="True" />
+
+                <CheckBox Content="Comment2 "
+                          VerticalContentAlignment="Center" 
+                          IsChecked="{Binding ShowComment2, Mode=TwoWay}" 
+                          IsEnabled="True" />
+                
+                <CheckBox Content="Interaction "
+                          VerticalContentAlignment="Center" 
+                          IsChecked="{Binding HideInteraction, Mode=TwoWay}" 
+                          IsEnabled="True" />
+
+                <CheckBox Content="Note "
+                          VerticalContentAlignment="Center" 
+                          IsChecked="{Binding ShowNote, Mode=TwoWay}" 
+                          IsEnabled="True" />
+
             </StackPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
                 <controls:SearchControl Width="100" DataContext="{Binding SearchViewModel, Mode=OneWay}" />

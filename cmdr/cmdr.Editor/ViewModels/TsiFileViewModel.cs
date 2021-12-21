@@ -2,11 +2,15 @@
 using cmdr.Editor.AppSettings;
 using cmdr.Editor.Utils;
 using cmdr.Editor.Views;
+using cmdr.Editor.ViewModels.Reports;
 using cmdr.TsiLib;
 using cmdr.TsiLib.EventArgs;
 using cmdr.WpfControls.Behaviors;
 using cmdr.WpfControls.DropDownButton;
 using cmdr.WpfControls.Utils;
+using cmdr.WpfControls.ViewModels;
+using cmdr.WpfControls.CustomDataGrid;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Text;
 
 namespace cmdr.Editor.ViewModels
 {
@@ -23,7 +28,7 @@ namespace cmdr.Editor.ViewModels
     {
         private readonly TsiFile _tsiFile;
 
-        
+
         public bool IsTraktorSettings { get { return _tsiFile.IsTraktorSettings; } }
 
         private string defaultTitle
@@ -50,7 +55,16 @@ namespace cmdr.Editor.ViewModels
         public DeviceViewModel SelectedDevice
         {
             get { return _selectedDevice; }
-            set { _selectedDevice = value; raisePropertyChanged("SelectedDevice"); }
+            set {
+                _selectedDevice = value;
+                raisePropertyChanged("SelectedDevice");
+
+                remember_cgd();
+
+                if (CmdrSettings.Instance.ClearFilterAtPageChanges) {
+                    SelectedDevice.ClearFiltering();
+                }
+            }
         }
 
         private static ObservableCollection<MenuItemViewModel> _addDeviceMenuItems;
@@ -86,6 +100,18 @@ namespace cmdr.Editor.ViewModels
             get { return _dropCommand ?? (_dropCommand = new CommandHandler<IDataObject>(drop)); }
         }
 
+        private ICommand _showCommandsReportEditorCommand;
+        public ICommand ShowCommandsReportEditorCommand
+        {
+            get { return _showCommandsReportEditorCommand ?? (_showCommandsReportEditorCommand = new CommandHandler(showCommandsReportEditor)); }
+        }
+
+        private ICommand _showMappingsReport;
+        public ICommand ShowMappingsReport
+        {
+            get { return _showMappingsReport ?? (_showMappingsReport = new CommandHandler(showMappingsReport)); }
+        }
+
         #endregion
 
 
@@ -96,11 +122,9 @@ namespace cmdr.Editor.ViewModels
             // Is new file?
             if (tsiFile.Path == null)
                 IsChanged = true;
-            else
-            {
-                foreach (var device in _tsiFile.Devices)
-                {
-                    var dvm = new DeviceViewModel(device);
+            else {
+                foreach (var device in _tsiFile.Devices) {
+                    var dvm = new DeviceViewModel(device, this);
                     Devices.Add(dvm);
                     dvm.DirtyStateChanged += (s, a) => onDeviceChanged();
                 }
@@ -125,6 +149,7 @@ namespace cmdr.Editor.ViewModels
             TsiFileViewModel result = null;
             App.SetStatus("Opening " + filePath + " ...");
             TsiFile.EffectIdentificationRequest += onEffectIdentificationRequest;
+
             var tsiFile = await loadTsiAsync(filePath);
             if (tsiFile != null)
                 result = new TsiFileViewModel(tsiFile);
@@ -133,28 +158,212 @@ namespace cmdr.Editor.ViewModels
             return result;
         }
 
-        public async Task<bool> SaveAsync(string filepath)
+ 
+        public string generate_csv_string(string sep = ",")
+        {
+            StringBuilder sb = new StringBuilder(Convert.ToString((char)65279));
+
+            foreach (var dev in Devices)
+                dev.SaveMetadata();
+
+            bool header_printed = false;
+
+            Devices.Enumerate((dev, i) =>
+            {
+                string dev_name = dev.Comment;
+
+                sb.AppendFormat("#\n#Page {0}: ({1})\n#\n", i, dev_name);
+                foreach (var m in dev.Mappings) {
+                    var mvm = (MappingViewModel)m.Item;
+
+                    if (!header_printed) {
+                        sb.AppendFormat("{0}\n", mvm.get_csv_row(sep, i, true));
+                        header_printed = true;
+                    }
+
+                    sb.AppendFormat("{0}\n", mvm.get_csv_row(sep, i));
+                }
+            });
+
+            return sb.ToString();
+        }
+
+        private bool WriteToXls(string filepath, string dataToWrite )
+        {
+            try
+            {
+                FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.Write);
+                StreamWriter objWrite = new StreamWriter(fs);
+                objWrite.Write(dataToWrite);
+                objWrite.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+        public async Task<bool> SaveAsyncCsv(string filepath)
         {
             AcceptChanges();
             App.SetStatus("Saving " + filepath + " ...");
 
-            // save metadata
-            foreach (var dev in Devices)
-                dev.SaveMetadata();
+            var data = generate_csv_string(",");
 
-            bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath));
+            bool success = WriteToXls(filepath, data);
 
-            if (success)
-            {
-                raisePropertyChanged("Path");
-                raisePropertyChanged("Title");
-            }
-            else
-                IsChanged = true;
             App.ResetStatus();
             return success;
         }
 
+        public async Task<bool> SaveAsyncTsi(string filepath, bool backup = false)
+        {
+            App.SetStatus("Saving " + filepath + " ...");
+
+            // Remove EMPTY devices at save
+            if (CmdrSettings.Instance.RemoveUnusedMIDIDefinitions) {
+                foreach (var dev in Devices.ToArray()) {
+                    if (dev.Mappings.Any()) {
+                        continue;
+                    }
+                    removeDevice(dev, true);
+                }
+            }
+
+            AcceptChanges();
+
+            // save metadata
+            foreach (var dev in Devices) {
+                dev.SaveMetadata();
+            }
+
+            bool success = await Task<bool>.Factory.StartNew(() => _tsiFile.Save(filepath, CmdrSettings.Instance.OptimizeFXList, backup));
+
+            if (success) {
+                raisePropertyChanged("Path");
+                raisePropertyChanged("Title");
+            } else {
+                IsChanged = true;
+            }
+            App.ResetStatus();
+            return success;
+        }
+
+        /*
+        class Person
+        {
+            internal int id;
+            internal string car;
+            internal string type;
+        }
+
+        public static void test_linq_groupby()
+        {
+            List<Person> persons = new List<Person>();
+            persons.Add(new Person { id = 1, car = "Ferrari", type = "convertible" });
+            persons.Add(new Person { id = 1, car = "BMW", type = "convertible" });
+            persons.Add(new Person { id = 1, car = "Audi", type = "utility" });
+            persons.Add(new Person { id = 2, car = "Audi", type = "utility" });
+
+
+            // https://stackoverflow.com/questions/847066/group-by-multiple-columns
+            var results = from p in persons
+                          group p.car 
+                          by new { p.id, p.type } into g
+                          select new
+                          {
+                              g.Key.id,
+                              g.Key.type,
+                              quantity = g.Count()
+                          };
+
+            foreach (var p in results) {
+                Console.WriteLine("{0} {1} {2} ",
+                                  p.id,
+                                  p.type,
+                                  p.quantity);
+            }
+
+        }
+        */
+
+        private void showCommandsReportEditor()
+        {
+            var rows = new List<CommandsReportViewModel>();
+            foreach (var dev in Devices)
+            {
+                string dev_name = dev.Comment;
+
+                // https://stackoverflow.com/questions/847066/group-by-multiple-columns
+                var commands1 = dev.Mappings
+                    .Select(m => (m.Item as MappingViewModel))
+                    .Select(m => new { command = m.Command.Name, type = m.Type });
+
+                var commands2 = from c in commands1
+                              group c.command
+                              by new { c.command, c.type } into g
+                              select new
+                              {
+                                  g.Key.command,
+                                  type = g.Key.type,
+                                  count = g.Count()
+                              };
+
+                var new_rows = commands2.Select(c => new CommandsReportViewModel(dev_name, c.command, c.type, c.count));
+                rows.AddRange(new_rows);
+            }
+
+            // sort by "Command"
+            rows = rows.OrderBy(r => r.Command).ToList();
+
+            var dc = new CommandsReportEditorViewModel(rows);
+            var new_window = new Views.CommandsReportEditor
+            {
+                DataContext = dc
+            };
+            new_window.ShowDialog();
+
+        }
+
+        private void showMappingsReport()
+        {
+            var rows = new List<CommandsReportViewModel>();
+            foreach (var dev in Devices) {
+                string dev_name = dev.Comment;
+
+                // https://stackoverflow.com/questions/847066/group-by-multiple-columns
+                var commands1 = dev.Mappings
+                    .Select(m => (m.Item as MappingViewModel))
+                    .Select(m => new { command = m.MappedTo, type = m.Type });
+
+                var commands2 = from c in commands1
+                                group c.command
+                                // by new { c.command, c.type } into g
+                                by new { c.command } into g
+                                select new
+                                {
+                                    g.Key.command,
+                                    // type = g.Key.type,
+                                    count = g.Count()
+                                };
+
+                var new_rows = commands2.Select(c => new CommandsReportViewModel(dev_name, c.command, null, c.count));
+                rows.AddRange(new_rows);
+            }
+
+            // sort by "Command"
+            rows = rows.OrderBy(r => r.Command).ToList();
+
+            var dc = new CommandsReportEditorViewModel(rows);
+            var new_window = new Views.CommandsReportEditor
+            {
+                DataContext = dc
+            };
+            new_window.ShowDialog();
+
+        }
 
         protected override void Accept()
         {
@@ -233,9 +442,123 @@ namespace cmdr.Editor.ViewModels
             SelectedDevice = selected;
         }
 
+
+        // pestrela 4 May 2020:
+        //   This is a link to the datagrid.
+        //   It was moved to the TSI level to be able to clear filtering with zero mappings.
+        //  hcnaging TSIs reconstructs the whole thing (?) so the filters are cleared
+        private CustomDataGrid _cdg_parent_selector = null;
+        public CustomDataGrid CDG_ParentSelector
+        {
+            get
+            {
+                return _cdg_parent_selector;
+            }
+            set
+            {
+                //empty setter on purpose
+            }
+        }
+
+        private bool remember_cgd_inner(bool debug = false)
+        {
+            if (debug) {
+                int i = 9;
+            }
+
+            if (SelectedDevice == null) {
+                return false;
+            }
+            if (!SelectedDevice.Mappings.Any()) {
+                return false;
+            }
+
+            var first_m = SelectedDevice.Mappings.First();
+            var first_p = SelectedDevice.Mappings.First().ParentSelector;
+
+            if (first_p == null) {
+                return false;
+            }
+
+            var what = SelectedDevice.Mappings.First().ParentSelector;
+            if (!(what is CustomDataGrid)) {
+                return false;
+            }
+
+
+            CustomDataGrid new_cdg = (CustomDataGrid)what;
+            if (_cdg_parent_selector == null) {
+                _cdg_parent_selector = new_cdg;
+                return true;
+            }
+
+            if (_cdg_parent_selector != new_cdg) {
+                return false;
+            }
+
+            // we remember the SAME datagrid. The only sane outcome
+            return true;
+        }
+
+        public void remember_cgd()
+        {
+            bool sucess = remember_cgd_inner();
+            if (!sucess) {
+                remember_cgd_inner(true);
+            }
+
+        }
+
+        // fixme: how to trigger this at startup?
+        // how to have a two-way syncronized value? so that the datagrid reads this value instead of the opposite
+        public void updateShowColumns(ShowColumns showColumns)
+        {
+            if (this.CDG_ParentSelector != null) {
+                this.CDG_ParentSelector.updateShowColumns(showColumns);
+            } else {
+                var i = 9;
+                // warn user?
+            }
+        }
+
+
+        public void ClearFiltering()
+        {
+            if (this.CDG_ParentSelector != null) {
+                this.CDG_ParentSelector.ClearFiltering();
+            } else {
+                var i = 9;
+                // warn user?
+            }
+        }
+
+        public bool HasFiltering()
+        {
+            if (this.CDG_ParentSelector != null) {
+                return this.CDG_ParentSelector.HasFiltering();
+            } else {
+                return true;  // be carefull by default!
+            }
+        }
+
+        public void ReApplyFiltering()
+        {
+            if (this.CDG_ParentSelector != null) {
+                this.CDG_ParentSelector.ReApplyFiltering();
+            } else {
+                var i = 9;
+                // warn user?
+            }
+        }
+
+
         private void onDeviceChanged()
         {
             IsChanged = Devices.Any(d => d.IsChanged);
+
+            // desperation starts to kick-in.
+            remember_cgd();
+
         }
 
         private static IEnumerable<MenuItemViewModel> generateAddDeviceMenuItems()
@@ -255,6 +578,10 @@ namespace cmdr.Editor.ViewModels
             return items.Union(defaults);
         }
 
+        public void addMidiDevice()
+        {
+            addDevice(new MenuItemViewModel { Text = Device.TYPE_STRING_GENERIC_MIDI });
+        }
 
         private async void addDevice(MenuItemViewModel item)
         {
@@ -290,14 +617,14 @@ namespace cmdr.Editor.ViewModels
         private void addDevice(Device rawDevice)
         {
             _tsiFile.AddDevice(rawDevice);
-            var dvm = new DeviceViewModel(rawDevice);
+            var dvm = new DeviceViewModel(rawDevice, this);
             Devices.Add(dvm);
         }
 
         private void insertDevice(int index, Device rawDevice)
         {
             _tsiFile.InsertDevice(index, rawDevice);
-            var dvm = new DeviceViewModel(rawDevice);
+            var dvm = new DeviceViewModel(rawDevice, this);
             Devices.Insert(index, dvm);
         }
 
@@ -314,10 +641,18 @@ namespace cmdr.Editor.ViewModels
             else
                 SelectedDevice = null;
         }
-
-        private void removeDevice(DeviceViewModel device)
+        
+        private void removeDevice(DeviceViewModel device, bool is_optimizing_tsi = false)
         {
             int id = device.Id;
+
+            if (!is_optimizing_tsi && CmdrSettings.Instance.ConfirmDeleteDevices) {
+                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure to delete this device?", "Delete Confirmation", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.No)
+                    return;
+
+            };
+
             Devices.Remove(device);
             _tsiFile.RemoveDevice(id);
         }
@@ -327,6 +662,7 @@ namespace cmdr.Editor.ViewModels
             string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
             string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
+            // replace invalid chars with "_"
             return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
         }
 
@@ -340,7 +676,22 @@ namespace cmdr.Editor.ViewModels
 
         private static async Task<TsiFile> loadTsiAsync(string filePath)
         {
-            return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(CmdrSettings.Instance.TraktorVersion, filePath));
+            try {
+                return await Task<TsiFile>.Factory.StartNew(() => TsiFile.Load(
+                    CmdrSettings.Instance.TraktorVersion, 
+                    filePath, 
+                    CmdrSettings.Instance.RemoveUnusedMIDIDefinitions,
+                    false
+                    ));
+            }
+            catch (Exception e) {
+
+                if (CmdrSettings.Instance.VerboseExceptions) {
+                    MessageBoxHelper.ShowException("Error loading " + filePath, e);
+                }
+                return null;
+            }
+
         }
 
         #region Events

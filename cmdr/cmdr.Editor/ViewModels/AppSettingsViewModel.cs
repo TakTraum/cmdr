@@ -59,7 +59,112 @@ namespace cmdr.Editor.ViewModels
         public string TraktorVersion
         {
             get { return _traktorVersion; }
-            set { SetProperty("TraktorVersion", ref _traktorVersion, ref value); }
+            set {
+                SetProperty("TraktorVersion", ref _traktorVersion, ref value);
+            }
+        }
+
+        private bool _optimizeFXList;
+        public bool OptimizeFXList
+        {
+            get { return _optimizeFXList; }
+            set { SetProperty("OptimizeFXList", ref _optimizeFXList, ref value); }
+        }
+
+        private bool _showNotesBeforeCC;
+        public bool ShowNotesBeforeCC
+        {
+            get { return _showNotesBeforeCC; }
+            set { SetProperty("ShowNotesBeforeCC", ref _showNotesBeforeCC, ref value); }
+        }
+
+        private bool _confirmDeleteDevices;
+        public bool ConfirmDeleteDevices
+        {
+            get { return _confirmDeleteDevices; }
+            set { SetProperty("ConfirmDeleteDevices", ref _confirmDeleteDevices, ref value); }
+        }
+
+        private bool _verboseExceptions;
+        public bool VerboseExceptions
+        {
+            get { return _verboseExceptions; }
+            set { SetProperty("VerboseExceptions", ref _verboseExceptions, ref value); }
+        }
+
+        private bool _removeEmptyDevices;
+        public bool RemoveEmptyDevices
+        {
+            get { return _removeEmptyDevices; }
+            set { SetProperty("RemoveEmptyDevices", ref _removeEmptyDevices, ref value); }
+        }
+
+        private bool _removeUnusedMIDIDefinitions;
+        public bool RemoveUnusedMIDIDefinitions
+        {
+            get { return _removeUnusedMIDIDefinitions; }
+            set { SetProperty("RemoveUnusedMIDIDefinitions", ref _removeUnusedMIDIDefinitions, ref value); }
+        }
+
+        private bool _loadLastFileAtStartup;
+        public bool LoadLastFileAtStartup
+        {
+            get { return _loadLastFileAtStartup; }
+            set { SetProperty("LoadLastFileAtStartup", ref _loadLastFileAtStartup, ref value); }
+        }
+
+        private bool _showDecimalNotes;
+        public bool ShowDecimalNotes
+        {
+            get { return _showDecimalNotes; }
+            set { SetProperty("ShowDecimalNotes", ref _showDecimalNotes, ref value); }
+        }
+
+        private bool _clearFilterAtPageChanges;
+        public bool ClearFilterAtPageChanges
+        {
+            get { return _clearFilterAtPageChanges; }
+            set { SetProperty("ClearFilterAtPageChanges", ref _clearFilterAtPageChanges, ref value); }
+        }
+
+        private bool _clearFilterAtModifications;
+        public bool ClearFilterAtModifications
+        {
+            get { return _clearFilterAtModifications; }
+            set { SetProperty("ClearFilterAtModification", ref _clearFilterAtModifications, ref value); }
+        }
+
+
+        private int _confirmDeleteMappingsSize;
+        public int ConfirmDeleteMappingsSize
+        {
+            get
+            {
+                return _confirmDeleteMappingsSize;
+            }
+            set
+            {
+                // https://docs.microsoft.com/en-us/dotnet/framework/wpf/data/how-to-implement-property-change-notification
+                SetProperty("ConfirmDeleteMappingsSize", ref _confirmDeleteMappingsSize, ref value);
+                IsChanged = true;
+                raisePropertyChanged("Title");
+            }
+        }
+
+        private int _filterMenuSize;
+        public int FilterMenuSize
+        {
+            get
+            {
+                return _filterMenuSize;
+            }
+            set
+            {
+                // https://docs.microsoft.com/en-us/dotnet/framework/wpf/data/how-to-implement-property-change-notification
+                SetProperty("FilterMenuSize", ref _filterMenuSize, ref value);
+                IsChanged = true;
+                raisePropertyChanged("Title");
+            }
         }
 
         private bool _mustOverrideTraktorVersion;
@@ -100,7 +205,10 @@ namespace cmdr.Editor.ViewModels
         private ICommand _saveCommand;
         public ICommand SaveCommand
         {
-            get { return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => IsChanged && !IsInitializingTraktorSettings)); }
+            get
+            {
+                return _saveCommand ?? (_saveCommand = new CommandHandler(save, () => IsChanged && !IsInitializingTraktorSettings));
+            }
         }
 
         private ICommand _browseFolderCommand;
@@ -126,6 +234,19 @@ namespace cmdr.Editor.ViewModels
             _pathToControllerDefaultMappings = CmdrSettings.Instance.PathToControllerDefaultMappings ?? String.Empty;
             _pathToTraktorSettings = CmdrSettings.Instance.PathToTraktorSettings ?? String.Empty;
             _traktorVersion = CmdrSettings.Instance.TraktorVersion ?? String.Empty;
+            _optimizeFXList = CmdrSettings.Instance.OptimizeFXList;
+            _removeUnusedMIDIDefinitions = CmdrSettings.Instance.RemoveUnusedMIDIDefinitions;
+            _loadLastFileAtStartup = CmdrSettings.Instance.LoadLastFileAtStartup;
+            _showDecimalNotes = CmdrSettings.Instance.ShowDecimalNotes;
+            _clearFilterAtModifications = CmdrSettings.Instance.ClearFilterAtModifications;
+            _clearFilterAtPageChanges = CmdrSettings.Instance.ClearFilterAtPageChanges;
+            _filterMenuSize = CmdrSettings.Instance.FilterMenuSize;
+            _showNotesBeforeCC = CmdrSettings.Instance.ShowNotesBeforeCC;
+            _confirmDeleteDevices = CmdrSettings.Instance.ConfirmDeleteDevices;
+            _confirmDeleteMappingsSize = CmdrSettings.Instance.ConfirmDeleteMappingsSize;
+            _verboseExceptions = CmdrSettings.Instance.VerboseExceptions;
+            _removeEmptyDevices = CmdrSettings.Instance.RemoveEmptyDevices;
+
 
             if (TraktorSettings.Initialized)
                 _overrideTraktorVersion = !_traktorVersion.Equals(TraktorSettings.Instance.TraktorVersion);
@@ -197,8 +318,20 @@ namespace cmdr.Editor.ViewModels
             CmdrSettings.Instance.PathToControllerDefaultMappings = PathToControllerDefaultMappings;
             CmdrSettings.Instance.PathToTraktorSettings = PathToTraktorSettings;
             CmdrSettings.Instance.TraktorVersion = TraktorVersion;
+            CmdrSettings.Instance.OptimizeFXList = OptimizeFXList;
+            CmdrSettings.Instance.RemoveUnusedMIDIDefinitions = RemoveUnusedMIDIDefinitions;
+            CmdrSettings.Instance.LoadLastFileAtStartup = LoadLastFileAtStartup;
+            CmdrSettings.Instance.ShowDecimalNotes = ShowDecimalNotes;
+            CmdrSettings.Instance.ClearFilterAtPageChanges = ClearFilterAtPageChanges;
+            CmdrSettings.Instance.ClearFilterAtModifications = ClearFilterAtModifications;
+            CmdrSettings.Instance.FilterMenuSize = FilterMenuSize;
+            CmdrSettings.Instance.ShowNotesBeforeCC = ShowNotesBeforeCC;
+            CmdrSettings.Instance.ConfirmDeleteDevices = ConfirmDeleteDevices;
+            CmdrSettings.Instance.ConfirmDeleteMappingsSize = ConfirmDeleteMappingsSize;
+            CmdrSettings.Instance.VerboseExceptions = VerboseExceptions;
+            CmdrSettings.Instance.RemoveEmptyDevices = RemoveEmptyDevices;
 
-            CmdrSettings.Instance.Save();
+            CmdrSettings.Instance.Save(); 
 
             if (CloseAction != null)
                 CloseAction();

@@ -17,6 +17,21 @@ namespace cmdr.TsiLib.Controls.Encoder
         public int RotaryAcceleration { get { return (int)Math.Round(_command.RawSettings.RotaryAcceleration * 100f); } set { _command.RawSettings.RotaryAcceleration = value / 100f; } }
 
 
+        public MidiEncoderMode EncoderMode
+        {
+            get {
+                //var a = _command;
+                //var b = a.RawSettings;
+
+                var ret = _command.RawSettings.EncoderMode2;
+                return ret;
+            }
+
+            set {
+                _command.RawSettings.EncoderMode2 = value;
+            }
+        }
+
         internal EncoderControl(ACommand command)
             : base(MappingControlType.Encoder, command)
         {

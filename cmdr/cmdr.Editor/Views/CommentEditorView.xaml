@@ -4,10 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <ContentControl MinHeight="30" Height="30" Style="{StaticResource ResizeStyle}">
-            <TextBox TextWrapping="Wrap" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
-        </ContentControl>
+             xmlns:ddButton="clr-namespace:cmdr.WpfControls.DropDownButton;assembly=cmdr.WpfControls"
+             d:DesignHeight="60" d:DesignWidth="287.5">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+
+        <ddButton:DropDownButton 
+             Grid.Row="0" Grid.Column="0"
+            Content="Select" Width="50"   HorizontalAlignment="Left"  VerticalAlignment="Top"
+                                             MenuPlacement="Left"
+                                             Command="{Binding SelectCommentsCommand, Mode=OneTime}" 
+                                             ItemsSource="{Binding CommentsMenu, Mode=OneTime}"   />
+
+        <Button Content="S__n__R" HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Width="50"
+                Command="{Binding SedCommentsCommand, Mode=OneTime}"
+                />
+        
+        <TextBox 
+               Grid.Row="0" Grid.Column="1"
+                TextWrapping="Wrap" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" 
+                MinWidth="150" Margin="5,0,0,0"  />
+        
+
     </Grid>
 </UserControl>
+
+    
